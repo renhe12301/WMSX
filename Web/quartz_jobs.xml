@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<job-scheduling-data xmlns="http://quartznet.sourceforge.net/JobSchedulingData"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 				version="2.0">
+
+  <processing-directives>
+    <overwrite-existing-data>true</overwrite-existing-data>
+  </processing-directives>
+
+  <schedule>
+    
+    <job>
+      <name>job1</name>
+      <group>jobGroup1</group>
+      <description>执行出库工作</description>
+      <job-type>Web.Jobs.CK_Job, Web.Jobs</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <simple>
+        <name>tig1</name>
+        <group>tigGroup1</group>
+        <job-name>job1</job-name>
+        <job-group>jobGroup1</job-group>
+        <start-time>1982-06-28T18:15:00.0Z</start-time>
+        <cron-expression>0/5 * * * * ?</cron-expression>
+      </simple>
+    </trigger> 
+        
+    <job>
+      <name>job2</name>
+      <group>jobGroup1</group>
+      <description>执行集约化库存数据同步工作</description>
+      <job-type>Web.Jobs.JYH_Stock_Job, Web.Jobs</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <simple>
+        <name>tig2</name>
+        <group>tigGroup1</group>
+        <job-name>job2</job-name>
+        <job-group>jobGroup1</job-group>
+        <start-time>1982-06-28T18:15:00.0Z</start-time>
+        <cron-expression>0/10 * * * * ?</cron-expression>
+      </simple>
+    </trigger>       
+
+  </schedule>
+  
+</job-scheduling-data>

@@ -1,0 +1,355 @@
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.Development.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Properties/launchSettings.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.deps.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.dev.json
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.Views.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csprojAssemblyReference.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.Manifest.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.xml
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfoInputs.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfo.cs
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorTargetAssemblyInfo.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csproj.CopyComplete
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.GuardClauses.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Configuration.ConfigurationManager.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Security.Cryptography.ProtectedData.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cs
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.ListStartupServices.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.VisualBasic.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.DotNet.PlatformAbstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyModel.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.PlatformAbstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.VisualBasic.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/debian-x64/native/libuv.so
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/fedora-x64/native/libuv.so
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/opensuse-x64/native/libuv.so
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/osx/native/libuv.dylib
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/rhel-x64/native/libuv.so
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-arm/native/libuv.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x64/native/libuv.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x86/native/libuv.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x86/native/Microsoft.DiaSymReader.Native.x86.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.Development.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Properties/launchSettings.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.exe
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.deps.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.dev.json
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.pdb
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.Views.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Web.Views.pdb
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.GuardClauses.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.ListStartupServices.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/BouncyCastle.Crypto.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Google.Protobuf.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.CSharp.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.VisualBasic.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Relational.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.PlatformAbstractions.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.VisualBasic.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/MySql.Data.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/MySql.Data.EntityFrameworkCore.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Renci.SshNet.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/SshNet.Security.Cryptography.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/System.Configuration.ConfigurationManager.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/System.Resources.Extensions.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/System.Security.Cryptography.ProtectedData.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/System.Xml.XPath.XmlDocument.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/debian-x64/native/libuv.so
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/fedora-x64/native/libuv.so
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/opensuse-x64/native/libuv.so
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/osx/native/libuv.dylib
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/rhel-x64/native/libuv.so
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-arm/native/libuv.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x64/native/libuv.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x86/native/libuv.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.pdb
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.pdb
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csprojAssemblyReference.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.Manifest.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.xml
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorAssemblyInfo.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorAssemblyInfo.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfoInputs.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfo.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.TagHelpers.input.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.TagHelpers.output.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorCoreGenerate.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/Home/Index.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/Home/Privacy.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/Shared/Error.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/Shared/_Layout.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/_ViewImports.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Razor/Views/_ViewStart.cshtml.g.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorTargetAssemblyInfo.cache
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorTargetAssemblyInfo.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.Views.pdb
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csproj.CopyComplete
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.dll
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.JsonPatch.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.DotNet.PlatformAbstractions.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyModel.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.OpenApi.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.Bson.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+D:/WorkSpace/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cs
+D:/WorkSpace/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.OpenApi.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.Bson.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.xml
+/Users/renhe/Documents/workspace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.xml
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Quartz.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Data.SqlClient.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-arm64/native/sni.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x64/native/sni.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x86/native/sni.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.EFCore.Extensions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.HashCode.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Memory.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Options.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Primitives.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Collections.Immutable.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.ComponentModel.Annotations.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Diagnostics.DiagnosticSource.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Runtime.CompilerServices.Unsafe.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/MySqlConnector.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.JsonObject.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csprojAssemblyReference.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.Manifest.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.xml
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cs
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfoInputs.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfo.cs
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.xml
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.Development.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Properties/launchSettings.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.deps.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.dev.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.xml
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Web.Views.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.EFCore.Extensions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.GuardClauses.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.ListStartupServices.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.HashCode.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.VisualBasic.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.DotNet.PlatformAbstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Memory.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyModel.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Options.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.PlatformAbstractions.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Primitives.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.OpenApi.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.VisualBasic.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/MySqlConnector.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.Bson.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.JsonObject.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Quartz.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Collections.Immutable.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.ComponentModel.Annotations.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Configuration.ConfigurationManager.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Data.SqlClient.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Diagnostics.DiagnosticSource.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Runtime.CompilerServices.Unsafe.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Security.Cryptography.ProtectedData.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/debian-x64/native/libuv.so
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/fedora-x64/native/libuv.so
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/opensuse-x64/native/libuv.so
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/osx/native/libuv.dylib
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/rhel-x64/native/libuv.so
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-arm/native/libuv.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x64/native/libuv.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x86/native/libuv.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x86/native/Microsoft.DiaSymReader.Native.x86.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-arm64/native/sni.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x64/native/sni.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x86/native/sni.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorTargetAssemblyInfo.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csproj.CopyComplete
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.Development.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/appsettings.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Properties/launchSettings.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.exe
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.deps.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.runtimeconfig.dev.json
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.pdb
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.xml
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Web.Views.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.EFCore.Extensions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.GuardClauses.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Ardalis.ListStartupServices.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.JsonPatch.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.AsyncInterfaces.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Bcl.HashCode.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.CSharp.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.CodeAnalysis.VisualBasic.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.DotNet.PlatformAbstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.EntityFrameworkCore.Relational.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Abstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Caching.Memory.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Abstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Configuration.Binder.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.DependencyModel.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Logging.Abstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Options.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.PlatformAbstractions.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.Extensions.Primitives.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.OpenApi.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.VisualBasic.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/MySqlConnector.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Newtonsoft.Json.Bson.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.EntityFrameworkCore.MySql.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Pomelo.JsonObject.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Quartz.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Collections.Immutable.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.ComponentModel.Annotations.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Configuration.ConfigurationManager.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Data.SqlClient.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Diagnostics.DiagnosticSource.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Runtime.CompilerServices.Unsafe.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/System.Security.Cryptography.ProtectedData.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/debian-x64/native/libuv.so
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/fedora-x64/native/libuv.so
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/opensuse-x64/native/libuv.so
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/osx/native/libuv.dylib
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/rhel-x64/native/libuv.so
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-arm/native/libuv.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x64/native/libuv.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win7-x86/native/libuv.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-arm64/native/sni.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x64/native/sni.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win-x86/native/sni.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.dll
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/ApplicationCore.pdb
+D:/WMSX/Web/bin/Debug/netcoreapp3.0/Infrastructure.pdb
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csprojAssemblyReference.cache
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.Manifest.cache
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/staticwebassets/Web.StaticWebAssets.xml
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cs
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.MvcApplicationPartsAssemblyInfo.cache
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfoInputs.cache
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.AssemblyInfo.cs
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.RazorTargetAssemblyInfo.cache
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.csproj.CopyComplete
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.dll
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.xml
+D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/NPinyin.Core.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/log4net.dll

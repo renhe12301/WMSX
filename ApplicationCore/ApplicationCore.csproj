@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="Entities\BasicInformation\" />
+    <Folder Include="Entities\OrganizationManager\" />
+    <Folder Include="Entities\StockManager\" />
+    <Folder Include="Entities\OrderManager\" />
+    <Folder Include="Entities\TaskManager\" />
+    <Folder Include="Entities\SysManager\" />
+    <Folder Include="Entities\TransferManager\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Services\" />
+    <Folder Include="Specifications\" />
+    <Folder Include="Misc\" />
+    <Folder Include="Entities\FlowRecord\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="1.3.1" />
+    <PackageReference Include="NPinyin.Core" Version="3.0.0" />
+  </ItemGroup>
+</Project>

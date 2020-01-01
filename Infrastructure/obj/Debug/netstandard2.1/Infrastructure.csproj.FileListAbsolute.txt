@@ -1,0 +1,44 @@
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.deps.json
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csprojAssemblyReference.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfoInputs.cache
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfo.cs
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csproj.CopyComplete
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.dll
+/Users/renhe/Documents/workspace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.pdb
+D:/WorkSpace/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.deps.json
+D:/WorkSpace/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.dll
+D:/WorkSpace/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.pdb
+D:/WorkSpace/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.dll
+D:/WorkSpace/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csprojAssemblyReference.cache
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfoInputs.cache
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfo.cs
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csproj.CopyComplete
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.dll
+D:/WorkSpace/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.deps.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csprojAssemblyReference.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfoInputs.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfo.cs
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csproj.CopyComplete
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.pdb
+D:/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.deps.json
+D:/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.dll
+D:/WMSX/Infrastructure/bin/Debug/netstandard2.1/Infrastructure.pdb
+D:/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.dll
+D:/WMSX/Infrastructure/bin/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csprojAssemblyReference.cache
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfoInputs.cache
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.AssemblyInfo.cs
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csproj.CopyComplete
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.dll
+D:/WMSX/Infrastructure/obj/Debug/netstandard2.1/Infrastructure.pdb

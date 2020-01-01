@@ -1,0 +1,180 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "WMS API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/in-order/add-order": {
+      "post": {
+        "tags": [
+          "InOrder"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InOrderViewModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InOrderViewModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InOrderViewModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InOrderMaterialViewModel": {
+        "type": "object",
+        "properties": {
+          "materialCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "materialName": {
+            "type": "string",
+            "nullable": true
+          },
+          "batchNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expireTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preEntryCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actualReceiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actualEntryCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sorting": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "progress": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "memo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InOrderViewModel": {
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderType": {
+            "type": "string",
+            "nullable": true
+          },
+          "makePerson": {
+            "type": "string",
+            "nullable": true
+          },
+          "org": {
+            "type": "string",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusTag": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "callingParty": {
+            "type": "string",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "nullable": true
+          },
+          "supplier": {
+            "type": "string",
+            "nullable": true
+          },
+          "preEntryCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actualReceiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "actualEntryCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sorting": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "progress": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "memo": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderMaterials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InOrderMaterialViewModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

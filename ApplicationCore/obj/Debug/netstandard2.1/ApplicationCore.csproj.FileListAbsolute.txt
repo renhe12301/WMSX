@@ -1,0 +1,31 @@
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfoInputs.cache
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfo.cs
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.deps.json
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WorkSpace/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.deps.json
+D:/WorkSpace/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.dll
+D:/WorkSpace/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WorkSpace/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfoInputs.cache
+D:/WorkSpace/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfo.cs
+D:/WorkSpace/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.dll
+D:/WorkSpace/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.pdb
+/Users/renhe/Documents/workspace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.csprojAssemblyReference.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.deps.json
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.pdb
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.csprojAssemblyReference.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfoInputs.cache
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfo.cs
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.deps.json
+D:/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.dll
+D:/WMSX/ApplicationCore/bin/Debug/netstandard2.1/ApplicationCore.pdb
+D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.csprojAssemblyReference.cache
+D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfoInputs.cache
+D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfo.cs
+D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.dll
+D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.pdb
