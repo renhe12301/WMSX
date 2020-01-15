@@ -24,21 +24,6 @@ namespace Web.Services
             this._sysMenuService = sysMenuService;
         }
 
-        public async Task<ResponseResultViewModel> AssignMenu(SysRoleViewModel sysRoleViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._sysMenuService.AssignMenu(sysRoleViewModel.Id, sysRoleViewModel.SysMenuViewModels.ConvertAll(m=>m.Id));
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
         public async Task<ResponseResultViewModel> GetMenus(int roleId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };

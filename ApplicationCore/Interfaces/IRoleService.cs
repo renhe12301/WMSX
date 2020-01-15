@@ -9,8 +9,8 @@ namespace ApplicationCore.Interfaces
     {
         Task AddRole(SysRole role);
         Task UpdateRole(int id, string roleName);
-        Task Logout(int id);
-        Task Enable(int id);
+        Task Logout(List<int> roleIds);
+        Task Enable(List<int> roleIds);
         Task AssignMenu(int roleId, List<int> menuIds);
     }
 }

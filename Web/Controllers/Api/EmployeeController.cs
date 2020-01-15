@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ApplicationCore.Entities.OrganizationManager;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels.OrganizationManager;
 
@@ -27,13 +28,13 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">一页条数</param>
         /// <param name="employeeId">员工编号</param>
-        /// <param name="userName">用户名</param>
+        /// <param name="employeeName">用户名</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetEmployees(int? pageIndex,int? itemsPage,int? employeeId,string userName)
+        public async Task<IActionResult> GetEmployees(int? pageIndex,int? itemsPage,int? orgId,int? employeeId,string employeeName)
         {
-            var response  = await this._employeeViewModelService.GetEmployees(pageIndex,itemsPage,employeeId, userName);
-            return Ok(response);
+            var response  = await this._employeeViewModelService.GetEmployees(pageIndex,itemsPage,orgId,employeeId, employeeName);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AddEmployee(EmployeeViewModel employViewModel)
         {
             var response = await this._employeeViewModelService.AddEmployee(employViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Enable(EmployeeViewModel employViewModel)
         {
             var response = await this._employeeViewModelService.Enable(employViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Logout(EmployeeViewModel employViewModel)
         {
             var response = await this._employeeViewModelService.Logout(employViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AssignRole(EmployeeRoleViewModel employeeRoleViewModel)
         {
             var response = await this._employeeViewModelService.AssignRole(employeeRoleViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
     }

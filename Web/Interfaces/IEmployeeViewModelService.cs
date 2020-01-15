@@ -13,7 +13,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> Enable(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> AssignRole(EmployeeRoleViewModel employeeRoleViewModel);
         Task<ResponseResultViewModel> GetEmployees(int? pageIndex, int? itemsPage,
-                                                   int? employeeId,string userName);
+                                                   int? orgId,int? employeeId,string employeeName);
 
     }
 }

@@ -54,25 +54,38 @@ namespace ApplicationCore.Services
             await this._roleMenuRepository.AddAsync(addRoleMenus);
         }
 
-        public async Task Enable(int id)
+        public async Task Enable(List<int> roleIds)
         {
-            Guard.Against.Zero(id, nameof(id));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null);
-            var roles = await this._sysRoleRepository.ListAsync(roleSpec);
-            if (roles.Count == 0) throw new Exception(string.Format("角色编号[{0}],不存在", id));
-            var role = roles[0];
-            role.Status = Convert.ToInt32(SYSROLE_STATUS.正常);
-           
+            Guard.Against.NullOrEmpty(roleIds, nameof(roleIds));
+            var roles = await this._sysRoleRepository.ListAllAsync();
+            List<SysRole> updRoles=new List<SysRole>();
+            roles.ForEach(role =>
+            {
+                if (roleIds.Contains(role.Id))
+                {
+                    role.Status = Convert.ToInt32(SYSROLE_STATUS.正常);
+                    updRoles.Add(role);
+                }
+            });
+            if (updRoles.Count > 0)
+                await this._sysRoleRepository.UpdateAsync(updRoles);
         }
 
-        public async Task Logout(int id)
+        public async Task Logout(List<int> roleIds)
         {
-            Guard.Against.Zero(id, nameof(id));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null);
-            var roles = await this._sysRoleRepository.ListAsync(roleSpec);
-            if (roles.Count == 0) throw new Exception(string.Format("角色编号[{0}],不存在", id));
-            var role = roles[0];
-            role.Status = Convert.ToInt32(SYSROLE_STATUS.注销);
+            Guard.Against.NullOrEmpty(roleIds, nameof(roleIds));
+            var roles = await this._sysRoleRepository.ListAllAsync();
+            List<SysRole> updRoles=new List<SysRole>();
+            roles.ForEach(role =>
+            {
+                if (roleIds.Contains(role.Id))
+                {
+                    role.Status = Convert.ToInt32(SYSROLE_STATUS.注销);
+                    updRoles.Add(role);
+                }
+            });
+            if (updRoles.Count > 0)
+                await this._sysRoleRepository.UpdateAsync(updRoles);
         }
 
         public async Task UpdateRole(int id, string roleName)

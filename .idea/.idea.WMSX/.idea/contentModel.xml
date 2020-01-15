@@ -118,6 +118,8 @@
           <e p="BaseSpecification.cs" t="Include" />
           <e p="CustomerPaginatedSpecification.cs" t="Include" />
           <e p="CustomerSpecification.cs" t="Include" />
+          <e p="EmployeeOrgPaginatedSpecification.cs" t="Include" />
+          <e p="EmployeeOrgSpecification.cs" t="Include" />
           <e p="EmployeePaginatedSpecification.cs" t="Include" />
           <e p="EmployeeRolePaginatedSpecification.cs" t="Include" />
           <e p="EmployeeRoleSpecification.cs" t="Include" />

@@ -9,8 +9,8 @@ namespace ApplicationCore.Interfaces
     {
         Task AddEmployee(Employee employee);
         Task UpdateEmployee(Employee employee);
-        Task Logout(int id);
-        Task Enable(int id);
+        Task Logout(List<int> userIds);
+        Task Enable(List<int> userIds);
         Task AssignRole(int employeeId,List<int> roleIds);
 
     }

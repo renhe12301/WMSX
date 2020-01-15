@@ -11,6 +11,7 @@ namespace Web.ViewModels.OrganizationManager
         public string CreateTime { get; set; }
         public string Memo { get; set; }
         public string Status { get; set; }
-        public List<SysMenuViewModel> SysMenuViewModels = new List<SysMenuViewModel>();
+        
+        public List<int> RoleIds { get; set; }
     }
 }

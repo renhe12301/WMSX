@@ -8,11 +8,9 @@ namespace ApplicationCore.Entities.OrganizationManager
     {
         public int EmployeeId { get; set; }
         public int OrganizationId { get; set; }
-        public int WarehouseId { get; set; }
 
         public Employee Employee { get; set; }
         public Organization Organization { get; set; }
-        public Warehouse Warehouse { get; set; }
-        
+
     }
 }

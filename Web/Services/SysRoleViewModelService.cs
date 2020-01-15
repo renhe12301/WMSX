@@ -70,7 +70,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await _roleService.Enable(sysRoleViewModel.Id);
+                await _roleService.Enable(sysRoleViewModel.RoleIds);
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await _roleService.Logout(sysRoleViewModel.Id);
+                await _roleService.Logout(sysRoleViewModel.RoleIds);
             }
             catch (Exception ex)
             {

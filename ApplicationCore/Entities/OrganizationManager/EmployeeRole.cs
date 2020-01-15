@@ -3,10 +3,10 @@ namespace ApplicationCore.Entities.OrganizationManager
 {
     public class EmployeeRole : BaseEntity
     {
-        public int RoleId { get; set; }
+        public int SysRoleId { get; set; }
         public int EmployeeId { get; set; }
 
-        public SysRole SysRole;
-        public Employee Employee;
+        public SysRole SysRole { get; set; }
+        public Employee Employee { get; set; }
     }
 }

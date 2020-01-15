@@ -9,6 +9,5 @@ namespace Web.Interfaces
     {
         Task<ResponseResultViewModel> GetMenus(int roleId);
         Task<ResponseResultViewModel> GetMenuTrees(int rootId);
-        Task<ResponseResultViewModel> AssignMenu(SysRoleViewModel sysRoleViewModel);
     }
 }

@@ -16,7 +16,9 @@ namespace Infrastructure.Data
         public DbSet<SysMenu> SysMenu { get; set; }
         public DbSet<ReservoirArea> ReservoirArea { get; set; }
         public DbSet<RoleMenu> RoleMenu { get; set; }
-
+        public DbSet<Employee> Employee { get; set; }
+        public DbSet<EmployeeRole> EmployeeRole { get; set; }
+        public DbSet<EmployeeOrg> EmployeeOrg { get; set; }
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {
         }

@@ -3,15 +3,15 @@ using ApplicationCore.Entities.OrganizationManager;
 
 namespace ApplicationCore.Specifications
 {
-    public class EmployeeRoleSpecification:BaseSpecification<EmployeeRole>
+    public class EmployeeOrgSpecification:BaseSpecification<EmployeeOrg>
     {
-        public  EmployeeRoleSpecification(int? roleId,int? employeeId,string employeeName)
-            : base(b => (!roleId.HasValue || b.SysRoleId == roleId) &&
+        public  EmployeeOrgSpecification(int? orgId,int? employeeId,string employeeName)
+            : base(b => (!orgId.HasValue || b.OrganizationId == orgId) &&
                   (!employeeId.HasValue || b.EmployeeId == employeeId)&&
                   (employeeName==null||b.Employee.UserName==employeeName))
         {
             AddInclude(b => b.Employee);
-            AddInclude(b => b.SysRole);
+            AddInclude(b => b.Organization);
         }
     }
 }

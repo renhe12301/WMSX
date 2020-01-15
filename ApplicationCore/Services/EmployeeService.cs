@@ -37,40 +37,53 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(employeeId, nameof(employeeId));
             Guard.Against.NullOrEmpty(roleIds, nameof(roleIds));
 
-            this._employeeRoleRepository.TransactionScope(async() =>
+            EmployeeRoleSpecification erSpec = new EmployeeRoleSpecification(null, employeeId,null);
+            var emRoles = await this._employeeRoleRepository.ListAsync(erSpec);
+            if (emRoles.Count > 0)
+                await this._employeeRoleRepository.DeleteAsync(emRoles);
+            List<EmployeeRole> ers=new List<EmployeeRole>();
+            roleIds.ForEach(async (roleId) =>
             {
-                EmployeeRoleSpecification erSpec = new EmployeeRoleSpecification(null, employeeId,null);
-                var emRoles = await this._employeeRoleRepository.ListAsync(erSpec);
-                if (emRoles.Count > 0)
-                    await this._employeeRoleRepository.DeleteAsync(emRoles);
-                roleIds.ForEach(async (roleId) =>
-                {
-                    EmployeeRole employeeRole = new EmployeeRole();
-                    employeeRole.EmployeeId = employeeId;
-                    employeeRole.RoleId = roleId;
-                    await this._employeeRoleRepository.AddAsync(employeeRole);
-                });
-
+                EmployeeRole employeeRole = new EmployeeRole();
+                employeeRole.EmployeeId = employeeId;
+                employeeRole.SysRoleId = roleId;
+                ers.Add(employeeRole);
             });
+            await this._employeeRoleRepository.AddAsync(ers);
         }
 
-        public async Task Enable(int id)
+        public async Task Enable(List<int> userIds)
         {
-            Guard.Against.Zero(id, nameof(id));
-            var emSpec = new EmployeeSpecification(id, null);
-            var employees = await this._employeeRepository.ListAsync(emSpec);
-            Guard.Against.NullOrEmpty(employees, nameof(employees));
-            var employee = employees[0];
-            employee.Status = Convert.ToInt32(EMPLOYEE_STATUS.正常);
+            Guard.Against.NullOrEmpty(userIds, nameof(userIds));
+            var users = await this._employeeRepository.ListAllAsync();
+            List<Employee> updEmployees=new List<Employee>();
+            users.ForEach(em =>
+            {
+                if (userIds.Contains(em.Id))
+                {
+                    em.Status = Convert.ToInt32(EMPLOYEE_STATUS.正常);
+                    updEmployees.Add(em);
+                }
+            });
+            if (updEmployees.Count > 0)
+                await this._employeeRepository.UpdateAsync(updEmployees);
         }
 
-        public async Task Logout(int id)
+        public async Task Logout(List<int> userIds)
         {
-            var emSpec = new EmployeeSpecification(id, null);
-            var employees = await this._employeeRepository.ListAsync(emSpec);
-            Guard.Against.NullOrEmpty(employees, nameof(employees));
-            var employee = employees[0];
-            employee.Status = Convert.ToInt32(EMPLOYEE_STATUS.注销);
+            Guard.Against.NullOrEmpty(userIds, nameof(userIds));
+            var users = await this._employeeRepository.ListAllAsync();
+            List<Employee> updEmployees=new List<Employee>();
+            users.ForEach(em =>
+            {
+                if (userIds.Contains(em.Id))
+                {
+                    em.Status = Convert.ToInt32(EMPLOYEE_STATUS.注销);
+                    updEmployees.Add(em);
+                }
+            });
+            if (updEmployees.Count > 0)
+                await this._employeeRepository.UpdateAsync(updEmployees);
         }
 
         
