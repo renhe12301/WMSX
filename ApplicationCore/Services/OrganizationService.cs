@@ -31,7 +31,6 @@ namespace ApplicationCore.Services
             var orgs = await this._organizationRepository.ListAsync(orgSpec);
             Guard.Against.NullOrEmpty(orgs, nameof(orgs));
             var org = orgs[0];
-            if (org.SourceId.HasValue) throw new Exception("组织架构节点信息来源于其他系统,不允许修改！");
             org.OrgName = orgName;
             org.Code = orgCode;
             await this._organizationRepository.UpdateAsync(org);

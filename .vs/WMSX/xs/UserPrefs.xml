@@ -1,32 +1,27 @@
 ﻿<Properties StartupConfiguration="{11302556-68AA-4B7A-8E54-21925802C400}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Web/Controllers/Api/SysRoleController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Web/Services/SysMenuViewModelService.cs">
     <Files>
-      <File FileName="Web/Services/SysRoleViewModelService.cs" Line="210" Column="1" />
-      <File FileName="Web/Controllers/Api/SysRoleController.cs" Line="77" Column="1" />
-      <File FileName="Web/ViewModels/OrganizationManager/SysRoleViewModel.cs" Line="4" Column="18" />
+      <File FileName="Web/Services/SysMenuViewModelService.cs" Line="95" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="WMSX" expanded="True">
             <Node name="src" expanded="True">
+              <Node name="ApplicationCore" expanded="True">
+                <Node name="Entities" expanded="True" />
+              </Node>
+              <Node name="Infrastructure" expanded="True">
+                <Node name="Data" expanded="True" />
+              </Node>
               <Node name="Web" expanded="True">
-                <Node name="Controllers" expanded="True">
-                  <Node name="Api" expanded="True">
-                    <Node name="SysRoleController.cs" selected="True" />
-                  </Node>
-                </Node>
-                <Node name="Services" expanded="True" />
-                <Node name="ViewModels" expanded="True">
-                  <Node name="OrganizationManager" expanded="True" />
+                <Node name="Services" expanded="True">
+                  <Node name="SysMenuViewModelService.cs" selected="True" />
                 </Node>
               </Node>
             </Node>
           </Node>
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

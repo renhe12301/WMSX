@@ -25,7 +25,7 @@ namespace Web.Services
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,
             int? trayDicId,int? orderId,int? orderRowId , int? carrier, string trayTaskStatus, int? locationId,
-            int? wareHouseId, int? areaId)
+            int? orgId,int? ouId,int? wareHouseId, int? areaId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -42,13 +42,13 @@ namespace Web.Services
                 {
                     baseSpecification = new WarehouseMaterialPainatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,materialCode,materialDicId,trayCode,trayDicId,orderId,orderRowId,
-                        carrier, trayStatus, locationId,wareHouseId,areaId);
+                        carrier, trayStatus, locationId,orgId,ouId,wareHouseId,areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId, wareHouseId, areaId);
+                        locationId,orgId,ouId, wareHouseId, areaId);
                 }
 
                 var materials = await this._warehouseMaterialRepository.ListAsync(baseSpecification);

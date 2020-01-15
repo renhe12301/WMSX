@@ -10,10 +10,6 @@ namespace ApplicationCore.Entities.OrderManager
     public class Order:BaseEntity
     {
         /// <summary>
-        /// 来源系统唯一编号
-        /// </summary>
-        public int? SourceId { get; set; }
-        /// <summary>
         /// 订单编码
         /// </summary>
         public string OrderNumber { get; set; }

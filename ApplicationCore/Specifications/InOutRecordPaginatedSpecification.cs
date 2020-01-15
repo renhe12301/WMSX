@@ -5,11 +5,9 @@ namespace ApplicationCore.Specifications
 {
     public class InOutRecordPaginatedSpecification : BaseSpecification<InOutRecord>
     {
-        public InOutRecordPaginatedSpecification(int skip,int take,int? type,
-                                                int? inoutFlag,string sCreateTime,
+        public InOutRecordPaginatedSpecification(int skip,int take,int? type,string sCreateTime,
                                                 string eCreateTime)
             : base(b => (!type.HasValue || b.Type == type) &&
-                        (!inoutFlag.HasValue||b.InOutFlag==inoutFlag)&&
                         (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
                         (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {

@@ -25,7 +25,7 @@ namespace Web.Services
         public async Task<ResponseResultViewModel> GetTrays(int? pageIdex,int? itemsPage,
             int? includeDetail,int? id, string trayCode, string rangeMaterialCount,
             int? trayDicId,int? orderId,int? orderRowId,int? carrier,
-            string trayTaskStatus, int? locationId, int? wareHouseId, int? areaId)
+            string trayTaskStatus, int? locationId,int?orgId,int? ouId, int? wareHouseId, int? areaId)
         {
             BaseSpecification<WarehouseTray> baseSpecification = null;
             List<int> trayStatus = null;
@@ -49,13 +49,13 @@ namespace Web.Services
                     
                     baseSpecification = new WarehouseTrayPaginatedDetailSpecification(pageIdex.Value,itemsPage.Value,id,
                             trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                            carrier, trayStatus, locationId, wareHouseId, areaId);
+                            carrier, trayStatus, locationId,orgId,ouId, wareHouseId, areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseTrayDetailSpecification(id,
                             trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                            carrier, trayStatus, locationId, wareHouseId, areaId);
+                            carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
                 }
             }
             else
@@ -64,13 +64,13 @@ namespace Web.Services
                 {
                     baseSpecification = new WarehouseTrayPaginatedSpecification(pageIdex.Value, itemsPage.Value, id,
                            trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                           carrier, trayStatus, locationId, wareHouseId, areaId);
+                           carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseTraySpecification(id,
                           trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                          carrier, trayStatus, locationId, wareHouseId, areaId);
+                          carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
                 }
             }
            

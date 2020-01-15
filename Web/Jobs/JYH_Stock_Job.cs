@@ -24,7 +24,7 @@ namespace Web.Jobs
         {
             try
             {
-                InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, 0, null, null);
+                InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, 0, null, null);
                 var records = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
                 foreach (var record in records)
                 {

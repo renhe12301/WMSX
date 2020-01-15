@@ -43,9 +43,7 @@ namespace Web.Services
                     Email = employeeViewModel.Email,
                     CreateTime = DateTime.Now,
                     Telephone = employeeViewModel.Telephone,
-                    UserName = employeeViewModel.UserName,
-                    ParentId = employeeViewModel.ParentId,
-                    Type = employeeViewModel.Type
+                    UserName = employeeViewModel.UserName
                 };
                 await this._employeeService.AddEmployee(employee);
                 response.Data = employee.Id;

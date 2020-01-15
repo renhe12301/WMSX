@@ -86,11 +86,13 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetInOutTasks(int? pageIndex, int? itemsPage,
                                              int? id, string status,string steps,
+                                              int? orgId, int? ouId,
+                                              int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
         {
             var response = await this._inOutTaskViewModelService.GetInOutTasks(pageIndex,
-                itemsPage, id, status, steps, sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
+                itemsPage, id, status, steps,orgId,ouId,wareHouseId,areaId,sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
             return Ok(response);
         }
 

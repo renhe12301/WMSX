@@ -40,12 +40,12 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,
-            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string trayTaskStatus, int? locationId,
-            int? wareHouseId, int? areaId)
+            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string trayTaskStatus, int? locationId, int? orgId, int? ouId
+            , int? wareHouseId, int? areaId)
         {
             var response = await this._warehouseMaterialViewModelService.GetMaterials(pageIndex,
                 itemsPage, id, materialCode, materialDicId, trayCode, trayDicId, orderId,orderRowId,
-                carrier, trayTaskStatus, locationId, wareHouseId, areaId);
+                carrier, trayTaskStatus, locationId,orgId,ouId,wareHouseId, areaId);
             return Ok(response);
         }
     }

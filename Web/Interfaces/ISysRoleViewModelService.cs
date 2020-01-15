@@ -16,7 +16,6 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> Enable(SysRoleViewModel sysRoleViewModel);
         Task<ResponseResultViewModel> AssignMenu(RoleMenuViewModel roleMenuViewModel);
         Task<ResponseResultViewModel> GetRoles(int? pageIndex, int? itemsPage,
-          int? id,int? parentId,string roleName);
-        Task<ResponseResultViewModel> GetRoleTrees(int rootId, string depthTag);
+          int? id,string roleName);
     }
 }

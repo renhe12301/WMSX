@@ -10,13 +10,14 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseMaterialSpecification(int? id,string materialCode, int? materialDicId,
             string trayCode,int? trayDicId,int? orderId,int? orderRowId, int? carrier,
-            List<int> traySteps, int? locationId,int? wareHouseId,int? areaId)
+            List<int> traySteps, int? locationId,int? orgId,int? ouId,int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (materialCode==null||b.MaterialDic.MaterialCode==materialCode)&&
                       (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
                       (trayCode == null || b.WarehouseTray.Code == trayCode) &&
                       (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
-                     
+                      (!orgId.HasValue || b.OrganizationId == orgId) &&
+                      (!ouId.HasValue || b.OUId == ouId) &&
                       (!carrier.HasValue || b.Carrier == carrier)&&
                       (!orderId.HasValue || b.OrderId == orderId) &&
                       (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&

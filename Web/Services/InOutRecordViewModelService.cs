@@ -20,7 +20,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetInOutRecords(int? pageIndex, int? itemsPage,
-            int? type, int? inoutFlag,string sCreateTime,string eCreateTime)
+            int? type,string sCreateTime,string eCreateTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -30,11 +30,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutRecordPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        type,inoutFlag,sCreateTime,eCreateTime);
+                        type,sCreateTime,eCreateTime);
                 }
                 else
                 {
-                    baseSpecification = new InOutRecordSpecification(type,inoutFlag,null,sCreateTime,eCreateTime);
+                    baseSpecification = new InOutRecordSpecification(type,null,sCreateTime,eCreateTime);
                 }
                 var inOutRecords = await this._inOutRepository.ListAsync(baseSpecification);
                 List<InOutRecordViewModel> inOutRecordViewModels = new List<InOutRecordViewModel>();
@@ -45,7 +45,6 @@ namespace Web.Services
                     {
                         CreateTime = e.CreateTime.ToString(),
                         InOutCount = e.InOutCount,
-                        InOutFlag = e.InOutFlag,
                         MaterialDicId = e.MaterialDicId,
                         MaterialDicName = e.MaterialDic.MaterialName,
                         TrayDicName = e.TrayDic.TrayName,

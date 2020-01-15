@@ -13,7 +13,9 @@ namespace Web.Interfaces
        Task<ResponseResultViewModel> AwaitOutApply(InOutTaskViewModel inOutTaskViewModel);
        Task<ResponseResultViewModel> TaskStepReport(InOutTaskViewModel inOutTaskViewModel);
         Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,
-                                                   string status,string steps,string sCreateTime,string eCreateTIme,
+                                                    string status,string steps, int? orgId, int? ouId,
+                                                    int? wareHouseId, int? areaId,
+                                                    string sCreateTime,string eCreateTIme,
                                                     string sFinishTime,string eFinishTime);
     }
 }

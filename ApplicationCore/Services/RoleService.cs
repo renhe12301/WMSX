@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.OrganizationManager;
@@ -6,6 +7,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Ardalis.GuardClauses;
 using ApplicationCore.Misc;
+
 
 namespace ApplicationCore.Services
 {
@@ -27,7 +29,7 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Null(role, nameof(role));
             Guard.Against.NullOrEmpty(role.RoleName, nameof(role.RoleName));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(null, null, role.RoleName);
+            SysRoleSpecification roleSpec = new SysRoleSpecification(null, role.RoleName);
             var roles = await this._sysRoleRepository.ListAsync(roleSpec);
             if (roles.Count > 0) throw new Exception(string.Format("角色名称[{0}],已经存在！", role.RoleName));
             await this._sysRoleRepository.AddAsync(role);
@@ -38,24 +40,24 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(roleId, nameof(roleId));
             Guard.Against.NullOrEmpty(menuIds, nameof(menuIds));
-
-            this._employeeRoleRepository.TransactionScope(() =>
+            RoleMenuSpecification rmSpec=new RoleMenuSpecification(roleId);
+            var rms = await this._roleMenuRepository.ListAsync(rmSpec);
+            if (rms.Count > 0) await this._roleMenuRepository.DeleteAsync(rms);
+            List<RoleMenu> addRoleMenus=new List<RoleMenu>();
+            menuIds.ForEach(async (mId) =>
             {
-                menuIds.ForEach(async (mId) =>
-                {
-                    RoleMenu roleMenu = new RoleMenu();
-                    roleMenu.MenuId = mId;
-                    roleMenu.RoleId = roleId;
-                    await this._roleMenuRepository.AddAsync(roleMenu);
-                });
-
+                RoleMenu roleMenu = new RoleMenu();
+                roleMenu.SysMenuId = mId;
+                roleMenu.SysRoleId = roleId;
+                addRoleMenus.Add(roleMenu);
             });
+            await this._roleMenuRepository.AddAsync(addRoleMenus);
         }
 
         public async Task Enable(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null, null);
+            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null);
             var roles = await this._sysRoleRepository.ListAsync(roleSpec);
             if (roles.Count == 0) throw new Exception(string.Format("角色编号[{0}],不存在", id));
             var role = roles[0];
@@ -66,7 +68,7 @@ namespace ApplicationCore.Services
         public async Task Logout(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null, null);
+            SysRoleSpecification roleSpec = new SysRoleSpecification(id, null);
             var roles = await this._sysRoleRepository.ListAsync(roleSpec);
             if (roles.Count == 0) throw new Exception(string.Format("角色编号[{0}],不存在", id));
             var role = roles[0];
@@ -77,10 +79,10 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Null(roleName, nameof(roleName));
             Guard.Against.Zero(id, nameof(id));
-            SysRoleSpecification roleSpec = new SysRoleSpecification(null, null, roleName);
+            SysRoleSpecification roleSpec = new SysRoleSpecification(null, roleName);
             var roles = await this._sysRoleRepository.ListAsync(roleSpec);
             if (roles.Count > 0) throw new Exception(string.Format("角色名称[{0}],已经存在！", roleName));
-            roleSpec = new SysRoleSpecification(id, null, null);
+            roleSpec = new SysRoleSpecification(id, null);
             roles = await this._sysRoleRepository.ListAsync(roleSpec);
             if (roles.Count == 0) throw new Exception(string.Format("角色编号[{0}],不存在",id));
             var role = roles[0];

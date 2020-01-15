@@ -9,6 +9,7 @@ namespace Web.ViewModels.OrganizationManager
         public int MenuId { get; set; }
         public string RoleName { get; set; }
         public string MenuName { get; set; }
-        public List<int> MenuIds = new List<int>();
+        
+        public List<int> MenuIds { get; set; }
     }
 }

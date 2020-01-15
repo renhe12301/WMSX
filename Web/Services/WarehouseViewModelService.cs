@@ -50,7 +50,7 @@ namespace Web.Services
                         WhName = e.WhName,
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
-                        OrgId=e.Organization.Id,
+                        OrganizationId=e.Organization.Id,
                         OrgName=e.Organization.OrgName,
                         Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status)
                     };
@@ -88,7 +88,7 @@ namespace Web.Services
                     WhName = warehouseViewModel.WhName,
                     Address = warehouseViewModel.Address,
                     CreateTime = DateTime.Now,
-                    OrgId = warehouseViewModel.OrgId,
+                    OrganizationId = warehouseViewModel.OrganizationId,
                     Memo=warehouseViewModel.Memo
                 };
                 await this._warehouseService.AddWarehouse(warehouse);

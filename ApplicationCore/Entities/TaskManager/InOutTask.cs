@@ -16,12 +16,19 @@ namespace ApplicationCore.Entities.TaskManager
         public int Step { get; set; }
         public int Progress { get; set; }
         public int Feedback { get; set; }
+        public int Type { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime FinishTime { get; set; }
         public int IsRead { get; set; }
         public string Memo { get; set; }
         public int VehicleId { get; set; }
         public string VehicleName { get; set; }
+        public int? OrganizationId { get; set; }
+        public int? OUId { get; set; }
+        public int? WarehouseId { get; set; }
+        public int? ReservoirAreaId { get; set; }
+        public Warehouse Warehouse { get; set; }
+        public ReservoirArea ReservoirArea { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
         public WarehouseTray WarehouseTray { get; set; }

@@ -1,4 +1,6 @@
 ﻿using System;
+using ApplicationCore.Entities.OrganizationManager;
+
 namespace ApplicationCore.Entities.BasicInformation
 {
     /// <summary>
@@ -13,9 +15,13 @@ namespace ApplicationCore.Entities.BasicInformation
         public int InStock { get; set; }
         public string Memo { get; set; }
         public int Type { get; set; }
-        public int WarehouseId { get; set; }
+        public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
+        public int? OrganizationId { get; set; }
+        public int? OUId { get; set; }
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
+        public Organization Organization { get; set; }
+        public OU OU { get; set; }
     }
 }

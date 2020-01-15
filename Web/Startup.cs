@@ -72,7 +72,6 @@ namespace Web
             services.AddScoped(typeof(IRoleService), typeof(RoleService));
             services.AddScoped(typeof(ISupplierService), typeof(SupplierService));
             services.AddScoped(typeof(ISysConfigService), typeof(SysConfigService));
-            services.AddScoped(typeof(ISysUserService), typeof(SysUserService));
             services.AddScoped(typeof(ITrayDicService), typeof(TrayDicService));
             services.AddScoped(typeof(ITrayTypeService), typeof(TrayTypeService));
             services.AddScoped(typeof(IMaterialTypeService), typeof(MaterialTypeService));
@@ -80,6 +79,7 @@ namespace Web
             services.AddScoped(typeof(ICustomerService), typeof(CustomerService));
             services.AddScoped(typeof(IMaterialTypeService), typeof(MaterialTypeService));
             services.AddScoped(typeof(IInOutRecordService), typeof(InOutRecordService));
+            services.AddScoped(typeof(ISysMenuService), typeof(SysMenuService));
 
             services.AddScoped(typeof(IOrderViewModelService), typeof(InOrderViewModelService));
             services.AddScoped(typeof(IEmployeeViewModelService), typeof(EmployeeViewModelService));
@@ -92,7 +92,6 @@ namespace Web
             services.AddScoped(typeof(IOrganizationViewModelService), typeof(OrganizationViewModelService));
             services.AddScoped(typeof(IReservoirAreaViewModelService), typeof(ReservoirAreaViewModelService));
             services.AddScoped(typeof(ISupplierViewModelService), typeof(SupplierViewModelService));
-            services.AddScoped(typeof(ISysUserViewModelService), typeof(SysUserViewModelService));
             services.AddScoped(typeof(ISysRoleViewModelService), typeof(SysRoleViewModelService));
             services.AddScoped(typeof(ITrayDicViewModelService), typeof(TrayDicViewModelService));
             services.AddScoped(typeof(ITrayTypeViewModelService), typeof(TrayTypeViewModelService));
@@ -100,6 +99,8 @@ namespace Web
             services.AddScoped(typeof(IWarehouseTrayViewModelService), typeof(WarehouseTrayViewModelService));
             services.AddScoped(typeof(IWarehouseViewModelService), typeof(WarehouseViewModelService));
             services.AddScoped(typeof(IInOutRecordViewModelService), typeof(InOutRecordViewModelService));
+            services.AddScoped(typeof(IOUViewModelService), typeof(OUViewModelService));
+            services.AddScoped(typeof(ISysMenuViewModelService), typeof(SysMenuViewModelService));
 
             services.AddScoped(typeof(IJobFactory), typeof(IOCJobFactory));
 
@@ -156,11 +157,6 @@ namespace Web
                 c.IncludeXmlComments(xmlPath);
             });
 
-
-
-            ////开启中间件性能检测功能
-            services.AddHealthChecks();
-
             //开启显示所有注册服务功能
             services.Configure<ServiceConfig>(config =>
             {
@@ -172,28 +168,6 @@ namespace Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            //配置中间件性能检测检测地址
-            app.UseHealthChecks("/health",
-              new HealthCheckOptions
-              {
-                  ResponseWriter = async (context, report) =>
-                  {
-                      var result = JsonConvert.SerializeObject(
-                          new
-                          {
-                              status = report.Status.ToString(),
-                              errors = report.Entries.Select(e => new
-                              {
-                                  key = e.Key,
-                                  value = Enum.GetName(typeof(HealthStatus), e.Value.Status)
-                              })
-                          });
-                      context.Response.ContentType = MediaTypeNames.Application.Json;
-                      await context.Response.WriteAsync(result);
-                  }
-              });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

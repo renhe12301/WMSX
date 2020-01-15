@@ -795,40 +795,7 @@
         }
       },
       "Microsoft.CSharp/4.6.0-preview3.19128.7": {},
-      "Microsoft.DiaSymReader.Native/1.4.1": {
-        "runtimeTargets": {
-          "runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          },
-          "runtimes/win-x86/native/Microsoft.DiaSymReader.Native.x86.dll": {
-            "rid": "win-x86",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll": {
-            "rid": "win",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll": {
-            "rid": "win",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll": {
-            "rid": "win",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          },
-          "runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll": {
-            "rid": "win8-arm",
-            "assetType": "native",
-            "fileVersion": "14.0.24210.0"
-          }
-        }
-      },
+      "Microsoft.DiaSymReader.Native/1.4.1": {},
       "Microsoft.DotNet.PlatformAbstractions/2.0.0": {
         "dependencies": {
           "System.AppContext": "4.3.0",
@@ -1492,7 +1459,7 @@
           "runtimes/win-arm64/native/sni.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "4.6.25512.1"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -1501,7 +1468,7 @@
           "runtimes/win-x64/native/sni.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "4.6.25512.1"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -1510,7 +1477,7 @@
           "runtimes/win-x86/native/sni.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "4.6.25512.1"
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -2314,7 +2281,7 @@
         "runtime": {
           "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {
             "assemblyVersion": "4.0.6.0",
-            "fileVersion": "4.700.19.56404"
+            "fileVersion": "4.0.0.0"
           }
         },
         "compile": {

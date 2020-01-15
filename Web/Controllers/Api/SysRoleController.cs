@@ -34,23 +34,10 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetRoles(int? pageIndex, int? itemsPage,
-          int? id,int?parentId,string roleName)
+          int? id,string roleName)
         {
             var response = await this._sysRoleViewModelService.GetRoles(pageIndex,
-                itemsPage, id,parentId,roleName);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 获取角色树信息
-        /// </summary>
-        /// <param name="rootId"></param>
-        /// <param name="depthTag"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetRoleTrees(int rootId, string depthTag)
-        {
-            var response = await this._sysRoleViewModelService.GetRoleTrees(rootId, depthTag);
+                itemsPage, id,roleName);
             return Content(JsonConvert.SerializeObject(response));
         }
 

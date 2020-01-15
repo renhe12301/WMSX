@@ -6,10 +6,6 @@ namespace ApplicationCore.Entities.OrderManager
     public class OrderRow:BaseEntity
     {
         /// <summary>
-        /// 来源系统唯一编号
-        /// </summary>
-        public int? SourceId { get; set; }
-        /// <summary>
         /// 关联订单编号
         /// </summary>
         public int OrderId { get; set; }

@@ -10,8 +10,8 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseMaterialPainatedSpecification(int skip,int take,int? id, string materialCode, int? materialDicId,
             string trayCode, int? trayDicId,int? orderId,int? orderRowId, int? carrier, List<int> traySteps, int? locationId,
-            int? wareHouseId, int? areaId)
-            : base(b => (!id.HasValue || b.Id == id) &&
+            int? orgId, int? ouId, int? wareHouseId, int? areaId)
+            : base(b =>(!id.HasValue || b.Id == id) &&
                        (materialCode == null || b.MaterialDic.MaterialCode == materialCode) &&
                        (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
                        (trayCode == null || b.WarehouseTray.Code == trayCode) &&
@@ -21,6 +21,8 @@ namespace ApplicationCore.Specifications
                        (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
                        (traySteps == null || traySteps.Contains(b.WarehouseTray.TrayStep.Value)) &&
                        (!locationId.HasValue || b.LocationId == locationId) &&
+                       (!orgId.HasValue || b.OrganizationId == orgId) &&
+                       (!ouId.HasValue || b.OUId == ouId) &&
                        (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
                        (!areaId.HasValue || b.ReservoirAreaId == areaId))
         {

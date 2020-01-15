@@ -24,8 +24,8 @@ namespace Web.Services
         }
 
 
-        public async Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? pid,
-            int? wareHouseId,int? type, string areaName)
+        public async Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, 
+            int? orgId, int? ouId, int? wareHouseId,int? type, string areaName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -35,11 +35,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new ReservoirAreaPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,pid,wareHouseId,areaName);
+                        id,orgId,ouId,wareHouseId,areaName);
                 }
                 else
                 {
-                    baseSpecification = new ReservoirAreaSpecification(id, pid, wareHouseId,type, areaName);
+                    baseSpecification = new ReservoirAreaSpecification(id,orgId,ouId,wareHouseId,type, areaName);
                 }
                 var areas = await this._reservoirAreaRepository.ListAsync(baseSpecification);
                 List<ReservoirAreaViewModel> areaViewModels = new List<ReservoirAreaViewModel>();

@@ -38,7 +38,7 @@ namespace ApplicationCore.Services
             {
                 locationIds.ForEach(async (id) =>
                 {
-                    LocationSpecification locationSpec = new LocationSpecification(id, null, null, null, null, null, null);
+                    LocationSpecification locationSpec = new LocationSpecification(id,null,null, null, null, null, null, null, null);
                     var locations = await this._locationRepository.ListAsync(locationSpec);
                     var location = locations[0];
                     location.ReservoirAreaId = areaId;
@@ -70,11 +70,10 @@ namespace ApplicationCore.Services
         public async Task Disable(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null, null,null, null);
+            var areaSpec = new ReservoirAreaSpecification(id,null,null, null,null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas,nameof(areas));
             var area = areas[0];
-            if (area.SourceId.HasValue) throw new Exception("库区节点信息来源于其他系统,不允许修改！");
             area.Status = Convert.ToInt32(AREA_STATUS.禁用);
             await this._reservoirAreaRepository.UpdateAsync(area);
         }
@@ -82,11 +81,10 @@ namespace ApplicationCore.Services
         public async Task Enable(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null,null, null, null);
+            var areaSpec = new ReservoirAreaSpecification(id,null,null,null, null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas, nameof(areas));
             var area = areas[0];
-            if (area.SourceId.HasValue) throw new Exception("库区节点信息来源于其他系统,不允许修改！");
             area.Status = Convert.ToInt32(AREA_STATUS.正常);
             await this._reservoirAreaRepository.UpdateAsync(area);
         }
@@ -94,11 +92,10 @@ namespace ApplicationCore.Services
         public async Task UpdateArea(int id, string areaName)
         {
             Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null,null, null, null);
+            var areaSpec = new ReservoirAreaSpecification(id,null,null,null, null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas, nameof(areas));
             var area = areas[0];
-            if (area.SourceId.HasValue) throw new Exception("库区节点信息来源于其他系统,不允许修改！");
             area.AreaName = areaName;
             await this._reservoirAreaRepository.UpdateAsync(area);
         }

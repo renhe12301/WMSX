@@ -167,8 +167,7 @@ namespace Web.Services
                     ApproveTime = DateTime.Parse(orderViewModel.ApproveTime),
                     ApproveUserCode = orderViewModel.ApproveUserCode,
                     CallingParty = orderViewModel.CallingParty,
-                    OrderTypeId = orderViewModel.OrderTypeId,
-                    SourceId = orderViewModel.SourceId
+                    OrderTypeId = orderViewModel.OrderTypeId
                 };
                 List<OrderRow> orderRows = new List<OrderRow>();
               
@@ -177,7 +176,7 @@ namespace Web.Services
                     ReservoirArea area = null;
                     if (or.ReservoirAreaId.HasValue)
                     {
-                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null, or.ReservoirAreaId,null, null, null);
+                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(or.ReservoirAreaId,null,null,null, null, null);
                         var areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
                         if (areas.Count == 0) throw new Exception(string.Format("子库区[{0}]不存在！",or.ReservoirAreaId));
                         area = areas[0];
@@ -191,8 +190,7 @@ namespace Web.Services
                         CreateTime=DateTime.Now,
                         PreCount=or.PreCount,
                         RealityCount=or.PreCount,
-                        WarehouseId=warehouse.Id,
-                        SourceId=or.SourceId
+                        WarehouseId=warehouse.Id
                     };
                     if (area != null)
                         orderRow.ReservoirAreaId = area.Id;

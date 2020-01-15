@@ -27,7 +27,6 @@ namespace ApplicationCore.Services
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
-            if (wareHouse.SourceId.HasValue) throw new Exception("仓库节点信息来源于其他系统,不允许修改！");
             wareHouse.Status = Convert.ToInt32(WAREHOUSE_STATUS.禁用);
         }
 
@@ -37,7 +36,6 @@ namespace ApplicationCore.Services
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
-            if (wareHouse.SourceId.HasValue) throw new Exception("仓库节点信息来源于其他系统,不允许修改！");
             wareHouse.Status = Convert.ToInt32(WAREHOUSE_STATUS.正常);
         }
 
@@ -47,7 +45,6 @@ namespace ApplicationCore.Services
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
-            if (wareHouse.SourceId.HasValue) throw new Exception("仓库节点信息来源于其他系统,不允许修改！");
             wareHouse.WhName=whName;
             wareHouse.Address = address;
         }

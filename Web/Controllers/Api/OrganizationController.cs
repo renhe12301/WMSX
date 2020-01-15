@@ -44,11 +44,11 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
-        
+
         /// <summary>
         /// 获取组织架构树信息
         /// </summary>
-        /// <param name="id">组织架构编号</param>
+        /// <param name="rootId">组织架构编号</param>
         /// <param name="depthTag">树深度标记(User-用户 Warehouse-仓库 ReservoirArea-库区)</param>
         /// <returns></returns>
         [HttpGet]

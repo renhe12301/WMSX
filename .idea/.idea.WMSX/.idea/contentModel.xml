@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$/../../../../../Caches/Rider2019.3/extResources" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../../../../../Caches/Rider2019.3/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_WMSX.-1514424248.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="ApplicationCore" t="IncludeRecursive">
+        <e p="ApplicationCore.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Entities" t="Include">
+          <e p="BaseEntity.cs" t="Include" />
+          <e p="BasicInformation" t="Include">
+            <e p="Customer.cs" t="Include" />
+            <e p="Location.cs" t="Include" />
+            <e p="MaterialDic.cs" t="Include" />
+            <e p="MaterialDicType.cs" t="Include" />
+            <e p="MaterialDicTypeArea.cs" t="Include" />
+            <e p="MaterialType.cs" t="Include" />
+            <e p="MaterialUnit.cs" t="Include" />
+            <e p="ReservoirArea.cs" t="Include" />
+            <e p="Supplier.cs" t="Include" />
+            <e p="TrayDic.cs" t="Include" />
+            <e p="TrayDicType.cs" t="Include" />
+            <e p="TrayDicTypeArea.cs" t="Include" />
+            <e p="TrayType.cs" t="Include" />
+            <e p="Warehouse.cs" t="Include" />
+          </e>
+          <e p="FlowRecord" t="Include">
+            <e p="InOutRecord.cs" t="Include" />
+          </e>
+          <e p="ModuleLock.cs" t="Include" />
+          <e p="OrderManager" t="Include">
+            <e p="Order.cs" t="Include" />
+            <e p="OrderRow.cs" t="Include" />
+            <e p="OrderType.cs" t="Include" />
+          </e>
+          <e p="OrganizationManager" t="Include">
+            <e p="Employee.cs" t="Include" />
+            <e p="EmployeeOrg.cs" t="Include" />
+            <e p="EmployeeRole.cs" t="Include" />
+            <e p="Organization.cs" t="Include" />
+            <e p="OU.cs" t="Include" />
+            <e p="RoleMenu.cs" t="Include" />
+            <e p="SysMenu.cs" t="Include" />
+            <e p="SysRole.cs" t="Include" />
+          </e>
+          <e p="StockManager" t="Include">
+            <e p="WarehouseMaterial.cs" t="Include" />
+            <e p="WarehouseTray.cs" t="Include" />
+          </e>
+          <e p="SysManager" t="Include">
+            <e p="SysConfig.cs" t="Include" />
+          </e>
+          <e p="TaskManager" t="Include">
+            <e p="InOutTask.cs" t="Include" />
+          </e>
+          <e p="TransferManager" t="Include" />
+        </e>
+        <e p="Interfaces" t="Include">
+          <e p="IAppLogger.cs" t="Include" />
+          <e p="IAsyncRepository.cs" t="Include" />
+          <e p="ICustomerService.cs" t="Include" />
+          <e p="IEmployeeService.cs" t="Include" />
+          <e p="IInOutRecordService.cs" t="Include" />
+          <e p="IInOutTaskService.cs" t="Include" />
+          <e p="ILocationService.cs" t="Include" />
+          <e p="IMaterialDicService.cs" t="Include" />
+          <e p="IMaterialTypeService.cs" t="Include" />
+          <e p="IMaterialUnitService.cs" t="Include" />
+          <e p="IOrderService.cs" t="Include" />
+          <e p="IOrganizationService.cs" t="Include" />
+          <e p="IReservoirAreaService.cs" t="Include" />
+          <e p="IRoleService.cs" t="Include" />
+          <e p="ISpecification.cs" t="Include" />
+          <e p="ISupplierService.cs" t="Include" />
+          <e p="ISysConfigService.cs" t="Include" />
+          <e p="ISysMenuService.cs" t="Include" />
+          <e p="ITransferService.cs" t="Include" />
+          <e p="ITrayDicService.cs" t="Include" />
+          <e p="ITrayTypeService.cs" t="Include" />
+          <e p="IWarehouseMaterial.cs" t="Include" />
+          <e p="IWarehouseService.cs" t="Include" />
+          <e p="IWarehouseTray.cs" t="Include" />
+        </e>
+        <e p="Misc" t="Include">
+          <e p="AppSettings.cs" t="Include" />
+          <e p="StatusConstant.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="ApplicationCore.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Services" t="Include">
+          <e p="CustomerService.cs" t="Include" />
+          <e p="EmployeeService.cs" t="Include" />
+          <e p="InOutRecordService.cs" t="Include" />
+          <e p="InOutTaskService.cs" t="Include" />
+          <e p="LocationService.cs" t="Include" />
+          <e p="MaterialDicService.cs" t="Include" />
+          <e p="MaterialTypeService.cs" t="Include" />
+          <e p="MaterialUnitService.cs" t="Include" />
+          <e p="OrderService.cs" t="Include" />
+          <e p="OrganizationService.cs" t="Include" />
+          <e p="ReservoirAreaService.cs" t="Include" />
+          <e p="RoleService.cs" t="Include" />
+          <e p="SupplierService.cs" t="Include" />
+          <e p="SysConfigService.cs" t="Include" />
+          <e p="SysMenuService.cs" t="Include" />
+          <e p="TransferService.cs" t="Include" />
+          <e p="TrayDicService.cs" t="Include" />
+          <e p="TrayTypeService.cs" t="Include" />
+          <e p="WarehouseService.cs" t="Include" />
+        </e>
+        <e p="Specifications" t="Include">
+          <e p="BaseSpecification.cs" t="Include" />
+          <e p="CustomerPaginatedSpecification.cs" t="Include" />
+          <e p="CustomerSpecification.cs" t="Include" />
+          <e p="EmployeePaginatedSpecification.cs" t="Include" />
+          <e p="EmployeeRolePaginatedSpecification.cs" t="Include" />
+          <e p="EmployeeRoleSpecification.cs" t="Include" />
+          <e p="EmployeeSpecification.cs" t="Include" />
+          <e p="InOutRecordPaginatedSpecification.cs" t="Include" />
+          <e p="InOutRecordSpecification.cs" t="Include" />
+          <e p="InOutTaskPaginatedSpecification.cs" t="Include" />
+          <e p="InOutTaskSpecification.cs" t="Include" />
+          <e p="LocationSpecification.cs" t="Include" />
+          <e p="MaterialDicPaginatedSpecification.cs" t="Include" />
+          <e p="MaterialDicSpecification.cs" t="Include" />
+          <e p="MaterialDicTypeAreaSpecification.cs" t="Include" />
+          <e p="MaterialDicTypePaginatedSpecification.cs" t="Include" />
+          <e p="MaterialDicTypeSpecification.cs" t="Include" />
+          <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
+          <e p="MaterialTypeSpecification.cs" t="Include" />
+          <e p="MaterialUnitPaginatedSpecification.cs" t="Include" />
+          <e p="MaterialUnitSpecification.cs" t="Include" />
+          <e p="OrderDetailSpecification.cs" t="Include" />
+          <e p="OrderPaginatedDetailSpecification.cs" t="Include" />
+          <e p="OrderPaginatedSpecification.cs" t="Include" />
+          <e p="OrderRowSpecification.cs" t="Include" />
+          <e p="OrderSpecification.cs" t="Include" />
+          <e p="OrganizationPaginatedSpecification.cs" t="Include" />
+          <e p="OrganizationSpecification.cs" t="Include" />
+          <e p="OUPaginatedSpecification.cs" t="Include" />
+          <e p="OUSpecification.cs" t="Include" />
+          <e p="ReservoirAreaPaginatedSpecification.cs" t="Include" />
+          <e p="ReservoirAreaSpecification.cs" t="Include" />
+          <e p="RoleMenuSpecification.cs" t="Include" />
+          <e p="SupplierPaginatedSpecification.cs" t="Include" />
+          <e p="SupplierSpecification.cs" t="Include" />
+          <e p="SysConfigSpecification.cs" t="Include" />
+          <e p="SysMenuSpecification.cs" t="Include" />
+          <e p="SysRolePaginatedSpecification.cs" t="Include" />
+          <e p="SysRoleSpecification.cs" t="Include" />
+          <e p="TrayDicSpecification.cs" t="Include" />
+          <e p="TrayDicTypeAreaSpecification.cs" t="Include" />
+          <e p="TrayDicTypePaginatedSpecification.cs" t="Include" />
+          <e p="TrayDicTypeSpecification.cs" t="Include" />
+          <e p="TrayTypePaginatedSpecification.cs" t="Include" />
+          <e p="TrayTypeSpecification.cs" t="Include" />
+          <e p="WarehouseMaterialPainatedSpecification.cs" t="Include" />
+          <e p="WarehouseMaterialSpecification.cs" t="Include" />
+          <e p="WarehousePaginatedSpecification.cs" t="Include" />
+          <e p="WarehouseSpecification.cs" t="Include" />
+          <e p="WarehouseTrayDetailSpecification.cs" t="Include" />
+          <e p="WarehouseTrayPaginatedDetailSpecification.cs" t="Include" />
+          <e p="WarehouseTrayPaginatedSpecification.cs" t="Include" />
+          <e p="WarehouseTraySpecification.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Infrastructure" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Data" t="Include">
+          <e p="BaseContext.cs" t="Include" />
+          <e p="EfRepository.cs" t="Include" />
+          <e p="SpecificationEvaluator.cs" t="Include" />
+        </e>
+        <e p="Infrastructure.csproj" t="IncludeRecursive" />
+        <e p="Logging" t="Include">
+          <e p="LoggerAdapter.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="Infrastructure.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="src" t="Include" />
+      <e p="test" t="Include" />
+      <e p="Web" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="Api" t="Include">
+            <e p="BaseApiController.cs" t="Include" />
+            <e p="CustomerController.cs" t="Include" />
+            <e p="EmployeeController.cs" t="Include" />
+            <e p="InOutRecordController.cs" t="Include" />
+            <e p="InOutTaskController.cs" t="Include" />
+            <e p="LocationController.cs" t="Include" />
+            <e p="MaterialDicController.cs" t="Include" />
+            <e p="MaterialTypeController.cs" t="Include" />
+            <e p="MaterialUnitController.cs" t="Include" />
+            <e p="OrderController.cs" t="Include" />
+            <e p="OrganizationController.cs" t="Include" />
+            <e p="OUController.cs" t="Include" />
+            <e p="ReservoirAreaController.cs" t="Include" />
+            <e p="SupplierController.cs" t="Include" />
+            <e p="SysMenuController.cs" t="Include" />
+            <e p="SysRoleController.cs" t="Include" />
+            <e p="TrayDicController.cs" t="Include" />
+            <e p="TrayTypeController.cs" t="Include" />
+            <e p="WarehouseController.cs" t="Include" />
+            <e p="WarehouseMaterialController.cs" t="Include" />
+            <e p="WarehouseTrayController.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Interfaces" t="Include">
+          <e p="ICustomerViewModelService.cs" t="Include" />
+          <e p="IEmployeeViewModelService.cs" t="Include" />
+          <e p="IInOutRecordViewModelService.cs" t="Include" />
+          <e p="IInOutTaskViewModelService.cs" t="Include" />
+          <e p="ILocationViewModelService.cs" t="Include" />
+          <e p="IMaterialDicViewModelService.cs" t="Include" />
+          <e p="IMaterialTypeViewModelService.cs" t="Include" />
+          <e p="IMaterialUnitViewModelService.cs" t="Include" />
+          <e p="IOrderViewModelService.cs" t="Include" />
+          <e p="IOrganizationViewModelService.cs" t="Include" />
+          <e p="IOUViewModelService.cs" t="Include" />
+          <e p="IReservoirAreaViewModelService.cs" t="Include" />
+          <e p="ISupplierViewModelService.cs" t="Include" />
+          <e p="ISysMenuViewModelService.cs" t="Include" />
+          <e p="ISysRoleViewModelService.cs" t="Include" />
+          <e p="ITrayDicViewModelService.cs" t="Include" />
+          <e p="ITrayTypeViewModelService.cs" t="Include" />
+          <e p="IWarehouseMaterialViewModelService.cs" t="Include" />
+          <e p="IWarehouseTrayViewModelService.cs" t="Include" />
+          <e p="IWarehouseViewModelService.cs" t="Include" />
+          <e p="OUSpecification.cs" t="Include" />
+        </e>
+        <e p="IOCJobFactory.cs" t="Include" />
+        <e p="Jobs" t="Include">
+          <e p="CK_Job.cs" t="Include" />
+          <e p="Clear_Job.cs" t="Include" />
+          <e p="JYH_Stock_Job.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Web.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="quartz_jobs.xml" t="Include" />
+        <e p="Services" t="Include">
+          <e p="CustomerViewModelService.cs" t="Include" />
+          <e p="EmployeeViewModelService.cs" t="Include" />
+          <e p="InOutRecordViewModelService.cs" t="Include" />
+          <e p="InOutTaskViewModelService.cs" t="Include" />
+          <e p="LocationViewModelService.cs" t="Include" />
+          <e p="MaterialDicViewModelService.cs" t="Include" />
+          <e p="MaterialTypeViewModelService.cs" t="Include" />
+          <e p="MaterialUnitViewModelService.cs" t="Include" />
+          <e p="OrderViewModelService.cs" t="Include" />
+          <e p="OrganizationViewModelService.cs" t="Include" />
+          <e p="OUViewModelService.cs" t="Include" />
+          <e p="ReservoirAreaViewModelService.cs" t="Include" />
+          <e p="SupplierViewModelService.cs" t="Include" />
+          <e p="SysMenuViewModelService.cs" t="Include" />
+          <e p="SysRoleViewModelService.cs" t="Include" />
+          <e p="TrayDicViewModelService.cs" t="Include" />
+          <e p="TrayTypeViewModelService.cs" t="Include" />
+          <e p="WarehouseMaterialViewModelService.cs" t="Include" />
+          <e p="WarehouseTrayViewModelService.cs" t="Include" />
+          <e p="WarehouseViewModelService.cs" t="Include" />
+        </e>
+        <e p="SlugifyParameterTransformer.cs" t="Include" />
+        <e p="Startup.cs" t="Include" />
+        <e p="ViewModels" t="Include">
+          <e p="BasicInformation" t="Include">
+            <e p="CustomerViewModel.cs" t="Include" />
+            <e p="LocationViewModel.cs" t="Include" />
+            <e p="MaterialDicTypeAreaViewModel.cs" t="Include" />
+            <e p="MaterialDicViewModel.cs" t="Include" />
+            <e p="MaterialTypeViewModel.cs" t="Include" />
+            <e p="MaterialUnitViewModel.cs" t="Include" />
+            <e p="ReservoirAreaViewModel.cs" t="Include" />
+            <e p="SupplierViewModel.cs" t="Include" />
+            <e p="TrayDicViewModel.cs" t="Include" />
+            <e p="TrayTpeViewModel.cs" t="Include" />
+            <e p="WarehouseViewModel.cs" t="Include" />
+          </e>
+          <e p="FlowRecord" t="Include">
+            <e p="InOutRecordViewModel.cs" t="Include" />
+          </e>
+          <e p="OrderManager" t="Include">
+            <e p="OrderRowViewModel.cs" t="Include" />
+            <e p="OrderTypeViewModel.cs" t="Include" />
+            <e p="OrderViewModel.cs" t="Include" />
+          </e>
+          <e p="OrganizationManager" t="Include">
+            <e p="EmployeeRoleViewModel.cs" t="Include" />
+            <e p="EmployeeViewModel.cs" t="Include" />
+            <e p="OrganizationViewModel.cs" t="Include" />
+            <e p="OUViewModel.cs" t="Include" />
+            <e p="RoleMenuViewModel.cs" t="Include" />
+            <e p="SysMenuViewModel.cs" t="Include" />
+            <e p="SysRoleViewModel.cs" t="Include" />
+            <e p="SysUserViewModel.cs" t="Include" />
+          </e>
+          <e p="ResponseResultViewModel.cs" t="Include" />
+          <e p="StockManager" t="Include">
+            <e p="WarehouseMaterialViewModel.cs" t="Include" />
+            <e p="WarehouseTrayViewModel.cs" t="Include" />
+          </e>
+          <e p="TaskManager" t="Include">
+            <e p="InOutTaskViewModel.cs" t="Include" />
+          </e>
+          <e p="TreeViewModel.cs" t="Include" />
+        </e>
+        <e p="Views" t="Include" />
+        <e p="Web.csproj" t="IncludeRecursive" />
+        <e p="wwwroot" t="Include">
+          <e p="css" t="Include">
+            <e p="site.css" t="Include" />
+          </e>
+          <e p="favicon.ico" t="Include" />
+          <e p="js" t="Include">
+            <e p="basic-information" t="Include" />
+            <e p="order-manager" t="Include" />
+            <e p="organization-manager" t="Include" />
+            <e p="site.js" t="Include" />
+            <e p="stock-manager" t="Include" />
+            <e p="task-manager" t="Include" />
+            <e p="transfer-manager" t="Include" />
+          </e>
+          <e p="lib" t="Include">
+            <e p="bootstrap" t="Include">
+              <e p="dist" t="Include">
+                <e p="css" t="Include">
+                  <e p="bootstrap-grid.css" t="Include" />
+                  <e p="bootstrap-grid.css.map" t="Include" />
+                  <e p="bootstrap-grid.min.css" t="Include" />
+                  <e p="bootstrap-grid.min.css.map" t="Include" />
+                  <e p="bootstrap-reboot.css" t="Include" />
+                  <e p="bootstrap-reboot.css.map" t="Include" />
+                  <e p="bootstrap-reboot.min.css" t="Include" />
+                  <e p="bootstrap-reboot.min.css.map" t="Include" />
+                  <e p="bootstrap.css" t="Include" />
+                  <e p="bootstrap.css.map" t="Include" />
+                  <e p="bootstrap.min.css" t="Include" />
+                  <e p="bootstrap.min.css.map" t="Include" />
+                </e>
+                <e p="js" t="Include">
+                  <e p="bootstrap.bundle.js" t="Include" />
+                  <e p="bootstrap.bundle.js.map" t="Include" />
+                  <e p="bootstrap.bundle.min.js" t="Include" />
+                  <e p="bootstrap.bundle.min.js.map" t="Include" />
+                  <e p="bootstrap.js" t="Include" />
+                  <e p="bootstrap.js.map" t="Include" />
+                  <e p="bootstrap.min.js" t="Include" />
+                  <e p="bootstrap.min.js.map" t="Include" />
+                </e>
+              </e>
+              <e p="LICENSE" t="Include" />
+            </e>
+            <e p="jquery" t="Include">
+              <e p="dist" t="Include">
+                <e p="jquery.js" t="Include" />
+                <e p="jquery.min.js" t="Include" />
+                <e p="jquery.min.map" t="Include" />
+              </e>
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+            <e p="jquery-validation" t="Include">
+              <e p="dist" t="Include">
+                <e p="additional-methods.js" t="Include" />
+                <e p="additional-methods.min.js" t="Include" />
+                <e p="jquery.validate.js" t="Include" />
+                <e p="jquery.validate.min.js" t="Include" />
+              </e>
+              <e p="LICENSE.md" t="Include" />
+            </e>
+            <e p="jquery-validation-unobtrusive" t="Include">
+              <e p="jquery.validate.unobtrusive.js" t="Include" />
+              <e p="jquery.validate.unobtrusive.min.js" t="Include" />
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="WMSX.sln" t="IncludeFlat" />
+    </e>
+    <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
+  </component>
+</project>

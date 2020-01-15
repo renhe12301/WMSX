@@ -6,9 +6,15 @@ namespace ApplicationCore.Specifications
 {
     public class InOutTaskSpecification:BaseSpecification<InOutTask>
     {
-        public InOutTaskSpecification(int? id,List<int> status,List<int> steps,string sCreateTime, string eCreateTime,
+        public InOutTaskSpecification(int? id,List<int> status,List<int> steps,
+            int? orgId, int? ouId,int? wareHouseId, int? areaId,
+            string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
             :base(b=>(!id.HasValue||b.Id==id)&&
+                     (!orgId.HasValue || b.OrganizationId == orgId) &&
+                     (!ouId.HasValue || b.OUId == ouId) &&
+                     (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
+                     (!areaId.HasValue || b.ReservoirAreaId == areaId) &&
                      (status==null||status.Contains(b.Status))&&
                      (steps == null || steps.Contains(b.Step)) &&
                      (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&

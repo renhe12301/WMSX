@@ -69,14 +69,13 @@
             <param name="employeeRoleViewModel">员工角色实体</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
             <summary>
             获取出入库记录
             </summary>
             <param name="pageIndex">当前页面索引</param>
             <param name="itemsPage">当前也显示大小</param>
-            <param name="type">出入库流程类型</param>
-            <param name="inoutFlag">出入库标记</param>
+            <param name="type">出入库类型</param>
             <param name="sCreateTime">创建开始时间</param>
             <param name="eCreateTime">创建结束时间</param>
             <returns></returns>
@@ -114,7 +113,7 @@
             <param name="inOutTaskViewModel">出入库任务实体对象</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
         <member name="T:Web.Controllers.Api.LocationController">
             <summary>
             货位信息操作API
@@ -359,7 +358,7 @@
             <summary>
             获取组织架构树信息
             </summary>
-            <param name="id">组织架构编号</param>
+            <param name="rootId">组织架构编号</param>
             <param name="depthTag">树深度标记(User-用户 Warehouse-仓库 ReservoirArea-库区)</param>
             <returns></returns>
         </member>
@@ -375,6 +374,23 @@
             更新组织架构
             </summary>
             <param name="org">组织架构实体</param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Controllers.Api.OUController">
+            <summary>
+            业务实体Api
+            </summary>
+        </member>
+        <member name="M:Web.Controllers.Api.OUController.GetOUs(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            获取业务实体信息
+            </summary>
+            <param name="pageIndex">当前页索引</param>
+            <param name="itemsPage">一页项数</param>
+            <param name="id">ou id</param>
+            <param name="ouName">ou 名称</param>
+            <param name="ouCode">ou 编码</param>
+            <param name="orgId">所属公司id</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.ReservoirAreaController">
@@ -424,7 +440,7 @@
             <param name="materialDicTypeAreaViewModel">库区物料关系对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.GetAreas(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.GetAreas(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取库区信息
             </summary>
@@ -458,12 +474,31 @@
             <param name="supplierViewModel">供应商实体对象</param>
             <returns></returns>
         </member>
+        <member name="T:Web.Controllers.Api.SysMenuController">
+            <summary>
+            系统菜单操作API
+            </summary>
+        </member>
+        <member name="M:Web.Controllers.Api.SysMenuController.GetMenus(System.Int32)">
+            <summary>
+            获取菜单信息
+            </summary>
+            <param name="roleId">当前角色编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.SysMenuController.GetMenuTrees(System.Int32)">
+            <summary>
+            获取菜单树信息
+            </summary>
+            <param name="rootId">父类节点编号</param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Controllers.Api.SysRoleController">
             <summary>
             系统角色操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.GetRoles(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+        <member name="M:Web.Controllers.Api.SysRoleController.GetRoles(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取系统角色信息
             </summary>
@@ -472,14 +507,6 @@
             <param name="id">角色编号</param>
             <param name="parentId">父编号</param>
             <param name="roleName">角色名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.GetRoleTrees(System.Int32,System.String)">
-            <summary>
-            获取角色树信息
-            </summary>
-            <param name="rootId"></param>
-            <param name="depthTag"></param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.SysRoleController.AddRole(Web.ViewModels.OrganizationManager.SysRoleViewModel)">
@@ -515,50 +542,6 @@
             分配系统角色菜单
             </summary>
             <param name="roleMenuViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Web.Controllers.Api.SysUserController">
-            <summary>
-            系统用户操作API
-            </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.SysUserController.GetUsers(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
-            <summary>
-            获取系统用户信息
-            </summary>
-            <param name="pageIndex">分页索引</param>
-            <param name="itemsPage">一页条数</param>
-            <param name="id">系统用户编号</param>
-            <param name="employeeId">员工编号</param>
-            <param name="loginName">登录名</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SysUserController.AddUser(Web.ViewModels.OrganizationManager.SysUserViewModel)">
-            <summary>
-            添加系统用户
-            </summary>
-            <param name="sysUserViewModel">系统用户对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SysUserController.UpdateUser(Web.ViewModels.OrganizationManager.SysUserViewModel)">
-            <summary>
-            更新系统用户
-            </summary>
-            <param name="sysUserViewModel">系统用户对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SysUserController.Logout(Web.ViewModels.OrganizationManager.SysUserViewModel)">
-            <summary>
-            注销帐户
-            </summary>
-            <param name="sysUserViewModel">系统用户对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SysUserController.Enable(Web.ViewModels.OrganizationManager.SysUserViewModel)">
-            <summary>
-            启用用户
-            </summary>
-            <param name="sysUserViewModel">系统用户对象</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.TrayDicController">
@@ -699,7 +682,7 @@
             仓库物料操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             获取仓库物料信息
             </summary>
@@ -724,7 +707,7 @@
             仓库信息操作API
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
         <member name="T:Web.SlugifyParameterTransformer">
             <summary>
             转换url地址

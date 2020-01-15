@@ -4,10 +4,10 @@ namespace ApplicationCore.Specifications
 {
     public class WarehouseSpecification:BaseSpecification<Warehouse>
     {
-        public WarehouseSpecification(int? id,int? sourceId,int? orgId,string whName)
+        public WarehouseSpecification(int? id,int? orgId,int? ouId,string whName)
             :base(b=>(!id.HasValue|| b.Id==id)&&
-                  (!sourceId.HasValue || b.SourceId == sourceId)&&
-                  (!orgId.HasValue||b.OrgId==orgId)&&
+                  (!ouId.HasValue || b.OUId == ouId)&&
+                  (!orgId.HasValue||b.OrganizationId==orgId)&&
                    whName==null||b.WhName==whName)
         {
             AddInclude(b => b.Organization);

@@ -10,6 +10,8 @@ using Ardalis.GuardClauses;
 using ApplicationCore.Misc;
 using System.Collections.Generic;
 using System.Dynamic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Web.Services
 {
@@ -36,8 +38,7 @@ namespace Web.Services
                 SysRole sysRole = new SysRole
                 {
                     CreateTime = DateTime.Now,
-                    RoleName = sysRoleViewModel.RoleName,
-                    ParentId=sysRoleViewModel.ParentId
+                    RoleName = sysRoleViewModel.RoleName
                 };
                await this._roleService.AddRole(sysRole);
             }
@@ -79,7 +80,7 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetRoles(int? pageIndex, int? itemsPage, int? id,int? parentId, string roleName)
+        public async Task<ResponseResultViewModel> GetRoles(int? pageIndex, int? itemsPage, int? id,string roleName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -89,11 +90,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SysRolePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,parentId,roleName);
+                        id,roleName);
                 }
                 else
                 {
-                    baseSpecification = new SysRoleSpecification(id,parentId, roleName);
+                    baseSpecification = new SysRoleSpecification(id, roleName);
                 }
                 var roles = await this._sysRoleRepository.ListAsync(baseSpecification);
                 List<SysRoleViewModel> roleViewModels = new List<SysRoleViewModel>();
@@ -110,7 +111,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._sysRoleRepository.CountAsync(new SysRoleSpecification(id,parentId,roleName));
+                    var count = await this._sysRoleRepository.CountAsync(new SysRoleSpecification(id,roleName));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = roleViewModels;
                     dyn.total = count;
@@ -127,61 +128,6 @@ namespace Web.Services
                 response.Data = ex.Message;
             }
             return response;
-        }
-
-        public async Task<ResponseResultViewModel> GetRoleTrees(int rootId, string depthTag)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                var roleSpec = new SysRoleSpecification(rootId,null, null);
-                var roles = await this._sysRoleRepository.ListAsync(roleSpec);
-                if (roles.Count == 0) throw new Exception(string.Format("角色编号{0}不存在", rootId));
-                var role = roles[0];
-                TreeViewModel current = new TreeViewModel
-                {
-                    Id = role.Id,
-                    ParentId = role.ParentId,
-                    Name = role.RoleName,
-                    Type = "dir"
-                };
-                await RoleTree(current, current.Children);
-                response.Data = current;
-
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        private async Task RoleTree(TreeViewModel current, List<TreeViewModel> childs)
-        {
-            var roleSpec = new SysRoleSpecification(null, current.Id, null);
-            var roles = await this._sysRoleRepository.ListAsync(roleSpec);
-            roles.ForEach(async (role) =>
-            {
-                TreeViewModel child = new TreeViewModel
-                {
-                    Id = role.Id,
-                    ParentId = current.Id,
-                    Name = role.RoleName
-                };
-
-                if (role.Type == 1)
-                {
-                    child.Type = "dir";
-                    childs.Add(child);
-                    await RoleTree(child, child.Children);
-                }
-                else
-                {
-                    child.Type = "role";
-                    childs.Add(child);
-                }
-            });
         }
 
 

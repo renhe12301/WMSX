@@ -15,6 +15,6 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> Disable(ReservoirAreaViewModel reservoirAreaViewModel);
         Task<ResponseResultViewModel> AssignLocation(LocationViewModel locationViewModel);
         Task<ResponseResultViewModel> AssignMaterialType(MaterialDicTypeAreaViewModel materialDicTypeAreaViewModel);
-        Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? pid,int? wareHouseId,int? type, string areaName);
+        Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? orgId,int? ouId,int? wareHouseId,int? type, string areaName);
     }
 }

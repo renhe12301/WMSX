@@ -74,7 +74,7 @@ namespace ApplicationCore.Services
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
             Guard.Against.NullOrEmpty(orderRows, nameof(orderRows));
             OrderRow orderRow = orderRows[0];
-            var areaSpec = new ReservoirAreaSpecification(areaId, null, null,null, null);
+            var areaSpec = new ReservoirAreaSpecification(areaId,null, null, null,null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas, nameof(areas));
             var area = areas[0];
@@ -104,7 +104,7 @@ namespace ApplicationCore.Services
                 throw new Exception(string.Format("已经分拣了{0}个,最多还能分拣{1}个", orderRow.Sorting,surplusCount));
 
             var warehouseTrayDetailSpec = new WarehouseTrayDetailSpecification(null,trayCode,
-                                                       null, null, null,null, null,null, null,null,null);
+                                                       null,null,null, null, null,null, null,null, null,null,null);
 
             var whTrays =await this._warehouseTrayRepository.ListAsync(warehouseTrayDetailSpec);
             if (whTrays.Count > 0)

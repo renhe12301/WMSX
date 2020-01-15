@@ -11,7 +11,7 @@ namespace Web.ViewModels.OrganizationManager
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string OrgName { get; set; }
-        public int OrgId { get; set; }
+        public int OrganizationId { get; set; }
         public List<int> RoleIds = new List<int>();
     }
 }

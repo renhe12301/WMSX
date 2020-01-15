@@ -7,7 +7,7 @@ namespace Web.Interfaces
     public interface IInOutRecordViewModelService
     {
         public Task<ResponseResultViewModel> GetInOutRecords(int? pageIndex,
-                                             int? itemsPage,int? type,int? inoutFlag,
+                                             int? itemsPage,int? type,
                                              string sCreateTime, string eCreateTime);
 
     }

@@ -107,9 +107,9 @@ namespace Web.Controllers.Api
         /// <param name="areaName">库区名称</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAreas(int? pageIndex, int? itemsPage, int? id, int? pid, int? wareHouseId,int? type,  string areaName)
+        public async Task<IActionResult> GetAreas(int? pageIndex, int? itemsPage, int? id,int? orgId,int? ouId,int? wareHouseId,int? type,  string areaName)
         {
-            var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,pid,wareHouseId,type, areaName);
+            var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,orgId,ouId,wareHouseId,type, areaName);
             return Ok(response);
         }
 

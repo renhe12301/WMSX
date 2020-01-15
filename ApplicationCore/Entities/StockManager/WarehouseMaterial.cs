@@ -1,6 +1,8 @@
 ﻿using System;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
+using ApplicationCore.Entities.OrganizationManager;
+
 namespace ApplicationCore.Entities.StockManager
 {
   
@@ -13,16 +15,20 @@ namespace ApplicationCore.Entities.StockManager
         public int MaterialCount { get; set; }
         public string BatchNo { get; set; }
         public int LocationId { get; set; }
-        public int WarehouseId { get; set; }
-        public int ReservoirAreaId { get; set; }
+        public int? OrganizationId { get; set; }
+        public int? OUId { get; set; }
+        public int? WarehouseId { get; set; }
+        public int? ReservoirAreaId { get; set; }
+        public Warehouse Warehouse { get; set; }
+        public ReservoirArea ReservoirArea { get; set; }
+        public Organization Organization { get; set; }
+        public OU OU { get; set; }
         public DateTime CreateTime { get; set; }
         public int? Carrier { get; set; }
         public string Memo { get; set; }
         public WarehouseTray WarehouseTray { get; set; }
         public MaterialDic MaterialDic { get; set; }
         public Location Location { get; set; }
-        public Warehouse Warehouse { get; set; }
-        public ReservoirArea ReservoirArea { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
     }

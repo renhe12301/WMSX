@@ -10,9 +10,12 @@ namespace Infrastructure.Data
     {
 
         public DbSet<Organization> Organization { get; set; }
+        public DbSet<OU> OU { get; set; }
         public DbSet<Warehouse> Warehouse { get; set; }
-        public DbSet<SysUser> SysUser { get; set; }
         public DbSet<SysRole> SysRole { get; set; }
+        public DbSet<SysMenu> SysMenu { get; set; }
+        public DbSet<ReservoirArea> ReservoirArea { get; set; }
+        public DbSet<RoleMenu> RoleMenu { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

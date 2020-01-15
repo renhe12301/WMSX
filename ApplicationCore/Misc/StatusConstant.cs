@@ -44,13 +44,13 @@ namespace ApplicationCore.Misc
         有货=1
     }
 
-    //public enum LOCATION_TYPE
-    //{
-    //    入库区货位=0,
-    //    出库区货位=1,
-    //    出入库区货位=2,
-    //    仓库区货位=3
-    //}
+    public enum LOCATION_TYPE
+    {
+        入库区货位 = 0,
+        出库区货位 = 1,
+        出入库区货位 = 2,
+        仓库区货位 = 3
+    }
 
     public enum TRAY_CARRIER
     {
@@ -62,13 +62,14 @@ namespace ApplicationCore.Misc
 
     public enum TRAY_STEP
     {
-        待入库 = 0,
-        入库中 = 1,
-        已上架 = 2,
-        待出库 = 3,
-        出库中未下架 = 4,
-        出库中已下架 = 5,
-        出库完成 = 6
+        初始化=0,
+        待入库 = 1,
+        入库中 = 2,
+        已上架 = 3,
+        待出库 = 4,
+        出库中未下架 = 5,
+        出库中已下架 = 6,
+        出库完成 = 7
     }
 
     public enum AREA_TYPE
@@ -116,10 +117,10 @@ namespace ApplicationCore.Misc
         出库 = 1
     }
 
-    public enum INOUTRECORD_TYPE
+    public enum TASK_FLAG
     {
-        无流程=0,
-        流程=1
+        入库 = 0,
+        出库 = 1
     }
 
     public enum RESERVOIRAREA_TYPE

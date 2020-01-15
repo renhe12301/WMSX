@@ -6,8 +6,8 @@ namespace ApplicationCore.Entities.OrganizationManager
     /// </summary>
     public class RoleMenu:BaseEntity
     {
-       public int RoleId { get; set; }
-       public int MenuId { get; set; }
+       public int SysRoleId { get; set; }
+       public int SysMenuId { get; set; }
        public SysRole SysRole { get; set; }
        public SysMenu SysMenu { get; set; }
     }

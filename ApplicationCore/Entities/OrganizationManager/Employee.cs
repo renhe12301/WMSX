@@ -14,8 +14,7 @@ namespace ApplicationCore.Entities.OrganizationManager
         public string Address { get; set; }
         public int Status { get; set; }
         public DateTime CreateTime { get; set; }
-        public int ParentId { get; set; }
-        public int Type { get; set; }
+        public int OrganizationId { get; set; }
         public string Memo { get; set; }
         
     }

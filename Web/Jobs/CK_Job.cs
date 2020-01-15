@@ -44,6 +44,8 @@ namespace Web.Jobs
                     ,null
                     ,null
                     ,null
+                    ,null
+                    ,null
                     );
                 var awaitTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
                 var groupTrays = awaitTrays.GroupBy(g => g.WarehouseId);
@@ -54,18 +56,14 @@ namespace Web.Jobs
                         var wid = gTray.Key;
                         WarehouseSpecification warehouseSpec = new WarehouseSpecification(wid, null, null, null);
                         var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-                        if (warehouses.Count > 0 && !string.IsNullOrEmpty(warehouses[0].WCSWebUrl))
+                        if (warehouses.Count > 0 && !string.IsNullOrEmpty(warehouses[0].Organization.Memo))
                         {
-                            string weburl = warehouses[0].WCSWebUrl;
-                            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,
-                                null, wid, Convert.ToInt32(RESERVOIRAREA_TYPE.出库库区), null);
-                            var ckAreas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                            if (ckAreas.Count == 0)
-                                throw new Exception(string.Format("仓库[{0}]没有配置出库区,无法出库！", wid));
-                            var ckArea = ckAreas[0];
-                            LocationSpecification locationSpec = new LocationSpecification(null, null, wid,
-                                                                               ckArea.Id, null, null, null);
-
+                            string weburl = warehouses[0].Memo;
+                           
+                            LocationSpecification locationSpec = new LocationSpecification(null, null,null,null, null, null,
+                                                  Convert.ToInt32(LOCATION_TYPE.仓库区货位),
+                                                  Convert.ToInt32(LOCATION_STATUS.正常),
+                                                  Convert.ToInt32(LOCATION_INSTOCK.无货));
                             var locations = await this._locationRepository.ListAsync(locationSpec);
                             int index = 0;
                             //发送wcs任务

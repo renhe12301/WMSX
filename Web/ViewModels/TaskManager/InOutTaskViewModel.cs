@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Web.ViewModels.StockManager;
 namespace Web.ViewModels.TaskManager
 {
     public class InOutTaskViewModel
@@ -31,6 +31,6 @@ namespace Web.ViewModels.TaskManager
         public string LocationCode { get; set; }
         public int VehicleId { get; set; }
         public string VehicleName { get; set; }
-        public List<string> TrayCodes = new List<string>();
+        public List<WarehouseTrayViewModel> WarehouseTrayViewModels = new List<WarehouseTrayViewModel>();
     }
 }

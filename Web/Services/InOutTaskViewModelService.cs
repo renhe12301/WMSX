@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ApplicationCore.Misc;
 using Web.ViewModels.StockManager;
+using ApplicationCore.Entities.StockManager;
 
 namespace Web.Services
 {
@@ -29,6 +30,8 @@ namespace Web.Services
 
         public async Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex, int? itemsPage,
                                              int? id, string status,string steps,
+                                              int? orgId, int? ouId,
+                                              int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
         {
@@ -53,12 +56,12 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutTaskPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,taskStatus, taskSteps, sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
+                        id,taskStatus, taskSteps,orgId,ouId, wareHouseId,areaId, sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
                 }
                 else
                 {
                     baseSpecification = new InOutTaskSpecification(id, 
-                        taskStatus,taskSteps, sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
+                        taskStatus,taskSteps, orgId, ouId, wareHouseId, areaId, sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
                 }
 
                 var tasks = await this._inOutTaskRepository.ListAsync(baseSpecification);
@@ -97,7 +100,7 @@ namespace Web.Services
             try
             {
                 await this._inOutTaskService.EmptyAwaitInApply(warehouseTrayViewModel.Code,
-                                             warehouseTrayViewModel.WarehouseId,warehouseTrayViewModel.ReservoirId);
+                                             warehouseTrayViewModel.WarehouseId);
             }
             catch (Exception ex)
             {
@@ -112,9 +115,16 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                if (!inOutTaskViewModel.WarehouseId.HasValue) throw new Exception("仓库编号不能为空！");
+                List<WarehouseTray> warehouseTrays = new List<WarehouseTray>();
+                inOutTaskViewModel.WarehouseTrayViewModels.ForEach(w =>
+                {
+                    WarehouseTray warehouseTray = new WarehouseTray();
+                    warehouseTray.OutCount = w.OutCount;
+                    warehouseTray.Code = w.Code;
+                    warehouseTrays.Add(warehouseTray);
+                });
                 await this._inOutTaskService.AwaitOutApply(inOutTaskViewModel.OrderId,inOutTaskViewModel.OrderRowId
-                    ,inOutTaskViewModel.TrayCodes);
+                    , warehouseTrays);
             }
             catch (Exception ex)
             {

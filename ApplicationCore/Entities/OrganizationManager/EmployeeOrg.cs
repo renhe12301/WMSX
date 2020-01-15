@@ -7,7 +7,7 @@ namespace ApplicationCore.Entities.OrganizationManager
     public class EmployeeOrg : BaseEntity
     {
         public int EmployeeId { get; set; }
-        public int OrgId { get; set; }
+        public int OrganizationId { get; set; }
         public int WarehouseId { get; set; }
 
         public Employee Employee { get; set; }

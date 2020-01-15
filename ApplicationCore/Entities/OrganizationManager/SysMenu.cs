@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 namespace ApplicationCore.Entities.OrganizationManager
 {
-    /// <summary>
-    /// 系统菜单实体类
-    /// </summary>
     public class SysMenu : BaseEntity
     {
         public string MenuName { get; set; }

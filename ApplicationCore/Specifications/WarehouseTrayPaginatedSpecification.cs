@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseTrayPaginatedSpecification(int skip,int take,int? id,string trayCode, List<int> rangeMaterialCount,
             int? trayDicId, int? orderId,int? orderRowId, int? carrier,
-            List<int> traySteps, int? locationId,int? wareHouseId,int? areaId)
+            List<int> traySteps, int? locationId, int? orgId, int? ouId, int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (trayCode == null || b.Code == trayCode) &&
                       (rangeMaterialCount == null || (b.MaterialCount >= rangeMaterialCount[0] && b.MaterialCount <= rangeMaterialCount[0])) &&
@@ -20,6 +20,8 @@ namespace ApplicationCore.Specifications
                       (carrier == null || b.Carrier == carrier)&&
                       (traySteps == null || traySteps.Contains(b.TrayStep.Value)) &&
                       (!locationId.HasValue||b.LocationId==locationId)&&
+                      (!orgId.HasValue || b.OrganizationId == orgId) &&
+                      (!ouId.HasValue || b.OUId == ouId) &&
                       (!wareHouseId.HasValue||b.WarehouseId==wareHouseId)&&
                       (!areaId.HasValue||b.ReservoirAreaId==areaId))
         {

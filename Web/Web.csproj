@@ -12,7 +12,6 @@
     <Folder Include="Services\" />
     <Folder Include="Controllers\Api\" />
     <Folder Include="Jobs\" />
-    <Folder Include="HealthChecks\" />
     <Folder Include="ViewModels\OrderManager\" />
     <Folder Include="ViewModels\OrganizationManager\" />
     <Folder Include="ViewModels\BasicInformation\" />
