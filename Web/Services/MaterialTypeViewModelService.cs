@@ -7,6 +7,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Web.Services
 {
@@ -63,7 +64,7 @@ namespace Web.Services
             try
             {
                 BaseSpecification<MaterialType> baseSpecification = null;
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new MaterialTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id, parentId, typeName);
@@ -83,11 +84,24 @@ namespace Web.Services
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
                         Memo = e.Memo,
-                        TypeName = e.TypeName
+                        TypeName = e.TypeName,
+                        ParentId =e.ParentId
                     };
                     materialTypeViewModels.Add(materialTypeViewModel);
                 });
-                response.Data = materialTypeViewModels;
+                materialTypeViewModels.RemoveAll(m => m.ParentId == 0);
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._materialTypeRepository.CountAsync(new MaterialTypeSpecification(id, parentId, typeName));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = materialTypeViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = materialTypeViewModels;
+                }
             }
             catch (Exception ex)
             {
@@ -102,10 +116,10 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                var typeSpec = new MaterialTypeSpecification(rootId,null, null);
+                var typeSpec = new MaterialTypeSpecification(null,null, null);
                 var types = await this._materialTypeRepository.ListAsync(typeSpec);
                 if (types.Count == 0) throw new Exception(string.Format("类型编号{0}不存在", rootId));
-                var materialType = types[0];
+                var materialType = types.Find(m=>m.Id==rootId);
                 TreeViewModel current = new TreeViewModel
                 {
                     Id = materialType.Id,
@@ -126,6 +140,15 @@ namespace Web.Services
         private async Task _MaterialTypeTree(TreeViewModel current, List<TreeViewModel> childs,List<MaterialType> materialTypes)
         {
             var types = materialTypes.FindAll(m=>m.ParentId==current.Id);
+            if (types.Count > 0)
+            {
+                current.Type = "dir";
+            }
+            else
+            {
+                current.Type = "leaf";
+            }
+
             types.ForEach(async (type) =>
             {
                 TreeViewModel child = new TreeViewModel
@@ -135,7 +158,7 @@ namespace Web.Services
                     Name = type.TypeName
                 };
                 childs.Add(child);
-                await _MaterialTypeTree(child, child.Children,types);
+                await _MaterialTypeTree(child, child.Children,materialTypes);
             });
         }
 
