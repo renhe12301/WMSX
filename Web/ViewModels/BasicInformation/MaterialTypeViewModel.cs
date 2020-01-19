@@ -10,7 +10,7 @@ namespace Web.ViewModels.BasicInformation
         public int ParentId { get; set; }
         public string CreateTime { get; set; }
         public string Memo { get; set; }
-        public List<MaterialTypeViewModel> TypeChilds = new List<MaterialTypeViewModel>();
-        public List<MaterialDicViewModel> DicChilds = new List<MaterialDicViewModel>();
-    }
+        public List<int> DicIds { get; set; } 
+    };
+    
 }

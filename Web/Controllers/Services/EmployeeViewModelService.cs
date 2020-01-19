@@ -59,12 +59,39 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> AssignRole(EmployeeRoleViewModel employeeRoleViewModel)
+        public async Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._employeeService.AssignRole(employeeRoleViewModel.EmployeeId,employeeRoleViewModel.RoleIds);
+                await this._employeeService.AssignRole(employeeViewModel.Id,employeeViewModel.RoleIds);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> GetRoles(int employeeId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                EmployeeRoleSpecification employeeRoleSpec=new EmployeeRoleSpecification(null,employeeId,null);
+                var employeeRoles = await this._employeeRoleRepository.ListAsync(employeeRoleSpec);
+                List<SysRoleViewModel> roleViewModels=new List<SysRoleViewModel>();
+                employeeRoles.ForEach(e =>
+                {
+                    SysRoleViewModel roleViewModel = new SysRoleViewModel
+                    {
+                        Id = e.SysRoleId,
+                        RoleName = e.SysRole.RoleName
+                    };
+                    roleViewModels.Add(roleViewModel);
+                });
+                response.Data = roleViewModels;
             }
             catch (Exception ex)
             {
@@ -115,8 +142,8 @@ namespace Web.Services
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
                     {
-                        var roleNames = employeeRoles.FindAll(e => e.EmployeeId == e.Id)
-                            .ConvertAll(e => e.SysRole.RoleName);
+                        var roleNames = employeeRoles.FindAll(er => er.EmployeeId == e.Id)
+                            .ConvertAll(er => er.SysRole.RoleName);
                         EmployeeViewModel employViewModel = new EmployeeViewModel
                         {
                             Id = e.Id,
@@ -167,10 +194,10 @@ namespace Web.Services
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
                     {
-                        var roleNames = employeeRoles.FindAll(e => e.EmployeeId == e.Id)
-                            .ConvertAll(e => e.SysRole.RoleName);
-                        var orgNames = employeeOrgs.FindAll(e => e.EmployeeId == e.Id)
-                            .ConvertAll(e => e.Organization.OrgName);
+                        var roleNames = employeeRoles.FindAll(er => er.EmployeeId == e.Id)
+                            .ConvertAll(er => er.SysRole.RoleName);
+                        var orgNames = employeeOrgs.FindAll(eo => eo.EmployeeId == e.Id)
+                            .ConvertAll(eo => eo.Organization.OrgName);
                         EmployeeViewModel employViewModel = new EmployeeViewModel
                         {
                             Id = e.Id,

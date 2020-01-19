@@ -106,12 +106,13 @@ namespace Web.Services
                 var types = await this._materialTypeRepository.ListAsync(typeSpec);
                 if (types.Count == 0) throw new Exception(string.Format("类型编号{0}不存在", rootId));
                 var materialType = types[0];
-                MaterialTypeViewModel current = new MaterialTypeViewModel
+                TreeViewModel current = new TreeViewModel
                 {
                     Id = materialType.Id,
-                    TypeName = materialType.TypeName
+                    ParentId = materialType.ParentId,
+                    Name = materialType.TypeName
                 };
-                await _MaterialTypeTree(current, current.TypeChilds);
+                await _MaterialTypeTree(current, current.Children,types);
                 response.Data = current;
             }
             catch (Exception ex)
@@ -122,20 +123,19 @@ namespace Web.Services
             return response;
         }
 
-        private async Task _MaterialTypeTree(MaterialTypeViewModel current, List<MaterialTypeViewModel> childs)
+        private async Task _MaterialTypeTree(TreeViewModel current, List<TreeViewModel> childs,List<MaterialType> materialTypes)
         {
-            var typeSpec = new MaterialTypeSpecification(null, current.ParentId, null);
-            var types = await this._materialTypeRepository.ListAsync(typeSpec);
-            types.ForEach(async (org) =>
+            var types = materialTypes.FindAll(m=>m.ParentId==current.Id);
+            types.ForEach(async (type) =>
             {
-                MaterialTypeViewModel child = new MaterialTypeViewModel
+                TreeViewModel child = new TreeViewModel
                 {
-                    Id = org.Id,
-                    ParentId = org.ParentId,
-                    TypeName = org.TypeName
+                    Id = type.Id,
+                    ParentId = type.ParentId,
+                    Name = type.TypeName
                 };
                 childs.Add(child);
-                await _MaterialTypeTree(child, child.TypeChilds);
+                await _MaterialTypeTree(child, child.Children,types);
             });
         }
 
@@ -164,8 +164,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                List<int> materialIds = materialTypeViewModel.DicChilds.ConvertAll(c => c.Id);
-                await this._materialTypeService.AssignMaterialDic(materialTypeViewModel.Id,materialIds);
+                await this._materialTypeService.AssignMaterialDic(materialTypeViewModel.Id,materialTypeViewModel.DicIds);
             }
             catch (Exception ex)
             {

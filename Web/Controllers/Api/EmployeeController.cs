@@ -36,6 +36,18 @@ namespace Web.Controllers.Api
             var response  = await this._employeeViewModelService.GetEmployees(pageIndex,itemsPage,orgId,employeeId, employeeName);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 获取员工对应的角色信息
+        /// </summary>
+        /// <param name="employeeId">员工编号</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetRoles(int employeeId)
+        {
+            var response  = await this._employeeViewModelService.GetRoles(employeeId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
         /// <summary>
         /// 添加员工信息
@@ -76,12 +88,12 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 分配员工角色
         /// </summary>
-        /// <param name="employeeRoleViewModel">员工角色实体</param>
+        /// <param name="employeeViewModel">员工角色实体</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> AssignRole(EmployeeRoleViewModel employeeRoleViewModel)
+        public async Task<IActionResult> AssignRole(EmployeeViewModel employeeViewModel)
         {
-            var response = await this._employeeViewModelService.AssignRole(employeeRoleViewModel);
+            var response = await this._employeeViewModelService.AssignRole(employeeViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
 

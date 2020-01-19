@@ -222,6 +222,28 @@
             <e p="WarehouseMaterialController.cs" t="Include" />
             <e p="WarehouseTrayController.cs" t="Include" />
           </e>
+          <e p="Services" t="Include">
+            <e p="CustomerViewModelService.cs" t="Include" />
+            <e p="EmployeeViewModelService.cs" t="Include" />
+            <e p="InOutRecordViewModelService.cs" t="Include" />
+            <e p="InOutTaskViewModelService.cs" t="Include" />
+            <e p="LocationViewModelService.cs" t="Include" />
+            <e p="MaterialDicViewModelService.cs" t="Include" />
+            <e p="MaterialTypeViewModelService.cs" t="Include" />
+            <e p="MaterialUnitViewModelService.cs" t="Include" />
+            <e p="OrderViewModelService.cs" t="Include" />
+            <e p="OrganizationViewModelService.cs" t="Include" />
+            <e p="OUViewModelService.cs" t="Include" />
+            <e p="ReservoirAreaViewModelService.cs" t="Include" />
+            <e p="SupplierViewModelService.cs" t="Include" />
+            <e p="SysMenuViewModelService.cs" t="Include" />
+            <e p="SysRoleViewModelService.cs" t="Include" />
+            <e p="TrayDicViewModelService.cs" t="Include" />
+            <e p="TrayTypeViewModelService.cs" t="Include" />
+            <e p="WarehouseMaterialViewModelService.cs" t="Include" />
+            <e p="WarehouseTrayViewModelService.cs" t="Include" />
+            <e p="WarehouseViewModelService.cs" t="Include" />
+          </e>
         </e>
         <e p="Interfaces" t="Include">
           <e p="ICustomerViewModelService.cs" t="Include" />
@@ -264,28 +286,6 @@
           <e p="launchSettings.json" t="Include" />
         </e>
         <e p="quartz_jobs.xml" t="Include" />
-        <e p="Services" t="Include">
-          <e p="CustomerViewModelService.cs" t="Include" />
-          <e p="EmployeeViewModelService.cs" t="Include" />
-          <e p="InOutRecordViewModelService.cs" t="Include" />
-          <e p="InOutTaskViewModelService.cs" t="Include" />
-          <e p="LocationViewModelService.cs" t="Include" />
-          <e p="MaterialDicViewModelService.cs" t="Include" />
-          <e p="MaterialTypeViewModelService.cs" t="Include" />
-          <e p="MaterialUnitViewModelService.cs" t="Include" />
-          <e p="OrderViewModelService.cs" t="Include" />
-          <e p="OrganizationViewModelService.cs" t="Include" />
-          <e p="OUViewModelService.cs" t="Include" />
-          <e p="ReservoirAreaViewModelService.cs" t="Include" />
-          <e p="SupplierViewModelService.cs" t="Include" />
-          <e p="SysMenuViewModelService.cs" t="Include" />
-          <e p="SysRoleViewModelService.cs" t="Include" />
-          <e p="TrayDicViewModelService.cs" t="Include" />
-          <e p="TrayTypeViewModelService.cs" t="Include" />
-          <e p="WarehouseMaterialViewModelService.cs" t="Include" />
-          <e p="WarehouseTrayViewModelService.cs" t="Include" />
-          <e p="WarehouseViewModelService.cs" t="Include" />
-        </e>
         <e p="SlugifyParameterTransformer.cs" t="Include" />
         <e p="Startup.cs" t="Include" />
         <e p="ViewModels" t="Include">
@@ -311,7 +311,6 @@
             <e p="OrderViewModel.cs" t="Include" />
           </e>
           <e p="OrganizationManager" t="Include">
-            <e p="EmployeeRoleViewModel.cs" t="Include" />
             <e p="EmployeeViewModel.cs" t="Include" />
             <e p="OrganizationViewModel.cs" t="Include" />
             <e p="OUViewModel.cs" t="Include" />

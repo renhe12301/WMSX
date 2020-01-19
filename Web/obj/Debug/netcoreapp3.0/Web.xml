@@ -41,6 +41,13 @@
             <param name="employeeName">用户名</param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.EmployeeController.GetRoles(System.Int32)">
+            <summary>
+            获取员工对应的角色信息
+            </summary>
+            <param name="employeeId">员工编号</param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.EmployeeController.AddEmployee(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
             <summary>
             添加员工信息
@@ -62,11 +69,11 @@
             <param name="employViewModel">员工信息JSON对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.AssignRole(Web.ViewModels.OrganizationManager.EmployeeRoleViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.AssignRole(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
             <summary>
             分配员工角色
             </summary>
-            <param name="employeeRoleViewModel">员工角色实体</param>
+            <param name="employeeViewModel">员工角色实体</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
@@ -505,7 +512,6 @@
             <param name="pageIndex">当前页索引</param>
             <param name="itemsPage">当前页大小</param>
             <param name="id">角色编号</param>
-            <param name="parentId">父编号</param>
             <param name="roleName">角色名称</param>
             <returns></returns>
         </member>

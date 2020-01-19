@@ -29,7 +29,6 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">当前页索引</param>
         /// <param name="itemsPage">当前页大小</param>
         /// <param name="id">角色编号</param>
-        /// <param name="parentId">父编号</param>
         /// <param name="roleName">角色名称</param>
         /// <returns></returns>
         [HttpGet]

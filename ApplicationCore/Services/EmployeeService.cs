@@ -35,7 +35,6 @@ namespace ApplicationCore.Services
         public async Task AssignRole(int employeeId,List<int> roleIds)
         {
             Guard.Against.Zero(employeeId, nameof(employeeId));
-            Guard.Against.NullOrEmpty(roleIds, nameof(roleIds));
 
             EmployeeRoleSpecification erSpec = new EmployeeRoleSpecification(null, employeeId,null);
             var emRoles = await this._employeeRoleRepository.ListAsync(erSpec);
