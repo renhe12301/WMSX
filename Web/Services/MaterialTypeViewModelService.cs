@@ -15,12 +15,14 @@ namespace Web.Services
     {
         private readonly IMaterialTypeService _materialTypeService;
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
-
+        private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
         public MaterialTypeViewModelService(IMaterialTypeService materialTypeService,
-                                            IAsyncRepository<MaterialType> materialTypeRepository)
+                                            IAsyncRepository<MaterialType> materialTypeRepository,
+                                            IAsyncRepository<MaterialDicType> materialDicTypeRepository)
         {
             this._materialTypeService = materialTypeService;
             this._materialTypeRepository = materialTypeRepository;
+            this._materialDicTypeRepository = materialDicTypeRepository;
         }
 
         public async Task<ResponseResultViewModel> AddMaterialType(MaterialTypeViewModel materialTypeViewModel)
@@ -111,6 +113,62 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> GetMaterialTypeDics(int? pageIndex, int? itemsPage, int? typeId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                BaseSpecification<MaterialDicType> baseSpecification = null;
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
+                {
+                    baseSpecification = new MaterialDicTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                        null,typeId,null,null,null);
+                }
+                else
+                {
+                    baseSpecification = new MaterialDicTypeSpecification(null,typeId,null,null,null);
+                }
+
+                var materialDicTypes = await this._materialDicTypeRepository.ListAsync(baseSpecification);
+                List<MaterialDicViewModel>  materialDicViewModels = new List<MaterialDicViewModel>();
+
+                materialDicTypes.ForEach(e =>
+                {
+                    MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
+                    {
+                        Id = e.MaterialDic.Id,
+                        MaterialCode = e.MaterialDic.MaterialCode,
+                        MaterialName = e.MaterialDic.MaterialName,
+                        CreateTime = e.MaterialDic.CreateTime.ToString(),
+                        Img = e.MaterialDic.Img,
+                        Spec = e.MaterialDic.Spec,
+                        Memo = e.MaterialDic.Memo,
+                        UpLimit = e.MaterialDic.UpLimit,
+                        DownLimit = e.MaterialDic.DownLimit
+                    };
+                    materialDicViewModels.Add(materialDicViewModel);
+                });
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._materialDicTypeRepository.CountAsync(new MaterialDicTypeSpecification(null,typeId,null,null,null));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = materialDicViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = materialDicViewModels;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> GetMaterialTypeTrees(int rootId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -141,13 +199,9 @@ namespace Web.Services
         {
             var types = materialTypes.FindAll(m=>m.ParentId==current.Id);
             if (types.Count > 0)
-            {
                 current.Type = "dir";
-            }
             else
-            {
                 current.Type = "leaf";
-            }
 
             types.ForEach(async (type) =>
             {
@@ -169,8 +223,9 @@ namespace Web.Services
             {
                 MaterialType materialType = new MaterialType
                 {
-                    TypeName = materialTypeViewModel.TypeName,
-                    CreateTime = DateTime.Now
+                    Id = materialTypeViewModel.Id,
+                    ParentId = materialTypeViewModel.ParentId,
+                    TypeName = materialTypeViewModel.TypeName
                 };
                 await this._materialTypeService.UpdateMaterialType(materialType);
             }

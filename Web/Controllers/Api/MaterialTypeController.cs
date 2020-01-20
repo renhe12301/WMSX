@@ -87,6 +87,20 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
+        /// 获取物料类型字典信息
+        /// </summary>
+        /// <param name="pageIndex">当前页索引</param>
+        /// <param name="itemsPage">页面显示大小</param>
+        /// <param name="typeId">物料类型编号</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetMaterialTypeDics(int? pageIndex, int? itemsPage, int? typeId)
+        {
+            var response = await this._materialTypeViewModelService.GetMaterialTypeDics(pageIndex, itemsPage, typeId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
         /// 获取物料类型树
         /// </summary>
         /// <param name="rootId"></param>

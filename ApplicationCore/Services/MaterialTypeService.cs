@@ -80,7 +80,10 @@ namespace ApplicationCore.Services
             Guard.Against.Null(materialType,nameof(materialType));
             Guard.Against.NullOrEmpty(materialType.TypeName,nameof(materialType.TypeName));
             Guard.Against.Zero(materialType.Id, nameof(materialType.Id));
-            MaterialTypeSpecification mTypeSpec = new MaterialTypeSpecification(materialType.Id, null, null);
+            MaterialTypeSpecification mTypeSpec = new MaterialTypeSpecification(null, null, materialType.TypeName);
+            var types = await this._materialTypeRepository.ListAsync(mTypeSpec);
+            if (types.Count > 0) throw new Exception(string.Format("物料类型名称[{0}],已经存在！", materialType.TypeName));
+            mTypeSpec = new MaterialTypeSpecification(materialType.Id, null, null);
             var materialTypes = await this._materialTypeRepository.ListAsync(mTypeSpec);
             Guard.Against.Zero(materialTypes.Count, nameof(materialTypes.Count));
             var updMaterialType = materialTypes[0];
