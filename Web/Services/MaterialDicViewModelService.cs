@@ -7,6 +7,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Web.Services
 {
@@ -37,10 +38,12 @@ namespace Web.Services
                     MaterialCode = materialDicViewModel.MaterialCode,
                     MaterialName = materialDicViewModel.MaterialName,
                     CreateTime = DateTime.Now,
-                    UnitId = materialDicViewModel.UnitId,
+                    MaterialUnitId = materialDicViewModel.UnitId,
                     Img = materialDicViewModel.Img,
                     Spec = materialDicViewModel.Spec,
-                    Memo = materialDicViewModel.Memo
+                    Memo = materialDicViewModel.Memo,
+                    UpLimit = materialDicViewModel.UpLimit,
+                    DownLimit = materialDicViewModel.DownLimit
                 };
                 await this._materialDicService.AddMaterialDic(materialDic);
             }
@@ -69,46 +72,110 @@ namespace Web.Services
 
         public async Task<ResponseResultViewModel> GetMaterialDics(int? pageIndex, int? itemsPage,
                                              int? id, string materialCode, string materialName,
-                                             string spec, int? typeId, int? unitId, int? upLimit,
-                                             int? downLimit)
+                                             string spec, int? typeId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                BaseSpecification<MaterialDicType> baseSpecification = null;
-
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                if (typeId.HasValue)
                 {
-                    baseSpecification = new MaterialDicTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id, typeId, materialCode,materialName,spec,unitId,upLimit,downLimit);
+                    BaseSpecification<MaterialDicType> baseSpecification = null;
+
+                    if (pageIndex.HasValue && pageIndex >-1 && itemsPage.HasValue && itemsPage > 0)
+                    {
+                        baseSpecification = new MaterialDicTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                            id, typeId, materialCode,materialName,spec);
+                    }
+                    else
+                    {
+                        baseSpecification = new MaterialDicTypeSpecification(id, typeId, materialCode, materialName,
+                            spec);
+                    }
+                    var materialDicTypes = await this._materialDicTypeRepository.ListAsync(baseSpecification);
+                    List<MaterialDicViewModel> materialDicViewModels = new List<MaterialDicViewModel>();
+
+                    materialDicTypes.ForEach(e =>
+                    {
+                        MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
+                        {
+                            Id = e.Id,
+                            MaterialCode = e.MaterialDic.MaterialCode,
+                            MaterialName = e.MaterialDic.MaterialName,
+                            TypeName = e.MaterialType.TypeName,
+                            UnitId = e.MaterialDic.MaterialUnitId,
+                            UnitName = e.MaterialDic.MaterialUnit.UnitName,
+                            CreateTime = e.MaterialDic.CreateTime.ToString(),
+                            Spec = e.MaterialDic.Spec,
+                            Img = e.MaterialDic.Img,
+                            Memo = e.MaterialDic.Memo
+                        };
+                        materialDicViewModels.Add(materialDicViewModel);
+                    });
+                    if (pageIndex > -1 && itemsPage > 0)
+                    {
+                        var count = await this._materialDicTypeRepository.CountAsync(new MaterialDicTypeSpecification(
+                            id, typeId, materialCode, materialName,
+                            spec));
+                        dynamic dyn = new ExpandoObject();
+                        dyn.rows = materialDicViewModels;
+                        dyn.total = count;
+                        response.Data = dyn;
+                    }
+                    else
+                    {
+                        response.Data = materialDicViewModels;
+                    }
                 }
                 else
                 {
-                    baseSpecification = new MaterialDicTypeSpecification(id,typeId, materialCode, materialName,
-                                            spec, unitId);
-                }
-                var materialDicTypes = await this._materialDicTypeRepository.ListAsync(baseSpecification);
-                List<MaterialDicViewModel> materialDicViewModels = new List<MaterialDicViewModel>();
+                    BaseSpecification<MaterialDic> baseSpecification = null;
 
-                materialDicTypes.ForEach(e =>
-                {
-                    MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
+                    if (pageIndex.HasValue && pageIndex >-1 && itemsPage.HasValue && itemsPage > 0)
                     {
-                        Id = e.Id,
-                        MaterialCode = e.MaterialDic.MaterialCode,
-                        MaterialName = e.MaterialDic.MaterialName,
-                        TypeId = e.MaterialType.Id,
-                        TypeName = e.MaterialType.TypeName,
-                        UnitId = e.MaterialDic.UnitId,
-                        UnitName = e.MaterialDic.MaterialUnit.UnitName,
-                        CreateTime = e.MaterialDic.CreateTime.ToString(),
-                        Spec = e.MaterialDic.Spec,
-                        Img = e.MaterialDic.Img,
-                        Memo = e.MaterialDic.Memo
-                    };
-                    materialDicViewModels.Add(materialDicViewModel);
-                });
-                response.Data = materialDicViewModels;
+                        baseSpecification = new MaterialDicPaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                            id,  materialCode,materialName,spec);
+                    }
+                    else
+                    {
+                        baseSpecification = new MaterialDicSpecification(id, materialCode, materialName,
+                            spec);
+                    }
+                    var materialDics = await this._materialDicRepository.ListAsync(baseSpecification);
+                    List<MaterialDicViewModel> materialDicViewModels = new List<MaterialDicViewModel>();
+
+                    materialDics.ForEach(e =>
+                    {
+                        MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
+                        {
+                            Id = e.Id,
+                            MaterialCode = e.MaterialCode,
+                            MaterialName = e.MaterialName,
+                            UnitId = e.MaterialUnitId,
+                            UnitName = e.MaterialUnit?.UnitName,
+                            CreateTime = e.CreateTime.ToString(),
+                            Spec = e.Spec,
+                            Img = e.Img,
+                            Memo = e.Memo,
+                            UpLimit = e.UpLimit,
+                            DownLimit = e.DownLimit
+                        };
+                        materialDicViewModels.Add(materialDicViewModel);
+                    });
+                    if (pageIndex > -1&&itemsPage>0)
+                    {
+                        var count = await this._materialDicRepository.CountAsync(new MaterialDicSpecification(id, materialCode, materialName,
+                            spec));
+                        dynamic dyn = new ExpandoObject();
+                        dyn.rows = materialDicViewModels;
+                        dyn.total = count;
+                        response.Data = dyn;
+                    }
+                    else
+                    {
+                        response.Data = materialDicViewModels;
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -130,10 +197,12 @@ namespace Web.Services
                     MaterialCode = materialDicViewModel.MaterialCode,
                     MaterialName = materialDicViewModel.MaterialName,
                     CreateTime = DateTime.Now,
-                    UnitId = materialDicViewModel.UnitId,
+                    MaterialUnitId = materialDicViewModel.UnitId,
                     Img = materialDicViewModel.Img,
                     Spec = materialDicViewModel.Spec,
-                    Memo = materialDicViewModel.Memo
+                    Memo = materialDicViewModel.Memo,
+                    UpLimit = materialDicViewModel.UpLimit,
+                    DownLimit = materialDicViewModel.DownLimit
                 };
                 await this._materialDicService.UpdateMaterialDic(materialDic);
             }

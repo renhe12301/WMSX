@@ -21,6 +21,8 @@ namespace Infrastructure.Data
         public DbSet<EmployeeOrg> EmployeeOrg { get; set; }
         public DbSet<MaterialType> MaterialType { get; set; }
         public DbSet<MaterialDic> MaterialDic { get; set; }
+        public DbSet<MaterialDicType> MaterialDicType { get; set; }
+        public DbSet<MaterialUnit> MaterialUnit { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

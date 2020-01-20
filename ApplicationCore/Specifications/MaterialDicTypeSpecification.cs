@@ -7,17 +7,15 @@ namespace ApplicationCore.Specifications
     {
         public MaterialDicTypeSpecification(int? dicId,int? typeId,
                                             string materialCode, string materialName,
-                                            string spec, int? unitId)
+                                            string spec)
            :base(b =>   (!dicId.HasValue || b.MaterialDic.Id == dicId) &&
-                        (!typeId.HasValue || b.MaterialType.Id == dicId) &&
+                        (!typeId.HasValue || b.MaterialType.Id == typeId) &&
                         (materialCode == null || b.MaterialDic.MaterialCode == materialCode) &&
-                        (materialName == null||b.MaterialDic.MaterialName==materialName)&&
-                        (spec==null||b.MaterialDic.Spec==spec)&&
-                        (!unitId.HasValue || b.MaterialDic.MaterialUnit.Id == unitId))
+                        (materialName == null||b.MaterialDic.MaterialName.Contains(materialName))&&
+                        (spec==null||b.MaterialDic.Spec.Contains(spec)))
         {
             AddInclude(b => b.MaterialDic);
             AddInclude(b => b.MaterialType);
-            AddInclude($"{nameof(MaterialDicType.MaterialDic)}.{nameof(MaterialDic.MaterialUnit)}");
         }
     }
 }

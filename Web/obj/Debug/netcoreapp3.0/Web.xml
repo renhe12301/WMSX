@@ -187,7 +187,7 @@
             物料字典操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.MaterialDicController.GetMaterialDics(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:Web.Controllers.Api.MaterialDicController.GetMaterialDics(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
             获取物料字典信息
             </summary>
@@ -198,9 +198,6 @@
             <param name="materialName">物料字典名称</param>
             <param name="spec">物料字典规格</param>
             <param name="typeId">物料字典类型编号</param>
-            <param name="unitId">物料字典单位编号</param>
-            <param name="upLimit">物料上限</param>
-            <param name="downLimit">物料下限</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.MaterialDicController.AddMaterialDic(Web.ViewModels.BasicInformation.MaterialDicViewModel)">
@@ -236,6 +233,13 @@
             <param name="materialTypeViewModel">物料类型实体对象</param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.MaterialTypeController.AssignMaterialDic(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
+            <summary>
+            分配物料字典到物料类型
+            </summary>
+            <param name="materialTypeViewModel"></param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.MaterialTypeController.UpdateMaterialType(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
             <summary>
             更新物料类型
@@ -261,7 +265,7 @@
             <param name="typeName">物料类型名称</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.MaterialTypeController.GetMaterialTypeTree(System.Int32)">
+        <member name="M:Web.Controllers.Api.MaterialTypeController.GetMaterialTypeTrees(System.Int32)">
             <summary>
             获取物料类型树
             </summary>

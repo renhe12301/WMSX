@@ -80,7 +80,7 @@ namespace ApplicationCore.Services
             var area = areas[0];
             //验证物料字典是否存在
             var mcode = NPinyin.Pinyin.GetInitials(area.AreaName);
-            var materialDicSpec = new MaterialDicSpecification(null, mcode,null,null,null);
+            var materialDicSpec = new MaterialDicSpecification(null, mcode,null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             MaterialDic materialDic = null;
             if (materialDics.Count == 0)

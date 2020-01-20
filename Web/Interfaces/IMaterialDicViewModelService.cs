@@ -13,7 +13,6 @@ namespace Web.Interfaces
        Task<ResponseResultViewModel> GetMaterialDics(int? pageIndex, int? itemsPage,
                                                       int? id, string materialCode,
                                                       string materialName,string spec,
-                                                      int? typeId,int? unitId,int? upLimit,
-                                                      int? downLimit);
+                                                      int? typeId);
     }
 }

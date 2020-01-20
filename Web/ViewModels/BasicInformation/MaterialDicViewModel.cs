@@ -9,7 +9,6 @@ namespace Web.ViewModels.BasicInformation
         public string Spec { get; set; }
         public int? UnitId { get; set; }
         public string UnitName { get; set; }
-        public int? TypeId { get; set; }
         public string TypeName { get; set; }
         public string Img { get; set; }
         public string CreateTime { get; set; }

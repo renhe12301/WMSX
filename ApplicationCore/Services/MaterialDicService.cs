@@ -27,7 +27,8 @@ namespace ApplicationCore.Services
 
             if (string.IsNullOrEmpty(materialDic.MaterialCode))
                 materialDic.MaterialCode = NPinyin.Pinyin.GetPinyin(materialDic.MaterialCode);
-            MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(null, materialDic.MaterialCode,null,null,null);
+            MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(null, materialDic.MaterialCode,
+                null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             if (materialDics.Count > 0) throw new Exception(string.Format("物料编码[{0}],已经存在！",materialDic.MaterialCode));
 
@@ -38,8 +39,9 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(id, nameof(id));
             MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(id,
-                                                       null,null,null,null);
-            MaterialDicTypeSpecification materialDicTypeSpec = new MaterialDicTypeSpecification(id, null, null, null, null, null);
+                                                       null,null,null);
+            MaterialDicTypeSpecification materialDicTypeSpec = new MaterialDicTypeSpecification(id, null, 
+                null, null, null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             var materialDicTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
             Guard.Against.Zero(materialDics.Count, nameof(materialDics));
@@ -56,7 +58,7 @@ namespace ApplicationCore.Services
             Guard.Against.Null(materialDic, nameof(materialDic));
             Guard.Against.Zero(materialDic.Id, nameof(materialDic.Id));
             MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(materialDic.Id,
-                                                           null,null,null,null);
+                                                           null,null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             Guard.Against.Zero(materialDics.Count, nameof(materialDics));
             var updMaterialDic = materialDics[0];
@@ -64,8 +66,8 @@ namespace ApplicationCore.Services
                 updMaterialDic.MaterialName = materialDic.MaterialName;
             if (!string.IsNullOrEmpty(materialDic.Spec))
                 updMaterialDic.Spec = materialDic.Spec;
-            if (materialDic.UnitId.HasValue)
-                updMaterialDic.UnitId = materialDic.UnitId;
+            if (materialDic.MaterialUnitId.HasValue)
+                updMaterialDic.MaterialUnitId = materialDic.MaterialUnitId;
             await this._materialDicRepository.UpdateAsync(updMaterialDic);
         }
     }

@@ -33,6 +33,18 @@ namespace Web.Controllers.Api
             var response = await this._materialTypeViewModelService.AddMaterialType(materialTypeViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 分配物料字典到物料类型
+        /// </summary>
+        /// <param name="materialTypeViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AssignMaterialDic(MaterialTypeViewModel materialTypeViewModel)
+        {
+            var response = await this._materialTypeViewModelService.AssignMaterialDic(materialTypeViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
         /// <summary>
         /// 更新物料类型
@@ -80,9 +92,9 @@ namespace Web.Controllers.Api
         /// <param name="rootId"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetMaterialTypeTree(int rootId)
+        public async Task<IActionResult> GetMaterialTypeTrees(int rootId)
         {
-            var response = await this._materialTypeViewModelService.GetMaterialTypeTree(rootId);
+            var response = await this._materialTypeViewModelService.GetMaterialTypeTrees(rootId);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

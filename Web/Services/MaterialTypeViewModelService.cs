@@ -111,7 +111,7 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetMaterialTypeTree(int rootId)
+        public async Task<ResponseResultViewModel> GetMaterialTypeTrees(int rootId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try

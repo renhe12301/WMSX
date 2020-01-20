@@ -52,7 +52,7 @@ namespace ApplicationCore.Services
                     {
                         await this._materialTypeRepository.DeleteAsync(delMaterialTypes[0]);
                         MaterialDicTypeSpecification materialDicTypeSpec = new MaterialDicTypeSpecification(null,
-                                                                           id, null, null, null, null);
+                                                                           id, null, null, null);
                         var dicTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
                         await this._materialDicTypeRepository.DeleteAsync(dicTypes);
 
@@ -93,20 +93,24 @@ namespace ApplicationCore.Services
         public async Task AssignMaterialDic(int typeId, List<int> materialDicIds)
         {
             Guard.Against.Zero(typeId, nameof(typeId));
-            Guard.Against.Null(materialDicIds, nameof(materialDicIds));
-            Guard.Against.Zero(materialDicIds.Count, nameof(materialDicIds.Count));
-            this._materialDicTypeRepository.TransactionScope(() =>
+            MaterialDicTypeSpecification materialDicTypeSpec=new MaterialDicTypeSpecification(null,typeId,null,
+                                                                                 null,null);
+            List<MaterialDicType> mdTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
+            if (mdTypes.Count > 0)
+                await this._materialDicTypeRepository.DeleteAsync(mdTypes);
+            
+            List<MaterialDicType> materialDicTypes=new List<MaterialDicType>();
+            materialDicIds.ForEach(async (mId) =>
             {
-                materialDicIds.ForEach(async (mId) =>
+                MaterialDicType materialDicType = new MaterialDicType
                 {
-                    MaterialDicType materialDicType = new MaterialDicType
-                    {
-                        MaterialDicId = mId,
-                        MaterialTypeId=typeId
-                    };
-                    await this._materialDicTypeRepository.AddAsync(materialDicType);
-                });
+                    MaterialDicId = mId,
+                    MaterialTypeId=typeId
+                };
+                materialDicTypes.Add(materialDicType);
             });
+            
+            await this._materialDicTypeRepository.AddAsync(materialDicTypes);
         }
     }
 }

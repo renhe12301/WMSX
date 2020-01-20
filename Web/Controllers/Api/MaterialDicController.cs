@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels.BasicInformation;
 
@@ -29,21 +30,16 @@ namespace Web.Controllers.Api
         /// <param name="materialName">物料字典名称</param>
         /// <param name="spec">物料字典规格</param>
         /// <param name="typeId">物料字典类型编号</param>
-        /// <param name="unitId">物料字典单位编号</param>
-        /// <param name="upLimit">物料上限</param>
-        /// <param name="downLimit">物料下限</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetMaterialDics(int? pageIndex, int? itemsPage,
                                                          int? id, string materialCode,
                                                          string materialName, string spec,
-                                                         int? typeId, int? unitId, int? upLimit,
-                                                         int? downLimit)
+                                                         int? typeId)
         {
             var response = await this._materialDicViewModelService.GetMaterialDics(pageIndex, itemsPage,
-                                         id, materialCode, materialName, spec, typeId, unitId, upLimit,
-                                         downLimit);
-            return Ok(response);
+                                         id, materialCode, materialName, spec, typeId);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AddMaterialDic(MaterialDicViewModel materialDicViewModel)
         {
             var response = await this._materialDicViewModelService.AddMaterialDic(materialDicViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -67,7 +63,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> UpdateMaterialDic(MaterialDicViewModel materialDicViewModel)
         {
             var response = await this._materialDicViewModelService.UpdateMaterialDic(materialDicViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -79,7 +75,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> DelMaterialDic(MaterialDicViewModel materialDicViewModel)
         {
             var response = await this._materialDicViewModelService.DelMaterialDic(materialDicViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
     }
 }
