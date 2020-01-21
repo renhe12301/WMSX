@@ -70,7 +70,6 @@ namespace Web.Services
                                 Progress = om.Progress,
                                 RealityCount=om.RealityCount,
                                 ReservoirAreaName=om.ReservoirArea.AreaName,
-                                WarehouseName=om.Warehouse.WhName,
                                 Sorting = om.Sorting,
                                 Id = om.Id
 
@@ -189,8 +188,7 @@ namespace Web.Services
                     {
                         CreateTime=DateTime.Now,
                         PreCount=or.PreCount,
-                        RealityCount=or.PreCount,
-                        WarehouseId=warehouse.Id
+                        RealityCount=or.PreCount
                     };
                     if (area != null)
                         orderRow.ReservoirAreaId = area.Id;
@@ -212,7 +210,7 @@ namespace Web.Services
             try
             {
                 await this._orderService.SortingOrder2Area(orderRow.OrderId,
-                    orderRow.Id, orderRow.Sorting, orderRow.TrayCode, orderRow.ReservoirAreaId.Value);
+                    orderRow.Id, orderRow.Sorting, orderRow.TrayCode);
             }
             catch (Exception ex)
             {

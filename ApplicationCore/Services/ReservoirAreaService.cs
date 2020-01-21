@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
@@ -14,16 +15,13 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<MaterialDicTypeArea> _areaMaterialRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
-        private readonly ITransactionRepository _transactionRepository;
         public ReservoirAreaService(IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                     IAsyncRepository<Location> locationRepository,
-                                    IAsyncRepository<MaterialDicTypeArea> areaMaterialRepository,
-                                    ITransactionRepository transactionRepository)
+                                    IAsyncRepository<MaterialDicTypeArea> areaMaterialRepository)
         {
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._locationRepository = locationRepository;
             this._areaMaterialRepository = areaMaterialRepository;
-            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddArea(ReservoirArea reservoirArea)
@@ -37,17 +35,16 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
-            this._transactionRepository.Transaction(() =>
+            LocationSpecification locationSpec = new LocationSpecification(null,null,null, null, null, null, null, null, null);
+            var locations = await this._locationRepository.ListAsync(locationSpec);
+            List<Location> updLocations=new List<Location>();
+            locationIds.ForEach(async (id) =>
             {
-                locationIds.ForEach(async (id) =>
-                {
-                    LocationSpecification locationSpec = new LocationSpecification(id,null,null, null, null, null, null, null, null);
-                    var locations = await this._locationRepository.ListAsync(locationSpec);
-                    var location = locations[0];
-                    location.ReservoirAreaId = areaId;
-                    await this._locationRepository.UpdateAsync(location);
-                });
+                var location = locations.Find(l=>l.Id==id);
+                location.ReservoirAreaId = areaId;
+                updLocations.Add(location);
             });
+            await this._locationRepository.UpdateAsync(updLocations);
         }
 
         public async Task AssignMaterialType(int wareHouseId, int areaId, List<int> materialDicTypeIds)
@@ -55,19 +52,18 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(wareHouseId, nameof(wareHouseId));
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(materialDicTypeIds, nameof(materialDicTypeIds));
-            this._transactionRepository.Transaction(() =>
+            List<MaterialDicTypeArea> materialDicTypeAreas=new List<MaterialDicTypeArea>();
+            materialDicTypeIds.ForEach(async (tId) =>
             {
-                materialDicTypeIds.ForEach(async (tId) =>
+                MaterialDicTypeArea areaMaterial = new MaterialDicTypeArea
                 {
-                    MaterialDicTypeArea areaMaterial = new MaterialDicTypeArea
-                    {
-                        WarehouseId = wareHouseId,
-                        ReservoidAreaId = areaId,
-                        MaterialTypeId = tId
-                    };
-                    await this._areaMaterialRepository.AddAsync(areaMaterial);
-                });
+                    WarehouseId = wareHouseId,
+                    ReservoidAreaId = areaId,
+                    MaterialTypeId = tId
+                };
+                materialDicTypeAreas.Add(areaMaterial);
             });
+            await this._areaMaterialRepository.AddAsync(materialDicTypeAreas);
         }
 
         public async Task Disable(int id)

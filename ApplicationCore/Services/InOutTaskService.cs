@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using ApplicationCore.Entities.TaskManager;
 using ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
@@ -22,7 +23,6 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<TrayDic> _trayDicRespository;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRespository;
         private readonly IAsyncRepository<ModuleLock> _moduleLockRespository;
-        private readonly ITransactionRepository _transactionRepository;
 
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
@@ -30,8 +30,7 @@ namespace ApplicationCore.Services
                                 IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
                                 IAsyncRepository<TrayDic> trayRespository,
                                 IAsyncRepository<InOutRecord> inOutRespository,
-                                IAsyncRepository<ModuleLock> moduleLockRespository,
-                                ITransactionRepository transactionRepository)
+                                IAsyncRepository<ModuleLock> moduleLockRespository)
         {
             this._inOutTaskRepository = inOutTaskRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
@@ -40,7 +39,6 @@ namespace ApplicationCore.Services
             this._trayDicRespository = trayRespository;
             this._inOutRecordRespository = inOutRespository;
             this._moduleLockRespository = moduleLockRespository;
-            this._transactionRepository = transactionRepository;
         }
 
 
@@ -119,59 +117,64 @@ namespace ApplicationCore.Services
                 throw new Exception("所属分区没有可用的空货位");
             var areaLocation = areaLocations[0];
             targetCode = areaLocation.SysCode;
-            this._transactionRepository.Transaction(async() =>
+            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中);
+            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+            warehouseTray.LocationId = location.Id;
+            InOutTask inOutTask = new InOutTask
             {
-                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中);
-                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
-                warehouseTray.LocationId = location.Id;
-                InOutTask inOutTask = new InOutTask
+                CreateTime = DateTime.Now,
+                OrderId = warehouseTray.OrderId,
+                OrderRowId = warehouseTray.OrderRowId,
+                WarehouseTrayId = warehouseTray.Id,
+                SrcId = srcCode,
+                TargetId = targetCode,
+                Status = Convert.ToInt32(TASK_STATUS.待处理),
+                Step = Convert.ToInt32(TASK_STEP.已接收),
+                Type = Convert.ToInt32(TASK_FLAG.入库),
+                IsRead=0
+            };
+            areaLocation.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
                 {
-                    CreateTime = DateTime.Now,
-                    OrderId = warehouseTray.OrderId,
-                    OrderRowId = warehouseTray.OrderRowId,
-                    WarehouseTrayId = warehouseTray.Id,
-                    SrcId = srcCode,
-                    TargetId = targetCode,
-                    Status = Convert.ToInt32(TASK_STATUS.待处理),
-                    Step = Convert.ToInt32(TASK_STEP.已接收),
-                    Type = Convert.ToInt32(TASK_FLAG.入库),
-                    IsRead=0
-                };
-                areaLocation.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
-                
-                Task.WaitAll(this._warehouseTrayRepository.UpdateAsync(warehouseTray),
-                             this._inOutTaskRepository.AddAsync(inOutTask),
-                             this._locationRepository.UpdateAsync(areaLocation));
-                
-            });
-
+                    this._warehouseTrayRepository.Update(warehouseTray);
+                    this._inOutTaskRepository.Add(inOutTask);
+                    this._locationRepository.Update(areaLocation);
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public async Task AwaitOutApply(int orderId, int orderRowId, List<WarehouseTray> warehouseTrays)
         {
             Guard.Against.NullOrEmpty(warehouseTrays, nameof(warehouseTrays));
-            this._transactionRepository.Transaction(() =>
-            {
-                warehouseTrays.ForEach(async (warehouseTray) =>
-                {
-                    var mls =await this._moduleLockRespository.ListAllAsync();
-                    var ml = mls[0];
-                    ml.UpdateTime = DateTime.Now;
-                    await this._moduleLockRespository.UpdateAsync(ml);
-                    WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, warehouseTray.Code,
-                                               null, null, null,null,null, null, null, null, null, null, null);
-                    var trays = await this._warehouseTrayRepository.ListAsync(traySpec);
-                    Guard.Against.Zero(trays.Count, nameof(trays.Count));
-                    var tray = trays[0];
-                    if (tray.TrayStep != Convert.ToInt32(TRAY_STEP.已上架))
-                        throw new Exception(string.Format("托盘[{0}],状态不是[{1}],无法出库！",tray.Code, TRAY_STEP.已上架.ToString()));
-                    tray.OrderId = orderId;
-                    tray.OrderRowId = orderRowId;
-                    tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
-                    tray.OutCount = warehouseTray.OutCount;
-                    await this._warehouseTrayRepository.UpdateAsync(tray);
-                });
-            });
+            // this._transactionRepository.Transaction(() =>
+            // {
+            //     warehouseTrays.ForEach(async (warehouseTray) =>
+            //     {
+            //         var mls =await this._moduleLockRespository.ListAllAsync();
+            //         var ml = mls[0];
+            //         ml.UpdateTime = DateTime.Now;
+            //         await this._moduleLockRespository.UpdateAsync(ml);
+            //         WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, warehouseTray.Code,
+            //                                    null, null, null,null,null, null, null, null, null, null, null);
+            //         var trays = await this._warehouseTrayRepository.ListAsync(traySpec);
+            //         Guard.Against.Zero(trays.Count, nameof(trays.Count));
+            //         var tray = trays[0];
+            //         if (tray.TrayStep != Convert.ToInt32(TRAY_STEP.已上架))
+            //             throw new Exception(string.Format("托盘[{0}],状态不是[{1}],无法出库！",tray.Code, TRAY_STEP.已上架.ToString()));
+            //         tray.OrderId = orderId;
+            //         tray.OrderRowId = orderRowId;
+            //         tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
+            //         tray.OutCount = warehouseTray.OutCount;
+            //         await this._warehouseTrayRepository.UpdateAsync(tray);
+            //     });
+            // });
         }
 
         public async Task TaskStepReport(int id,int vid,string vName, int taskStep)
@@ -237,42 +240,42 @@ namespace ApplicationCore.Services
                 task.Progress = 100;
                 if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已下架))
                 {
-                    this._transactionRepository.Transaction(async () =>
-                    {
-
-                        if (warehouseTray.MaterialCount > 0)
-                        {
-                            //生成出库记录
-                            InOutRecord inOutRecord = new InOutRecord
-                            {
-                                CreateTime = DateTime.Now,
-                                InOutCount = warehouseTray.OutCount,
-                                IsRead = 0,
-                                MaterialDicId = warehouseTray.WarehouseMaterial[0].MaterialDicId,
-                                OrderId = warehouseTray.OrderId,
-                                OrderRowId = warehouseTray.OrderRowId,
-                                WarehouseId=warehouseTray.WarehouseId.Value,
-                                ReservoirAreaId = warehouseTray.ReservoirAreaId.Value,
-                                OrganizationId=warehouseTray.OrganizationId,
-                                OUId=warehouseTray.OUId,
-                                TrayDicId = warehouseTray.TrayDicId,
-                                Type = Convert.ToInt32(INOUTRECORD_FLAG.出库)
-                            };
-                            warehouseTray.LocationId = null;
-                            warehouseTray.Carrier = null;
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成);
-                            await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
-                            await this._inOutRecordRespository.AddAsync(inOutRecord);
-                        }
-                        else
-                        {
-                            warehouseTray.LocationId = null;
-                            warehouseTray.Carrier = null;
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
-                            await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
-                        }
-
-                    });
+                    // this._transactionRepository.Transaction(async () =>
+                    // {
+                    //
+                    //     if (warehouseTray.MaterialCount > 0)
+                    //     {
+                    //         //生成出库记录
+                    //         InOutRecord inOutRecord = new InOutRecord
+                    //         {
+                    //             CreateTime = DateTime.Now,
+                    //             InOutCount = warehouseTray.OutCount,
+                    //             IsRead = 0,
+                    //             MaterialDicId = warehouseTray.WarehouseMaterial[0].MaterialDicId,
+                    //             OrderId = warehouseTray.OrderId,
+                    //             OrderRowId = warehouseTray.OrderRowId,
+                    //             WarehouseId=warehouseTray.WarehouseId.Value,
+                    //             ReservoirAreaId = warehouseTray.ReservoirAreaId.Value,
+                    //             OrganizationId=warehouseTray.OrganizationId,
+                    //             OUId=warehouseTray.OUId,
+                    //             TrayDicId = warehouseTray.TrayDicId,
+                    //             Type = Convert.ToInt32(INOUTRECORD_FLAG.出库)
+                    //         };
+                    //         warehouseTray.LocationId = null;
+                    //         warehouseTray.Carrier = null;
+                    //         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成);
+                    //         await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+                    //         await this._inOutRecordRespository.AddAsync(inOutRecord);
+                    //     }
+                    //     else
+                    //     {
+                    //         warehouseTray.LocationId = null;
+                    //         warehouseTray.Carrier = null;
+                    //         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
+                    //         await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+                    //     }
+                    //
+                    // });
 
                 }
                 else if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中))
@@ -280,37 +283,37 @@ namespace ApplicationCore.Services
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已上架);
                     warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
 
-                    this._transactionRepository.Transaction(async () =>
-                    {
-                        if (warehouseTray.MaterialCount > 0)
-                        {
-                            //生成入库记录
-                            InOutRecord inOutRecord = new InOutRecord
-                            {
-                                CreateTime = DateTime.Now,
-                                InOutCount = warehouseTray.MaterialCount,
-                                IsRead = 0,
-                                MaterialDicId = warehouseTray.WarehouseMaterial[0].MaterialDicId,
-                                OrderId = warehouseTray.OrderId,
-                                OrderRowId = warehouseTray.OrderRowId,
-                                ReservoirAreaId = warehouseTray.ReservoirAreaId.Value,
-                                WarehouseId = warehouseTray.WarehouseId.Value,
-                                OrganizationId = warehouseTray.OrganizationId,
-                                OUId = warehouseTray.OUId,
-                                TrayDicId = warehouseTray.TrayDicId,
-                                Type = Convert.ToInt32(INOUTRECORD_FLAG.入库)
-                            };
-                            await this._inOutRecordRespository.AddAsync(inOutRecord);
-                        }
-
-                        LocationSpecification locationSpec = new LocationSpecification(null,
-                                                             task.TargetId, null, null, null, null, null, null, null);
-                        var locations = await this._locationRepository.ListAsync(locationSpec);
-                        var location = locations[0];
-                        location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-                        Task.WaitAll(this._warehouseTrayRepository.UpdateAsync(warehouseTray),
-                                     this._locationRepository.UpdateAsync(location));
-                    });
+                    // this._transactionRepository.Transaction(async () =>
+                    // {
+                    //     if (warehouseTray.MaterialCount > 0)
+                    //     {
+                    //         //生成入库记录
+                    //         InOutRecord inOutRecord = new InOutRecord
+                    //         {
+                    //             CreateTime = DateTime.Now,
+                    //             InOutCount = warehouseTray.MaterialCount,
+                    //             IsRead = 0,
+                    //             MaterialDicId = warehouseTray.WarehouseMaterial[0].MaterialDicId,
+                    //             OrderId = warehouseTray.OrderId,
+                    //             OrderRowId = warehouseTray.OrderRowId,
+                    //             ReservoirAreaId = warehouseTray.ReservoirAreaId.Value,
+                    //             WarehouseId = warehouseTray.WarehouseId.Value,
+                    //             OrganizationId = warehouseTray.OrganizationId,
+                    //             OUId = warehouseTray.OUId,
+                    //             TrayDicId = warehouseTray.TrayDicId,
+                    //             Type = Convert.ToInt32(INOUTRECORD_FLAG.入库)
+                    //         };
+                    //         await this._inOutRecordRespository.AddAsync(inOutRecord);
+                    //     }
+                    //
+                    //     LocationSpecification locationSpec = new LocationSpecification(null,
+                    //                                          task.TargetId, null, null, null, null, null, null, null);
+                    //     var locations = await this._locationRepository.ListAsync(locationSpec);
+                    //     var location = locations[0];
+                    //     location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                    //     Task.WaitAll(this._warehouseTrayRepository.UpdateAsync(warehouseTray),
+                    //                  this._locationRepository.UpdateAsync(location));
+                    // });
                 }
             }
             task.Step = taskStep;
@@ -322,27 +325,27 @@ namespace ApplicationCore.Services
         public async Task EmptyAwaitOutApply(List<WarehouseTray> warehouseTrays)
         {
             Guard.Against.NullOrEmpty(warehouseTrays, nameof(warehouseTrays));
-            this._transactionRepository.Transaction(() =>
-            {
-                warehouseTrays.ForEach(async (warehouseTray) =>
-                {
-                    var mls = await this._moduleLockRespository.ListAllAsync();
-                    var ml = mls[0];
-                    ml.UpdateTime = DateTime.Now;
-                    await this._moduleLockRespository.UpdateAsync(ml);
-                    WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, warehouseTray.Code,
-                                               null, null,null,null, null, null, null, null, null, null, null);
-                    var trays = await this._warehouseTrayRepository.ListAsync(traySpec);
-                    Guard.Against.Zero(trays.Count, nameof(trays.Count));
-                    var tray = trays[0];
-                    if (tray.TrayStep != Convert.ToInt32(TRAY_STEP.已上架))
-                        throw new Exception(string.Format("托盘[{0}],状态不是[{1}],无法出库！", tray.Code, TRAY_STEP.已上架.ToString()));
-                    if (tray.MaterialCount > 0) throw new Exception(string.Format("托盘[{0}],不是空托盘！", tray.Code));
-                    tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
-                    tray.OutCount = warehouseTray.OutCount;
-                    await this._warehouseTrayRepository.UpdateAsync(tray);
-                });
-            });
+            // this._transactionRepository.Transaction(() =>
+            // {
+            //     warehouseTrays.ForEach(async (warehouseTray) =>
+            //     {
+            //         var mls = await this._moduleLockRespository.ListAllAsync();
+            //         var ml = mls[0];
+            //         ml.UpdateTime = DateTime.Now;
+            //         await this._moduleLockRespository.UpdateAsync(ml);
+            //         WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, warehouseTray.Code,
+            //                                    null, null,null,null, null, null, null, null, null, null, null);
+            //         var trays = await this._warehouseTrayRepository.ListAsync(traySpec);
+            //         Guard.Against.Zero(trays.Count, nameof(trays.Count));
+            //         var tray = trays[0];
+            //         if (tray.TrayStep != Convert.ToInt32(TRAY_STEP.已上架))
+            //             throw new Exception(string.Format("托盘[{0}],状态不是[{1}],无法出库！", tray.Code, TRAY_STEP.已上架.ToString()));
+            //         if (tray.MaterialCount > 0) throw new Exception(string.Format("托盘[{0}],不是空托盘！", tray.Code));
+            //         tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
+            //         tray.OutCount = warehouseTray.OutCount;
+            //         await this._warehouseTrayRepository.UpdateAsync(tray);
+            //     });
+            // });
         }
     }
 }

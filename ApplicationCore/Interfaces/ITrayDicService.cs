@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 
@@ -8,6 +9,6 @@ namespace ApplicationCore.Interfaces
     {
         Task AddTrayDic(TrayDic trayDic);
         Task UpdateTrayDic(TrayDic trayDic);
-        Task DelTrayDic(int id);
+        Task DelTrayDic(List<int> ids);
     }
 }

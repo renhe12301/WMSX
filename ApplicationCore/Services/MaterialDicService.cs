@@ -3,6 +3,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Entities;
 using ApplicationCore.Entities.BasicInformation;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ardalis.GuardClauses;
 using ApplicationCore.Specifications;
 
@@ -12,12 +13,9 @@ namespace ApplicationCore.Services
     {
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
         private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
-        private readonly ITransactionRepository _transactionRepository;
-        public MaterialDicService(IAsyncRepository<MaterialDic> materialDicRepository,
-            ITransactionRepository transactionRepository)
+        public MaterialDicService(IAsyncRepository<MaterialDic> materialDicRepository)
         {
             this._materialDicRepository = materialDicRepository;
-            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddMaterialDic(MaterialDic materialDic)
@@ -47,12 +45,19 @@ namespace ApplicationCore.Services
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             var materialDicTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
             Guard.Against.Zero(materialDics.Count, nameof(materialDics));
-            this._transactionRepository.Transaction(async() =>
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                await this._materialDicTypeRepository.DeleteAsync(materialDicTypes);
-                await this._materialDicRepository.DeleteAsync(materialDics[0]);
-            });
-            
+                try
+                {
+                    this._materialDicTypeRepository.Delete(materialDicTypes);
+                    this._materialDicRepository.Delete(materialDics[0]);
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public async Task UpdateMaterialDic(MaterialDic materialDic)

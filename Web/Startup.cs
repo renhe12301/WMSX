@@ -61,7 +61,6 @@ namespace Web
             //DI 注入
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(ITransactionRepository), typeof(TransactionRepository));
             services.AddScoped(typeof(IOrderService), typeof(OrderService));
             services.AddScoped(typeof(IEmployeeService), typeof(EmployeeService));
             services.AddScoped(typeof(IInOutTaskService), typeof(InOutTaskService));

@@ -69,7 +69,7 @@ namespace ApplicationCore.Misc
         待出库 = 4,
         出库中未下架 = 5,
         出库中已下架 = 6,
-        出库完成 = 7
+        出库完成待确认 = 7
     }
 
     public enum AREA_TYPE

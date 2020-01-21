@@ -5,6 +5,9 @@ using ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Net.Security;
+using System.Transactions;
 
 namespace ApplicationCore.Services
 {
@@ -14,16 +17,13 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
         private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
         private readonly IAsyncRepository<MaterialDicTypeArea> _materialDicTypeAreaRepository;
-        private readonly ITransactionRepository _transactionRepository;
         public MaterialTypeService(IAsyncRepository<MaterialType> materialTypeRepository,
                                    IAsyncRepository<MaterialDicType> materialDicTypeRepository,
-                                   IAsyncRepository<MaterialDicTypeArea> materialDicTypeAreaRepository,
-                                   ITransactionRepository transaction)
+                                   IAsyncRepository<MaterialDicTypeArea> materialDicTypeAreaRepository)
         {
             this._materialTypeRepository = materialTypeRepository;
             this._materialDicTypeRepository = materialDicTypeRepository;
             this._materialDicTypeAreaRepository = materialDicTypeAreaRepository;
-            this._transactionRepository = transaction;
         }
 
         public async Task AddMaterialType(MaterialType materialType)
@@ -41,30 +41,43 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(ids, nameof(ids));
             MaterialTypeSpecification mTypeSpec = new MaterialTypeSpecification(null, null, null);
             MaterialDicTypeSpecification materialDicTypeSpec=new MaterialDicTypeSpecification(null,null,null,null,null);
+            MaterialDicTypeAreaSpecification materialDicTypeAreaSpec=new MaterialDicTypeAreaSpecification(null,null,null);
             var materialDicTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
             var materialTypes = await this._materialTypeRepository.ListAsync(mTypeSpec);
+            var materialTypeAreas = await this._materialDicTypeAreaRepository.ListAsync(materialDicTypeAreaSpec);
             
             List<MaterialType> delTypes = new List<MaterialType>( );
             List<MaterialDicType> delDicTypes = new List<MaterialDicType>( );
+            List<MaterialDicTypeArea> delDicTypeAreas = new List<MaterialDicTypeArea>( );
             ids.ForEach(async (id)=>{
                 delTypes.Add(materialTypes.Find(m=>m.Id==id));
                 delDicTypes.AddRange(materialDicTypes.FindAll(m=>m.MaterialTypeId==id));
-                await _Del(id, delTypes, delDicTypes, materialTypes, materialDicTypes);
+                delDicTypeAreas.AddRange(materialTypeAreas.FindAll(m=>m.MaterialTypeId==id));
+                await _Del(id, delTypes, delDicTypes,delDicTypeAreas, materialTypes, 
+                              materialDicTypes,materialTypeAreas);
             });
-            this._transactionRepository.Transaction(async () =>
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                if(delTypes.Count>0)
-                await this._materialTypeRepository.DeleteAsync(delTypes);
-                if(delDicTypes.Count>0)
-                await this._materialDicTypeRepository.DeleteAsync(delDicTypes);
-            });
-
+                try
+                {
+                    this._materialTypeRepository.Delete(delTypes);
+                    this._materialDicTypeRepository.Delete(delDicTypes);
+                    this._materialDicTypeAreaRepository.Delete(delDicTypeAreas);
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         private async Task _Del(int cur,List<MaterialType> delTypes,
                                 List<MaterialDicType> delDicTypes,
+                                List<MaterialDicTypeArea> delDicTypeAreas,
                                 List<MaterialType> allMaterialTypes,
-                                List<MaterialDicType> allMaterialDicTypes)
+                                List<MaterialDicType> allMaterialDicTypes,
+                                List<MaterialDicTypeArea> allMaterialDicTypeAreas)
         {
             var childMaterialTypes = allMaterialTypes.FindAll(m=>m.ParentId==cur);
             childMaterialTypes.ForEach(async(c) =>
@@ -72,7 +85,9 @@ namespace ApplicationCore.Services
                 delTypes.Add(c);
                 var childMaterialDicTypes = allMaterialDicTypes.FindAll(mdt => mdt.MaterialTypeId == c.Id);
                 childMaterialDicTypes.ForEach(cdt => delDicTypes.Add(cdt));
-                await _Del(c.Id, delTypes,delDicTypes,allMaterialTypes,allMaterialDicTypes);
+                var childMaterialDicTypeAreas = allMaterialDicTypeAreas.FindAll(mda => mda.MaterialTypeId == c.Id);
+                childMaterialDicTypeAreas.ForEach(cdta => delDicTypeAreas.Add(cdta));
+                await _Del(c.Id, delTypes,delDicTypes,delDicTypeAreas,allMaterialTypes,allMaterialDicTypes,allMaterialDicTypeAreas);
             });
            
         }

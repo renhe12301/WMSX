@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Interfaces;
@@ -14,16 +16,13 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
-        private readonly ITransactionRepository _transactionRepository;
         public LocationService(IAsyncRepository<Location> locationRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                               ITransactionRepository transactionRepository)
+                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
             this._locationRepository = locationRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
-            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddLocation(Location location)
@@ -39,51 +38,55 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(rank, nameof(rank));
             Guard.Against.Zero(col, nameof(col));
 
-            this._transactionRepository.Transaction(async() =>
+            List<Location> addLocations=new List<Location>();
+            for (int i = 1; i <=row; i++)
             {
-
-                for (int i = 1; i <=row; i++)
+                for (int j = 1; j <= rank; j++)
                 {
-                    for (int j = 1; j <= rank; j++)
+                    for (int k = 1; k <= col; k++)
                     {
-                        for (int k = 1; k <= col; k++)
+                        string code = wareHouseId.ToString()+"-"+i.ToString().PadRight(3, '0') +"-"+
+                                      j.ToString().PadRight(3, '0') +"-"+
+                                      k.ToString().PadRight(3, '0');
+                        string locationCode = code;
+                        Location location = new Location
                         {
-                            string code = wareHouseId.ToString()+"-"+i.ToString().PadRight(3, '0') +"-"+
-                                          j.ToString().PadRight(3, '0') +"-"+
-                                          k.ToString().PadRight(3, '0');
-                            string locationCode = code;
-                            Location location = new Location
-                            {
-                                SysCode = locationCode,
-                                CreateTime = DateTime.Now
+                            SysCode = locationCode,
+                            CreateTime = DateTime.Now
 
-                            };
-                            await this._locationRepository.AddAsync(location);
-                           
-                        }
+                        };
+                        addLocations.Add(location);
                     }
                 }
-
-            });
+            }
+            
+            await this._locationRepository.AddAsync(addLocations);
         }
 
         public async Task Clear(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            this._transactionRepository.Transaction(async() =>
+            var wareHouseTraySpec = new WarehouseTraySpecification(null, null,
+                null,null, null,null, null, null, id,null,null, null, null);
+            var wareHouseTrays = await this._warehouseTrayRepository.ListAsync(wareHouseTraySpec);
+            
+            var wareHouseMaterialSpec = new WarehouseMaterialSpecification(null,null,null,null,
+                null, null, null, null, null, id,null,null, null, null);
+            var wareHouseMaterials = await this._warehouseMaterialRepository.ListAsync(wareHouseMaterialSpec);
+           
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                var wareHouseTraySpec = new WarehouseTraySpecification(null, null,
-                    null,null, null,null, null, null, id,null,null, null, null);
-                var wareHouseTrays = await this._warehouseTrayRepository.ListAsync(wareHouseTraySpec);
-                if (wareHouseTrays.Count > 0)
-                    await this._warehouseTrayRepository.DeleteAsync(wareHouseTrays);
-
-                var wareHouseMaterialSpec = new WarehouseMaterialSpecification(null,null,null,null,
-                    null, null, null, null, null, id,null,null, null, null);
-                var wareHouseMaterials = await this._warehouseMaterialRepository.ListAsync(wareHouseMaterialSpec);
-                if (wareHouseMaterials.Count > 0)
-                    await this._warehouseMaterialRepository.DeleteAsync(wareHouseMaterials);
-            });
+                try
+                {
+                    this._warehouseTrayRepository.Delete(wareHouseTrays);
+                    this._warehouseMaterialRepository.Delete(wareHouseMaterials);
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public async Task Disable(int id)

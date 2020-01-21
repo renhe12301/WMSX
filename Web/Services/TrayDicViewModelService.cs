@@ -99,7 +99,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._trayDicService.DelTrayDic(trayDicViewModel.Id);
+                await this._trayDicService.DelTrayDic(trayDicViewModel.Ids);
             }
             catch (Exception ex)
             {

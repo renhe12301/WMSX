@@ -9,14 +9,22 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联订单编号
         /// </summary>
         public int OrderId { get; set; }
-        /// <summary>
-        /// 关联仓库编号
-        /// </summary>
-        public int WarehouseId { get; set; }
+ 
         /// <summary>
         /// 关联分区编号
         /// </summary>
         public int? ReservoirAreaId { get; set; }
+
+        /// <summary>
+        /// 物料字典编号
+        /// </summary>
+        public int MaterialDicId { get; set; }
+
+        /// <summary>
+        /// 物料字典编码
+        /// </summary>
+        public string MaterialDicCode { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -49,10 +57,6 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联订单
         /// </summary>
         public Order Order { get; set; }
-        /// <summary>
-        /// 关联仓库
-        /// </summary>
-        public Warehouse Warehouse { get; set; }
         /// <summary>
         /// 关联分区
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
@@ -21,15 +22,13 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
-        private readonly ITransactionRepository _transactionRepository;
         public OrderService(IAsyncRepository<Order> orderRepository,
                                IAsyncRepository<OrderRow> orderRowRepository,
                                IAsyncRepository<TrayDic> trayDicRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                               IAsyncRepository<ReservoirArea> reservoirRepository,
-                               ITransactionRepository transactionRepository
+                               IAsyncRepository<ReservoirArea> reservoirRepository
                                )
         {
             this._orderRepository = orderRepository;
@@ -39,29 +38,35 @@ namespace ApplicationCore.Services
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._reservoirAreaRepository = reservoirRepository;
-            this._transactionRepository = transactionRepository;
         }
 
 
         public async Task CreateOrder(Order order)
         {
             Guard.Against.Null(order, nameof(order));
-            this._transactionRepository.Transaction(async () =>
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                Order addOrder = await this._orderRepository.AddAsync(order);
-                order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
-                await this._orderRowRepository.AddAsync(order.OrderRow);
-            });
+                try
+                {
+                    Order addOrder = this._orderRepository.Add(order);
+                    order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
+                    this._orderRowRepository.Add(order.OrderRow);
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+           
         }
 
-        public async Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,
-                                                   string trayCode, int areaId)
+        public async Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,string trayCode)
         {
             Guard.Against.Zero(orderId, nameof(orderId));
             Guard.Against.Zero(orderRowId, nameof(orderRowId));
             Guard.Against.Zero(sortingCount, nameof(sortingCount));
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
-            Guard.Against.Zero(areaId, nameof(areaId));
             if (trayCode.Split('#').Length < 2)
                 throw new Exception("托盘编码不合法,无法分拣!");
             var trayDicSpec = new TrayDicSpecification(null, trayCode.Split('#')[0], null);
@@ -77,30 +82,17 @@ namespace ApplicationCore.Services
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
             Guard.Against.NullOrEmpty(orderRows, nameof(orderRows));
             OrderRow orderRow = orderRows[0];
-            var areaSpec = new ReservoirAreaSpecification(areaId,null, null, null,null, null);
+            var areaSpec = new ReservoirAreaSpecification(orderRow.ReservoirAreaId,null, null, null,null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas, nameof(areas));
             var area = areas[0];
-            //验证物料字典是否存在
-            var mcode = NPinyin.Pinyin.GetInitials(area.AreaName);
-            var materialDicSpec = new MaterialDicSpecification(null, mcode,null,null);
+            var materialDicSpec = new MaterialDicSpecification(null, orderRow.MaterialDicCode,null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
-            MaterialDic materialDic = null;
             if (materialDics.Count == 0)
-            {
-                MaterialDic newMaterialDic = new MaterialDic
-                {
-                    MaterialName = area.AreaName,
-                    Spec = area.AreaName,
-                    MaterialCode = mcode
-                };
-                materialDic = await this._materialDicRepository.AddAsync(newMaterialDic);
-            }
-            else
-            {
-                materialDic = materialDics[0];
-            }
-
+                throw new Exception(string.Format("物料字典[{0}]),不存在！",orderRow.MaterialDicCode));
+            
+            MaterialDic materialDic = materialDics[0];
+            
             if (sortingCount > orderRow.PreCount) throw new Exception("分拣数量不能大于接收数量！");
             int surplusCount = orderRow.PreCount - orderRow.Sorting;
             if (sortingCount > surplusCount)
@@ -108,59 +100,78 @@ namespace ApplicationCore.Services
 
             var warehouseTrayDetailSpec = new WarehouseTrayDetailSpecification(null,trayCode,
                                                        null,null,null, null, null,null, null,null, null,null,null);
-
+            
             var whTrays =await this._warehouseTrayRepository.ListAsync(warehouseTrayDetailSpec);
             if (whTrays.Count > 0)
             {
-                if (whTrays[0].Carrier.HasValue)
-                    throw new Exception(string.Format("托盘已经绑定载体[{0}],无法分拣！",
-                        whTrays[0].Carrier));
-                else
-                {
-                    var whTray = whTrays[0];
-                    var trayMaterials = whTray.WarehouseMaterial;
-                    OrderRow preOrderRow = whTray.OrderRow;
-                    preOrderRow.Sorting -= whTray.MaterialCount;
-                    await this._orderRowRepository.UpdateAsync(preOrderRow);
-                    await this._warehouseMaterialRepository.DeleteAsync(trayMaterials);
-                    await this._warehouseTrayRepository.DeleteAsync(whTray);
-                }
+                if (whTrays[0].TrayStep!=Convert.ToInt32(TRAY_STEP.初始化))
+                    throw new Exception("托盘未初始化,无法分拣！");
+                var whTray = whTrays[0];
+                var trayMaterials = whTray.WarehouseMaterial;
+                if(trayMaterials.Count==0)
+                    throw  new Exception("当前托盘不是空托盘,无法分拣！");
             }
-                
 
             DateTime now = DateTime.Now;
-            List<WarehouseMaterial> warehouseMaterials = whTrays[0].WarehouseMaterial;
-            this._transactionRepository.Transaction(async () =>
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                orderRow.Sorting += sortingCount;
-                await this._orderRowRepository.UpdateAsync(orderRow);
-                if (whTrays.Count > 0)
+                try
                 {
-                    Task.WaitAll(this._warehouseTrayRepository.DeleteAsync(whTrays[0]),
-                                 this._warehouseMaterialRepository.DeleteAsync(warehouseMaterials));
+                    orderRow.Sorting += sortingCount;
+                    this._orderRowRepository.Update(orderRow);
+                    if (whTrays.Count == 0)
+                    {
+                        WarehouseTray warehouseTray = new WarehouseTray
+                        {
+                            Code = trayCode,
+                            CreateTime = now,
+                            OrderId = orderId,
+                            OrderRowId = orderRowId,
+                            MaterialCount = sortingCount,
+                            TrayDicId = trayDic.Id,
+                            TrayStep = Convert.ToInt32(TRAY_STEP.待入库)
+                        };
+                        var addTray = this._warehouseTrayRepository.Add(warehouseTray);
+                        WarehouseMaterial warehouseMaterial = new WarehouseMaterial
+                        {
+                            OrderId = orderId,
+                            OrderRowId = orderRowId,
+                            CreateTime = now,
+                            WarehouseTrayId = addTray.Id,
+                            MaterialCount = sortingCount,
+                            MaterialDicId = materialDic.Id
+                        };
+                        this._warehouseMaterialRepository.Add(warehouseMaterial);
+                    }
+                    else
+                    {
+                        WarehouseTray warehouseTray = whTrays[0];
+                        warehouseTray.MaterialCount = 0;
+                        warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
+                        warehouseTray.CreateTime = DateTime.Now;;
+                        warehouseTray.OrderId = orderId;
+                        warehouseTray.OrderRowId = orderRowId;
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        WarehouseMaterial warehouseMaterial = new WarehouseMaterial
+                        {
+                            OrderId = orderId,
+                            OrderRowId = orderRowId,
+                            CreateTime = now,
+                            WarehouseTrayId = warehouseTray.Id,
+                            MaterialCount = sortingCount,
+                            MaterialDicId = materialDic.Id
+                        };
+                        this._warehouseMaterialRepository.Add(warehouseMaterial);
+                    }
+
+                    scope.Complete();
                 }
-                WarehouseTray warehouseTray = new WarehouseTray
+                catch (Exception ex)
                 {
-                    Code = trayCode,
-                    CreateTime = now,
-                    OrderId = orderId,
-                    OrderRowId = orderRowId,
-                    MaterialCount = sortingCount,
-                    TrayDicId = trayDic.Id,
-                    TrayStep = Convert.ToInt32(TRAY_STEP.待入库)
-                };
-                var addTray = await this._warehouseTrayRepository.AddAsync(warehouseTray);
-                WarehouseMaterial warehouseMaterial = new WarehouseMaterial
-                {
-                    OrderId = orderId,
-                    OrderRowId = orderRowId,
-                    CreateTime = now,
-                    WarehouseTrayId = addTray.Id,
-                    MaterialCount = sortingCount,
-                    MaterialDicId= materialDic.Id
-                };
-                await this._warehouseMaterialRepository.AddAsync(warehouseMaterial);
-            });
+                    throw ex;
+                }
+            }
+           
         }
 
     }

@@ -9,7 +9,7 @@ namespace ApplicationCore.Interfaces
     {
         Task CreateOrder(Order order);
         Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,
-                                                   string trayCode, int areaId);
+                                                   string trayCode);
 
     }
 }

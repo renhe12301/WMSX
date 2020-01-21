@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Web.ViewModels.BasicInformation
 {
     public class TrayDicViewModel
@@ -12,5 +14,7 @@ namespace Web.ViewModels.BasicInformation
         public string CreateTime { get; set; }
         public int FullLoadRange { get; set; }
         public string Memo { get; set; }
+
+        public List<int> Ids { get; set; }
     }
 }
