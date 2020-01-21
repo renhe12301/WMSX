@@ -14,13 +14,16 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
+        private readonly ITransactionRepository _transactionRepository;
         public LocationService(IAsyncRepository<Location> locationRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
+                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
+                               ITransactionRepository transactionRepository)
         {
             this._locationRepository = locationRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddLocation(Location location)
@@ -36,7 +39,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(rank, nameof(rank));
             Guard.Against.Zero(col, nameof(col));
 
-            this._locationRepository.TransactionScope(async() =>
+            this._transactionRepository.Transaction(async() =>
             {
 
                 for (int i = 1; i <=row; i++)
@@ -67,7 +70,7 @@ namespace ApplicationCore.Services
         public async Task Clear(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            this._warehouseTrayRepository.TransactionScope(async() =>
+            this._transactionRepository.Transaction(async() =>
             {
                 var wareHouseTraySpec = new WarehouseTraySpecification(null, null,
                     null,null, null,null, null, null, id,null,null, null, null);

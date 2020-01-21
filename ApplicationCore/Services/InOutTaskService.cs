@@ -22,6 +22,7 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<TrayDic> _trayDicRespository;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRespository;
         private readonly IAsyncRepository<ModuleLock> _moduleLockRespository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
@@ -29,7 +30,8 @@ namespace ApplicationCore.Services
                                 IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
                                 IAsyncRepository<TrayDic> trayRespository,
                                 IAsyncRepository<InOutRecord> inOutRespository,
-                                IAsyncRepository<ModuleLock> moduleLockRespository)
+                                IAsyncRepository<ModuleLock> moduleLockRespository,
+                                ITransactionRepository transactionRepository)
         {
             this._inOutTaskRepository = inOutTaskRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
@@ -38,6 +40,7 @@ namespace ApplicationCore.Services
             this._trayDicRespository = trayRespository;
             this._inOutRecordRespository = inOutRespository;
             this._moduleLockRespository = moduleLockRespository;
+            this._transactionRepository = transactionRepository;
         }
 
 
@@ -116,7 +119,7 @@ namespace ApplicationCore.Services
                 throw new Exception("所属分区没有可用的空货位");
             var areaLocation = areaLocations[0];
             targetCode = areaLocation.SysCode;
-            this._inOutTaskRepository.TransactionScope(async() =>
+            this._transactionRepository.Transaction(async() =>
             {
                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中);
                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
@@ -147,7 +150,7 @@ namespace ApplicationCore.Services
         public async Task AwaitOutApply(int orderId, int orderRowId, List<WarehouseTray> warehouseTrays)
         {
             Guard.Against.NullOrEmpty(warehouseTrays, nameof(warehouseTrays));
-            this._warehouseTrayRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 warehouseTrays.ForEach(async (warehouseTray) =>
                 {
@@ -234,7 +237,7 @@ namespace ApplicationCore.Services
                 task.Progress = 100;
                 if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已下架))
                 {
-                    this._warehouseTrayRepository.TransactionScope(async () =>
+                    this._transactionRepository.Transaction(async () =>
                     {
 
                         if (warehouseTray.MaterialCount > 0)
@@ -277,7 +280,7 @@ namespace ApplicationCore.Services
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已上架);
                     warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
 
-                    this._warehouseTrayRepository.TransactionScope(async () =>
+                    this._transactionRepository.Transaction(async () =>
                     {
                         if (warehouseTray.MaterialCount > 0)
                         {
@@ -319,7 +322,7 @@ namespace ApplicationCore.Services
         public async Task EmptyAwaitOutApply(List<WarehouseTray> warehouseTrays)
         {
             Guard.Against.NullOrEmpty(warehouseTrays, nameof(warehouseTrays));
-            this._warehouseTrayRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 warehouseTrays.ForEach(async (warehouseTray) =>
                 {

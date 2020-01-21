@@ -13,13 +13,16 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<TrayType> _trayTypeRepository;
         private readonly IAsyncRepository<TrayDicType> _trayDicTypeRepository;
         private readonly IAsyncRepository<TrayDicTypeArea> _trayDicTypeAreaRepository;
+        private readonly ITransactionRepository _transactionRepository;
         public TrayTypeService(IAsyncRepository<TrayType> trayTypeRepository,
                                IAsyncRepository<TrayDicType> trayDicTypeRepository,
-                               IAsyncRepository<TrayDicTypeArea> trayDicTypeAreaRepository)
+                               IAsyncRepository<TrayDicTypeArea> trayDicTypeAreaRepository,
+                               ITransactionRepository transactionRepository)
         {
             this._trayTypeRepository = trayTypeRepository;
             this._trayDicTypeRepository = trayDicTypeRepository;
             this._trayDicTypeAreaRepository = trayDicTypeAreaRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddTrayType(TrayType trayType)
@@ -33,7 +36,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(typeId, nameof(typeId));
             Guard.Against.Null(trayDicIds, nameof(trayDicIds));
             Guard.Against.Zero(trayDicIds.Count, nameof(trayDicIds.Count));
-            this._trayTypeRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 trayDicIds.ForEach(async (mId) =>
                 {
@@ -55,7 +58,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(trayTypes.Count, nameof(trayTypes.Count));
             List<int> delIds = new List<int> { id };
             await this._Del(id, delIds);
-            this._trayDicTypeRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 delIds.ForEach(async (delId) =>
                 {

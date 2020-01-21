@@ -64,16 +64,6 @@ namespace Infrastructure.Data
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
         }
 
-        public void TransactionScope(Action ops)
-        {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required,
-                   new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
-            {
-                ops.Invoke();
-                scope.Complete();
-            }
-        }
-
         public async Task<List<T>> AddAsync(List<T> entitys)
         {
             await _dbContext.Set<T>().AddRangeAsync(entitys);

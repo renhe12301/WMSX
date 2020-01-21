@@ -12,10 +12,12 @@ namespace ApplicationCore.Services
     {
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
         private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
-
-        public MaterialDicService(IAsyncRepository<MaterialDic> materialDicRepository)
+        private readonly ITransactionRepository _transactionRepository;
+        public MaterialDicService(IAsyncRepository<MaterialDic> materialDicRepository,
+            ITransactionRepository transactionRepository)
         {
             this._materialDicRepository = materialDicRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddMaterialDic(MaterialDic materialDic)
@@ -45,7 +47,7 @@ namespace ApplicationCore.Services
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             var materialDicTypes = await this._materialDicTypeRepository.ListAsync(materialDicTypeSpec);
             Guard.Against.Zero(materialDics.Count, nameof(materialDics));
-            this._materialDicTypeRepository.TransactionScope(async() =>
+            this._transactionRepository.Transaction(async() =>
             {
                 await this._materialDicTypeRepository.DeleteAsync(materialDicTypes);
                 await this._materialDicRepository.DeleteAsync(materialDics[0]);

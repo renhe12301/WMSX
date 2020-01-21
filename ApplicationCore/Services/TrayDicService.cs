@@ -12,12 +12,14 @@ namespace ApplicationCore.Services
 
         private IAsyncRepository<TrayDic> _trayDicRepository;
         private IAsyncRepository<TrayDicType> _trayDicTypeRepository;
-
+        private ITransactionRepository _transactionRepository;
         public TrayDicService(IAsyncRepository<TrayDic> trayDicRepository,
-            IAsyncRepository<TrayDicType> trayDicTypeRepository)
+                              IAsyncRepository<TrayDicType> trayDicTypeRepository,
+                              ITransactionRepository transactionRepository)
         {
             this._trayDicRepository = trayDicRepository;
             this._trayDicTypeRepository = trayDicTypeRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddTrayDic(TrayDic trayDic)
@@ -41,7 +43,7 @@ namespace ApplicationCore.Services
             var trayDicTypes = await this._trayDicTypeRepository.ListAsync(trayDicTypeSpec);
             var trayDics = await this._trayDicRepository.ListAsync(trayDicSpec);
             Guard.Against.Zero(trayDics.Count, nameof(trayDics));
-            this._trayDicRepository.TransactionScope(async() =>
+            this._transactionRepository.Transaction(async() =>
             {
                 await this._trayDicTypeRepository.DeleteAsync(trayDicTypes);
                 await this._trayDicRepository.DeleteAsync(trayDics[0]);

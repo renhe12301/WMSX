@@ -14,13 +14,16 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<MaterialDicTypeArea> _areaMaterialRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
+        private readonly ITransactionRepository _transactionRepository;
         public ReservoirAreaService(IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                     IAsyncRepository<Location> locationRepository,
-                                    IAsyncRepository<MaterialDicTypeArea> areaMaterialRepository)
+                                    IAsyncRepository<MaterialDicTypeArea> areaMaterialRepository,
+                                    ITransactionRepository transactionRepository)
         {
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._locationRepository = locationRepository;
             this._areaMaterialRepository = areaMaterialRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public async Task AddArea(ReservoirArea reservoirArea)
@@ -34,7 +37,7 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
-            this._locationRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 locationIds.ForEach(async (id) =>
                 {
@@ -52,7 +55,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(wareHouseId, nameof(wareHouseId));
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(materialDicTypeIds, nameof(materialDicTypeIds));
-            this._areaMaterialRepository.TransactionScope(() =>
+            this._transactionRepository.Transaction(() =>
             {
                 materialDicTypeIds.ForEach(async (tId) =>
                 {

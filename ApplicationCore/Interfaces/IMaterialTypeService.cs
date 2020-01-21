@@ -9,7 +9,7 @@ namespace ApplicationCore.Interfaces
     {
         Task AddMaterialType(MaterialType materialType);
         Task UpdateMaterialType(MaterialType materialType);
-        Task DelMaterialType(int id);
+        Task DelMaterialType(List<int> ids);
         Task AssignMaterialDic(int typeId, List<int> materialDicIds);
     }
 }

@@ -50,7 +50,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._materialTypeService.DelMaterialType(materialTypeViewModel.Id);
+                await this._materialTypeService.DelMaterialType(materialTypeViewModel.Ids);
             }
             catch (Exception ex)
             {

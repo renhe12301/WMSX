@@ -75,6 +75,7 @@
           <e p="ISupplierService.cs" t="Include" />
           <e p="ISysConfigService.cs" t="Include" />
           <e p="ISysMenuService.cs" t="Include" />
+          <e p="ITransactionRepository.cs" t="Include" />
           <e p="ITransferService.cs" t="Include" />
           <e p="ITrayDicService.cs" t="Include" />
           <e p="ITrayTypeService.cs" t="Include" />
@@ -178,6 +179,7 @@
           <e p="BaseContext.cs" t="Include" />
           <e p="EfRepository.cs" t="Include" />
           <e p="SpecificationEvaluator.cs" t="Include" />
+          <e p="TransactionRepository.cs" t="Include" />
         </e>
         <e p="Infrastructure.csproj" t="IncludeRecursive" />
         <e p="Logging" t="Include">

@@ -21,14 +21,16 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
-
+        private readonly ITransactionRepository _transactionRepository;
         public OrderService(IAsyncRepository<Order> orderRepository,
                                IAsyncRepository<OrderRow> orderRowRepository,
                                IAsyncRepository<TrayDic> trayDicRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                               IAsyncRepository<ReservoirArea> reservoirRepository)
+                               IAsyncRepository<ReservoirArea> reservoirRepository,
+                               ITransactionRepository transactionRepository
+                               )
         {
             this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
@@ -37,13 +39,14 @@ namespace ApplicationCore.Services
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._reservoirAreaRepository = reservoirRepository;
+            this._transactionRepository = transactionRepository;
         }
 
 
         public async Task CreateOrder(Order order)
         {
             Guard.Against.Null(order, nameof(order));
-            this._orderRepository.TransactionScope(async () =>
+            this._transactionRepository.Transaction(async () =>
             {
                 Order addOrder = await this._orderRepository.AddAsync(order);
                 order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
@@ -127,7 +130,7 @@ namespace ApplicationCore.Services
 
             DateTime now = DateTime.Now;
             List<WarehouseMaterial> warehouseMaterials = whTrays[0].WarehouseMaterial;
-            this._warehouseTrayRepository.TransactionScope(async () =>
+            this._transactionRepository.Transaction(async () =>
             {
                 orderRow.Sorting += sortingCount;
                 await this._orderRowRepository.UpdateAsync(orderRow);

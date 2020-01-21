@@ -16,6 +16,5 @@ namespace ApplicationCore.Interfaces
         Task UpdateAsync(List<T> entitys);
         Task DeleteAsync(List<T> entitys);
         Task<int> CountAsync(ISpecification<T> spec);
-        void TransactionScope(Action ops);
     }
 }
