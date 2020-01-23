@@ -55,6 +55,13 @@
             <param name="employViewModel">员工信息JSON对象</param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.EmployeeController.UpdateEmployee(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+            <summary>
+            更新用户信息
+            </summary>
+            <param name="employViewModel"></param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.EmployeeController.Enable(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
             <summary>
             启用员工

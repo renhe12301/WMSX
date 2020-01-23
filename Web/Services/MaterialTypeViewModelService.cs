@@ -33,7 +33,8 @@ namespace Web.Services
                 MaterialType materialType = new MaterialType
                 {
                     TypeName=materialTypeViewModel.TypeName,
-                    CreateTime=DateTime.Now
+                    CreateTime=DateTime.Now,
+                    ParentId = materialTypeViewModel.ParentId
                 };
                 await this._materialTypeService.AddMaterialType(materialType);
             }
@@ -139,6 +140,7 @@ namespace Web.Services
                         Id = e.MaterialDic.Id,
                         MaterialCode = e.MaterialDic.MaterialCode,
                         MaterialName = e.MaterialDic.MaterialName,
+                        TypeName = e.MaterialType.TypeName,
                         CreateTime = e.MaterialDic.CreateTime.ToString(),
                         Img = e.MaterialDic.Img,
                         Spec = e.MaterialDic.Spec,

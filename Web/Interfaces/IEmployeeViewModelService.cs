@@ -9,6 +9,7 @@ namespace Web.Interfaces
     public interface IEmployeeViewModelService
     {
         Task<ResponseResultViewModel> AddEmployee(EmployeeViewModel employViewModel);
+        Task<ResponseResultViewModel> UpdateEmployee(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> Logout(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> Enable(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel);

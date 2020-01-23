@@ -59,6 +59,35 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> UpdateEmployee(EmployeeViewModel employViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                Employee employee = new Employee
+                {
+                    Id = employViewModel.Id,
+                    LoginName = employViewModel.LoginName,
+                    LoginPwd = employViewModel.LoginPwd,
+                    UserName = employViewModel.UserName,
+                    UserCode = employViewModel.UserCode,
+                    Sex = employViewModel.Sex,
+                    Telephone = employViewModel.Telephone,
+                    Email = employViewModel.Email,
+                    Address = employViewModel.Address,
+                    Img = employViewModel.Img
+                    
+                };
+                await this._employeeService.UpdateEmployee(employee);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -187,7 +216,7 @@ namespace Web.Services
                     }
                     else
                     {
-                        baseSpecification = new EmployeeSpecification(employeeId, employeeName);
+                        baseSpecification = new EmployeeSpecification(employeeId, employeeName,null);
                     }
 
                     var employees = await this._employeeRepository.ListAsync(baseSpecification);
@@ -220,7 +249,7 @@ namespace Web.Services
                     if (pageIndex > -1 && itemsPage > 0)
                     {
                         var count = await this._employeeRepository.CountAsync(
-                            new EmployeeSpecification(employeeId, employeeName));
+                            new EmployeeSpecification(employeeId, employeeName,null));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = employViewModels;
                         dyn.total = count;

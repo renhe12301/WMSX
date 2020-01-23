@@ -60,6 +60,18 @@ namespace Web.Controllers.Api
             var response = await this._employeeViewModelService.AddEmployee(employViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 更新用户信息
+        /// </summary>
+        /// <param name="employViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateEmployee(EmployeeViewModel employViewModel)
+        {
+            var response = await this._employeeViewModelService.UpdateEmployee(employViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
         /// <summary>
         /// 启用员工

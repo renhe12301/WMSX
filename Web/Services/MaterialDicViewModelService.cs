@@ -103,7 +103,7 @@ namespace Web.Services
                             MaterialName = e.MaterialDic.MaterialName,
                             TypeName = e.MaterialType.TypeName,
                             UnitId = e.MaterialDic.MaterialUnitId,
-                            UnitName = e.MaterialDic.MaterialUnit.UnitName,
+                            UnitName = e.MaterialDic.MaterialUnit?.UnitName,
                             CreateTime = e.MaterialDic.CreateTime.ToString(),
                             Spec = e.MaterialDic.Spec,
                             Img = e.MaterialDic.Img,
