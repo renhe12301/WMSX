@@ -8,7 +8,7 @@ namespace ApplicationCore.Specifications
             :base(b=>(!id.HasValue|| b.Id==id)&&
                   (!ouId.HasValue || b.OUId == ouId)&&
                   (!orgId.HasValue||b.OrganizationId==orgId)&&
-                   whName==null||b.WhName==whName)
+                   whName==null||b.WhName.Contains(whName))
         {
             AddInclude(b => b.Organization);
         }

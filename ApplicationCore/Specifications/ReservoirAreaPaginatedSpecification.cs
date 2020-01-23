@@ -9,7 +9,7 @@ namespace ApplicationCore.Specifications
                      (!ouId.HasValue || b.OUId == ouId) &&
                      (!orgId.HasValue || b.OrganizationId == orgId) &&
                      (!whId.HasValue||b.WarehouseId==whId)&&
-                     (areaName==null||b.AreaName==areaName))
+                     (areaName==null||b.AreaName.Contains(areaName)))
         {
             ApplyPaging(skip, take);
             AddInclude(b => b.Warehouse);

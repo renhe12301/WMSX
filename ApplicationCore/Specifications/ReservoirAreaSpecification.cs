@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
                       (!orgId.HasValue || b.OrganizationId == orgId) &&
                      (!whId.HasValue||b.WarehouseId==whId)&&
                      (!type.HasValue || b.Type == type) &&
-                     (areaName==null||b.AreaName==areaName))
+                     (areaName==null||b.AreaName.Contains(areaName)))
         {
             AddInclude(b => b.Warehouse);
             AddInclude(b=>b.OU);

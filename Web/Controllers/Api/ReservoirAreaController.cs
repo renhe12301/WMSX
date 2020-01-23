@@ -103,6 +103,8 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">一页条数</param>
         /// <param name="id">库区编号</param>
+        /// <param name="orgId">公司编号</param>
+        /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">仓库编号</param>
         /// <param name="areaName">库区名称</param>
         /// <returns></returns>
@@ -113,6 +115,19 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
+        /// <summary>
+        /// 获取库区下的物料类型
+        /// </summary>
+        /// <param name="pageIndex">分页索引</param>
+        /// <param name="itemsPage">一页条数</param>
+        /// <param name="areaId">库区编号</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetMaterialTypes(int? pageIndex, int? itemsPage, int? areaId)
+        {
+            var response = await this._reservoirAreaViewModelService.GetMaterialTypes(pageIndex, itemsPage,areaId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
     }
 }

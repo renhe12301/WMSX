@@ -10,6 +10,8 @@ namespace Web.ViewModels.BasicInformation
         public int ParentId { get; set; }
         public string CreateTime { get; set; }
         public string Memo { get; set; }
+
+        public string AreaName { get; set; }
         public List<int> DicIds { get; set; }
 
         public List<int> Ids { get; set; }

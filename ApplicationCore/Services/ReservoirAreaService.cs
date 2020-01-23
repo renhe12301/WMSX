@@ -58,7 +58,7 @@ namespace ApplicationCore.Services
                 MaterialDicTypeArea areaMaterial = new MaterialDicTypeArea
                 {
                     WarehouseId = wareHouseId,
-                    ReservoidAreaId = areaId,
+                    ReservoirAreaId = areaId,
                     MaterialTypeId = tId
                 };
                 materialDicTypeAreas.Add(areaMaterial);

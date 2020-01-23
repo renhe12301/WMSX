@@ -8,7 +8,7 @@ namespace ApplicationCore.Specifications
             :base(b=>(!id.HasValue|| b.Id==id)&&
                   (!orgId.HasValue||b.OrganizationId==orgId)&&
                    (!ouId.HasValue || b.OUId == ouId) &&
-                   whName ==null||b.WhName==whName)
+                   whName ==null||b.WhName.Contains(whName))
         {
             ApplyPaging(skip, take);
             AddInclude(b => b.Organization);

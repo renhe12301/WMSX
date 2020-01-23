@@ -16,12 +16,14 @@ namespace Web.Services
     {
         private readonly IReservoirAreaService _reservoirAreaService;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
-
+        private readonly IAsyncRepository<MaterialDicTypeArea> _materialDicTypeArea;
         public ReservoirAreaViewModelService(IReservoirAreaService reservoirAreaService,
-                                             IAsyncRepository<ReservoirArea> reservoirAreaRepository)
+                                             IAsyncRepository<ReservoirArea> reservoirAreaRepository,
+                                             IAsyncRepository<MaterialDicTypeArea> materialDicTypeArea)
         {
             this._reservoirAreaService = reservoirAreaService;
             this._reservoirAreaRepository = reservoirAreaRepository;
+            this._materialDicTypeArea = materialDicTypeArea;
         }
 
 
@@ -71,6 +73,60 @@ namespace Web.Services
                 else
                 {
                     response.Data = areaViewModels;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+        
+        public async Task<ResponseResultViewModel> GetMaterialTypes(int? pageIndex, int? itemsPage,int? areaId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                BaseSpecification<MaterialDicTypeArea> baseSpecification = null;
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
+                {
+                    baseSpecification = new MaterialDicTypeAreaPaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                        null,areaId,null);
+                }
+                else
+                {
+                    baseSpecification = new MaterialDicTypeAreaSpecification(null,areaId,null);
+                }
+
+                var materialDicTypes = await this._materialDicTypeArea.ListAsync(baseSpecification);
+                List<MaterialTypeViewModel> materialTypeViewModels = new List<MaterialTypeViewModel>();
+
+                materialDicTypes.ForEach(e =>
+                {
+                    MaterialTypeViewModel materialTypeViewModel = new MaterialTypeViewModel
+                    {
+                        Id = e.Id,
+                        CreateTime = e.MaterialType.CreateTime.ToString(),
+                        Memo = e.MaterialType.Memo,
+                        TypeName = e.MaterialType.TypeName,
+                        ParentId =e.MaterialType.ParentId,
+                        AreaName = e.ReservoirArea.AreaName
+                    };
+                    materialTypeViewModels.Add(materialTypeViewModel);
+                });
+                materialTypeViewModels.RemoveAll(m => m.ParentId == 0);
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._materialDicTypeArea.CountAsync(new MaterialDicTypeAreaSpecification(null,areaId,null));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = materialTypeViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = materialTypeViewModels;
                 }
             }
             catch (Exception ex)

@@ -131,6 +131,7 @@
           <e p="LocationSpecification.cs" t="Include" />
           <e p="MaterialDicPaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicSpecification.cs" t="Include" />
+          <e p="MaterialDicTypeAreaPaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicTypeAreaSpecification.cs" t="Include" />
           <e p="MaterialDicTypePaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicTypeSpecification.cs" t="Include" />
