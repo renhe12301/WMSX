@@ -25,7 +25,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetWarehouses(int? pageIndex,
-            int? itemsPage, int? id, int? orgId, string whName)
+            int? itemsPage, int? id, int? orgId,int? ouId, string whName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -35,7 +35,7 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new WarehousePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,null,orgId,whName);
+                        id,orgId,ouId,whName);
                 }
                 else
                 {
@@ -52,6 +52,7 @@ namespace Web.Services
                         CreateTime = e.CreateTime.ToString(),
                         OrganizationId=e.Organization.Id,
                         OrgName=e.Organization.OrgName,
+                        Address = e.Address,
                         Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status)
                     };
                     warehouseViewModels.Add(wareHouseViewModel);

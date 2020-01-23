@@ -11,6 +11,8 @@ namespace Web.ViewModels.BasicInformation
         public string Memo { get; set; }
         
         public int OrganizationId { get; set; }
+        public int OUId { get; set; }
         public string OrgName{get;set;}
+        public string OUName { get; set; }
     }
 }

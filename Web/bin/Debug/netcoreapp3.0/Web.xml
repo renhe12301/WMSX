@@ -474,7 +474,6 @@
             <param name="pageIndex">分页索引</param>
             <param name="itemsPage">一页条数</param>
             <param name="id">库区编号</param>
-            <param name="pid">库区父级编号</param>
             <param name="wareHouseId">仓库编号</param>
             <param name="areaName">库区名称</param>
             <returns></returns>
@@ -664,7 +663,7 @@
             仓库操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.GetWarehouses(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+        <member name="M:Web.Controllers.Api.WarehouseController.GetWarehouses(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取仓库信息
             </summary>
@@ -672,6 +671,7 @@
             <param name="itemsPage">一页条数</param>
             <param name="id">仓库编号</param>
             <param name="orgId">组织编号</param>
+            <param name="ouId">业务实体编号</param>
             <param name="whName">仓库名称</param>
             <returns></returns>
         </member>

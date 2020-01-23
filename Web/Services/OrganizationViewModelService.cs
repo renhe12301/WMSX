@@ -217,7 +217,7 @@ namespace Web.Services
                 TreeViewModel child = new TreeViewModel
                 {
                     Id = org.Id,
-                    ParentId = org.ParentId,
+                    ParentId = current.Id,
                     Name = org.OrgName,
                     Type = "org"
                 };
@@ -244,7 +244,7 @@ namespace Web.Services
                         };
                         ouChild.Children.Add(wareHouseChild);
                     });
-                    childs.Add(child);
+                    
                     child.Children.Add(ouChild);
                 });
                 childs.Add(child);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Interfaces;
@@ -32,7 +33,7 @@ namespace Web.Services
             {
                 BaseSpecification<ReservoirArea> baseSpecification = null;
 
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new ReservoirAreaPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,orgId,ouId,wareHouseId,areaName);
@@ -53,11 +54,24 @@ namespace Web.Services
                         TypeName = Enum.GetName(typeof(AREA_TYPE), e.Type),
                         WarehouseId = e.WarehouseId,
                         WarehouseName = e.Warehouse.WhName,
+                        OrgName = e.Organization.OrgName,
+                        OUName = e.OU.OUName,
                         Status = Enum.GetName(typeof(AREA_STATUS), e.Status)
                     };
                     areaViewModels.Add(areaViewModel);
                 });
-                response.Data = areaViewModels;
+                if (pageIndex > -1 && itemsPage > 0)
+                {
+                    var count = await this._reservoirAreaRepository.CountAsync(new ReservoirAreaSpecification(id,orgId,ouId,wareHouseId,type, areaName));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = areaViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = areaViewModels;
+                }
             }
             catch (Exception ex)
             {

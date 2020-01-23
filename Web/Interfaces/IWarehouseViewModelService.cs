@@ -13,6 +13,6 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> Disable(WarehouseViewModel warehouseViewModel);
         Task<ResponseResultViewModel> Enable(WarehouseViewModel warehouseViewModel);
         Task<ResponseResultViewModel> GetWarehouses(int? pageIndex, int? itemsPage,
-                                      int? id,int? orgId, string whName);
+                                      int? id,int? orgId,int? ouId, string whName);
     }
 }

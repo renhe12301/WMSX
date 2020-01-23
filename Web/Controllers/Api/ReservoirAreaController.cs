@@ -6,6 +6,7 @@ using ApplicationCore.Entities.BasicInformation;
 using System.Collections.Generic;
 using Web.ViewModels.BasicInformation;
 using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json;
 
 namespace Web.Controllers.Api
 {
@@ -33,7 +34,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AddArea(ReservoirAreaViewModel reservoirAreaViewModel)
         {
             var response = await this._reservoirAreaViewModelService.AddArea(reservoirAreaViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> UpdateArea(ReservoirAreaViewModel reservoirAreaViewModel)
         {
             var response = await this._reservoirAreaViewModelService.UpdateArea(reservoirAreaViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Enable(ReservoirAreaViewModel reservoirAreaViewModel)
         {
             var response = await this._reservoirAreaViewModelService.Enable(reservoirAreaViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Disable(ReservoirAreaViewModel reservoirAreaViewModel)
         {
             var response = await this._reservoirAreaViewModelService.Disable(reservoirAreaViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AssignLocation(LocationViewModel locationViewModel)
         {
             var response = await this._reservoirAreaViewModelService.AssignLocation(locationViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> AssignMaterialType(MaterialDicTypeAreaViewModel materialDicTypeAreaViewModel)
         {
             var response = await this._reservoirAreaViewModelService.AssignMaterialType(materialDicTypeAreaViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
@@ -102,7 +103,6 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">一页条数</param>
         /// <param name="id">库区编号</param>
-        /// <param name="pid">库区父级编号</param>
         /// <param name="wareHouseId">仓库编号</param>
         /// <param name="areaName">库区名称</param>
         /// <returns></returns>
@@ -110,7 +110,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetAreas(int? pageIndex, int? itemsPage, int? id,int? orgId,int? ouId,int? wareHouseId,int? type,  string areaName)
         {
             var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,orgId,ouId,wareHouseId,type, areaName);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
 

@@ -28,14 +28,15 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">一页条数</param>
         /// <param name="id">仓库编号</param>
         /// <param name="orgId">组织编号</param>
+        /// <param name="ouId">业务实体编号</param>
         /// <param name="whName">仓库名称</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetWarehouses(int? pageIndex, int? itemsPage,
-                                      int? id, int? orgId, string whName)
+                                      int? id, int? orgId,int? ouId, string whName)
         {
             var response = await this._warehouseViewModelService.GetWarehouses(pageIndex,
-                itemsPage, id, orgId, whName);
+                itemsPage, id, orgId,ouId, whName);
             return Content(JsonConvert.SerializeObject(response));
         }
 
