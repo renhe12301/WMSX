@@ -133,6 +133,23 @@
             货位信息操作API
             </summary>
         </member>
+        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            获取货位信息
+            </summary>
+            <param name="pageIndex">分页索引</param>
+            <param name="itemsPage">一页大小</param>
+            <param name="id">货位编号</param>
+            <param name="locationCode">货位编码</param>
+            <param name="orgId">所属公司编号</param>
+            <param name="ouId">业务实体编号</param>
+            <param name="wareHouseId">仓库编号</param>
+            <param name="areaId">库区编号</param>
+            <param name="type">货位类型</param>
+            <param name="status">货位状态</param>
+            <param name="inStock">是否有货</param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.LocationController.AddLocation(Web.ViewModels.BasicInformation.LocationViewModel)">
             <summary>
             添加货位

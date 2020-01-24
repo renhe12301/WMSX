@@ -128,6 +128,7 @@
           <e p="InOutRecordSpecification.cs" t="Include" />
           <e p="InOutTaskPaginatedSpecification.cs" t="Include" />
           <e p="InOutTaskSpecification.cs" t="Include" />
+          <e p="LocationPaginatedSpecification.cs" t="Include" />
           <e p="LocationSpecification.cs" t="Include" />
           <e p="MaterialDicPaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicSpecification.cs" t="Include" />

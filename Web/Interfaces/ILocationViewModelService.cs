@@ -16,5 +16,9 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> Lock(LocationViewModel locationViewModel);
         Task<ResponseResultViewModel> UnLock(LocationViewModel locationViewModel);
         Task<ResponseResultViewModel> UpdateLocation(LocationViewModel locationViewModel);
+
+        Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
+            string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, int? type, int? status,
+            int? inStock);
     }
 }

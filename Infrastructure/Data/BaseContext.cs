@@ -23,6 +23,7 @@ namespace Infrastructure.Data
         public DbSet<MaterialDic> MaterialDic { get; set; }
         public DbSet<MaterialDicType> MaterialDicType { get; set; }
         public DbSet<MaterialUnit> MaterialUnit { get; set; }
+        public DbSet<Location> Location { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

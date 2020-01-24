@@ -122,12 +122,6 @@ namespace ApplicationCore.Misc
         入库 = 0,
         出库 = 1
     }
-
-    public enum RESERVOIRAREA_TYPE
-    {
-        仓库库区=0,
-        入库库区=1,
-        出库库区=2
-    }
+    
    
 }
