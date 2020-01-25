@@ -54,6 +54,7 @@ namespace Web.Services
                         SysCode = e.SysCode,
                         UserCode = e.UserCode,
                         CreateTime = e.CreateTime.ToString(),
+                        ReservoirAreaName = e.ReservoirArea.AreaName,
                         OUName = e.OU.OUName,
                         OrgName = e.Organization.OrgName,
                         WarehouseName = e.Warehouse.WhName,
