@@ -43,14 +43,14 @@ namespace Web.Services
                 if (!string.IsNullOrEmpty(status))
                 {
                     taskStatus = status.Split(new char[]{
-               ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
                 List<int> taskSteps = null;
                 if (!string.IsNullOrEmpty(steps))
                 {
                     taskSteps = steps.Split(new char[]{
-               ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
                 if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)

@@ -102,15 +102,15 @@ namespace ApplicationCore.Services
             if (warehouseTray.WarehouseMaterial.Count > 0)
             {
                 areaLocationSpec = new LocationSpecification(null, null,null,null, null, warehouseTray.ReservoirAreaId,
-                                                     null, Convert.ToInt32(LOCATION_STATUS.正常),
-                                                     Convert.ToInt32(LOCATION_INSTOCK.无货));
+                                                     null, new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                                                     new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
             }
             else
             {
                 areaLocationSpec = new LocationSpecification(null, null,warehouseTray.OrganizationId,null, null, null,
-                                                   Convert.ToInt32(LOCATION_TYPE.仓库区货位),
-                                                   Convert.ToInt32(LOCATION_STATUS.正常),
-                                                   Convert.ToInt32(LOCATION_INSTOCK.无货));
+                                                   new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)},
+                                                   new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                                                   new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
             }
             var areaLocations = await this._locationRepository.ListAsync(areaLocationSpec);
             if (areaLocations.Count == 0)

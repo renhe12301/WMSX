@@ -61,9 +61,9 @@ namespace Web.Jobs
                             string weburl = warehouses[0].Memo;
                            
                             LocationSpecification locationSpec = new LocationSpecification(null, null,null,null, null, null,
-                                                  Convert.ToInt32(LOCATION_TYPE.仓库区货位),
-                                                  Convert.ToInt32(LOCATION_STATUS.正常),
-                                                  Convert.ToInt32(LOCATION_INSTOCK.无货));
+                                new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)},
+                                new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
                             var locations = await this._locationRepository.ListAsync(locationSpec);
                             int index = 0;
                             //发送wcs任务

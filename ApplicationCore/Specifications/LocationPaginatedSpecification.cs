@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Specifications
@@ -6,16 +7,16 @@ namespace ApplicationCore.Specifications
     public class LocationPaginatedSpecification:BaseSpecification<Location>
     {
         public LocationPaginatedSpecification(int skip,int take,int? id, string locationCode,int? orgId,int? ouId,
-            int? wareHouseId,int? areaId,int? type,int? status,int? inStock)
+            int? wareHouseId,int? areaId,List<int> types,List<int> status,List<int> inStocks)
             : base(b => (!id.HasValue || b.Id == id) &&
                         (locationCode==null || b.SysCode == locationCode)&&
                         (!orgId.HasValue || b.Organization.Id == orgId) &&
                         (!ouId.HasValue || b.OU.Id == ouId) &&
                        (!wareHouseId.HasValue || b.Warehouse.Id == wareHouseId)&&
                        (!areaId.HasValue || b.ReservoirArea.Id == areaId) &&
-                       (!type.HasValue || b.Type == type) &&
-                       (!status.HasValue || b.Status == status) &&
-                       (!inStock.HasValue || b.InStock == inStock))
+                        (types==null || types.Contains(b.Type)) &&
+                        (status==null || status.Contains(b.Status)) &&
+                        (inStocks==null || inStocks.Contains(b.InStock)))
         {
             ApplyPaging(skip,take);
             AddInclude(b => b.Organization);

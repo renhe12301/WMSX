@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.ViewModels;
@@ -26,21 +27,43 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string locationCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,int? type,int? status,int? inStock)
+            string locationCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
+                
                 BaseSpecification<Location> baseSpecification = null;
+                List<int> lTypes = null;
+                if (!string.IsNullOrEmpty(types))
+                {
+                    lTypes = types.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                List<int> lStatuss = null;
+                if (!string.IsNullOrEmpty(status))
+                {
+                    lStatuss = status.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                List<int> lInStocks = null;
+                if (!string.IsNullOrEmpty(inStocks))
+                {
+                    lInStocks = inStocks.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,locationCode,orgId,
-                        ouId,wareHouseId,areaId,type,status,inStock);
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
                 }
                 else
                 {
                     baseSpecification = new LocationSpecification(id,locationCode,orgId,
-                        ouId,wareHouseId,areaId,type,status,inStock);
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
                 }
 
                 var locations = await this._locationRepository.ListAsync(baseSpecification);
@@ -67,7 +90,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._locationRepository.CountAsync(new LocationSpecification(id,locationCode,orgId,
-                        ouId,wareHouseId,areaId,type,status,inStock));
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;
                     dyn.total = count;

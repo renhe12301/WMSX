@@ -41,7 +41,8 @@ namespace ApplicationCore.Misc
     public enum LOCATION_INSTOCK
     {
         无货=0,
-        有货=1
+        有货=1,
+        空托盘=2
     }
 
     public enum LOCATION_TYPE

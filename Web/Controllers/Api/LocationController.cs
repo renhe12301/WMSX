@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using Microsoft.AspNetCore.Cors;
@@ -33,17 +34,17 @@ namespace Web.Controllers.Api
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">仓库编号</param>
         /// <param name="areaId">库区编号</param>
-        /// <param name="type">货位类型</param>
+        /// <param name="types">货位类型</param>
         /// <param name="status">货位状态</param>
-        /// <param name="inStock">是否有货</param>
+        /// <param name="inStocks">是否有货</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, int? type, int? status,
-            int? inStock)
+            string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
+            string inStocks)
         {
             var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, locationCode,
-                orgId, ouId, wareHouseId, areaId, type, status,inStock);
+                orgId, ouId, wareHouseId, areaId, types, status,inStocks);
             return Content(JsonConvert.SerializeObject(response));
         }
 

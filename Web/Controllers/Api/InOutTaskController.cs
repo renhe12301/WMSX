@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -78,6 +79,10 @@ namespace Web.Controllers.Api
         /// <param name="id">任务编号</param>
         /// <param name="status">任务状态,多个以逗号隔开</param>
         /// <param name="steps">任务步骤,多个以逗号隔开</param>
+        /// <param name="orgId">所属公司编号</param>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="wareHouseId">所属仓库编号</param>
+        /// <param name="areaId">所属库区编号</param>
         /// <param name="sCreateTime">任务开始时间</param>
         /// <param name="eCreateTIme">任务开始时间</param>
         /// <param name="sFinishTime"><任务完成时间</param>

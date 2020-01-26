@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using Web.ViewModels;
@@ -18,7 +19,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> UpdateLocation(LocationViewModel locationViewModel);
 
         Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, int? type, int? status,
-            int? inStock);
+            string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
+            string inStocks);
     }
 }
