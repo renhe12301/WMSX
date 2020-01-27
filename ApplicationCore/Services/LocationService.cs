@@ -28,12 +28,14 @@ namespace ApplicationCore.Services
         public async Task AddLocation(Location location)
         {
             Guard.Against.Null(location, nameof(location));
+            Guard.Against.NullOrEmpty(location.SysCode,nameof(location.SysCode));
+            Guard.Against.Null(location.OrganizationId,nameof(location.OrganizationId));
             await this._locationRepository.AddAsync(location);
         }
 
-        public async Task BuildLocation(int wareHouseId,int row, int rank, int col)
+        public async Task BuildLocation(int orgId,int row, int rank, int col)
         {
-            Guard.Against.Zero(wareHouseId, nameof(wareHouseId));
+            Guard.Against.Zero(orgId, nameof(orgId));
             Guard.Against.Zero(row, nameof(row));
             Guard.Against.Zero(rank, nameof(rank));
             Guard.Against.Zero(col, nameof(col));
@@ -45,15 +47,15 @@ namespace ApplicationCore.Services
                 {
                     for (int k = 1; k <= col; k++)
                     {
-                        string code = wareHouseId.ToString()+"-"+i.ToString().PadRight(3, '0') +"-"+
-                                      j.ToString().PadRight(3, '0') +"-"+
-                                      k.ToString().PadRight(3, '0');
+                        string code = orgId.ToString()+"-"+i.ToString().PadLeft(3, '0') +"-"+
+                                      j.ToString().PadLeft(3, '0') +"-"+
+                                      k.ToString().PadLeft(3, '0');
                         string locationCode = code;
                         Location location = new Location
                         {
                             SysCode = locationCode,
-                            CreateTime = DateTime.Now
-
+                            CreateTime = DateTime.Now,
+                            OrganizationId = orgId
                         };
                         addLocations.Add(location);
                     }

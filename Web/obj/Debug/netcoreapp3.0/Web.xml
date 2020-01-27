@@ -133,7 +133,7 @@
             货位信息操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取货位信息
             </summary>

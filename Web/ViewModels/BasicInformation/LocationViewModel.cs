@@ -13,11 +13,11 @@ namespace Web.ViewModels.BasicInformation
         public string InStock { get; set; }
         public string IsTask { get; set; }
         public string Memo { get; set; }
-        public int WarehouseId { get; set; }
-        public int ReservoirAreaId { get; set; }
-        public int OUId { get; set; }
+        public int? WarehouseId { get; set; }
+        public int? ReservoirAreaId { get; set; }
+        public int? OUId { get; set; }
         public string OUName { get; set; }
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
         public string OrgName { get; set; }
         public string WarehouseName { get; set; }
       

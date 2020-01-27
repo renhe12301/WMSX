@@ -166,7 +166,8 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._reservoirAreaService.AssignLocation(locationViewModel.ReservoirAreaId, locationViewModel.LocationIds);
+                if(!locationViewModel.ReservoirAreaId.HasValue)throw new Exception("分配货位,库区编号不能为空！");
+                await this._reservoirAreaService.AssignLocation(locationViewModel.ReservoirAreaId.Value, locationViewModel.LocationIds);
             }
             catch (Exception ex)
             {

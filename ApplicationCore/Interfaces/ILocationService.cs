@@ -7,7 +7,7 @@ namespace ApplicationCore.Interfaces
     public interface ILocationService
     {
         Task AddLocation( Location location);
-        Task BuildLocation(int wareHouseId,int row,int rank,int col);
+        Task BuildLocation(int orgId,int row,int rank,int col);
         Task Enable(int id);
         Task Disable(int id);
         Task Clear(int id);

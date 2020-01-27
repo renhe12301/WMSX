@@ -77,10 +77,10 @@ namespace Web.Services
                         SysCode = e.SysCode,
                         UserCode = e.UserCode,
                         CreateTime = e.CreateTime.ToString(),
-                        ReservoirAreaName = e.ReservoirArea.AreaName,
-                        OUName = e.OU.OUName,
-                        OrgName = e.Organization.OrgName,
-                        WarehouseName = e.Warehouse.WhName,
+                        ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        OUName = e.OU?.OUName,
+                        OrgName = e.Organization?.OrgName,
+                        WarehouseName = e.Warehouse?.WhName,
                         Status =  Enum.GetName(typeof(LOCATION_STATUS), e.Status),
                         InStock = Enum.GetName(typeof(LOCATION_INSTOCK), e.InStock),
                         IsTask =  Enum.GetName(typeof(LOCATION_TASK), e.IsTask),
@@ -120,7 +120,9 @@ namespace Web.Services
                     SysCode = locationViewModel.SysCode,
                     UserCode = locationViewModel.UserCode,
                     WarehouseId=locationViewModel.WarehouseId,
-                    ReservoirAreaId=locationViewModel.ReservoirAreaId
+                    ReservoirAreaId=locationViewModel.ReservoirAreaId,
+                    OUId = locationViewModel.OUId,
+                    OrganizationId = locationViewModel.OrganizationId
                 };
                 await this._locationService.AddLocation(location);
                 response.Data = location.Id;
@@ -138,7 +140,8 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._locationService.BuildLocation(locationViewModel.WarehouseId,
+                if(!locationViewModel.OrganizationId.HasValue)throw new Exception("生成货位,公司编号不能为空！");
+                await this._locationService.BuildLocation(locationViewModel.OrganizationId.Value,
                     locationViewModel.Row, locationViewModel.Rank, locationViewModel.Col);
             }
             catch (Exception ex)
