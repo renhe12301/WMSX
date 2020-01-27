@@ -52,6 +52,12 @@ namespace ApplicationCore.Misc
         出入库区货位 = 2,
         仓库区货位 = 3
     }
+    
+    public enum LOCATION_TASK
+    {
+        没有任务= 0,
+        有任务=1
+    }
 
     public enum TRAY_CARRIER
     {

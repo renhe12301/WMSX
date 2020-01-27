@@ -11,7 +11,7 @@ namespace Web.ViewModels.BasicInformation
         public string CreateTime { get; set; }
         public string Status { get; set; }
         public string InStock { get; set; }
-        public string Type { get; set; }
+        public string IsTask { get; set; }
         public string Memo { get; set; }
         public int WarehouseId { get; set; }
         public int ReservoirAreaId { get; set; }

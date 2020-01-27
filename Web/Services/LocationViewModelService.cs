@@ -27,20 +27,13 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks,string isTasks)
+            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string status,string inStocks,string isTasks)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
                 
                 BaseSpecification<Location> baseSpecification = null;
-                List<int> lTypes = null;
-                if (!string.IsNullOrEmpty(types))
-                {
-                    lTypes = types.Split(new char[]{
-                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
-
-                }
                 List<int> lStatuss = null;
                 if (!string.IsNullOrEmpty(status))
                 {
@@ -65,12 +58,12 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks);
+                        ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks);
                 }
                 else
                 {
                     baseSpecification = new LocationSpecification(id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks);
+                        ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks);
                 }
 
                 var locations = await this._locationRepository.ListAsync(baseSpecification);
@@ -90,14 +83,14 @@ namespace Web.Services
                         WarehouseName = e.Warehouse.WhName,
                         Status =  Enum.GetName(typeof(LOCATION_STATUS), e.Status),
                         InStock = Enum.GetName(typeof(LOCATION_INSTOCK), e.InStock),
-                        Type =  Enum.GetName(typeof(LOCATION_TYPE), e.Type)
+                        IsTask =  Enum.GetName(typeof(LOCATION_TASK), e.IsTask),
                     };
                     locationViewModels.Add(locationViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks));
+                        ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;
                     dyn.total = count;

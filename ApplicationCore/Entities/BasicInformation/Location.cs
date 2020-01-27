@@ -15,7 +15,6 @@ namespace ApplicationCore.Entities.BasicInformation
         public int InStock { get; set; }
         public int IsTask { get; set; }
         public string Memo { get; set; }
-        public int Type { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
         public int? OrganizationId { get; set; }

@@ -36,7 +36,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
             LocationSpecification locationSpec = new LocationSpecification(null,null,null,
-                null, null, null, null, null, null, null,null);
+                null, null, null, null,  null, null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             List<Location> updLocations=new List<Location>();
             locationIds.ForEach(async (id) =>

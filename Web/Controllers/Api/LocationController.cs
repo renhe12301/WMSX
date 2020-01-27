@@ -42,11 +42,11 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
+            string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId,  string status,
             string inStocks,string isTasks)
         {
             var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, sysCode,userCode,
-                                                                             orgId, ouId, wareHouseId, areaId, types, status,inStocks,isTasks);
+                                                                             orgId, ouId, wareHouseId, areaId,  status,inStocks,isTasks);
             return Content(JsonConvert.SerializeObject(response));
         }
 

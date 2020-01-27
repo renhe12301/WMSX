@@ -19,7 +19,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> UpdateLocation(LocationViewModel locationViewModel);
 
         Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
+            string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string status,
             string inStocks,string isTasks);
     }
 }
