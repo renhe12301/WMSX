@@ -43,8 +43,8 @@ namespace Web.Controllers.Api
             string locationCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
             string inStocks)
         {
-            var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, locationCode,
-                orgId, ouId, wareHouseId, areaId, types, status,inStocks);
+            var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, locationCode,null,
+                                                                             orgId, ouId, wareHouseId, areaId, types, status,inStocks);
             return Content(JsonConvert.SerializeObject(response));
         }
 

@@ -27,7 +27,7 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string locationCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks)
+            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -57,12 +57,12 @@ namespace Web.Services
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,locationCode,orgId,
+                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,orgId,
                         ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
                 }
                 else
                 {
-                    baseSpecification = new LocationSpecification(id,locationCode,orgId,
+                    baseSpecification = new LocationSpecification(id,sysCode,userCode,orgId,
                         ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
                 }
 
@@ -89,7 +89,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,locationCode,orgId,
+                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,orgId,
                         ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;

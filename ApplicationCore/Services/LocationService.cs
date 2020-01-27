@@ -92,7 +92,8 @@ namespace ApplicationCore.Services
         public async Task Disable(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,null,null,null,null);
+            var locationSpec = new LocationSpecification(id, null,null,null,null,
+                                             null,null,null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
@@ -103,7 +104,8 @@ namespace ApplicationCore.Services
         public async Task Enable(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,null,null,null,null);
+            var locationSpec = new LocationSpecification(id, null,null,null,null,
+                                                       null,null,null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
@@ -114,7 +116,8 @@ namespace ApplicationCore.Services
         public async Task Lock(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,null,null,null,null);
+            var locationSpec = new LocationSpecification(id, null,null,null,null,null,
+                                                  null,null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
@@ -125,7 +128,9 @@ namespace ApplicationCore.Services
         public async Task UnLock(int id)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id,null,null,null,null,null,null,null,null);
+            var locationSpec = new LocationSpecification(id,null,null,null,null,
+                                             null,null,null,null,null);
+             
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
@@ -137,7 +142,8 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(id, nameof(id));
             Guard.Against.NullOrEmpty(userCode, nameof(userCode));
-            var locationSpec = new LocationSpecification(id,null,null,null,null,null,null,null,null);
+            var locationSpec = new LocationSpecification(id,null,null,null,null,
+                null,null,null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
