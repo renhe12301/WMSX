@@ -20,6 +20,6 @@ namespace Web.Interfaces
 
         Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
             string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string types, string status,
-            string inStocks);
+            string inStocks,string isTasks);
     }
 }

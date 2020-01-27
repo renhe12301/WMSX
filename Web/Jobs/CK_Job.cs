@@ -64,7 +64,7 @@ namespace Web.Jobs
                                                                                      null, null, null,
                                 new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)},
                                 new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
+                                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null);
                             var locations = await this._locationRepository.ListAsync(locationSpec);
                             int index = 0;
                             //发送wcs任务

@@ -83,7 +83,8 @@ namespace ApplicationCore.Services
         {
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
             WarehouseTrayDetailSpecification traySpec = new WarehouseTrayDetailSpecification(null, trayCode,
-               null, null, null,null, null,null,null,null, null, null, null);
+               null, null, null,null, null,null,null,
+               null, null, null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(traySpec);
             Guard.Against.Zero(warehouseTrays.Count, nameof(warehouseTrays.Count));
             var warehouseTray = warehouseTrays[0];
@@ -92,7 +93,8 @@ namespace ApplicationCore.Services
                 throw new Exception("托盘状态错误,必须为待入库,当前托盘状态为["+
                     Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep.Value) +"]");
 
-            LocationSpecification locationSpec = new LocationSpecification(null, locationCode,null,null,null,null,null,null,null,null);
+            LocationSpecification locationSpec = new LocationSpecification(null, locationCode,null,
+                null,null,null,null,null,null,null,null);
             var locations=await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.Zero(locations.Count, nameof(locations.Count));
             var location = locations[0];
@@ -101,16 +103,16 @@ namespace ApplicationCore.Services
             BaseSpecification<Location> areaLocationSpec = null;
             if (warehouseTray.WarehouseMaterial.Count > 0)
             {
-                areaLocationSpec = new LocationSpecification(null, null,null,null,null, null, warehouseTray.ReservoirAreaId,
-                                                     null, new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                                     new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
+                areaLocationSpec = new LocationSpecification(null, null,null,null,null, 
+                    null, warehouseTray.ReservoirAreaId,null, new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                                                     new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null);
             }
             else
             {
-                areaLocationSpec = new LocationSpecification(null, null,null,warehouseTray.OrganizationId,null, null, null,
-                                                   new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)},
-                                                   new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                                   new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)});
+                areaLocationSpec = new LocationSpecification(null, null,null,warehouseTray.OrganizationId,null,
+                          null, null,new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)},
+                                                                 new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                                                              new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null);
             }
             var areaLocations = await this._locationRepository.ListAsync(areaLocationSpec);
             if (areaLocations.Count == 0)
@@ -215,7 +217,7 @@ namespace ApplicationCore.Services
                 {
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已下架);
                     LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId,null,
-                        null, null, null, null, null, null, null);
+                        null, null, null, null, null, null, null,null);
                     var locations = await this._locationRepository.ListAsync(locationSpec);
                     var location = locations[0];
                     location.Status = Convert.ToInt32(LOCATION_STATUS.正常);

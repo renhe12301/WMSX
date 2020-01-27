@@ -27,7 +27,7 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks)
+            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string types,string status,string inStocks,string isTasks)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -55,15 +55,22 @@ namespace Web.Services
                         ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
+                List<int> lIsTasks = null;
+                if (!string.IsNullOrEmpty(isTasks))
+                {
+                    lIsTasks = isTasks.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks);
                 }
                 else
                 {
                     baseSpecification = new LocationSpecification(id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks);
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks);
                 }
 
                 var locations = await this._locationRepository.ListAsync(baseSpecification);
@@ -90,7 +97,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,orgId,
-                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks));
+                        ouId,wareHouseId,areaId,lTypes,lStatuss,lInStocks,lIsTasks));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;
                     dyn.total = count;

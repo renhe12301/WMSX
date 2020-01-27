@@ -13,6 +13,7 @@ namespace ApplicationCore.Entities.BasicInformation
         public DateTime CreateTime { get; set; }
         public int Status { get; set; }
         public int InStock { get; set; }
+        public int IsTask { get; set; }
         public string Memo { get; set; }
         public int Type { get; set; }
         public int? WarehouseId { get; set; }
