@@ -35,7 +35,6 @@ namespace Web.Controllers.Api
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">仓库编号</param>
         /// <param name="areaId">库区编号</param>
-        /// <param name="types">货位类型</param>
         /// <param name="status">货位状态</param>
         /// <param name="inStocks">是否有货</param>
         /// <param name="isTasks">是否有任务</param>
@@ -107,30 +106,6 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Clear(LocationViewModel locationViewModel)
         {
             var response = await this._locationViewModelService.Clear(locationViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 锁定货位
-        /// </summary>
-        /// <param name="locationViewModel">货位对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> Lock(LocationViewModel locationViewModel)
-        {
-            var response = await this._locationViewModelService.Lock(locationViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 解锁货位
-        /// </summary>
-        /// <param name="locationViewModel">货位对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> UnLock(LocationViewModel locationViewModel)
-        {
-            var response = await this._locationViewModelService.UnLock(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
 

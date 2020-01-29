@@ -98,7 +98,7 @@ namespace ApplicationCore.Services
             {
                 if (userIds.Contains(em.Id))
                 {
-                    em.Status = Convert.ToInt32(EMPLOYEE_STATUS.注销);
+                    em.Status = Convert.ToInt32(EMPLOYEE_STATUS.禁用);
                     updEmployees.Add(em);
                 }
             });

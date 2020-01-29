@@ -11,7 +11,7 @@ namespace ApplicationCore.Misc
     public enum EMPLOYEE_STATUS
     {
         正常 = 0,
-        注销 = 1
+        禁用 = 1
     }
 
     public enum WAREHOUSE_STATUS
@@ -95,7 +95,7 @@ namespace ApplicationCore.Misc
     public enum SYSROLE_STATUS
     {
         正常 = 0,
-        注销 = 1
+        禁用 = 1
     }
 
     public enum TASK_STEP

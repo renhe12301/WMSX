@@ -146,7 +146,6 @@
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">仓库编号</param>
             <param name="areaId">库区编号</param>
-            <param name="types">货位类型</param>
             <param name="status">货位状态</param>
             <param name="inStocks">是否有货</param>
             <param name="isTasks">是否有任务</param>
@@ -183,20 +182,6 @@
         <member name="M:Web.Controllers.Api.LocationController.Clear(Web.ViewModels.BasicInformation.LocationViewModel)">
             <summary>
             清理货位上物料托盘信息
-            </summary>
-            <param name="locationViewModel">货位对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.LocationController.Lock(Web.ViewModels.BasicInformation.LocationViewModel)">
-            <summary>
-            锁定货位
-            </summary>
-            <param name="locationViewModel">货位对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.LocationController.UnLock(Web.ViewModels.BasicInformation.LocationViewModel)">
-            <summary>
-            解锁货位
             </summary>
             <param name="locationViewModel">货位对象</param>
             <returns></returns>

@@ -80,7 +80,7 @@ namespace ApplicationCore.Services
             {
                 if (roleIds.Contains(role.Id))
                 {
-                    role.Status = Convert.ToInt32(SYSROLE_STATUS.注销);
+                    role.Status = Convert.ToInt32(SYSROLE_STATUS.禁用);
                     updRoles.Add(role);
                 }
             });

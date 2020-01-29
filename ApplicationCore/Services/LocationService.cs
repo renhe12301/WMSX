@@ -65,23 +65,35 @@ namespace ApplicationCore.Services
             await this._locationRepository.AddAsync(addLocations);
         }
 
-        public async Task Clear(int id)
+        public async Task Clear(List<int> ids)
         {
-            Guard.Against.Zero(id, nameof(id));
-            var wareHouseTraySpec = new WarehouseTraySpecification(null, null,
-                null,null, null,null, null, null, id,null,null, null, null);
-            var wareHouseTrays = await this._warehouseTrayRepository.ListAsync(wareHouseTraySpec);
-            
-            var wareHouseMaterialSpec = new WarehouseMaterialSpecification(null,null,null,null,
-                null, null, null, null, null, id,null,null, null, null);
-            var wareHouseMaterials = await this._warehouseMaterialRepository.ListAsync(wareHouseMaterialSpec);
-           
+            Guard.Against.NullOrEmpty(ids, nameof(ids));
+            var locations = await this._locationRepository.ListAllAsync();
+            Guard.Against.NullOrEmpty(locations, nameof(locations));
+            var wareHouseTrays = await this._warehouseTrayRepository.ListAllAsync();
+            var wareHouseMaterials = await this._warehouseMaterialRepository.ListAllAsync();
+            List<WarehouseTray> delWareHouseTrays=new List<WarehouseTray>();
+            List<WarehouseMaterial> delWareHouseMaterials=new List<WarehouseMaterial>();
+            List<Location> updLocations=new List<Location>();
+            locations.ForEach(l =>
+            {
+                if (ids.Contains(l.Id))
+                {
+                    if(l.IsTask==Convert.ToInt32(LOCATION_TASK.有任务))
+                        throw new Exception(string.Format("货位[{0}]当前有任务,无法禁用！",l.SysCode));
+                    delWareHouseTrays.AddRange(wareHouseTrays.FindAll(wht=>wht.LocationId==l.Id));
+                    delWareHouseMaterials.AddRange(wareHouseMaterials.FindAll(whm=>whm.LocationId==l.Id));
+                    l.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
+                    updLocations.Add(l);
+                }
+            });
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
                 {
-                    this._warehouseTrayRepository.Delete(wareHouseTrays);
-                    this._warehouseMaterialRepository.Delete(wareHouseMaterials);
+                    this._warehouseTrayRepository.Delete(delWareHouseTrays);
+                    this._warehouseMaterialRepository.Delete(delWareHouseMaterials);
+                    this._locationRepository.Update(updLocations);
                     scope.Complete();
                 }
                 catch (Exception ex)
@@ -91,65 +103,78 @@ namespace ApplicationCore.Services
             }
         }
 
-        public async Task Disable(int id)
+        public async Task Disable(List<int> ids)
         {
-            Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,
-                                             null,null,null,null,null);
-            var locations = await this._locationRepository.ListAsync(locationSpec);
+            Guard.Against.NullOrEmpty(ids, nameof(ids));
+            var locations = await this._locationRepository.ListAllAsync();
             Guard.Against.NullOrEmpty(locations, nameof(locations));
-            var location = locations[0];
-            location.Status = Convert.ToInt32(LOCATION_STATUS.禁用);
-            await this._locationRepository.UpdateAsync(location);
+            
+            List<Location> updLocations=new List<Location>();
+            locations.ForEach(l =>
+            {
+                if (ids.Contains(l.Id))
+                {
+                    if(l.IsTask==Convert.ToInt32(LOCATION_TASK.有任务))
+                        throw new Exception(string.Format("货位[{0}]当前有任务,无法禁用！",l.SysCode));
+                    l.Status = Convert.ToInt32(LOCATION_STATUS.禁用);
+                    updLocations.Add(l);
+                }
+            });
+            await this._locationRepository.UpdateAsync(updLocations);
         }
 
-        public async Task Enable(int id)
+        public async Task Enable(List<int> ids)
         {
-            Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,
-                                                       null,null,null,null,null);
-            var locations = await this._locationRepository.ListAsync(locationSpec);
+            Guard.Against.NullOrEmpty(ids, nameof(ids));
+            var locations = await this._locationRepository.ListAllAsync();
             Guard.Against.NullOrEmpty(locations, nameof(locations));
-            var location = locations[0];
-            location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-            await this._locationRepository.UpdateAsync(location);
+
+            List<Location> updLocations = new List<Location>();
+            locations.ForEach(l =>
+            {
+                if (ids.Contains(l.Id))
+                {
+                    if (l.IsTask == Convert.ToInt32(LOCATION_TASK.有任务))
+                        throw new Exception(string.Format("货位[{0}]当前有任务,无法启用！", l.SysCode));
+                    l.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                    updLocations.Add(l);
+                }
+            });
+            await this._locationRepository.UpdateAsync(updLocations);
         }
 
-        public async Task Lock(int id)
+        public async Task UpdateLocation(int id, string sysCode, string userCode)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null,null,null,null,null,
-                                                  null,null,null,null);
+            var locationSpec = new LocationSpecification(id, null, null, null, null,
+                null, null, null, null, null);
+            var sysCodelocationSpec = new LocationSpecification(null, sysCode, null, null, null,
+                null, null, null, null, null);
+            var userCodelocationSpec = new LocationSpecification(null, null, userCode, null, null,
+                null, null, null, null, null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
-            location.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
-            await this._locationRepository.UpdateAsync(location);
-        }
-
-        public async Task UnLock(int id)
-        {
-            Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id,null,null,null,null,
-                                             null,null,null,null,null);
-             
-            var locations = await this._locationRepository.ListAsync(locationSpec);
-            Guard.Against.NullOrEmpty(locations, nameof(locations));
-            var location = locations[0];
-            location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-            await this._locationRepository.UpdateAsync(location);
-        }
-
-        public async Task UpdateLocation(int id, string userCode)
-        {
-            Guard.Against.Zero(id, nameof(id));
-            Guard.Against.NullOrEmpty(userCode, nameof(userCode));
-            var locationSpec = new LocationSpecification(id,null,null,null,null,
-                null,null,null,null,null);
-            var locations = await this._locationRepository.ListAsync(locationSpec);
-            Guard.Against.NullOrEmpty(locations, nameof(locations));
-            var location = locations[0];
-            location.UserCode = userCode;
+            if (!string.IsNullOrEmpty(sysCode))
+            {
+                var sysCodelocations = await this._locationRepository.ListAsync(sysCodelocationSpec);
+                if (sysCodelocations.Count > 0)
+                {
+                    if(sysCodelocations[0].Id!=id)
+                        throw new Exception(string.Format("货位系统编号[{0}],已经存在！",sysCode));
+                }
+                location.SysCode = sysCode;
+            }
+            if (!string.IsNullOrEmpty(userCode))
+            {
+                var userCodelocations = await this._locationRepository.ListAsync(userCodelocationSpec);
+                if (userCodelocations.Count > 0)
+                {
+                    if(userCodelocations[0].Id!=id)
+                        throw new Exception(string.Format("货位用户编号[{0}],已经存在！",userCode));
+                }
+                location.UserCode = userCode;
+            }
             await this._locationRepository.UpdateAsync(location);
         }
     }

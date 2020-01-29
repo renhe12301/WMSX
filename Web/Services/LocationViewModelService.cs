@@ -157,7 +157,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._locationService.Clear(locationViewModel.Id);
+                await this._locationService.Clear(locationViewModel.LocationIds);
             }
             catch (Exception ex)
             {
@@ -172,7 +172,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._locationService.Disable(locationViewModel.Id);
+                await this._locationService.Disable(locationViewModel.LocationIds);
             }
             catch (Exception ex)
             {
@@ -187,7 +187,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._locationService.Enable(locationViewModel.Id);
+                await this._locationService.Enable(locationViewModel.LocationIds);
             }
             catch (Exception ex)
             {
@@ -196,43 +196,14 @@ namespace Web.Services
             }
             return response;
         }
-
-        public async Task<ResponseResultViewModel> Lock(LocationViewModel locationViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._locationService.Lock(locationViewModel.Id);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        public async Task<ResponseResultViewModel> UnLock(LocationViewModel locationViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._locationService.UnLock(locationViewModel.Id);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
+        
 
         public async Task<ResponseResultViewModel> UpdateLocation(LocationViewModel locationViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._locationService.UpdateLocation(locationViewModel.Id, locationViewModel.UserCode);
+                await this._locationService.UpdateLocation(locationViewModel.Id,locationViewModel.SysCode,locationViewModel.UserCode);
             }
             catch (Exception ex)
             {

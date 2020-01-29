@@ -24,7 +24,6 @@ namespace Infrastructure.Data
 
         public async Task<List<T>> ListAllAsync()
         {
-            _dbContext.Database.BeginTransaction();
             return await _dbContext.Set<T>().ToListAsync();
         }
 

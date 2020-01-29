@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ApplicationCore.Entities.OrganizationManager;
 using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.StockManager;
 
 namespace Infrastructure.Data
 {
@@ -24,6 +25,9 @@ namespace Infrastructure.Data
         public DbSet<MaterialDicType> MaterialDicType { get; set; }
         public DbSet<MaterialUnit> MaterialUnit { get; set; }
         public DbSet<Location> Location { get; set; }
+        public DbSet<WarehouseMaterial> WarehouseMaterial { get; set; }
+        public DbSet<WarehouseTray> WarehouseTray { get; set; }
+        public DbSet<MaterialDicTypeArea> MaterialDicTypeArea { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {
