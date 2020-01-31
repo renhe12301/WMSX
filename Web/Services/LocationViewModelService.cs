@@ -131,6 +131,60 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> GetMaxFloor(int orgId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                    null,null,null,null,null,null,null,null);
+                var ls = await this._locationRepository.ListAsync(locationSpec);
+                response.Data = ls.Max(l=>l.Floor);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> GetMaxItem(int orgId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                    null,null,null,null,null,null,null,null);
+                var ls = await this._locationRepository.ListAsync(locationSpec);
+                response.Data = ls.Max(l=>l.Item);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> GetMaxCol(int orgId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                    null,null,null,null,null,null,null,null);
+                var ls = await this._locationRepository.ListAsync(locationSpec);
+                response.Data = ls.Max(l=>l.Col);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> AddLocation(LocationViewModel locationViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
