@@ -38,14 +38,17 @@ namespace Web.Controllers.Api
         /// <param name="status">货位状态</param>
         /// <param name="inStocks">是否有货</param>
         /// <param name="isTasks">是否有任务</param>
+        /// <param name="floors">层</param>
+        /// <param name="items">排</param>
+        /// <param name="cols">列</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetLocations(int? pageIndex, int? itemsPage, int? id,
             string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId,  string status,
-            string inStocks,string isTasks)
+            string inStocks,string isTasks,string floors,string items,string cols)
         {
             var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, sysCode,userCode,
-                                                                             orgId, ouId, wareHouseId, areaId,  status,inStocks,isTasks);
+                orgId, ouId, wareHouseId, areaId,  status,inStocks,isTasks,floors,items,cols);
             return Content(JsonConvert.SerializeObject(response));
         }
 

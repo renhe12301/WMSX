@@ -10,6 +10,13 @@ namespace ApplicationCore.Entities.BasicInformation
     {
         public string SysCode { get; set; }
         public string UserCode { get; set; }
+
+        public int Floor { get; set; }
+
+        public int Item { get; set; }
+
+        public int Col { get; set; }
+
         public DateTime CreateTime { get; set; }
         public int Status { get; set; }
         public int InStock { get; set; }
@@ -19,6 +26,7 @@ namespace ApplicationCore.Entities.BasicInformation
         public int? ReservoirAreaId { get; set; }
         public int? OrganizationId { get; set; }
         public int? OUId { get; set; }
+        
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
         public Organization Organization { get; set; }

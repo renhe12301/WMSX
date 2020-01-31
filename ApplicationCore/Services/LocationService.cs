@@ -55,7 +55,10 @@ namespace ApplicationCore.Services
                         {
                             SysCode = locationCode,
                             CreateTime = DateTime.Now,
-                            OrganizationId = orgId
+                            OrganizationId = orgId,
+                            Floor = i,
+                            Item = j,
+                            Col = k
                         };
                         addLocations.Add(location);
                     }
@@ -147,11 +150,11 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(id, nameof(id));
             var locationSpec = new LocationSpecification(id, null, null, null, null,
-                null, null, null, null, null);
+                null, null, null, null, null,null,null,null);
             var sysCodelocationSpec = new LocationSpecification(null, sysCode, null, null, null,
-                null, null, null, null, null);
+                null, null, null, null, null,null,null,null);
             var userCodelocationSpec = new LocationSpecification(null, null, userCode, null, null,
-                null, null, null, null, null);
+                null, null, null, null, null,null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];
