@@ -41,6 +41,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(col, nameof(col));
 
             List<Location> addLocations=new List<Location>();
+            DateTime now=DateTime.Now;
             for (int i = 1; i <=row; i++)
             {
                 for (int j = 1; j <= rank; j++)
@@ -54,7 +55,8 @@ namespace ApplicationCore.Services
                         Location location = new Location
                         {
                             SysCode = locationCode,
-                            CreateTime = DateTime.Now,
+                            UserCode = locationCode,
+                            CreateTime = now,
                             OrganizationId = orgId,
                             Floor = i,
                             Item = j,
@@ -64,8 +66,22 @@ namespace ApplicationCore.Services
                     }
                 }
             }
-            
-            await this._locationRepository.AddAsync(addLocations);
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    addLocations.ForEach(l =>
+                    {
+                        this._locationRepository.AddAsync(l);
+                    });
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+           
         }
 
         public async Task Clear(List<int> ids)

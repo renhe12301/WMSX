@@ -106,9 +106,13 @@ namespace Web.Services
                         Status =  Enum.GetName(typeof(LOCATION_STATUS), e.Status),
                         InStock = Enum.GetName(typeof(LOCATION_INSTOCK), e.InStock),
                         IsTask =  Enum.GetName(typeof(LOCATION_TASK), e.IsTask),
+                        Row = e.Floor.GetValueOrDefault(),
+                        Col = e.Col.GetValueOrDefault(),
+                        Rank = e.Item.GetValueOrDefault()
                     };
                     locationViewModels.Add(locationViewModel);
                 });
+              
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,orgId,
@@ -131,6 +135,30 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> GetMaxFloorItemCol(int orgId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                    null,null,null,null,null,null,null,null);
+                var ls = await this._locationRepository.ListAsync(locationSpec);
+                List<int> fics=new List<int>
+                {
+                    ls.Max(l=>l.Floor).GetValueOrDefault(),
+                    ls.Max(l=>l.Item).GetValueOrDefault(),
+                    ls.Max(l=>l.Col).GetValueOrDefault(),
+                };
+                response.Data = fics;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+        
         public async Task<ResponseResultViewModel> GetMaxFloor(int orgId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };

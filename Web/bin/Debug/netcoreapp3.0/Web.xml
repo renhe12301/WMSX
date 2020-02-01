@@ -133,7 +133,7 @@
             货位信息操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             获取货位信息
             </summary>
@@ -149,6 +149,37 @@
             <param name="status">货位状态</param>
             <param name="inStocks">是否有货</param>
             <param name="isTasks">是否有任务</param>
+            <param name="floors">层</param>
+            <param name="items">排</param>
+            <param name="cols">列</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.LocationController.GetMaxFloorItemCol(System.Int32)">
+            <summary>
+            获取最大的层、排、列
+            </summary>
+            <param name="orgId">所属公司编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.LocationController.GetMaxFloor(System.Int32)">
+            <summary>
+            获取最大的层
+            </summary>
+            <param name="orgId">所属公司编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.LocationController.GetMaxItem(System.Int32)">
+            <summary>
+            获取最大的排
+            </summary>
+            <param name="orgId">所属公司编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.LocationController.GetMaxCol(System.Int32)">
+            <summary>
+            获取最大的列
+            </summary>
+            <param name="orgId">所属公司编号</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.LocationController.AddLocation(Web.ViewModels.BasicInformation.LocationViewModel)">

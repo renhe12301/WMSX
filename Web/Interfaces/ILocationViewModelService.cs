@@ -19,7 +19,8 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
             string sysCode,string userCode, int? orgId, int? ouId, int? wareHouseId, int? areaId, string status,
             string inStocks,string isTasks,string floors,string items,string cols);
-        
+
+        Task<ResponseResultViewModel> GetMaxFloorItemCol(int orgId);
         Task<ResponseResultViewModel> GetMaxFloor(int orgId);
         
         Task<ResponseResultViewModel> GetMaxItem(int orgId);

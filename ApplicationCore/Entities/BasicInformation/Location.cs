@@ -11,11 +11,11 @@ namespace ApplicationCore.Entities.BasicInformation
         public string SysCode { get; set; }
         public string UserCode { get; set; }
 
-        public int Floor { get; set; }
+        public int? Floor { get; set; }
 
-        public int Item { get; set; }
+        public int? Item { get; set; }
 
-        public int Col { get; set; }
+        public int? Col { get; set; }
 
         public DateTime CreateTime { get; set; }
         public int Status { get; set; }

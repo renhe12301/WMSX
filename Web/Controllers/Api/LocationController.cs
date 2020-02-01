@@ -53,6 +53,50 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
+        /// 获取最大的层、排、列
+        /// </summary>
+        /// <param name="orgId">所属公司编号</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetMaxFloorItemCol(int orgId)
+        {
+            var response = await this._locationViewModelService.GetMaxFloorItemCol(orgId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 获取最大的层
+        /// </summary>
+        /// <param name="orgId">所属公司编号</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetMaxFloor(int orgId)
+        {
+            var response = await this._locationViewModelService.GetMaxFloor(orgId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 获取最大的排
+        /// </summary>
+        /// <param name="orgId">所属公司编号</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetMaxItem(int orgId)
+        {
+            var response = await this._locationViewModelService.GetMaxItem(orgId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 获取最大的列
+        /// </summary>
+        /// <param name="orgId">所属公司编号</param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetMaxCol(int orgId)
+        {
+            var response = await this._locationViewModelService.GetMaxCol(orgId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
+        /// <summary>
         /// 添加货位
         /// </summary>
         /// <param name="locationViewModel">货位对象</param>

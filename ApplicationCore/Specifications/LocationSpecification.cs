@@ -19,10 +19,11 @@ namespace ApplicationCore.Specifications
                         (status==null || status.Contains(b.Status)) &&
                         (inStocks==null || inStocks.Contains(b.InStock))&&
                         (isTasks==null || isTasks.Contains(b.IsTask))&&
-                        (floors==null || floors.Contains(b.Floor)) &&
-                        (items==null || items.Contains(b.Item))&&
-                        (cols==null || cols.Contains(b.Col)))
+                        (floors==null || floors.Contains(b.Floor.Value)) &&
+                        (items==null || items.Contains(b.Item.Value))&&
+                        (cols==null || cols.Contains(b.Col.Value)))
         {
+            ApplyOrderBy(b=>b.Floor&b.Item&b.Col);
             AddInclude(b => b.Organization);
             AddInclude(b => b.OU);
             AddInclude(b => b.Warehouse);
