@@ -7,6 +7,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using ApplicationCore.Entities.StockManager;
 using System.Collections.Generic;
+using System.Dynamic;
 using ApplicationCore.Misc;
 using System.Linq;
 
@@ -23,7 +24,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
-            int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,
+            int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
             int? trayDicId,int? orderId,int? orderRowId , int? carrier, string trayTaskStatus, int? locationId,
             int? orgId,int? ouId,int? wareHouseId, int? areaId)
         {
@@ -38,16 +39,16 @@ namespace Web.Services
 
                 }
                 BaseSpecification<WarehouseMaterial> baseSpecification = null;
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new WarehouseMaterialPainatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,materialCode,materialDicId,trayCode,trayDicId,orderId,orderRowId,
+                        id,materialCode,materialDicId,materialName,materialSpec,trayCode,trayDicId,orderId,orderRowId,
                         carrier, trayStatus, locationId,orgId,ouId,wareHouseId,areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
-                        trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
+                        materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
                         locationId,orgId,ouId, wareHouseId, areaId);
                 }
 
@@ -64,15 +65,32 @@ namespace Web.Services
                         Code = e.MaterialDic.MaterialCode,
                         Img = e.MaterialDic.Img,
                         LocationId = e.LocationId,
+                        LocationCode = e.Location.SysCode,
                         MaterialCount = e.MaterialCount,
                         MaterialName = e.MaterialDic.MaterialName,
                         ReservoirAreaName = e.ReservoirArea.AreaName,
                         TrayCode = e.WarehouseTray.Code,
-                        WarehouseName = e.Warehouse.WhName
+                        WarehouseName = e.Warehouse.WhName,
+                        OUName = e.OU.OUName,
+                        OrgName = e.Organization.OrgName
+                        
                     };
                     warehouseMaterialViewModels.Add(warehouseMaterialViewModel);
                 });
-                response.Data = warehouseMaterialViewModels;
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._warehouseMaterialRepository.CountAsync(new WarehouseMaterialSpecification(id, materialCode, materialDicId,
+                        materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
+                        locationId,orgId,ouId, wareHouseId, areaId));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = warehouseMaterialViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = warehouseMaterialViewModels;
+                }
             }
             catch (Exception ex)
             {

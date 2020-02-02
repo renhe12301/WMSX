@@ -9,11 +9,13 @@ namespace ApplicationCore.Specifications
     public class WarehouseMaterialSpecification: BaseSpecification<WarehouseMaterial>
     {
         public WarehouseMaterialSpecification(int? id,string materialCode, int? materialDicId,
-            string trayCode,int? trayDicId,int? orderId,int? orderRowId, int? carrier,
+            string materialName,string materialSpec,string trayCode,int? trayDicId,int? orderId,int? orderRowId, int? carrier,
             List<int> traySteps, int? locationId,int? orgId,int? ouId,int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (materialCode==null||b.MaterialDic.MaterialCode==materialCode)&&
                       (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
+                      (materialName == null || b.MaterialDic.MaterialName.Contains(materialName)) &&
+                      (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&
                       (trayCode == null || b.WarehouseTray.Code == trayCode) &&
                       (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
                       (!orgId.HasValue || b.OrganizationId == orgId) &&
@@ -33,6 +35,8 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.Order);
             AddInclude(b => b.OrderRow);
+            AddInclude(b=>b.Organization);
+            AddInclude(b=>b.OU);
         }
     }
 }
