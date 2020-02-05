@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels.StockManager;
 using Web.ViewModels.TaskManager;
@@ -77,8 +78,10 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">当前页索引</param>
         /// <param name="itemsPage">当前页显示大小</param>
         /// <param name="id">任务编号</param>
+        /// <param name="trayCode">托盘唯一编号</param>
         /// <param name="status">任务状态,多个以逗号隔开</param>
         /// <param name="steps">任务步骤,多个以逗号隔开</param>
+        /// <param name="types">任务类型,多个以逗号隔开</param>
         /// <param name="orgId">所属公司编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">所属仓库编号</param>
@@ -90,15 +93,16 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetInOutTasks(int? pageIndex, int? itemsPage,
-                                             int? id, string status,string steps,
+                                             int? id,string trayCode, string status,string steps,string types,
                                               int? orgId, int? ouId,
                                               int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
         {
             var response = await this._inOutTaskViewModelService.GetInOutTasks(pageIndex,
-                itemsPage, id, status, steps,orgId,ouId,wareHouseId,areaId,sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
-            return Ok(response);
+                itemsPage, id,trayCode, status, steps,types,orgId,ouId,wareHouseId,areaId,
+                sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
 

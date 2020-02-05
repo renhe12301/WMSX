@@ -129,7 +129,7 @@ namespace ApplicationCore.Services
                 CreateTime = DateTime.Now,
                 OrderId = warehouseTray.OrderId,
                 OrderRowId = warehouseTray.OrderRowId,
-                WarehouseTrayId = warehouseTray.Id,
+                TrayCode = warehouseTray.Code,
                 SrcId = srcCode,
                 TargetId = targetCode,
                 Status = Convert.ToInt32(TASK_STATUS.待处理),
@@ -181,15 +181,16 @@ namespace ApplicationCore.Services
             // });
         }
 
-        public async Task TaskStepReport(int id,int vid,string vName, int taskStep)
+        public async Task TaskStepReport(int id,int vid, int taskStep)
         {
-            InOutTaskSpecification taskSpec = new InOutTaskSpecification(id, null,
-                                              null,null,null,null,null, null, null, null, null);
+            InOutTaskSpecification taskSpec = new InOutTaskSpecification(id, null,null,
+                                              null,null,null,null,null,null, 
+                                              null, null, null, null);
             var tasks = await this._inOutTaskRepository.ListAsync(taskSpec);
             Guard.Against.NullOrEmpty(tasks, nameof(tasks));
             var task = tasks[0];
-            WarehouseTrayDetailSpecification warehouseTraySpec = new WarehouseTrayDetailSpecification(task.WarehouseTrayId,
-                                       null, null, null, null,null,null, null, null, null, null, null, null);
+            WarehouseTrayDetailSpecification warehouseTraySpec = new WarehouseTrayDetailSpecification(null,
+                                       task.TrayCode, null, null, null,null,null, null, null, null, null, null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
 
@@ -323,7 +324,6 @@ namespace ApplicationCore.Services
             }
             task.Step = taskStep;
             task.VehicleId = vid;
-            task.VehicleName = vName;
             await this._inOutTaskRepository.UpdateAsync(task);
         }
 

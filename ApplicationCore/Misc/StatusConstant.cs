@@ -117,6 +117,14 @@ namespace ApplicationCore.Misc
         执行中=1,
         完成=2
     }
+    
+    public enum TASK_Type
+    {
+        物料入库=0,
+        物料出库=1,
+        空托盘入库=2,
+        空托盘出库=3
+    }
 
     public enum INOUTRECORD_FLAG
     {

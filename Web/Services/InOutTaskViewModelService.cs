@@ -7,6 +7,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.TaskManager;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using ApplicationCore.Misc;
 using Web.ViewModels.StockManager;
@@ -29,7 +30,7 @@ namespace Web.Services
 
 
         public async Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex, int? itemsPage,
-                                             int? id, string status,string steps,
+                                             int? id,string trayCode , string status,string steps,string types,
                                               int? orgId, int? ouId,
                                               int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
@@ -53,15 +54,24 @@ namespace Web.Services
                         ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                List<int> taskTypes = null;
+                if (!string.IsNullOrEmpty(types))
+                {
+                    taskTypes = types.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutTaskPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,taskStatus, taskSteps,orgId,ouId, wareHouseId,areaId, sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
+                        id,trayCode,taskStatus, taskSteps,taskTypes,orgId,ouId, wareHouseId,areaId, 
+                        sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
                 }
                 else
                 {
-                    baseSpecification = new InOutTaskSpecification(id, 
-                        taskStatus,taskSteps, orgId, ouId, wareHouseId, areaId, sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
+                    baseSpecification = new InOutTaskSpecification(id, trayCode,
+                        taskStatus,taskSteps,taskTypes, orgId, ouId, wareHouseId, areaId, 
+                        sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
                 }
 
                 var tasks = await this._inOutTaskRepository.ListAsync(baseSpecification);
@@ -74,17 +84,37 @@ namespace Web.Services
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
                         Memo = e.Memo,
-                        WarehouseTrayCode=e.WarehouseTray.Code,
+                        TrayCode = e.TrayCode,
                         SrcId=e.SrcId,
                         TargetId=e.TargetId,
                         StatusStr= Enum.GetName(typeof(TASK_STATUS), e.Status),
                         StepStr = Enum.GetName(typeof(TASK_STEP), e.Step),
+                        Type =  Enum.GetName(typeof(TASK_Type), e.Type),
+                        OUName = e.OU?.OUName,
+                        ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        WarehouseName = e.Warehouse?.WhName,
+                        OrgName = e.Organization?.OrgName,
+                        OrderId = e.OrderId,
+                        OrderRowId = e.OrderRowId,
                         Progress=e.Progress,
-                        FinishTime=e.FinishTime.ToString()
+                        FinishTime=e.FinishTime?.ToString()
                     };
                     inOutTaskViewModels.Add(inOutTaskViewModel);
                 });
-                response.Data = inOutTaskViewModels;
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._inOutTaskRepository.CountAsync(new InOutTaskSpecification(id, trayCode,
+                                           taskStatus,taskSteps,taskTypes, orgId, ouId, wareHouseId, areaId, 
+                                           sCreateTime, eCreateTIme, sFinishTime, eFinishTime));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = inOutTaskViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = inOutTaskViewModels;
+                }
             }
             catch (Exception ex)
             {
@@ -115,16 +145,8 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                List<WarehouseTray> warehouseTrays = new List<WarehouseTray>();
-                inOutTaskViewModel.WarehouseTrayViewModels.ForEach(w =>
-                {
-                    WarehouseTray warehouseTray = new WarehouseTray();
-                    warehouseTray.OutCount = w.OutCount;
-                    warehouseTray.Code = w.Code;
-                    warehouseTrays.Add(warehouseTray);
-                });
-                await this._inOutTaskService.AwaitOutApply(inOutTaskViewModel.OrderId,inOutTaskViewModel.OrderRowId
-                    , warehouseTrays);
+                await this._inOutTaskService.AwaitOutApply(inOutTaskViewModel.OrderId.Value,
+                    inOutTaskViewModel.OrderRowId.Value,inOutTaskViewModel.WarehouseTrays);
             }
             catch (Exception ex)
             {
@@ -140,7 +162,7 @@ namespace Web.Services
             try
             {
                 if (!inOutTaskViewModel.WarehouseId.HasValue) throw new Exception("仓库编号不能为空！");
-                await this._inOutTaskService.InApply(inOutTaskViewModel.WarehouseTrayCode,inOutTaskViewModel.LocationCode);
+                await this._inOutTaskService.InApply(inOutTaskViewModel.TrayCode,inOutTaskViewModel.LocationCode);
             }
             catch (Exception ex)
             {
@@ -157,7 +179,7 @@ namespace Web.Services
             {
                 if (!inOutTaskViewModel.WarehouseId.HasValue) throw new Exception("仓库编号不能为空！");
                 await this._inOutTaskService.TaskStepReport(inOutTaskViewModel.Id,
-                    inOutTaskViewModel.VehicleId, inOutTaskViewModel.VehicleName, inOutTaskViewModel.Step);
+                    inOutTaskViewModel.VehicleId.GetValueOrDefault(0), inOutTaskViewModel.Step);
             }
             catch (Exception ex)
             {

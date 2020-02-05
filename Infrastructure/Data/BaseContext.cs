@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ApplicationCore.Entities.OrganizationManager;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.StockManager;
+using ApplicationCore.Entities.TaskManager;
 
 namespace Infrastructure.Data
 {
@@ -28,6 +29,7 @@ namespace Infrastructure.Data
         public DbSet<WarehouseMaterial> WarehouseMaterial { get; set; }
         public DbSet<WarehouseTray> WarehouseTray { get; set; }
         public DbSet<MaterialDicTypeArea> MaterialDicTypeArea { get; set; }
+        public DbSet<InOutTask> InOutTask { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

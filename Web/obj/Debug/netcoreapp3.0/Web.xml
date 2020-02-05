@@ -127,7 +127,7 @@
             <param name="inOutTaskViewModel">出入库任务实体对象</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
         <member name="T:Web.Controllers.Api.LocationController">
             <summary>
             货位信息操作API
