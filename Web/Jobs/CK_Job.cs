@@ -37,16 +37,14 @@ namespace Web.Jobs
             try
             {
                 WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
-                    null, null, null, null,null, new List<int>
+                    null, null, null, null,new List<int>
                     {
                         Convert.ToInt32(TRAY_STEP.待出库)
-                    }
+                    },null
                     ,null
                     ,null
                     ,null
-                    ,null
-                    ,null
-                    );
+                );
                 var awaitTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
                 var groupTrays = awaitTrays.GroupBy(g => g.WarehouseId);
                 foreach (var gTray in groupTrays)
@@ -61,9 +59,9 @@ namespace Web.Jobs
                             string weburl = warehouses[0].Memo;
                            
                             LocationSpecification locationSpec = new LocationSpecification(null, null,null,null,
-                                                                                     null, null, null,
+                                                                                     null,null, null, null,
                                 new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null,null,null,null);
+                                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null,null,null);
                             var locations = await this._locationRepository.ListAsync(locationSpec);
                             int index = 0;
                             //发送wcs任务

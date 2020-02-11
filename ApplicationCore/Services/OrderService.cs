@@ -17,14 +17,12 @@ namespace ApplicationCore.Services
     {
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
-        private readonly IAsyncRepository<TrayDic> _trayDicRepository;
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         public OrderService(IAsyncRepository<Order> orderRepository,
                                IAsyncRepository<OrderRow> orderRowRepository,
-                               IAsyncRepository<TrayDic> trayDicRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
@@ -33,7 +31,6 @@ namespace ApplicationCore.Services
         {
             this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
-            this._trayDicRepository = trayDicRepository;
             this._materialDicRepository = materialDicRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
@@ -69,9 +66,6 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
             if (trayCode.Split('#').Length < 2)
                 throw new Exception("托盘编码不合法,无法分拣!");
-            var trayDicSpec = new TrayDicSpecification(null, trayCode.Split('#')[0], null);
-            var trayDics = await this._trayDicRepository.ListAsync(trayDicSpec);
-            var trayDic = trayDics[0];
             var orderSpec = new OrderSpecification(orderId, null,null, null, null,
                 null, null, null, null, null, null,null,null,null);
             var orders = await this._orderRepository.ListAsync(orderSpec);
@@ -82,14 +76,14 @@ namespace ApplicationCore.Services
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
             Guard.Against.NullOrEmpty(orderRows, nameof(orderRows));
             OrderRow orderRow = orderRows[0];
-            var areaSpec = new ReservoirAreaSpecification(orderRow.ReservoirAreaId,null, null, null,null, null);
+            var areaSpec = new ReservoirAreaSpecification(orderRow.ReservoirAreaId,null, null, null,null,null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
             Guard.Against.NullOrEmpty(areas, nameof(areas));
             var area = areas[0];
-            var materialDicSpec = new MaterialDicSpecification(null, orderRow.MaterialDicCode,null,null);
+            var materialDicSpec = new MaterialDicSpecification(orderRow.MaterialDicId, null,null,null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
             if (materialDics.Count == 0)
-                throw new Exception(string.Format("物料字典[{0}]),不存在！",orderRow.MaterialDicCode));
+                throw new Exception(string.Format("物料字典[{0}]),不存在！",orderRow.MaterialDicId));
             
             MaterialDic materialDic = materialDics[0];
             
@@ -99,7 +93,7 @@ namespace ApplicationCore.Services
                 throw new Exception(string.Format("已经分拣了{0}个,最多还能分拣{1}个", orderRow.Sorting,surplusCount));
 
             var warehouseTrayDetailSpec = new WarehouseTrayDetailSpecification(null,trayCode,
-                                                       null,null,null, null, null,null, null,null, null,null,null);
+                                                       null,null,null, null, null,null, null,null, null);
             
             var whTrays =await this._warehouseTrayRepository.ListAsync(warehouseTrayDetailSpec);
             if (whTrays.Count > 0)
@@ -123,12 +117,11 @@ namespace ApplicationCore.Services
                     {
                         WarehouseTray warehouseTray = new WarehouseTray
                         {
-                            Code = trayCode,
+                            TrayCode = trayCode,
                             CreateTime = now,
                             OrderId = orderId,
                             OrderRowId = orderRowId,
                             MaterialCount = sortingCount,
-                            TrayDicId = trayDic.Id,
                             TrayStep = Convert.ToInt32(TRAY_STEP.待入库)
                         };
                         var addTray = this._warehouseTrayRepository.Add(warehouseTray);

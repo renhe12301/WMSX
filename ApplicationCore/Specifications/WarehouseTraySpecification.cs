@@ -8,24 +8,21 @@ namespace ApplicationCore.Specifications
 {
     public class WarehouseTraySpecification: BaseSpecification<WarehouseTray>
     {
-        public WarehouseTraySpecification(int? id,string trayCode,List<int> rangeMaterialCount,int? trayDicId,
+        public WarehouseTraySpecification(int? id,string trayCode,List<int> rangeMaterialCount,
             int? orderId,int? orderRowId, int? carrier,List<int> trayStatus,int? locationId,
-            int? orgId, int? ouId, int? wareHouseId,int? areaId)
+             int? ouId, int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
-                      (trayCode == null || b.Code == trayCode) &&
+                      (trayCode == null || b.TrayCode == trayCode) &&
                       (rangeMaterialCount==null|| (b.MaterialCount >= rangeMaterialCount[0]&& b.MaterialCount <= rangeMaterialCount[0])) &&
-                      (!trayDicId.HasValue || b.TrayDicId == trayDicId)&&
                       (!orderId.HasValue || b.OrderId == orderId) &&
                       (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
                       (carrier == null || b.Carrier == carrier)&&
                       (trayStatus == null || trayStatus.Contains(b.TrayStep.Value)) &&
                       (!locationId.HasValue||b.LocationId==locationId)&&
-                      (!orgId.HasValue || b.OrganizationId == orgId) &&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!wareHouseId.HasValue||b.WarehouseId==wareHouseId)&&
                       (!areaId.HasValue||b.ReservoirAreaId==areaId))
         {
-            AddInclude(b => b.TrayDic);
             AddInclude(b => b.Location);
             AddInclude(b => b.ReservoirArea);
             AddInclude(b => b.Warehouse);

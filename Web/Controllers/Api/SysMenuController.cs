@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Web.Interfaces;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.BasicInformation;
 
 namespace Web.Controllers.Api
 {

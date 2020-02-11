@@ -15,17 +15,14 @@ namespace Web.Services
     {
 
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
-        private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
 
         private readonly IMaterialDicService _materialDicService;
 
         public MaterialDicViewModelService(IAsyncRepository<MaterialDic> materialDicRepository,
-                                           IMaterialDicService materialDicService,
-                                           IAsyncRepository<MaterialDicType> materialDicTypeRepository)
+                                           IMaterialDicService materialDicService)
         {
             this._materialDicRepository = materialDicRepository;
             this._materialDicService = materialDicService;
-            this._materialDicTypeRepository = materialDicTypeRepository;
         }
 
         public async Task<ResponseResultViewModel> AddMaterialDic(MaterialDicViewModel materialDicViewModel)
@@ -38,7 +35,7 @@ namespace Web.Services
                     MaterialCode = materialDicViewModel.MaterialCode,
                     MaterialName = materialDicViewModel.MaterialName,
                     CreateTime = DateTime.Now,
-                    MaterialUnitId = materialDicViewModel.UnitId,
+                    Unit = materialDicViewModel.Unit,
                     Img = materialDicViewModel.Img,
                     Spec = materialDicViewModel.Spec,
                     Memo = materialDicViewModel.Memo,
@@ -77,68 +74,17 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                if (typeId.HasValue)
-                {
-                    BaseSpecification<MaterialDicType> baseSpecification = null;
-
-                    if (pageIndex.HasValue && pageIndex >-1 && itemsPage.HasValue && itemsPage > 0)
-                    {
-                        baseSpecification = new MaterialDicTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            id, typeId, materialCode,materialName,spec);
-                    }
-                    else
-                    {
-                        baseSpecification = new MaterialDicTypeSpecification(id, typeId, materialCode, materialName,
-                            spec);
-                    }
-                    var materialDicTypes = await this._materialDicTypeRepository.ListAsync(baseSpecification);
-                    List<MaterialDicViewModel> materialDicViewModels = new List<MaterialDicViewModel>();
-
-                    materialDicTypes.ForEach(e =>
-                    {
-                        MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
-                        {
-                            Id = e.Id,
-                            MaterialCode = e.MaterialDic.MaterialCode,
-                            MaterialName = e.MaterialDic.MaterialName,
-                            TypeName = e.MaterialType.TypeName,
-                            UnitId = e.MaterialDic.MaterialUnitId,
-                            UnitName = e.MaterialDic.MaterialUnit?.UnitName,
-                            CreateTime = e.MaterialDic.CreateTime.ToString(),
-                            Spec = e.MaterialDic.Spec,
-                            Img = e.MaterialDic.Img,
-                            Memo = e.MaterialDic.Memo
-                        };
-                        materialDicViewModels.Add(materialDicViewModel);
-                    });
-                    if (pageIndex > -1 && itemsPage > 0)
-                    {
-                        var count = await this._materialDicTypeRepository.CountAsync(new MaterialDicTypeSpecification(
-                            id, typeId, materialCode, materialName,
-                            spec));
-                        dynamic dyn = new ExpandoObject();
-                        dyn.rows = materialDicViewModels;
-                        dyn.total = count;
-                        response.Data = dyn;
-                    }
-                    else
-                    {
-                        response.Data = materialDicViewModels;
-                    }
-                }
-                else
-                {
-                    BaseSpecification<MaterialDic> baseSpecification = null;
+                BaseSpecification<MaterialDic> baseSpecification = null;
 
                     if (pageIndex.HasValue && pageIndex >-1 && itemsPage.HasValue && itemsPage > 0)
                     {
                         baseSpecification = new MaterialDicPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            id,  materialCode,materialName,spec);
+                            id,materialCode,materialName,typeId,spec);
                     }
                     else
                     {
                         baseSpecification = new MaterialDicSpecification(id, materialCode, materialName,
-                            spec);
+                            typeId,spec);
                     }
                     var materialDics = await this._materialDicRepository.ListAsync(baseSpecification);
                     List<MaterialDicViewModel> materialDicViewModels = new List<MaterialDicViewModel>();
@@ -150,8 +96,7 @@ namespace Web.Services
                             Id = e.Id,
                             MaterialCode = e.MaterialCode,
                             MaterialName = e.MaterialName,
-                            UnitId = e.MaterialUnitId,
-                            UnitName = e.MaterialUnit?.UnitName,
+                            Unit = e.Unit,
                             CreateTime = e.CreateTime.ToString(),
                             Spec = e.Spec,
                             Img = e.Img,
@@ -164,7 +109,7 @@ namespace Web.Services
                     if (pageIndex > -1&&itemsPage>0)
                     {
                         var count = await this._materialDicRepository.CountAsync(new MaterialDicSpecification(id, materialCode, materialName,
-                            spec));
+                            typeId,spec));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = materialDicViewModels;
                         dyn.total = count;
@@ -174,7 +119,6 @@ namespace Web.Services
                     {
                         response.Data = materialDicViewModels;
                     }
-                }
 
             }
             catch (Exception ex)
@@ -197,7 +141,7 @@ namespace Web.Services
                     MaterialCode = materialDicViewModel.MaterialCode,
                     MaterialName = materialDicViewModel.MaterialName,
                     CreateTime = DateTime.Now,
-                    MaterialUnitId = materialDicViewModel.UnitId,
+                    Unit = materialDicViewModel.Unit,
                     Img = materialDicViewModel.Img,
                     Spec = materialDicViewModel.Spec,
                     Memo = materialDicViewModel.Memo,

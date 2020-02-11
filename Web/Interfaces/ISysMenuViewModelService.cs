@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Web.ViewModels;
-using Web.ViewModels.OrganizationManager;
 
 namespace Web.Interfaces
 {

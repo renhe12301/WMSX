@@ -8,8 +8,5 @@ namespace ApplicationCore.Interfaces
     public interface IMaterialTypeService
     {
         Task AddMaterialType(MaterialType materialType);
-        Task UpdateMaterialType(MaterialType materialType);
-        Task DelMaterialType(List<int> ids);
-        Task AssignMaterialDic(int typeId, List<int> materialDicIds);
     }
 }

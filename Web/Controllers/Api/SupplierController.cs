@@ -37,18 +37,7 @@ namespace Web.Controllers.Api
             var response = await this._supplierViewModelService.GetSuppliers(pageIndex, itemsPage,id, supplierName);
             return Ok(response);
         }
-
-        /// <summary>
-        /// 添加供应商
-        /// </summary>
-        /// <param name="supplierViewModel">供应商实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AddSupplier(SupplierViewModel supplierViewModel)
-        {
-            var response = await this._supplierViewModelService.AddSupplier(supplierViewModel);
-            return Ok(response);
-        }
+        
 
 
     }

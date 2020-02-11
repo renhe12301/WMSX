@@ -29,7 +29,6 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Null(location, nameof(location));
             Guard.Against.NullOrEmpty(location.SysCode,nameof(location.SysCode));
-            Guard.Against.Null(location.OrganizationId,nameof(location.OrganizationId));
             await this._locationRepository.AddAsync(location);
         }
 
@@ -57,7 +56,6 @@ namespace ApplicationCore.Services
                             SysCode = locationCode,
                             UserCode = locationCode,
                             CreateTime = now,
-                            OrganizationId = orgId,
                             Floor = i,
                             Item = j,
                             Col = k
@@ -165,12 +163,12 @@ namespace ApplicationCore.Services
         public async Task UpdateLocation(int id, string sysCode, string userCode)
         {
             Guard.Against.Zero(id, nameof(id));
-            var locationSpec = new LocationSpecification(id, null, null, null, null,
-                null, null, null, null, null,null,null,null);
-            var sysCodelocationSpec = new LocationSpecification(null, sysCode, null, null, null,
-                null, null, null, null, null,null,null,null);
-            var userCodelocationSpec = new LocationSpecification(null, null, userCode, null, null,
-                null, null, null, null, null,null,null,null);
+            var locationSpec = new LocationSpecification(id, null, null, null, null,null,
+                null, null, null, null, null,null,null);
+            var sysCodelocationSpec = new LocationSpecification(null, sysCode, null, null,null, null,
+                null, null, null, null, null,null,null);
+            var userCodelocationSpec = new LocationSpecification(null, null, userCode, null,null, null,
+                null, null, null, null, null,null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.NullOrEmpty(locations, nameof(locations));
             var location = locations[0];

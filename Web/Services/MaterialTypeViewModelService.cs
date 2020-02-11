@@ -15,14 +15,14 @@ namespace Web.Services
     {
         private readonly IMaterialTypeService _materialTypeService;
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
-        private readonly IAsyncRepository<MaterialDicType> _materialDicTypeRepository;
+        private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
         public MaterialTypeViewModelService(IMaterialTypeService materialTypeService,
                                             IAsyncRepository<MaterialType> materialTypeRepository,
-                                            IAsyncRepository<MaterialDicType> materialDicTypeRepository)
+                                            IAsyncRepository<MaterialDic> materialRepository)
         {
             this._materialTypeService = materialTypeService;
             this._materialTypeRepository = materialTypeRepository;
-            this._materialDicTypeRepository = materialDicTypeRepository;
+            this._materialDicRepository = materialRepository;
         }
 
         public async Task<ResponseResultViewModel> AddMaterialType(MaterialTypeViewModel materialTypeViewModel)
@@ -37,21 +37,6 @@ namespace Web.Services
                     ParentId = materialTypeViewModel.ParentId
                 };
                 await this._materialTypeService.AddMaterialType(materialType);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
-
-        public async Task<ResponseResultViewModel> DelMaterialType(MaterialTypeViewModel materialTypeViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._materialTypeService.DelMaterialType(materialTypeViewModel.Ids);
             }
             catch (Exception ex)
             {
@@ -119,40 +104,41 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                BaseSpecification<MaterialDicType> baseSpecification = null;
+                BaseSpecification<MaterialDic> baseSpecification = null;
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    baseSpecification = new MaterialDicTypePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        null,typeId,null,null,null);
+                    baseSpecification = new MaterialDicPaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                        null,null,null,typeId,null);
                 }
                 else
                 {
-                    baseSpecification = new MaterialDicTypeSpecification(null,typeId,null,null,null);
+                    baseSpecification = new MaterialDicSpecification(null,null,null,typeId,null);
                 }
 
-                var materialDicTypes = await this._materialDicTypeRepository.ListAsync(baseSpecification);
+                var materialDics = await this._materialDicRepository.ListAsync(baseSpecification);
                 List<MaterialDicViewModel>  materialDicViewModels = new List<MaterialDicViewModel>();
 
-                materialDicTypes.ForEach(e =>
+                materialDics.ForEach(e =>
                 {
                     MaterialDicViewModel materialDicViewModel = new MaterialDicViewModel
                     {
-                        Id = e.MaterialDic.Id,
-                        MaterialCode = e.MaterialDic.MaterialCode,
-                        MaterialName = e.MaterialDic.MaterialName,
+                        Id = e.Id,
+                        MaterialCode = e.MaterialCode,
+                        MaterialName = e.MaterialName,
                         TypeName = e.MaterialType.TypeName,
-                        CreateTime = e.MaterialDic.CreateTime.ToString(),
-                        Img = e.MaterialDic.Img,
-                        Spec = e.MaterialDic.Spec,
-                        Memo = e.MaterialDic.Memo,
-                        UpLimit = e.MaterialDic.UpLimit,
-                        DownLimit = e.MaterialDic.DownLimit
+                        CreateTime = e.CreateTime.ToString(),
+                        Img = e.Img,
+                        Spec = e.Spec,
+                        Memo = e.Memo,
+                        UpLimit = e.UpLimit,
+                        DownLimit = e.DownLimit,
+                        Unit = e.Unit
                     };
                     materialDicViewModels.Add(materialDicViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._materialDicTypeRepository.CountAsync(new MaterialDicTypeSpecification(null,typeId,null,null,null));
+                    var count = await this._materialDicRepository.CountAsync( new MaterialDicSpecification(null,null,null,typeId,null));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = materialDicViewModels;
                     dyn.total = count;
@@ -196,7 +182,6 @@ namespace Web.Services
             }
             return response;
         }
-
         private async Task _MaterialTypeTree(TreeViewModel current, List<TreeViewModel> childs,List<MaterialType> materialTypes)
         {
             var types = materialTypes.FindAll(m=>m.ParentId==current.Id);
@@ -217,41 +202,7 @@ namespace Web.Services
                 await _MaterialTypeTree(child, child.Children,materialTypes);
             });
         }
-
-        public async Task<ResponseResultViewModel> UpdateMaterialType(MaterialTypeViewModel materialTypeViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                MaterialType materialType = new MaterialType
-                {
-                    Id = materialTypeViewModel.Id,
-                    ParentId = materialTypeViewModel.ParentId,
-                    TypeName = materialTypeViewModel.TypeName
-                };
-                await this._materialTypeService.UpdateMaterialType(materialType);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
-
-        public async Task<ResponseResultViewModel> AssignMaterialDic(MaterialTypeViewModel materialTypeViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._materialTypeService.AssignMaterialDic(materialTypeViewModel.Id,materialTypeViewModel.DicIds);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
+        
+        
     }
 }

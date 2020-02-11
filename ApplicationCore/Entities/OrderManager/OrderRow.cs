@@ -6,10 +6,15 @@ namespace ApplicationCore.Entities.OrderManager
     public class OrderRow:BaseEntity
     {
         /// <summary>
-        /// 关联订单编号
+        /// 关联订单Id
         /// </summary>
         public int OrderId { get; set; }
- 
+
+        /// <summary>
+        /// 订单行编号
+        /// </summary>
+        public string RowNumber { get; set; }
+
         /// <summary>
         /// 关联分区编号
         /// </summary>
@@ -19,12 +24,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
-
-        /// <summary>
-        /// 物料字典编码
-        /// </summary>
-        public string MaterialDicCode { get; set; }
-
+        
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -61,6 +61,11 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联分区
         /// </summary>
         public ReservoirArea ReservoirArea { get; set; }
+
+        /// <summary>
+        /// 关联物料字典
+        /// </summary>
+        public MaterialDic MaterialDic { get; set; }
 
 
     }

@@ -48,35 +48,35 @@
             <param name="employeeId">员工编号</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.AddEmployee(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.AddEmployee(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             添加员工信息
             </summary>
             <param name="employViewModel">员工信息JSON对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.UpdateEmployee(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.UpdateEmployee(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             更新用户信息
             </summary>
             <param name="employViewModel"></param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.Enable(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.Enable(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             启用员工
             </summary>
             <param name="employViewModel">员工信息JSON对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.Logout(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.Logout(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             注销员工
             </summary>
             <param name="employViewModel">员工信息JSON对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.AssignRole(Web.ViewModels.OrganizationManager.EmployeeViewModel)">
+        <member name="M:Web.Controllers.Api.EmployeeController.AssignRole(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             分配员工角色
             </summary>
@@ -127,7 +127,7 @@
             <param name="inOutTaskViewModel">出入库任务实体对象</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
         <member name="T:Web.Controllers.Api.LocationController">
             <summary>
             货位信息操作API
@@ -275,27 +275,6 @@
             <param name="materialTypeViewModel">物料类型实体对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.MaterialTypeController.AssignMaterialDic(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
-            <summary>
-            分配物料字典到物料类型
-            </summary>
-            <param name="materialTypeViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialTypeController.UpdateMaterialType(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
-            <summary>
-            更新物料类型
-            </summary>
-            <param name="materialTypeViewModel">物料类型实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialTypeController.DelMaterialType(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
-            <summary>
-            删除物料类型
-            </summary>
-            <param name="materialTypeViewModel">物料类型实体对象</param>
-            <returns></returns>
-        </member>
         <member name="M:Web.Controllers.Api.MaterialTypeController.GetMaterialTypes(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取物料类型
@@ -321,42 +300,6 @@
             获取物料类型树
             </summary>
             <param name="rootId"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Web.Controllers.Api.MaterialUnitController">
-            <summary>
-            物料字典单位API
-            </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialUnitController.AddMaterialUnit(Web.ViewModels.BasicInformation.MaterialUnitViewModel)">
-            <summary>
-            添加物料字典单位
-            </summary>
-            <param name="materialUnitViewModel">物料单位实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialUnitController.UpdateMaterialUnit(Web.ViewModels.BasicInformation.MaterialUnitViewModel)">
-            <summary>
-            更新物料字典单位
-            </summary>
-            <param name="materialUnitViewModel">物料单位实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialUnitController.DelMaterialUnit(Web.ViewModels.BasicInformation.MaterialUnitViewModel)">
-            <summary>
-            删除物料字典单位
-            </summary>
-            <param name="materialUnitViewModel">物料单位实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialUnitController.GetMaterialUnits(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
-            <summary>
-            获取物料单位信息
-            </summary>
-            <param name="pageIndex">当前页索引</param>
-            <param name="itemsPage">当前页大小</param>
-            <param name="id">物料单位编号</param>
-            <param name="unitName">物料单位名称</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.OrderController">
@@ -416,28 +359,6 @@
             <param name="orgName">组织架构名称</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.OrganizationController.GetOrganizationTrees(System.Int32,System.String)">
-            <summary>
-            获取组织架构树信息
-            </summary>
-            <param name="rootId">组织架构编号</param>
-            <param name="depthTag">树深度标记(User-用户 Warehouse-仓库 ReservoirArea-库区)</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.OrganizationController.AddOrg(Web.ViewModels.OrganizationManager.OrganizationViewModel)">
-            <summary>
-            添加组织架构
-            </summary>
-            <param name="org">组织架构实体</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.OrganizationController.UpdateOrg(Web.ViewModels.OrganizationManager.OrganizationViewModel)">
-            <summary>
-            更新组织架构
-            </summary>
-            <param name="org">组织架构实体</param>
-            <returns></returns>
-        </member>
         <member name="T:Web.Controllers.Api.OUController">
             <summary>
             业务实体Api
@@ -460,34 +381,6 @@
             库区操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.AddArea(Web.ViewModels.BasicInformation.ReservoirAreaViewModel)">
-            <summary>
-            添加库区
-            </summary>
-            <param name="reservoirAreaViewModel">库区实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.UpdateArea(Web.ViewModels.BasicInformation.ReservoirAreaViewModel)">
-            <summary>
-            更新库区信息
-            </summary>
-            <param name="reservoirAreaViewModel">库区实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.Enable(Web.ViewModels.BasicInformation.ReservoirAreaViewModel)">
-            <summary>
-            启用库区
-            </summary>
-            <param name="reservoirAreaViewModel">库区实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.Disable(Web.ViewModels.BasicInformation.ReservoirAreaViewModel)">
-            <summary>
-            禁用库区
-            </summary>
-            <param name="reservoirAreaViewModel">库区实体对象</param>
-            <returns></returns>
-        </member>
         <member name="M:Web.Controllers.Api.ReservoirAreaController.AssignLocation(Web.ViewModels.BasicInformation.LocationViewModel)">
             <summary>
             分配货位
@@ -495,33 +388,16 @@
             <param name="locationViewModel">库区货位关系对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.AssignMaterialType(Web.ViewModels.BasicInformation.MaterialDicTypeAreaViewModel)">
-            <summary>
-            分配物料字典
-            </summary>
-            <param name="materialDicTypeAreaViewModel">库区物料关系对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.GetAreas(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.GetAreas(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取库区信息
             </summary>
             <param name="pageIndex">分页索引</param>
             <param name="itemsPage">一页条数</param>
             <param name="id">库区编号</param>
-            <param name="orgId">公司编号</param>
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">仓库编号</param>
             <param name="areaName">库区名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.ReservoirAreaController.GetMaterialTypes(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
-            <summary>
-            获取库区下的物料类型
-            </summary>
-            <param name="pageIndex">分页索引</param>
-            <param name="itemsPage">一页条数</param>
-            <param name="areaId">库区编号</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.SupplierController">
@@ -537,13 +413,6 @@
             <param name="itemsPage">当前页显示大小</param>
             <param name="id">供应商编号</param>
             <param name="supplierName">供应商名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.SupplierController.AddSupplier(Web.ViewModels.BasicInformation.SupplierViewModel)">
-            <summary>
-            添加供应商
-            </summary>
-            <param name="supplierViewModel">供应商实体对象</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.SysMenuController">
@@ -580,128 +449,39 @@
             <param name="roleName">角色名称</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.AddRole(Web.ViewModels.OrganizationManager.SysRoleViewModel)">
+        <member name="M:Web.Controllers.Api.SysRoleController.AddRole(Web.ViewModels.AuthorityManager.SysRoleViewModel)">
             <summary>
             添加系统角色
             </summary>
             <param name="sysRoleViewModel">系统角色对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.UpdateRole(Web.ViewModels.OrganizationManager.SysRoleViewModel)">
+        <member name="M:Web.Controllers.Api.SysRoleController.UpdateRole(Web.ViewModels.AuthorityManager.SysRoleViewModel)">
             <summary>
             更新系统角色
             </summary>
             <param name="sysRoleViewModel">系统角色对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.Logout(Web.ViewModels.OrganizationManager.SysRoleViewModel)">
+        <member name="M:Web.Controllers.Api.SysRoleController.Logout(Web.ViewModels.AuthorityManager.SysRoleViewModel)">
             <summary>
             注销系统角色
             </summary>
             <param name="sysRoleViewModel">系统角色对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.Enable(Web.ViewModels.OrganizationManager.SysRoleViewModel)">
+        <member name="M:Web.Controllers.Api.SysRoleController.Enable(Web.ViewModels.AuthorityManager.SysRoleViewModel)">
             <summary>
             启用系统角色
             </summary>
             <param name="sysRoleViewModel">系统角色对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.SysRoleController.AssignMenu(Web.ViewModels.OrganizationManager.RoleMenuViewModel)">
+        <member name="M:Web.Controllers.Api.SysRoleController.AssignMenu(Web.ViewModels.AuthorityManager.RoleMenuViewModel)">
             <summary>
             分配系统角色菜单
             </summary>
             <param name="roleMenuViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Web.Controllers.Api.TrayDicController">
-            <summary>
-            托盘字典API
-            </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayDicController.GetTrayDics(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32})">
-            <summary>
-            获取托盘字典信息
-            </summary>
-            <param name="pageIndex">当前页索引</param>
-            <param name="itemsPage">当前页大小</param>
-            <param name="id">托盘字典编号</param>
-            <param name="trayCode">托盘字典编码</param>
-            <param name="trayName">托盘名称</param>
-            <param name="typeId">托盘类型编号</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayDicController.AddTrayDic(Web.ViewModels.BasicInformation.TrayDicViewModel)">
-            <summary>
-            添加托盘字典
-            </summary>
-            <param name="trayDicViewModel">托盘字典对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayDicController.UpdateTrayDic(Web.ViewModels.BasicInformation.TrayDicViewModel)">
-            <summary>
-            更新托盘字典
-            </summary>
-            <param name="trayDicViewModel">托盘字典对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayDicController.DelTrayDic(Web.ViewModels.BasicInformation.TrayDicViewModel)">
-            <summary>
-            删除托盘字典
-            </summary>
-            <param name="trayDicViewModel">托盘字典对象</param>
-            <returns></returns>
-        </member>
-        <member name="T:Web.Controllers.Api.TrayTypeController">
-            <summary>
-            托盘类型API
-            </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.AddTrayType(Web.ViewModels.BasicInformation.TrayTypeViewModel)">
-            <summary>
-            添加托盘字典类型
-            </summary>
-            <param name="trayTypeViewModel">托盘字典类型实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.AssignTrayDic(Web.ViewModels.BasicInformation.TrayTypeViewModel)">
-            <summary>
-            分配托盘字典到类型
-            </summary>
-            <param name="trayTypeViewModel">托盘字典类型实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.DelTrayType(Web.ViewModels.BasicInformation.TrayTypeViewModel)">
-            <summary>
-            删除托盘字典类型
-            </summary>
-            <param name="trayTypeViewModel">托盘字典类型实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.UpdateTrayType(Web.ViewModels.BasicInformation.TrayTypeViewModel)">
-            <summary>
-            更新托盘字典类型
-            </summary>
-            <param name="trayTypeViewModel">托盘字典类型实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.GetTrayTypes(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
-            <summary>
-            获取托盘字典类型
-            </summary>
-            <param name="pageIndex">当前页索引</param>
-            <param name="itemsPage">当前页大小</param>
-            <param name="id">托盘字典编号</param>
-            <param name="parentId">类型父类型编号</param>
-            <param name="typeName">类型名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.TrayTypeController.GetTrayTypeTree(System.Int32)">
-            <summary>
-            获取托盘字典类型树
-            </summary>
-            <param name="rootId">根节点编号</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseController">
@@ -783,7 +563,7 @@
             仓库信息操作API
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
         <member name="T:Web.SlugifyParameterTransformer">
             <summary>
             转换url地址

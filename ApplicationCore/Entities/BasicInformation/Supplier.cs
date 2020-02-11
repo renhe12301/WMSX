@@ -7,8 +7,10 @@ namespace ApplicationCore.Entities.BasicInformation
     public class Supplier : BaseEntity
     {
         public string SupplierName { get; set; }
-        public string Address { get; set; }
-        public string Contact { get; set; }
-        public string Telephone { get; set; }
+        public string SupplierCode { get; set; }
+        public string TaxpayerCode { get; set; }
+        public DateTime CreateTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string Memo { get; set; }
     }
 }

@@ -24,8 +24,8 @@ namespace Web.Services
 
         public async Task<ResponseResultViewModel> GetTrays(int? pageIdex,int? itemsPage,
             int? includeDetail,int? id, string trayCode, string rangeMaterialCount,
-            int? trayDicId,int? orderId,int? orderRowId,int? carrier,
-            string trayTaskStatus, int? locationId,int?orgId,int? ouId, int? wareHouseId, int? areaId)
+            int? orderId,int? orderRowId,int? carrier,
+            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId)
         {
             BaseSpecification<WarehouseTray> baseSpecification = null;
             List<int> trayStatus = null;
@@ -48,14 +48,14 @@ namespace Web.Services
                 {
                     
                     baseSpecification = new WarehouseTrayPaginatedDetailSpecification(pageIdex.Value,itemsPage.Value,id,
-                            trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                            carrier, trayStatus, locationId,orgId,ouId, wareHouseId, areaId);
+                            trayCode, trayMaterilCount, orderId,orderRowId,
+                            carrier, trayStatus, locationId,ouId, wareHouseId, areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseTrayDetailSpecification(id,
-                            trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                            carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
+                            trayCode, trayMaterilCount, orderId,orderRowId,
+                            carrier, trayStatus, locationId,ouId, wareHouseId, areaId);
                 }
             }
             else
@@ -63,14 +63,14 @@ namespace Web.Services
                 if (pageIdex.HasValue && itemsPage.HasValue && pageIdex > 0 && itemsPage > 0)
                 {
                     baseSpecification = new WarehouseTrayPaginatedSpecification(pageIdex.Value, itemsPage.Value, id,
-                           trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                           carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
+                           trayCode, trayMaterilCount, orderId,orderRowId,
+                           carrier, trayStatus, locationId,ouId, wareHouseId, areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseTraySpecification(id,
-                          trayCode, trayMaterilCount, trayDicId,orderId,orderRowId,
-                          carrier, trayStatus, locationId, orgId, ouId, wareHouseId, areaId);
+                          trayCode, trayMaterilCount, orderId,orderRowId,
+                          carrier, trayStatus, locationId,  ouId, wareHouseId, areaId);
                 }
             }
            
@@ -93,14 +93,13 @@ namespace Web.Services
                         Id = r.Id,
                         OrderId=r.OrderId,
                         OrderRowId=r.OrderRowId,
-                        Code = r.Code,
+                        Code = r.TrayCode,
                         CreateTime = r.CreateTime.ToString(),
                         LocationId = r.Location.Id,
                         MaterialCount = r.MaterialCount,
                         ReservoirAreaName = r.ReservoirArea.AreaName,
                         WarehouseName = r.Warehouse.WhName,
                         Carrier = Enum.GetName(typeof(TRAY_CARRIER), r.Carrier),
-                        TrayType = r.TrayDic.TrayName,
                         TrayStep = Enum.GetName(typeof(TRAY_STEP), r.TrayStep),
                     };
                     trayViewModels.Add(wtvm);
@@ -121,7 +120,7 @@ namespace Web.Services
                                 Carrier = Enum.GetName(typeof(TRAY_CARRIER), wm.Carrier),
                                 MaterialName = wm.MaterialDic.MaterialName,
                                 ReservoirAreaName = wm.ReservoirArea.AreaName,
-                                TrayCode = wm.WarehouseTray.Code,
+                                TrayCode = wm.WarehouseTray.TrayCode,
                                 WarehouseName = wm.Warehouse.WhName
                             };
                             wtvm.WarehouseMaterialViewModels.Add(warehouseMaterialViewModel);

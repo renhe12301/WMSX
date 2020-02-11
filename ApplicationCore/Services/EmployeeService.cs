@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.AuthorityManager;
 using ApplicationCore.Interfaces;
 using Ardalis.GuardClauses;
 using ApplicationCore.Specifications;

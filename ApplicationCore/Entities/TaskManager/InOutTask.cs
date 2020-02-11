@@ -1,8 +1,6 @@
 ﻿using System;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
-using ApplicationCore.Entities.StockManager;
-using ApplicationCore.Entities.OrganizationManager;
 
 namespace ApplicationCore.Entities.TaskManager
 {
@@ -23,12 +21,9 @@ namespace ApplicationCore.Entities.TaskManager
         public int IsRead { get; set; }
         public string Memo { get; set; }
         public int? VehicleId { get; set; }
-        public int? OrganizationId { get; set; }
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
-
-        public Organization Organization { get; set; }
 
         public OU OU { get; set; }
 

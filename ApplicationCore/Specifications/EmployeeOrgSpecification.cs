@@ -1,5 +1,5 @@
 ﻿using System;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Specifications
 {

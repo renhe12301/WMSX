@@ -1,5 +1,5 @@
 ﻿using System;
-using ApplicationCore.Entities.OrganizationManager;
+
 namespace ApplicationCore.Entities.BasicInformation
 {
     /// <summary>

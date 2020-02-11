@@ -1,10 +1,10 @@
 ﻿using System;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
 using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.ViewModels;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.AuthorityManager;
 
 namespace Web.Interfaces
 {

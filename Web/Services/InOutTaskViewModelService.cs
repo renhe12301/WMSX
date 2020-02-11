@@ -11,7 +11,7 @@ using System.Dynamic;
 using System.Linq;
 using ApplicationCore.Misc;
 using Web.ViewModels.StockManager;
-using ApplicationCore.Entities.StockManager;
+
 
 namespace Web.Services
 {
@@ -30,8 +30,7 @@ namespace Web.Services
 
 
         public async Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex, int? itemsPage,
-                                             int? id,string trayCode , string status,string steps,string types,
-                                              int? orgId, int? ouId,
+                                             int? id,string trayCode , string status,string steps,string types, int? ouId,
                                               int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
@@ -64,13 +63,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutTaskPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,trayCode,taskStatus, taskSteps,taskTypes,orgId,ouId, wareHouseId,areaId, 
+                        id,trayCode,taskStatus, taskSteps,taskTypes,ouId, wareHouseId,areaId, 
                         sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
                 }
                 else
                 {
                     baseSpecification = new InOutTaskSpecification(id, trayCode,
-                        taskStatus,taskSteps,taskTypes, orgId, ouId, wareHouseId, areaId, 
+                        taskStatus,taskSteps,taskTypes, ouId, wareHouseId, areaId, 
                         sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
                 }
 
@@ -93,7 +92,6 @@ namespace Web.Services
                         OUName = e.OU?.OUName,
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
                         WarehouseName = e.Warehouse?.WhName,
-                        OrgName = e.Organization?.OrgName,
                         OrderId = e.OrderId,
                         OrderRowId = e.OrderRowId,
                         Progress=e.Progress,
@@ -104,7 +102,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._inOutTaskRepository.CountAsync(new InOutTaskSpecification(id, trayCode,
-                                           taskStatus,taskSteps,taskTypes, orgId, ouId, wareHouseId, areaId, 
+                                           taskStatus,taskSteps,taskTypes, ouId, wareHouseId, areaId, 
                                            sCreateTime, eCreateTIme, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = inOutTaskViewModels;

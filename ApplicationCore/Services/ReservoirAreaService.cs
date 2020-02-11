@@ -13,22 +13,25 @@ namespace ApplicationCore.Services
     public class ReservoirAreaService:IReservoirAreaService
     {
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
-        private readonly IAsyncRepository<MaterialDicTypeArea> _areaMaterialRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         public ReservoirAreaService(IAsyncRepository<ReservoirArea> reservoirAreaRepository,
-                                    IAsyncRepository<Location> locationRepository,
-                                    IAsyncRepository<MaterialDicTypeArea> areaMaterialRepository)
+                                    IAsyncRepository<Location> locationRepository)
         {
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._locationRepository = locationRepository;
-            this._areaMaterialRepository = areaMaterialRepository;
         }
 
         public async Task AddArea(ReservoirArea reservoirArea)
         {
-            Guard.Against.Null(reservoirArea,nameof(reservoirArea));
+            Guard.Against.Null(reservoirArea, nameof(reservoirArea));
             Guard.Against.Zero(reservoirArea.WarehouseId, nameof(reservoirArea.WarehouseId));
-            await this._reservoirAreaRepository.AddAsync(reservoirArea);
+            Guard.Against.NullOrEmpty(reservoirArea.AreaCode, nameof(reservoirArea.AreaCode));
+            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null, reservoirArea.AreaCode,
+                null,
+                null, null, null);
+            List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+            if (areas.Count == 0)
+                await this._reservoirAreaRepository.AddAsync(reservoirArea);
         }
 
         public async Task AssignLocation(int areaId, List<int> locationIds)
@@ -36,8 +39,8 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
             LocationSpecification locationSpec = new LocationSpecification(null,null,null,
-                null, null, null, null,  null, null,null,
-                 null,null,null);
+                null,null, null, null, null,  null, null,null,
+                 null,null);
             var locations = await this._locationRepository.ListAsync(locationSpec);
             List<Location> updLocations=new List<Location>();
             locationIds.ForEach(async (id) =>
@@ -49,56 +52,25 @@ namespace ApplicationCore.Services
             await this._locationRepository.UpdateAsync(updLocations);
         }
 
-        public async Task AssignMaterialType(int wareHouseId, int areaId, List<int> materialDicTypeIds)
+        public async Task UpdateArea(ReservoirArea reservoirArea)
         {
-            Guard.Against.Zero(wareHouseId, nameof(wareHouseId));
-            Guard.Against.Zero(areaId, nameof(areaId));
-            Guard.Against.NullOrEmpty(materialDicTypeIds, nameof(materialDicTypeIds));
-            List<MaterialDicTypeArea> materialDicTypeAreas=new List<MaterialDicTypeArea>();
-            materialDicTypeIds.ForEach(async (tId) =>
+            Guard.Against.Null(reservoirArea, nameof(reservoirArea));
+            Guard.Against.Zero(reservoirArea.Id, nameof(reservoirArea.Id));
+            Guard.Against.Zero(reservoirArea.WarehouseId, nameof(reservoirArea.WarehouseId));
+            Guard.Against.NullOrEmpty(reservoirArea.AreaCode, nameof(reservoirArea.AreaCode));
+            var areaSpec = new ReservoirAreaSpecification(reservoirArea.Id,null,null,null,null, null);
+            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
+            if (areas.Count > 0)
             {
-                MaterialDicTypeArea areaMaterial = new MaterialDicTypeArea
-                {
-                    WarehouseId = wareHouseId,
-                    ReservoirAreaId = areaId,
-                    MaterialTypeId = tId
-                };
-                materialDicTypeAreas.Add(areaMaterial);
-            });
-            await this._areaMaterialRepository.AddAsync(materialDicTypeAreas);
-        }
-
-        public async Task Disable(int id)
-        {
-            Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null,null, null,null, null);
-            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            Guard.Against.NullOrEmpty(areas,nameof(areas));
-            var area = areas[0];
-            area.Status = Convert.ToInt32(AREA_STATUS.禁用);
-            await this._reservoirAreaRepository.UpdateAsync(area);
-        }
-
-        public async Task Enable(int id)
-        {
-            Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null,null,null, null, null);
-            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            Guard.Against.NullOrEmpty(areas, nameof(areas));
-            var area = areas[0];
-            area.Status = Convert.ToInt32(AREA_STATUS.正常);
-            await this._reservoirAreaRepository.UpdateAsync(area);
-        }
-
-        public async Task UpdateArea(int id, string areaName)
-        {
-            Guard.Against.Zero(id, nameof(id));
-            var areaSpec = new ReservoirAreaSpecification(id,null,null,null, null, null);
-            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            Guard.Against.NullOrEmpty(areas, nameof(areas));
-            var area = areas[0];
-            area.AreaName = areaName;
-            await this._reservoirAreaRepository.UpdateAsync(area);
+                var area = areas[0];
+                area.AreaName = reservoirArea.AreaName;
+                area.AreaName = reservoirArea.AreaName;
+                area.Status = reservoirArea.Status;
+                area.CreateTime = reservoirArea.CreateTime;
+                area.EndTime = reservoirArea.EndTime;
+                area.WarehouseId = reservoirArea.WarehouseId;
+                await this._reservoirAreaRepository.UpdateAsync(area);
+            }
         }
     }
 }

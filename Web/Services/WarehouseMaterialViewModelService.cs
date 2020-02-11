@@ -41,15 +41,15 @@ namespace Web.Services
                 BaseSpecification<WarehouseMaterial> baseSpecification = null;
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    baseSpecification = new WarehouseMaterialPainatedSpecification(pageIndex.Value, itemsPage.Value,
+                    baseSpecification = new WarehouseMaterialPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,materialCode,materialDicId,materialName,materialSpec,trayCode,trayDicId,orderId,orderRowId,
-                        carrier, trayStatus, locationId,orgId,ouId,wareHouseId,areaId);
+                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,orgId,ouId, wareHouseId, areaId);
+                        locationId,ouId, wareHouseId, areaId);
                 }
 
                 var materials = await this._warehouseMaterialRepository.ListAsync(baseSpecification);
@@ -69,11 +69,10 @@ namespace Web.Services
                         MaterialCount = e.MaterialCount,
                         MaterialName = e.MaterialDic.MaterialName,
                         ReservoirAreaName = e.ReservoirArea.AreaName,
-                        TrayCode = e.WarehouseTray.Code,
+                        TrayCode = e.WarehouseTray.TrayCode,
                         WarehouseName = e.Warehouse.WhName,
-                        OUName = e.OU.OUName,
-                        OrgName = e.Organization.OrgName
-                        
+                        OUName = e.OU.OUName
+
                     };
                     warehouseMaterialViewModels.Add(warehouseMaterialViewModel);
                 });
@@ -81,7 +80,7 @@ namespace Web.Services
                 {
                     var count = await this._warehouseMaterialRepository.CountAsync(new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,orgId,ouId, wareHouseId, areaId));
+                        locationId,ouId, wareHouseId, areaId));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseMaterialViewModels;
                     dyn.total = count;

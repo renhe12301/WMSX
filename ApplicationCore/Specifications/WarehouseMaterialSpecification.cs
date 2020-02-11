@@ -10,15 +10,14 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseMaterialSpecification(int? id,string materialCode, int? materialDicId,
             string materialName,string materialSpec,string trayCode,int? trayDicId,int? orderId,int? orderRowId, int? carrier,
-            List<int> traySteps, int? locationId,int? orgId,int? ouId,int? wareHouseId,int? areaId)
+            List<int> traySteps, int? locationId,int? ouId,int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (materialCode==null||b.MaterialDic.MaterialCode==materialCode)&&
                       (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
                       (materialName == null || b.MaterialDic.MaterialName.Contains(materialName)) &&
                       (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&
-                      (trayCode == null || b.WarehouseTray.Code == trayCode) &&
+                      (trayCode == null || b.WarehouseTray.TrayCode == trayCode) &&
                       (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
-                      (!orgId.HasValue || b.OrganizationId == orgId) &&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!carrier.HasValue || b.Carrier == carrier)&&
                       (!orderId.HasValue || b.OrderId == orderId) &&
@@ -35,7 +34,6 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.Order);
             AddInclude(b => b.OrderRow);
-            AddInclude(b=>b.Organization);
             AddInclude(b=>b.OU);
         }
     }

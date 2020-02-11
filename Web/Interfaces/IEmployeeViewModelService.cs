@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.AuthorityManager;
 using Web.ViewModels;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.BasicInformation;
 
 namespace Web.Interfaces
 {

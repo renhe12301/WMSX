@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.AuthorityManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
 using ApplicationCore.Services;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
 using Web.ViewModels;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.BasicInformation;
+using Web.ViewModels.AuthorityManager;
 
 namespace Web.Services
 {

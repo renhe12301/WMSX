@@ -29,7 +29,6 @@ namespace Web.Controllers.Api
         /// <param name="id">托盘唯一id</param>
         /// <param name="trayCode">托盘唯一编码</param>
         /// <param name="rangeMaterialCount">托盘物料数量范围,例如 1,100/param>
-        /// <param name="trayDicId">托盘字典编号</param>
         /// <param name="orderId">关联订单编号</param>
         /// <param name="orderRowId">关联订单行编号</param>
         /// <param name="carrier">载体</param>
@@ -41,12 +40,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> GetTrays(int? pageIndex, int? itemsPage,
             int? includeDetail, int? id, string trayCode, string rangeMaterialCount,
-            int? trayDicId, int? orderId, int? orderRowId, int? carrier,
-            string trayTaskStatus, int? locationId,int? orgId,int? ouId, int? wareHouseId, int? areaId)
+             int? orderId, int? orderRowId, int? carrier,
+            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId)
         {
             var response = await this._warehouseTrayViewModelService.GetTrays(pageIndex,itemsPage,includeDetail,id,
-                trayCode,rangeMaterialCount, trayDicId,orderId,orderRowId,
-                carrier, trayTaskStatus, locationId,orgId,ouId, wareHouseId, areaId);
+                trayCode,rangeMaterialCount, orderId,orderRowId,
+                carrier, trayTaskStatus, locationId,ouId, wareHouseId, areaId);
             return Ok(response);
         }
 

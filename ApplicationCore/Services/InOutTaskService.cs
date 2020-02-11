@@ -20,7 +20,6 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
-        private readonly IAsyncRepository<TrayDic> _trayDicRespository;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRespository;
         private readonly IAsyncRepository<ModuleLock> _moduleLockRespository;
 
@@ -28,7 +27,6 @@ namespace ApplicationCore.Services
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                 IAsyncRepository<Location> locationRepository,
                                 IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                                IAsyncRepository<TrayDic> trayRespository,
                                 IAsyncRepository<InOutRecord> inOutRespository,
                                 IAsyncRepository<ModuleLock> moduleLockRespository)
         {
@@ -36,7 +34,6 @@ namespace ApplicationCore.Services
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._locationRepository = locationRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
-            this._trayDicRespository = trayRespository;
             this._inOutRecordRespository = inOutRespository;
             this._moduleLockRespository = moduleLockRespository;
         }
@@ -48,19 +45,14 @@ namespace ApplicationCore.Services
             if (trayCode.Split('#').Length < 2)
                 throw new Exception("托盘编码不合法,无法分拣!");
             WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, trayCode,
-                null, null, null, null, null, null,null,null, null, null, null);
-            var trayDicSpec = new TrayDicSpecification(null, trayCode.Split('#')[0], null);
-            var trayDics = await this._trayDicRespository.ListAsync(trayDicSpec);
-            var trayDic = trayDics[0];
+                null,null, null, null,null,null, null, null, null);
             var whTrays = await this._warehouseTrayRepository.ListAsync(traySpec);
             WarehouseTray warehouseTray = new WarehouseTray
             {
-                Code = trayCode,
+                TrayCode = trayCode,
                 CreateTime = DateTime.Now,
-                TrayDicId = trayDic.Id,
                 MaterialCount = 0,
-                TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
-                OrganizationId=orgId
+                TrayStep = Convert.ToInt32(TRAY_STEP.待入库)
             };
             if (whTrays.Count > 0)
             {
@@ -84,7 +76,7 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
             WarehouseTrayDetailSpecification traySpec = new WarehouseTrayDetailSpecification(null, trayCode,
                null, null, null,null, null,null,null,
-               null, null, null, null);
+               null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(traySpec);
             Guard.Against.Zero(warehouseTrays.Count, nameof(warehouseTrays.Count));
             var warehouseTray = warehouseTrays[0];
@@ -94,28 +86,17 @@ namespace ApplicationCore.Services
                     Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep.Value) +"]");
 
             LocationSpecification locationSpec = new LocationSpecification(null, locationCode,null,
-                null,null,null,null,null,null,null,
-                 null,null,null);
+                null,null,null,null,null,null,null,null,
+                 null,null);
             var locations=await this._locationRepository.ListAsync(locationSpec);
             Guard.Against.Zero(locations.Count, nameof(locations.Count));
             var location = locations[0];
             string srcCode = location.SysCode;
             string targetCode = string.Empty;
-            BaseSpecification<Location> areaLocationSpec = null;
-            if (warehouseTray.WarehouseMaterial.Count > 0)
-            {
-                areaLocationSpec = new LocationSpecification(null, null,null,null,null, 
-                    null, warehouseTray.ReservoirAreaId, new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                                     new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null,
-                                                              null,null,null);
-            }
-            else
-            {
-                areaLocationSpec = new LocationSpecification(null, null,null,warehouseTray.OrganizationId,null,
-                          null, null,new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
-                                                              new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null,
-                                                               null,null,null);
-            }
+            BaseSpecification<Location> areaLocationSpec =  new LocationSpecification(null, null,null,null,null,null, 
+                warehouseTray.ReservoirAreaId, new List<int>{Convert.ToInt32(LOCATION_STATUS.正常)},
+                new List<int>{Convert.ToInt32(LOCATION_INSTOCK.无货)},null,
+                null,null,null);
             var areaLocations = await this._locationRepository.ListAsync(areaLocationSpec);
             if (areaLocations.Count == 0)
                 throw new Exception("所属分区没有可用的空货位");
@@ -129,7 +110,7 @@ namespace ApplicationCore.Services
                 CreateTime = DateTime.Now,
                 OrderId = warehouseTray.OrderId,
                 OrderRowId = warehouseTray.OrderRowId,
-                TrayCode = warehouseTray.Code,
+                TrayCode = warehouseTray.TrayCode,
                 SrcId = srcCode,
                 TargetId = targetCode,
                 Status = Convert.ToInt32(TASK_STATUS.待处理),
@@ -184,13 +165,14 @@ namespace ApplicationCore.Services
         public async Task TaskStepReport(int id,int vid, int taskStep)
         {
             InOutTaskSpecification taskSpec = new InOutTaskSpecification(id, null,null,
-                                              null,null,null,null,null,null, 
+                                              null,null,null,null,null, 
                                               null, null, null, null);
             var tasks = await this._inOutTaskRepository.ListAsync(taskSpec);
             Guard.Against.NullOrEmpty(tasks, nameof(tasks));
             var task = tasks[0];
             WarehouseTrayDetailSpecification warehouseTraySpec = new WarehouseTrayDetailSpecification(null,
-                                       task.TrayCode, null, null, null,null,null, null, null, null, null, null, null);
+                                       task.TrayCode, null, null, null,null,null, 
+                                       null, null, null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
 
@@ -220,8 +202,8 @@ namespace ApplicationCore.Services
                 {
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已下架);
                     LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId,null,
-                        null, null, null, null,  null, null,null,
-                         null,null,null);
+                        null, null,null, null, null,  null, null,null,
+                         null,null);
                     var locations = await this._locationRepository.ListAsync(locationSpec);
                     var location = locations[0];
                     location.Status = Convert.ToInt32(LOCATION_STATUS.正常);

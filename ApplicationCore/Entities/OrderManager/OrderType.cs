@@ -8,7 +8,6 @@ namespace ApplicationCore.Entities.OrderManager
     {
         public string TypeName { get; set; }
         public DateTime CreateTime { get; set; }
-        public int InOutTag { get; set; }
         public string Memo { get; set; }
     }
 }

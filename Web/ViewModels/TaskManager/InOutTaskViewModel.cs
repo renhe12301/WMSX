@@ -29,8 +29,6 @@ namespace Web.ViewModels.TaskManager
         public int? VehicleId { get; set; }
         public int? OUId { get; set; }
         public string OUName { get; set; }
-        public int? OrganizationId { get; set; }
-        public string OrgName { get; set; }
         public string WarehouseName { get; set; }
       
         public string ReservoirAreaName { get; set;  }

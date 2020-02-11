@@ -5,8 +5,10 @@ namespace Web.ViewModels.BasicInformation
     {
         public int Id { get; set; }
         public string SupplierName { get; set; }
-        public string Address { get; set; }
-        public string Contact { get; set; }
-        public string Telephone { get; set; }
+        public string SupplierCode { get; set; }
+        public string TaxpayerCode { get; set; }
+        public string CreateTime { get; set; }
+        public string EndTime { get; set; }
+        public string Memo { get; set; }
     }
 }

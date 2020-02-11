@@ -1,6 +1,5 @@
 ﻿using System;
 using ApplicationCore.Entities.BasicInformation;
-using ApplicationCore.Entities.OrganizationManager;
 
 namespace ApplicationCore.Entities.FlowRecord
 {
@@ -10,9 +9,8 @@ namespace ApplicationCore.Entities.FlowRecord
         public int OrderRowId { get; set; }
         public int WarehouseId { get; set; }
         public int ReservoirAreaId { get; set; }
-        public int? OrganizationId { get; set; }
         public int? OUId { get; set; }
-        public int TrayDicId { get; set; }
+        public string TrayCode { get; set; }
         public int MaterialDicId { get; set; }
         public int InOutCount { get; set; }
         public int IsRead { get; set; }
@@ -21,8 +19,6 @@ namespace ApplicationCore.Entities.FlowRecord
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
         public MaterialDic MaterialDic { get; set; }
-        public TrayDic TrayDic { get; set; }
-        public Organization Organization { get; set; }
         public OU OU { get; set; }
     }
 }

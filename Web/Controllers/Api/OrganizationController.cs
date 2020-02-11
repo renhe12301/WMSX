@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Web.Interfaces;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
 using System.Threading.Tasks;
 using Web.ViewModels;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.BasicInformation;
 using Microsoft.AspNetCore.Cors;
 using Newtonsoft.Json;
 
@@ -44,42 +44,5 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
-
-        /// <summary>
-        /// 获取组织架构树信息
-        /// </summary>
-        /// <param name="rootId">组织架构编号</param>
-        /// <param name="depthTag">树深度标记(User-用户 Warehouse-仓库 ReservoirArea-库区)</param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetOrganizationTrees(int rootId, string depthTag)
-        {
-            ResponseResultViewModel response = await this._organizationViewModelService.GetOrganizationTrees(rootId, depthTag);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 添加组织架构
-        /// </summary>
-        /// <param name="org">组织架构实体</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AddOrg(OrganizationViewModel org)
-        {
-            ResponseResultViewModel response = await this._organizationViewModelService.AddOrg(org);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 更新组织架构
-        /// </summary>
-        /// <param name="org">组织架构实体</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateOrg(OrganizationViewModel org)
-        {
-            ResponseResultViewModel response = await this._organizationViewModelService.UpdateOrg(org);
-            return Content(JsonConvert.SerializeObject(response));
-        }
     }
 }

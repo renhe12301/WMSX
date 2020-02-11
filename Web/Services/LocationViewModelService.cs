@@ -27,7 +27,7 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string sysCode,string userCode,int? orgId,int? ouId, int? wareHouseId,int? areaId,string status,
+            string sysCode,string userCode,int? phyId,int? ouId, int? wareHouseId,int? areaId,string status,
             string inStocks,string isTasks,string floors,string items,string cols)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -79,12 +79,12 @@ namespace Web.Services
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,orgId,
+                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
                 else
                 {
-                    baseSpecification = new LocationSpecification(id,sysCode,userCode,orgId,
+                    baseSpecification = new LocationSpecification(id,sysCode,userCode,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
 
@@ -101,7 +101,7 @@ namespace Web.Services
                         CreateTime = e.CreateTime.ToString(),
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
                         OUName = e.OU?.OUName,
-                        OrgName = e.Organization?.OrgName,
+                        PhyName = e.PhyWarehouse?.PhyName,
                         WarehouseName = e.Warehouse?.WhName,
                         Status =  Enum.GetName(typeof(LOCATION_STATUS), e.Status),
                         InStock = Enum.GetName(typeof(LOCATION_INSTOCK), e.InStock),
@@ -115,7 +115,7 @@ namespace Web.Services
               
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,orgId,
+                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;
@@ -226,7 +226,7 @@ namespace Web.Services
                     WarehouseId=locationViewModel.WarehouseId,
                     ReservoirAreaId=locationViewModel.ReservoirAreaId,
                     OUId = locationViewModel.OUId,
-                    OrganizationId = locationViewModel.OrganizationId
+                    PhyWarehouseId = locationViewModel.PhyWarehouseId
                 };
                 await this._locationService.AddLocation(location);
                 response.Data = location.Id;
@@ -244,8 +244,8 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                if(!locationViewModel.OrganizationId.HasValue)throw new Exception("生成货位,公司编号不能为空！");
-                await this._locationService.BuildLocation(locationViewModel.OrganizationId.Value,
+                if(!locationViewModel.PhyWarehouseId.HasValue)throw new Exception("生成货位,实体仓库编号不能为空！");
+                await this._locationService.BuildLocation(locationViewModel.PhyWarehouseId.Value,
                     locationViewModel.Row, locationViewModel.Rank, locationViewModel.Col);
             }
             catch (Exception ex)

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Interfaces
 {
     public interface IOrganizationService
     {
         Task AddOrg(Organization org);
-        Task UpdateOrg(int orgId,string orgName,string orgCode);
+        Task UpdateOrg(Organization org);
     }
 }

@@ -82,7 +82,6 @@ namespace Web.Controllers.Api
         /// <param name="status">任务状态,多个以逗号隔开</param>
         /// <param name="steps">任务步骤,多个以逗号隔开</param>
         /// <param name="types">任务类型,多个以逗号隔开</param>
-        /// <param name="orgId">所属公司编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">所属仓库编号</param>
         /// <param name="areaId">所属库区编号</param>
@@ -94,13 +93,12 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetInOutTasks(int? pageIndex, int? itemsPage,
                                              int? id,string trayCode, string status,string steps,string types,
-                                              int? orgId, int? ouId,
-                                              int? wareHouseId, int? areaId,
+                                             int? ouId, int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
         {
             var response = await this._inOutTaskViewModelService.GetInOutTasks(pageIndex,
-                itemsPage, id,trayCode, status, steps,types,orgId,ouId,wareHouseId,areaId,
+                itemsPage, id,trayCode, status, steps,types,ouId,wareHouseId,areaId,
                 sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }

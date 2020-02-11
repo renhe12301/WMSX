@@ -12,7 +12,7 @@
     <Folder Include="Controllers\Api\" />
     <Folder Include="Jobs\" />
     <Folder Include="ViewModels\OrderManager\" />
-    <Folder Include="ViewModels\OrganizationManager\" />
+    <Folder Include="ViewModels\AuthorityManager\" />
     <Folder Include="ViewModels\BasicInformation\" />
     <Folder Include="Views\" />
     <Folder Include="wwwroot\js\basic-information\" />

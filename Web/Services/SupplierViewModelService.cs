@@ -21,32 +21,7 @@ namespace Web.Services
             this._supplierService = supplierService;
             this._supplierRepository = supplierRepository;
         }
-
-        public async Task<ResponseResultViewModel> AddSupplier(SupplierViewModel supplierViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel
-            {
-                Code = 200
-            };
-            try
-            {
-                Supplier supplier = new Supplier
-                {
-                    Address = supplierViewModel.Address,
-                    Contact = supplierViewModel.Contact,
-                    SupplierName = supplierViewModel.SupplierName,
-                    Telephone = supplierViewModel.Telephone
-                };
-                await this._supplierService.AddSupplier(supplier);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
-
+        
         public async Task<ResponseResultViewModel> GetSuppliers(int ?pageIndex, int ?itemsPage,int? id, string supplierName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -70,10 +45,9 @@ namespace Web.Services
                 {
                     SupplierViewModel supplierViewModel = new SupplierViewModel
                     {
-                        Address = e.Address,
-                        Contact = e.Contact,
                         SupplierName = e.SupplierName,
-                        Telephone = e.Telephone
+                        SupplierCode = e.SupplierCode,
+                        TaxpayerCode = e.TaxpayerCode
                     };
                     supplierViewModels.Add(supplierViewModel);
                 });

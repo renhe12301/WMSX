@@ -34,41 +34,6 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
         
-        /// <summary>
-        /// 分配物料字典到物料类型
-        /// </summary>
-        /// <param name="materialTypeViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AssignMaterialDic(MaterialTypeViewModel materialTypeViewModel)
-        {
-            var response = await this._materialTypeViewModelService.AssignMaterialDic(materialTypeViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 更新物料类型
-        /// </summary>
-        /// <param name="materialTypeViewModel">物料类型实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateMaterialType(MaterialTypeViewModel materialTypeViewModel)
-        {
-            var response = await this._materialTypeViewModelService.UpdateMaterialType(materialTypeViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 删除物料类型
-        /// </summary>
-        /// <param name="materialTypeViewModel">物料类型实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> DelMaterialType(MaterialTypeViewModel materialTypeViewModel)
-        {
-            var response = await this._materialTypeViewModelService.DelMaterialType(materialTypeViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
 
         /// <summary>
         /// 获取物料类型

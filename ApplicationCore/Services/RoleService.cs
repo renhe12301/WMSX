@@ -2,7 +2,7 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.AuthorityManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Ardalis.GuardClauses;

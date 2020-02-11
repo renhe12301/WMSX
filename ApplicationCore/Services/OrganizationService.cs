@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Ardalis.GuardClauses;
 
 namespace ApplicationCore.Services
 {
-    public class OrganizationService:IOrganizationService
+    public class OrganizationService : IOrganizationService
     {
         private readonly IAsyncRepository<Organization> _organizationRepository;
 
@@ -19,21 +20,32 @@ namespace ApplicationCore.Services
         public async Task AddOrg(Organization org)
         {
             Guard.Against.Null(org, nameof(org));
-            await this._organizationRepository.AddAsync(org);
+            Guard.Against.NullOrEmpty(org.OrgCode, nameof(org.OrgCode));
+            Guard.Against.NullOrEmpty(org.OrgName, nameof(org.OrgName));
+            OrganizationSpecification organizationSpec = new OrganizationSpecification(null, org.OrgCode, null, null);
+            List<Organization> orgs = await this._organizationRepository.ListAsync(organizationSpec);
+            if (orgs.Count == 0)
+                await this._organizationRepository.AddAsync(org);
         }
 
-        public async Task UpdateOrg(int orgId, string orgName, string orgCode)
+        public async Task UpdateOrg(Organization srcOrg)
         {
-            Guard.Against.Zero(orgId, nameof(orgId));
-            Guard.Against.NullOrEmpty(orgName, nameof(orgName));
-            Guard.Against.NullOrEmpty(orgCode, nameof(orgCode));
-            var orgSpec = new OrganizationSpecification(orgId,null,null);
+            Guard.Against.Null(srcOrg, nameof(srcOrg));
+            Guard.Against.Zero(srcOrg.Id, nameof(srcOrg.Id));
+            Guard.Against.NullOrEmpty(srcOrg.OrgName, nameof(srcOrg.OrgName));
+            Guard.Against.NullOrEmpty(srcOrg.OrgCode, nameof(srcOrg.OrgCode));
+            var orgSpec = new OrganizationSpecification(srcOrg.Id, null, null, null);
             var orgs = await this._organizationRepository.ListAsync(orgSpec);
-            Guard.Against.NullOrEmpty(orgs, nameof(orgs));
-            var org = orgs[0];
-            org.OrgName = orgName;
-            org.Code = orgCode;
-            await this._organizationRepository.UpdateAsync(org);
+            if (orgs.Count > 0)
+            {
+                var targetOrg = orgs[0];
+                targetOrg.OrgName = srcOrg.OrgName;
+                targetOrg.OrgCode = srcOrg.OrgCode;
+                targetOrg.CreateTime = srcOrg.CreateTime;
+                targetOrg.EndTime = srcOrg.EndTime;
+                targetOrg.OUId = srcOrg.OUId;
+                await this._organizationRepository.UpdateAsync(targetOrg);
+            }
         }
     }
 }

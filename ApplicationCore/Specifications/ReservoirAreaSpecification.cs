@@ -4,17 +4,16 @@ namespace ApplicationCore.Specifications
 {
     public class ReservoirAreaSpecification:BaseSpecification<ReservoirArea>
     {
-        public ReservoirAreaSpecification(int? id, int? orgId, int? ouId,int? whId,int? type,string areaName)
+        public ReservoirAreaSpecification(int? id,string areaCode, int? ouId,int? whId,int? type,string areaName)
             :base(b=>(!id.HasValue||b.Id==id)&&
+                     (areaCode==null||b.AreaCode==areaName)&&
                       (!ouId.HasValue || b.OUId == ouId) &&
-                      (!orgId.HasValue || b.OrganizationId == orgId) &&
-                     (!whId.HasValue||b.WarehouseId==whId)&&
-                     (!type.HasValue || b.Type == type) &&
-                     (areaName==null||b.AreaName.Contains(areaName)))
+                      (!whId.HasValue||b.WarehouseId==whId)&&
+                      (!type.HasValue || b.Type == type) &&
+                      (areaName==null||b.AreaName.Contains(areaName)))
         {
             AddInclude(b => b.Warehouse);
             AddInclude(b=>b.OU);
-            AddInclude(b=>b.Organization);
         }
     }
 }

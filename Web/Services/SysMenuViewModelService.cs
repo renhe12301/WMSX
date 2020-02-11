@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.ViewModels;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.AuthorityManager;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
-using Web.ViewModels.OrganizationManager;
+using Web.ViewModels.AuthorityManager;
 
 namespace Web.Services
 {

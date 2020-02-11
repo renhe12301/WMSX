@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Entities.OrganizationManager;
+using ApplicationCore.Entities.AuthorityManager;
 using Ardalis.GuardClauses;
 
 namespace ApplicationCore.Services

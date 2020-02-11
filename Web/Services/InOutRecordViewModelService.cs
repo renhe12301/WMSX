@@ -47,7 +47,7 @@ namespace Web.Services
                         InOutCount = e.InOutCount,
                         MaterialDicId = e.MaterialDicId,
                         MaterialDicName = e.MaterialDic.MaterialName,
-                        TrayDicName = e.TrayDic.TrayName,
+                        TrayCode = e.TrayCode,
                         OrderId = e.OrderId,
                         OrderRowId = e.OrderRowId,
                         ReservoirAreaId = e.ReservoirAreaId,
