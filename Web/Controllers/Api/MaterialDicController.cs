@@ -41,41 +41,5 @@ namespace Web.Controllers.Api
                                          id, materialCode, materialName, spec, typeId);
             return Content(JsonConvert.SerializeObject(response));
         }
-
-        /// <summary>
-        /// 添加物料字典信息
-        /// </summary>
-        /// <param name="materialDicViewModel">物料字典实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AddMaterialDic(MaterialDicViewModel materialDicViewModel)
-        {
-            var response = await this._materialDicViewModelService.AddMaterialDic(materialDicViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 更新物料字典信息
-        /// </summary>
-        /// <param name="materialDicViewModel">物料字典实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateMaterialDic(MaterialDicViewModel materialDicViewModel)
-        {
-            var response = await this._materialDicViewModelService.UpdateMaterialDic(materialDicViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 删除物料字典信息
-        /// </summary>
-        /// <param name="materialDicViewModel">物料字典实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> DelMaterialDic(MaterialDicViewModel materialDicViewModel)
-        {
-            var response = await this._materialDicViewModelService.DelMaterialDic(materialDicViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
     }
 }

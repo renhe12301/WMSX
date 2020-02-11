@@ -7,13 +7,13 @@ using ApplicationCore.Specifications;
 
 namespace Web.Jobs
 {
-    public class JYH_Stock_Job: IJob
+    public class JyhStockJob: IJob
     {
         private readonly IInOutRecordService _inOutRecordService;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
 
 
-        public JYH_Stock_Job(IInOutRecordService inOutRecordService,
+        public JyhStockJob(IInOutRecordService inOutRecordService,
                              IAsyncRepository<InOutRecord> inOutRecordRepository)
         {
             this._inOutRecordRepository = inOutRecordRepository;

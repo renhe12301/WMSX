@@ -4,28 +4,6 @@
         <name>Web</name>
     </assembly>
     <members>
-        <member name="T:Web.Controllers.Api.CustomerController">
-            <summary>
-            供应商操作API
-            </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.CustomerController.GetCustomers(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
-            <summary>
-            获取供应商信息
-            </summary>
-            <param name="pageIndex">当前页索引</param>
-            <param name="itemsPage">当前页显示大小</param>
-            <param name="id">客户编号</param>
-            <param name="customerName">客户名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.CustomerController.AddSupplier(Web.ViewModels.BasicInformation.CustomerViewModel)">
-            <summary>
-            添加客户
-            </summary>
-            <param name="customerViewModel">客户实体对象</param>
-            <returns></returns>
-        </member>
         <member name="T:Web.Controllers.Api.EmployeeController">
             <summary>
             员工信息操作API
@@ -158,28 +136,28 @@
             <summary>
             获取最大的层、排、列
             </summary>
-            <param name="orgId">所属公司编号</param>
+            <param name="phyId">所属实体仓库编号</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.LocationController.GetMaxFloor(System.Int32)">
             <summary>
             获取最大的层
             </summary>
-            <param name="orgId">所属公司编号</param>
+            <param name="phyId">所属实体仓库编号</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.LocationController.GetMaxItem(System.Int32)">
             <summary>
             获取最大的排
             </summary>
-            <param name="orgId">所属公司编号</param>
+            <param name="phyId">所属实体仓库编号</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.LocationController.GetMaxCol(System.Int32)">
             <summary>
             获取最大的列
             </summary>
-            <param name="orgId">所属公司编号</param>
+            <param name="phyId">所属实体仓库编号</param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.LocationController.AddLocation(Web.ViewModels.BasicInformation.LocationViewModel)">

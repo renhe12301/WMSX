@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Web.Jobs
 {
-    public class CK_Job:IJob
+    public class CkJob:IJob
     {
        
 
@@ -20,7 +20,7 @@ namespace Web.Jobs
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
 
-        public CK_Job(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
+        public CkJob(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
             IAsyncRepository<Warehouse> warehouseRepository,
             IAsyncRepository<ReservoirArea> reservoirAreaRepository,
             IAsyncRepository<Location> locationRepository)

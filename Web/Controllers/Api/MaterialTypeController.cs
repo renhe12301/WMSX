@@ -23,19 +23,6 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
-        /// 添加物料类型
-        /// </summary>
-        /// <param name="materialTypeViewModel">物料类型实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AddMaterialType(MaterialTypeViewModel materialTypeViewModel)
-        {
-            var response = await this._materialTypeViewModelService.AddMaterialType(materialTypeViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-        
-
-        /// <summary>
         /// 获取物料类型
         /// </summary>
         /// <param name="pageIndex">当前页索引</param>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ApplicationCore.Entities.BasicInformation;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -46,30 +45,6 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetRoles(int employeeId)
         {
             var response  = await this._employeeViewModelService.GetRoles(employeeId);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 添加员工信息
-        /// </summary>
-        /// <param name="employViewModel">员工信息JSON对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AddEmployee(EmployeeViewModel employViewModel)
-        {
-            var response = await this._employeeViewModelService.AddEmployee(employViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-        
-        /// <summary>
-        /// 更新用户信息
-        /// </summary>
-        /// <param name="employViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateEmployee(EmployeeViewModel employViewModel)
-        {
-            var response = await this._employeeViewModelService.UpdateEmployee(employViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
 

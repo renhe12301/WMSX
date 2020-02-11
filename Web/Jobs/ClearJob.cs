@@ -4,9 +4,9 @@ using Quartz;
 
 namespace Web.Jobs
 {
-    public class Clear_Job: IJob
+    public class ClearJob: IJob
     {
-        public Clear_Job()
+        public ClearJob()
         {
         }
 

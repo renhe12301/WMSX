@@ -171,7 +171,6 @@
         <e p="Controllers" t="Include">
           <e p="Api" t="Include">
             <e p="BaseApiController.cs" t="Include" />
-            <e p="CustomerController.cs" t="Include" />
             <e p="EmployeeController.cs" t="Include" />
             <e p="InOutRecordController.cs" t="Include" />
             <e p="InOutTaskController.cs" t="Include" />
@@ -191,7 +190,6 @@
           </e>
         </e>
         <e p="Interfaces" t="Include">
-          <e p="ICustomerViewModelService.cs" t="Include" />
           <e p="IEmployeeViewModelService.cs" t="Include" />
           <e p="IInOutRecordViewModelService.cs" t="Include" />
           <e p="IInOutTaskViewModelService.cs" t="Include" />
@@ -211,9 +209,10 @@
         </e>
         <e p="IOCJobFactory.cs" t="Include" />
         <e p="Jobs" t="Include">
-          <e p="CK_Job.cs" t="Include" />
-          <e p="Clear_Job.cs" t="Include" />
-          <e p="JYH_Stock_Job.cs" t="Include" />
+          <e p="CKJob.cs" t="Include" />
+          <e p="ClearJob.cs" t="Include" />
+          <e p="OrderSyncJob.cs" t="Include" />
+          <e p="StockSyncJob.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -254,7 +253,6 @@
             <e p="SysRoleViewModel.cs" t="Include" />
           </e>
           <e p="BasicInformation" t="Include">
-            <e p="CustomerViewModel.cs" t="Include" />
             <e p="EmployeeViewModel.cs" t="Include" />
             <e p="LocationViewModel.cs" t="Include" />
             <e p="MaterialDicViewModel.cs" t="Include" />
