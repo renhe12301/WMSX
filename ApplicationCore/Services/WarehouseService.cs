@@ -23,7 +23,7 @@ namespace ApplicationCore.Services
 
         public async Task Disable(int id)
         {
-            var wareHouseSpec = new WarehouseSpecification(id,null,null,null);
+            var wareHouseSpec = new WarehouseSpecification(id,null,null);
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
@@ -32,7 +32,7 @@ namespace ApplicationCore.Services
 
         public async Task Enable(int id)
         {
-            var wareHouseSpec = new WarehouseSpecification(id,null,null,null);
+            var wareHouseSpec = new WarehouseSpecification(id,null,null);
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
@@ -41,7 +41,7 @@ namespace ApplicationCore.Services
 
         public async Task UpdateWarehouse(int id, string whName, string address)
         {
-            var wareHouseSpec = new WarehouseSpecification(id,null,null,null);
+            var wareHouseSpec = new WarehouseSpecification(id,null,null);
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];

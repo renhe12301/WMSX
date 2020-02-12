@@ -22,21 +22,20 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
-        /// 获取仓库信息
+        /// 获取库存组织
         /// </summary>
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">一页条数</param>
-        /// <param name="id">仓库编号</param>
-        /// <param name="orgId">组织编号</param>
+        /// <param name="id">库存组织编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="whName">仓库名称</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetWarehouses(int? pageIndex, int? itemsPage,
-                                      int? id, int? orgId,int? ouId, string whName)
+                                      int? id, int? ouId, string whName)
         {
             var response = await this._warehouseViewModelService.GetWarehouses(pageIndex,
-                itemsPage, id, orgId,ouId, whName);
+                itemsPage, id, ouId, whName);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

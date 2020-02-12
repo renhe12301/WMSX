@@ -180,7 +180,7 @@ namespace Web.Services
                         if (areas.Count == 0) throw new Exception(string.Format("子库区[{0}]不存在！",or.ReservoirAreaId));
                         area = areas[0];
                     }
-                    WarehouseSpecification warehouseSpec = new WarehouseSpecification(null, or.WarehouseId,null, null);
+                    WarehouseSpecification warehouseSpec = new WarehouseSpecification(or.WarehouseId, null,null);
                     var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
                     if (warehouses.Count == 0) throw new Exception(string.Format("库组织[{0}],不存在！", or.WarehouseId));
                     var warehouse = warehouses[0];

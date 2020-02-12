@@ -9,6 +9,6 @@ namespace Web.Interfaces
     public interface IWarehouseViewModelService
     {
         Task<ResponseResultViewModel> GetWarehouses(int? pageIndex, int? itemsPage,
-                                      int? id,int? orgId,int? ouId, string whName);
+                                      int? id,int? ouId, string whName);
     }
 }

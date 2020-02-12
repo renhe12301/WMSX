@@ -25,7 +25,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetWarehouses(int? pageIndex,
-            int? itemsPage, int? id, int? orgId,int? ouId, string whName)
+            int? itemsPage, int? id,int? ouId, string whName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -35,11 +35,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new WarehousePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,orgId,ouId,whName);
+                        id,ouId,whName);
                 }
                 else
                 {
-                    baseSpecification = new WarehouseSpecification(id, null, orgId, whName);
+                    baseSpecification = new WarehouseSpecification(id, null, whName);
                 }
                 var warehouses = await this._wareHouseRepository.ListAsync(baseSpecification);
                 List<WarehouseViewModel> warehouseViewModels = new List<WarehouseViewModel>();
@@ -59,7 +59,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._wareHouseRepository.CountAsync(new WarehouseSpecification(id, null, orgId, whName));
+                    var count = await this._wareHouseRepository.CountAsync(new WarehouseSpecification(id, null,  whName));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseViewModels;
                     dyn.total = count;
