@@ -5,14 +5,11 @@ namespace Web.ViewModels.BasicInformation
     {
         public int Id { get; set; }
         public string WhName { get; set; }
+        public string WhCode { get; set; }
         public string CreateTime { get; set; }
-        public string Address { get; set; }
         public string Status { get; set; }
         public string Memo { get; set; }
-        
-        public int OrganizationId { get; set; }
         public int OUId { get; set; }
-        public string OrgName{get;set;}
         public string OUName { get; set; }
     }
 }

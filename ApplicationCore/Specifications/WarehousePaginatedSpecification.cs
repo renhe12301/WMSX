@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
                    whName ==null||b.WhName.Contains(whName))
         {
             ApplyPaging(skip, take);
-            AddInclude(b => b.Organization);
+            AddInclude(b => b.OU);
         }
     }
 }

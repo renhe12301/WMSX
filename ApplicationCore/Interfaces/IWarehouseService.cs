@@ -7,7 +7,7 @@ namespace ApplicationCore.Interfaces
     public interface IWarehouseService
     {
         Task AddWarehouse(Warehouse warehouse);
-        Task UpdateWarehouse(int id,string whName,string address);
+        Task UpdateWarehouse(Warehouse warehouse);
         Task Disable(int id);
         Task Enable(int id);
     }

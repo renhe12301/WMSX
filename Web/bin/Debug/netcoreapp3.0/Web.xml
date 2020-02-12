@@ -26,20 +26,6 @@
             <param name="employeeId">员工编号</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.AddEmployee(Web.ViewModels.BasicInformation.EmployeeViewModel)">
-            <summary>
-            添加员工信息
-            </summary>
-            <param name="employViewModel">员工信息JSON对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.EmployeeController.UpdateEmployee(Web.ViewModels.BasicInformation.EmployeeViewModel)">
-            <summary>
-            更新用户信息
-            </summary>
-            <param name="employViewModel"></param>
-            <returns></returns>
-        </member>
         <member name="M:Web.Controllers.Api.EmployeeController.Enable(Web.ViewModels.BasicInformation.EmployeeViewModel)">
             <summary>
             启用员工
@@ -220,38 +206,10 @@
             <param name="typeId">物料字典类型编号</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.MaterialDicController.AddMaterialDic(Web.ViewModels.BasicInformation.MaterialDicViewModel)">
-            <summary>
-            添加物料字典信息
-            </summary>
-            <param name="materialDicViewModel">物料字典实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialDicController.UpdateMaterialDic(Web.ViewModels.BasicInformation.MaterialDicViewModel)">
-            <summary>
-            更新物料字典信息
-            </summary>
-            <param name="materialDicViewModel">物料字典实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialDicController.DelMaterialDic(Web.ViewModels.BasicInformation.MaterialDicViewModel)">
-            <summary>
-            删除物料字典信息
-            </summary>
-            <param name="materialDicViewModel">物料字典实体对象</param>
-            <returns></returns>
-        </member>
         <member name="T:Web.Controllers.Api.MaterialTypeController">
             <summary>
             物料类型API
             </summary>
-        </member>
-        <member name="M:Web.Controllers.Api.MaterialTypeController.AddMaterialType(Web.ViewModels.BasicInformation.MaterialTypeViewModel)">
-            <summary>
-            添加物料类型
-            </summary>
-            <param name="materialTypeViewModel">物料类型实体对象</param>
-            <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.MaterialTypeController.GetMaterialTypes(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
@@ -467,44 +425,15 @@
             仓库操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.GetWarehouses(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+        <member name="M:Web.Controllers.Api.WarehouseController.GetWarehouses(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
-            获取仓库信息
+            获取库存组织
             </summary>
             <param name="pageIndex">分页索引</param>
             <param name="itemsPage">一页条数</param>
-            <param name="id">仓库编号</param>
-            <param name="orgId">组织编号</param>
+            <param name="id">库存组织编号</param>
             <param name="ouId">业务实体编号</param>
             <param name="whName">仓库名称</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.AddWarehouse(Web.ViewModels.BasicInformation.WarehouseViewModel)">
-            <summary>
-            添加仓库
-            </summary>
-            <param name="warehouseViewModel">仓库实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.UpdateWarehouse(Web.ViewModels.BasicInformation.WarehouseViewModel)">
-            <summary>
-            更新仓库
-            </summary>
-            <param name="warehouseViewModel">仓库实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.Disable(Web.ViewModels.BasicInformation.WarehouseViewModel)">
-            <summary>
-            禁用仓库
-            </summary>
-            <param name="warehouseViewModel">仓库实体对象</param>
-            <returns></returns>
-        </member>
-        <member name="M:Web.Controllers.Api.WarehouseController.Enable(Web.ViewModels.BasicInformation.WarehouseViewModel)">
-            <summary>
-            启用仓库
-            </summary>
-            <param name="warehouseViewModel">仓库实体对象</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseMaterialController">

@@ -50,9 +50,7 @@ namespace Web.Services
                         WhName = e.WhName,
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
-                        OrganizationId=e.Organization.Id,
-                        OrgName=e.Organization.OrgName,
-                        Address = e.Address,
+                        OUName= e.OU.OUName,
                         Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status)
                     };
                     warehouseViewModels.Add(wareHouseViewModel);

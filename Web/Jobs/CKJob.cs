@@ -54,7 +54,7 @@ namespace Web.Jobs
                         var wid = gTray.Key;
                         WarehouseSpecification warehouseSpec = new WarehouseSpecification(wid,  null, null);
                         var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-                        if (warehouses.Count > 0 && !string.IsNullOrEmpty(warehouses[0].Organization.Memo))
+                        if (warehouses.Count > 0)
                         {
                             string weburl = warehouses[0].Memo;
                            

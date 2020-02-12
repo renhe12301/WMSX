@@ -9,7 +9,7 @@ namespace ApplicationCore.Specifications
                   (!ouId.HasValue || b.OUId == ouId)&&
                   whName==null||b.WhName.Contains(whName))
         {
-            AddInclude(b => b.Organization);
+            AddInclude(b => b.OU);
         }
     }
 }
