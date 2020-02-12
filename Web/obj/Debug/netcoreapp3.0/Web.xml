@@ -300,7 +300,7 @@
             业务实体Api
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.OUController.GetOUs(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32})">
+        <member name="M:Web.Controllers.Api.OUController.GetOUs(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取业务实体信息
             </summary>
@@ -309,7 +309,15 @@
             <param name="id">ou id</param>
             <param name="ouName">ou 名称</param>
             <param name="ouCode">ou 编码</param>
-            <param name="orgId">所属公司id</param>
+            <param name="companyName">法人</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.OUController.GetOUTrees(System.Int32,System.String)">
+            <summary>
+            获取业务实体树
+            </summary>
+            <param name="rootId">业务实体编号</param>
+            <param name="depthTag"></param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.ReservoirAreaController">
@@ -349,6 +357,18 @@
             <param name="itemsPage">当前页显示大小</param>
             <param name="id">供应商编号</param>
             <param name="supplierName">供应商名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.SupplierController.GetSupplierSites(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            获取供应商地址信息
+            </summary>
+            <param name="pageIndex">当前页索引</param>
+            <param name="itemsPage">当前页显示大小</param>
+            <param name="id">供应商地址编号</param>
+            <param name="supplierName">供应商名称</param>
+            <param name="supplierId">供应商编号</param>
+            <param name="ouId">业务实体编号</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.SysMenuController">

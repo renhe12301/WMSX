@@ -9,9 +9,9 @@ namespace ApplicationCore.Specifications
             : base(b => (!id.HasValue || b.Id == id)&&
                         (orgCode==null || b.OrgCode == orgCode)&&
                   (!ouid.HasValue||b.OUId==ouid)&&
-                  (orgName==null||b.OrgName==orgName))
+                  (orgName==null||b.OrgName.Contains(orgName)))
         {
-           
+            AddInclude(b=>b.OU);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ApplicationCore.Entities.BasicInformation
     {
         public string TypeName { get; set; }
         public int ParentId { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         public string Memo { get; set; }
     }
 }

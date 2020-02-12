@@ -34,62 +34,7 @@ namespace Web.Services
             this._employeeRoleRepository = employeeRoleRepository;
         }
 
-        public async Task<ResponseResultViewModel> AddEmployee(EmployeeViewModel employeeViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                Employee employee = new Employee
-                {
-                    LoginName = employeeViewModel.LoginName,
-                    LoginPwd = employeeViewModel.LoginPwd,
-                    Sex = employeeViewModel.Sex,
-                    Address = employeeViewModel.Address,
-                    Email = employeeViewModel.Email,
-                    CreateTime = DateTime.Now,
-                    Telephone = employeeViewModel.Telephone,
-                    UserName = employeeViewModel.UserName
-                };
-                await this._employeeService.AddEmployee(employee);
-                response.Data = employee.Id;
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        public async Task<ResponseResultViewModel> UpdateEmployee(EmployeeViewModel employViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                Employee employee = new Employee
-                {
-                    Id = employViewModel.Id,
-                    LoginName = employViewModel.LoginName,
-                    LoginPwd = employViewModel.LoginPwd,
-                    UserName = employViewModel.UserName,
-                    UserCode = employViewModel.UserCode,
-                    Sex = employViewModel.Sex,
-                    Telephone = employViewModel.Telephone,
-                    Email = employViewModel.Email,
-                    Address = employViewModel.Address,
-                    Img = employViewModel.Img
-                    
-                };
-                await this._employeeService.UpdateEmployee(employee);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
+       
         public async Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -183,7 +128,6 @@ namespace Web.Services
                             Sex = e.Employee.Sex,
                             Telephone = e.Employee.Telephone,
                             Email = e.Employee.Email,
-                            Address = e.Employee.Address,
                             Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Employee.Status),
                             CreateTime = e.Employee.CreateTime.ToString(),
                             LoginName = e.Employee.LoginName,
@@ -237,7 +181,6 @@ namespace Web.Services
                             Sex = e.Sex,
                             Telephone = e.Telephone,
                             Email = e.Email,
-                            Address = e.Address,
                             Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Status),
                             CreateTime = e.CreateTime.ToString(),
                             LoginName = e.LoginName,

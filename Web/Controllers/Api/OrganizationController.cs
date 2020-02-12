@@ -38,9 +38,9 @@ namespace Web.Controllers.Api
         /// <param name="orgName">组织架构名称</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOrganizations(int? pageIndex,int? itemsPage, int? id, int? pid, string orgName)
+        public async Task<IActionResult> GetOrganizations(int? pageIndex,int? itemsPage, int? id, int? ouId, string orgName)
         {
-            ResponseResultViewModel response =  await this._organizationViewModelService.GetOrganizations(pageIndex, itemsPage, id, pid, orgName);
+            ResponseResultViewModel response =  await this._organizationViewModelService.GetOrganizations(pageIndex, itemsPage, id, ouId, orgName);
             return Content(JsonConvert.SerializeObject(response));
         }
 

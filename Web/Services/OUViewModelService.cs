@@ -27,7 +27,7 @@ namespace Web.Services
             this._areaRepository = areaRepository;
         }
 
-        public async Task<ResponseResultViewModel> GetOUs(int? pageIndex, int? itemsPage, int? id, string ouName, string ouCode,int? orgId)
+        public async Task<ResponseResultViewModel> GetOUs(int? pageIndex, int? itemsPage, int? id, string ouName, string ouCode,string companyName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -36,11 +36,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new OUPaginatedSpecification(pageIndex.Value,
-                        itemsPage.Value, id, ouName, ouCode);
+                        itemsPage.Value, id, ouName, ouCode,companyName);
                 }
                 else
                 {
-                    baseSpecification = new OUSpecification(id,ouName,ouCode);
+                    baseSpecification = new OUSpecification(id,ouName,ouCode,companyName);
                 }
 
                 var result = await this._ouRepository.ListAsync(baseSpecification);
@@ -49,15 +49,18 @@ namespace Web.Services
                 {
                     OUViewModel ouViewModel = new OUViewModel
                     {
+                        CompanyName = r.CompanyName,
                         OUName = r.OUName,
                         OUCode = r.OUCode,
+                        PlateCode = r.PlateCode,
+                        PlateName = r.PlateName,
                         Id = r.Id
                     };
                     ouViewModels.Add(ouViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._ouRepository.CountAsync(new OUSpecification(id, ouName, ouCode));
+                    var count = await this._ouRepository.CountAsync(new OUSpecification(id, ouName, ouCode,companyName));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = ouViewModels;
                     dyn.total = count;
@@ -82,63 +85,149 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                var ouSpec = new OUSpecification(null, null, null);
+                var ouSpec = new OUSpecification(null, null, null,null);
                 var allOus =  await this._ouRepository.ListAsync(ouSpec);
                 if (allOus.Count == 0) throw new Exception(string.Format("业务实体不存在"));
-                var ou = allOus.Find(o => o.Id == rootId);
-                var warehouseSpec=new WarehouseSpecification(null,rootId,null);
+                var warehouseSpec=new WarehouseSpecification(null,null,null);
                 var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-                var areaSpec=new ReservoirAreaSpecification(null,null,rootId,null,null,null);
+                var areaSpec=new ReservoirAreaSpecification(null,null,null,null,null,null);
                 var areas = await this._areaRepository.ListAsync(areaSpec);
-                TreeViewModel current = new TreeViewModel
+                
+                TreeViewModel current =null;
+                if (rootId > 0)
                 {
-                    Id=ou.Id,
-                    ParentId=0,
-                    Name=ou.OUName,
-                    Type="ou"
-                };
+                    var ou = allOus.Find(o => o.Id == rootId);
+                    current = new TreeViewModel
+                    {
+                        Id = ou.Id,
+                        ParentId = 0,
+                        Name = ou.OUName,
+                        Type = "ou"
+                    };
+                }
+                else
+                {
+                    current = new TreeViewModel
+                    {
+                        Id = 0,
+                        ParentId = 0,
+                        Name = "业务实体",
+                        Type = "ou"
+                    };
+                }
                 if (depthTag == "warehouse")
                 {
-                    var childWarehouses = warehouses.FindAll(w => w.OUId == ou.Id);
-                    childWarehouses.ForEach(cw =>
+                    if (rootId > 0)
                     {
-                        var wareHouseChild = new TreeViewModel
+                        var childWarehouses = warehouses.FindAll(w => w.OUId == current.Id);
+                        childWarehouses.ForEach(cw =>
                         {
-                            Id = cw.Id,
-                            ParentId = ou.Id,
-                            Name = cw.WhName,
-                            Type = "warehouse"
-                        };
-                        current.Children.Add(wareHouseChild);
-                    });
+                            var wareHouseChild = new TreeViewModel
+                            {
+                                Id = cw.Id,
+                                ParentId = current.Id,
+                                Name = cw.WhName,
+                                Type = "warehouse"
+                            };
+                            current.Children.Add(wareHouseChild);
+                        });
+                    }
+                    else
+                    {
+                        allOus.ForEach(ou =>
+                        {
+                            var ouChild = new TreeViewModel
+                            {
+                                Id = ou.Id,
+                                ParentId = 0,
+                                Name = ou.OUName,
+                                Type = "ou"
+                            };
+                            var childWarehouses = warehouses.FindAll(w => w.OUId == ou.Id);
+                            childWarehouses.ForEach(cw =>
+                            {
+                                var wareHouseChild = new TreeViewModel
+                                {
+                                    Id = cw.Id,
+                                    ParentId = current.Id,
+                                    Name = cw.WhName,
+                                    Type = "warehouse"
+                                };
+                                ouChild.Children.Add(wareHouseChild);
+                            });
+                            
+                            current.Children.Add(ouChild);
+                        });
+                    }
                 }
                 else if (depthTag == "area")
                 {
-                    var childWarehouses = warehouses.FindAll(w=>w.OUId==ou.Id);
-                    childWarehouses.ForEach(async (cw) =>
+                    if (rootId > 0)
                     {
-                        var wareHouseChild = new TreeViewModel
+                        var childWarehouses = warehouses.FindAll(w=>w.OUId==current.Id);
+                        childWarehouses.ForEach(async (cw) =>
                         {
-                            Id = cw.Id,
-                            ParentId = ou.Id,
-                            Name = cw.WhName,
-                            Type = "warehouse"
-                        };
-                        var childAreas = areas.FindAll(a=>a.WarehouseId==cw.Id);
-                        childAreas.ForEach(async (ca) =>
-                        {
-                            var areaChild = new TreeViewModel
+                            var wareHouseChild = new TreeViewModel
                             {
-                                Id = ca.Id,
-                                ParentId = cw.Id,
-                                Name = ca.AreaName,
-                                Type = "area"
+                                Id = cw.Id,
+                                ParentId = current.Id,
+                                Name = cw.WhName,
+                                Type = "warehouse"
                             };
-                            wareHouseChild.Children.Add(areaChild);
+                            var childAreas = areas.FindAll(a=>a.WarehouseId==cw.Id);
+                            childAreas.ForEach(async (ca) =>
+                            {
+                                var areaChild = new TreeViewModel
+                                {
+                                    Id = ca.Id,
+                                    ParentId = cw.Id,
+                                    Name = ca.AreaName,
+                                    Type = "area"
+                                };
+                                wareHouseChild.Children.Add(areaChild);
+                            });
+                            current.Children.Add(wareHouseChild);
                         });
-                        current.Children.Add(wareHouseChild);
-                    });
-
+                    }
+                    else
+                    {
+                        allOus.ForEach(ou =>
+                        {
+                            var ouChild = new TreeViewModel
+                            {
+                                Id = ou.Id,
+                                ParentId = 0,
+                                Name = ou.OUName,
+                                Type = "ou"
+                            };
+                            var childWarehouses = warehouses.FindAll(w=>w.OUId==ou.Id);
+                            childWarehouses.ForEach(async (cw) =>
+                            {
+                                var wareHouseChild = new TreeViewModel
+                                {
+                                    Id = cw.Id,
+                                    ParentId = current.Id,
+                                    Name = cw.WhName,
+                                    Type = "warehouse"
+                                };
+                                var childAreas = areas.FindAll(a=>a.WarehouseId==cw.Id);
+                                childAreas.ForEach(async (ca) =>
+                                {
+                                    var areaChild = new TreeViewModel
+                                    {
+                                        Id = ca.Id,
+                                        ParentId = cw.Id,
+                                        Name = ca.AreaName,
+                                        Type = "area"
+                                    };
+                                    wareHouseChild.Children.Add(areaChild);
+                                });
+                                ouChild.Children.Add(wareHouseChild);
+                            });
+                            current.Children.Add(ouChild);
+                        });
+                        
+                    }
                 }
 
                 response.Data = current;

@@ -14,8 +14,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public OU OU { get; set; }
         public int WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? CreateTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public int Status { get; set; }
         public int Type { get; set; }
         public string Memo { get; set; }

@@ -11,8 +11,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public string OrgCode { get; set; }
         public int? OUId { get; set; }
         public OU OU { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? CreateTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public string Memo { get; set; }
 
     }

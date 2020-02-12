@@ -8,7 +8,7 @@ namespace Web.Interfaces
 {
     public interface IOrganizationViewModelService
     {
-        Task<ResponseResultViewModel> GetOrganizations(int? pageIndex,int? itemsPage,int? id, int? pid, string orgName);
+        Task<ResponseResultViewModel> GetOrganizations(int? pageIndex,int? itemsPage,int? id, int? ouId, string orgName);
         
     }
 }

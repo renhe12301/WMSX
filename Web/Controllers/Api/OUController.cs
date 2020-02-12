@@ -27,12 +27,25 @@ namespace Web.Controllers.Api
         /// <param name="id">ou id</param>
         /// <param name="ouName">ou 名称</param>
         /// <param name="ouCode">ou 编码</param>
-        /// <param name="orgId">所属公司id</param>
+        /// <param name="companyName">法人</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOUs(int? pageIndex, int? itemsPage, int? id, string ouName, string ouCode, int? orgId)
+        public async Task<IActionResult> GetOUs(int? pageIndex, int? itemsPage, int? id, string ouName, string ouCode, string companyName)
         {
-            var response = await this._ouViewModelService.GetOUs(pageIndex, itemsPage, id, ouName, ouCode, orgId);
+            var response = await this._ouViewModelService.GetOUs(pageIndex, itemsPage, id, ouName, ouCode, companyName);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 获取业务实体树
+        /// </summary>
+        /// <param name="rootId">业务实体编号</param>
+        /// <param name="depthTag"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetOUTrees(int rootId,string depthTag)
+        {
+            var response = await this._ouViewModelService.GetOUTrees(rootId,depthTag);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

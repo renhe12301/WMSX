@@ -16,7 +16,7 @@ namespace ApplicationCore.Entities.BasicInformation
 
         public int? Col { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         public int Status { get; set; }
         public int InStock { get; set; }
         public int IsTask { get; set; }

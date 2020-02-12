@@ -9,8 +9,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public string SupplierName { get; set; }
         public string SupplierCode { get; set; }
         public string TaxpayerCode { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? CreateTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public string Memo { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities.BasicInformation
        public string PlateCode { get; set; }
 
        public string PlateName { get; set; }
-       public DateTime CreateTime { get; set; }
-       public DateTime EndTime { get; set; }
+       public DateTime? CreateTime { get; set; }
+       public DateTime? EndTime { get; set; }
     }
 }

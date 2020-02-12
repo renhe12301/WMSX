@@ -8,5 +8,8 @@ namespace Web.Interfaces
     public interface ISupplierViewModelService
     {
         Task<ResponseResultViewModel> GetSuppliers(int ?pageIndex, int ?itemsPage,int? id, string supplierName);
+
+        Task<ResponseResultViewModel> GetSupplierSites(int? pageIndex, int? itemsPage, int? id, string supplierName,
+            int? supplierId, int? ouId);
     }
 }

@@ -27,6 +27,8 @@ namespace Infrastructure.Data
         public DbSet<WarehouseMaterial> WarehouseMaterial { get; set; }
         public DbSet<WarehouseTray> WarehouseTray { get; set; }
         public DbSet<InOutTask> InOutTask { get; set; }
+        public DbSet<Supplier> Supplier { get; set; }
+        public DbSet<SupplierSite> SupplierSite { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

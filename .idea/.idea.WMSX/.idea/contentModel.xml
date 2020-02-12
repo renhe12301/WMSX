@@ -26,6 +26,7 @@
             <e p="PhyWarehouse.cs" t="Include" />
             <e p="ReservoirArea.cs" t="Include" />
             <e p="Supplier.cs" t="Include" />
+            <e p="SupplierSite.cs" t="Include" />
             <e p="Warehouse.cs" t="Include" />
           </e>
           <e p="FlowRecord" t="Include">
@@ -127,6 +128,8 @@
           <e p="ReservoirAreaSpecification.cs" t="Include" />
           <e p="RoleMenuSpecification.cs" t="Include" />
           <e p="SupplierPaginatedSpecification.cs" t="Include" />
+          <e p="SupplierSitePaginatedSpecification.cs" t="Include" />
+          <e p="SupplierSIteSpecification.cs" t="Include" />
           <e p="SupplierSpecification.cs" t="Include" />
           <e p="SysConfigSpecification.cs" t="Include" />
           <e p="SysMenuSpecification.cs" t="Include" />
@@ -260,6 +263,7 @@
             <e p="OrganizationViewModel.cs" t="Include" />
             <e p="OUViewModel.cs" t="Include" />
             <e p="ReservoirAreaViewModel.cs" t="Include" />
+            <e p="SupplierSiteViewModel.cs" t="Include" />
             <e p="SupplierViewModel.cs" t="Include" />
             <e p="WarehouseViewModel.cs" t="Include" />
           </e>
@@ -283,6 +287,7 @@
         </e>
         <e p="Views" t="Include" />
         <e p="Web.csproj" t="IncludeRecursive" />
+        <e p="WebServices" t="Include" />
         <e p="wwwroot" t="Include">
           <e p="css" t="Include">
             <e p="site.css" t="Include" />

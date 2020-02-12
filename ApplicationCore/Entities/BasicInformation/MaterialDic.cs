@@ -11,8 +11,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public string Spec { get; set; }
         public string Unit { get; set; }
         public string Img { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? CreateTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public string Memo { get; set; }
         public int? UpLimit { get; set; }
         public int? DownLimit { get; set; }
