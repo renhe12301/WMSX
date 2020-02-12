@@ -52,21 +52,6 @@ namespace Web.Services
             return responseResultViewModel;
         }
 
-        public async Task<ResponseResultViewModel> DelMaterialDic(MaterialDicViewModel materialDicViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._materialDicService.DelMaterialDic(materialDicViewModel.Id);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
-
         public async Task<ResponseResultViewModel> GetMaterialDics(int? pageIndex, int? itemsPage,
                                              int? id, string materialCode, string materialName,
                                              string spec, int? typeId)

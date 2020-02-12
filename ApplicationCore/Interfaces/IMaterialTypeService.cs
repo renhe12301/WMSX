@@ -7,6 +7,13 @@ namespace ApplicationCore.Interfaces
 {
     public interface IMaterialTypeService
     {
-        Task AddMaterialType(MaterialType materialType);
+        Task AddMaterialType(MaterialType materialType,bool unique=false);
+        
+        Task AddMaterialType(List<MaterialType> materialTypes,bool unique=false);
+        
+        Task UpdateMaterialType(MaterialType materialType);
+        
+        Task UpdateMaterialType(List<MaterialType> materialTypes);
+
     }
 }

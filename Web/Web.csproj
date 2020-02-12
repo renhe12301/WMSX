@@ -15,6 +15,7 @@
     <Folder Include="ViewModels\AuthorityManager\" />
     <Folder Include="ViewModels\BasicInformation\" />
     <Folder Include="Views\" />
+    <Folder Include="WebServices" />
     <Folder Include="wwwroot\js\basic-information\" />
     <Folder Include="wwwroot\js\order-manager\" />
     <Folder Include="wwwroot\js\organization-manager\" />

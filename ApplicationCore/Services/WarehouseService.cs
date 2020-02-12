@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
@@ -18,17 +19,25 @@ namespace ApplicationCore.Services
             this._warehouseRepository = warehouseRepository;
         }
 
-        public async Task AddWarehouse(Warehouse warehouse)
+        public async Task AddWarehouse(Warehouse warehouse,bool unique=false)
         {
             Guard.Against.Null(warehouse, nameof(warehouse));
             Guard.Against.Zero(warehouse.Id, nameof(warehouse.Id));
             Guard.Against.NullOrEmpty(warehouse.WhName, nameof(warehouse.WhName));
             Guard.Against.NullOrEmpty(warehouse.WhCode, nameof(warehouse.WhCode));
-            WarehouseSpecification warehouseSpec = new WarehouseSpecification(warehouse.Id, null, null);
-            List<Warehouse> warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-            if (warehouses.Count == 0)
+            if (unique)
+            {
+                WarehouseSpecification warehouseSpec = new WarehouseSpecification(warehouse.Id, null, null);
+                List<Warehouse> warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
+                if (warehouses.Count == 0)
+                    await this._warehouseRepository.AddAsync(warehouse);
+            }
+            else
+            {
                 await this._warehouseRepository.AddAsync(warehouse);
+            }
         }
+        
 
         public async Task Disable(int id)
         {
@@ -51,22 +60,37 @@ namespace ApplicationCore.Services
         public async Task UpdateWarehouse(Warehouse warehouse)
         {
             Guard.Against.Null(warehouse, nameof(warehouse));
-            Guard.Against.Zero(warehouse.Id, nameof(warehouse.Id));
-            Guard.Against.NullOrEmpty(warehouse.WhName, nameof(warehouse.WhName));
-            Guard.Against.NullOrEmpty(warehouse.WhCode, nameof(warehouse.WhCode));
-            var wareHouseSpec = new WarehouseSpecification(warehouse.Id,null,null);
-            var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
-            if (wareHouses.Count > 0)
+            await this._warehouseRepository.UpdateAsync(warehouse);
+        }
+
+        public async Task AddWarehouse(List<Warehouse> warehouses,bool unique=false)
+        {
+            Guard.Against.Null(warehouses, nameof(warehouses));
+            if (unique)
             {
-                var wareHouse = wareHouses[0];
-                wareHouse.Id = warehouse.Id;
-                wareHouse.WhName=warehouse.WhName;
-                wareHouse.OUId = warehouse.OUId;
-                wareHouse.WhCode = warehouse.WhCode;
-                wareHouse.CreateTime = warehouse.CreateTime;
-                wareHouse.EndTime = warehouse.EndTime;
-                await this._warehouseRepository.UpdateAsync(wareHouse);
+                List<Warehouse> adds=new List<Warehouse>();
+                warehouses.ForEach(async (w) =>
+                {
+                    var wareHouseSpec = new WarehouseSpecification(w.Id,null,null);
+                    var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
+                    if (wareHouses.Count > 0)
+                        adds.Add(wareHouses.First());
+                });
+                if (adds.Count > 0)
+                    await this._warehouseRepository.AddAsync(adds);
             }
+            else
+            {
+                await this._warehouseRepository.AddAsync(warehouses);
+            }
+
+           
+        }
+        
+        public async Task UpdateWarehouse(List<Warehouse> warehouses)
+        {
+            Guard.Against.Null(warehouses, nameof(warehouses));
+            await this._warehouseRepository.UpdateAsync(warehouses);
         }
     }
 }

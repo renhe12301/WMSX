@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using ApplicationCore.Entities.BasicInformation;
@@ -21,17 +22,32 @@ namespace ApplicationCore.Services
             this._locationRepository = locationRepository;
         }
 
-        public async Task AddArea(ReservoirArea reservoirArea)
+        public async Task AddArea(ReservoirArea reservoirArea,bool unique=false)
         {
             Guard.Against.Null(reservoirArea, nameof(reservoirArea));
+            Guard.Against.Zero(reservoirArea.Id, nameof(reservoirArea.Id));
             Guard.Against.Zero(reservoirArea.WarehouseId, nameof(reservoirArea.WarehouseId));
             Guard.Against.NullOrEmpty(reservoirArea.AreaCode, nameof(reservoirArea.AreaCode));
-            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null, reservoirArea.AreaCode,
-                null,
-                null, null, null);
-            List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-            if (areas.Count == 0)
+            if (unique)
+            {
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(reservoirArea.Id, null,
+                    null,
+                    null, null, null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                if (areas.Count == 0)
+                    await this._reservoirAreaRepository.AddAsync(reservoirArea);
+            }
+            else
+            {
                 await this._reservoirAreaRepository.AddAsync(reservoirArea);
+            }
+
+        }
+
+        public async Task UpdateArea(List<ReservoirArea> reservoirAreas)
+        {
+            Guard.Against.Null(reservoirAreas, nameof(reservoirAreas));
+            await this._reservoirAreaRepository.UpdateAsync(reservoirAreas);
         }
 
         public async Task AssignLocation(int areaId, List<int> locationIds)
@@ -55,21 +71,30 @@ namespace ApplicationCore.Services
         public async Task UpdateArea(ReservoirArea reservoirArea)
         {
             Guard.Against.Null(reservoirArea, nameof(reservoirArea));
-            Guard.Against.Zero(reservoirArea.Id, nameof(reservoirArea.Id));
-            Guard.Against.Zero(reservoirArea.WarehouseId, nameof(reservoirArea.WarehouseId));
-            Guard.Against.NullOrEmpty(reservoirArea.AreaCode, nameof(reservoirArea.AreaCode));
-            var areaSpec = new ReservoirAreaSpecification(reservoirArea.Id,null,null,null,null, null);
-            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            if (areas.Count > 0)
+            await this._reservoirAreaRepository.UpdateAsync(reservoirArea);
+        }
+
+        public async Task AddArea(List<ReservoirArea> reservoirAreas, bool unique = false)
+        {
+            Guard.Against.NullOrEmpty(reservoirAreas,nameof(reservoirAreas));
+            if (unique)
             {
-                var area = areas[0];
-                area.AreaName = reservoirArea.AreaName;
-                area.AreaName = reservoirArea.AreaName;
-                area.Status = reservoirArea.Status;
-                area.CreateTime = reservoirArea.CreateTime;
-                area.EndTime = reservoirArea.EndTime;
-                area.WarehouseId = reservoirArea.WarehouseId;
-                await this._reservoirAreaRepository.UpdateAsync(area);
+                List<ReservoirArea> adds=new List<ReservoirArea>();
+                reservoirAreas.ForEach(async (area) =>
+                {
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(area.Id, null,
+                        null,
+                        null, null, null);
+                    List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                    if(areas.Count==0)
+                        adds.Add(area);
+                });
+                if (adds.Count > 0)
+                    await this._reservoirAreaRepository.AddAsync(adds);
+            }
+            else
+            {
+                await this._reservoirAreaRepository.AddAsync(reservoirAreas);
             }
         }
     }

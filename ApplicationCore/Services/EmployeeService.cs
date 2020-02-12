@@ -7,6 +7,7 @@ using Ardalis.GuardClauses;
 using ApplicationCore.Specifications;
 using ApplicationCore.Misc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApplicationCore.Services
 {
@@ -22,36 +23,29 @@ namespace ApplicationCore.Services
             this._employeeRoleRepository = employeeRoleRepository;
         }
 
-        public async Task AddEmployee(Employee employee)
+        public async Task AddEmployee(Employee employee,bool unique=false)
         {
             Guard.Against.Null(employee, nameof(employee));
-            await this._employeeRepository.AddAsync(employee);
+            Guard.Against.Zero(employee.Id, nameof(employee.Id));
+            Guard.Against.NullOrEmpty(employee.UserCode,nameof(employee.UserCode));
+            Guard.Against.NullOrEmpty(employee.UserName,nameof(employee.UserName));
+            if (unique)
+            {
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(employee.Id, null, null);
+                var employees = await this._employeeRepository.ListAsync(employeeSpec);
+                if (employees.Count == 0)
+                    await this._employeeRepository.AddAsync(employee);
+            }
+            else
+            {
+                await this._employeeRepository.AddAsync(employee);
+            }
         }
 
         public async Task UpdateEmployee(Employee employee)
         {
             Guard.Against.Null(employee, nameof(employee));
-            Guard.Against.Zero(employee.Id, nameof(employee.Id));
-            EmployeeSpecification employeeSpec=new EmployeeSpecification(null,null,employee.LoginName);
-            var employees = await this._employeeRepository.ListAsync(employeeSpec);
-            if (employees.Count > 0)
-            {
-                if (employees[0].Id != employee.Id)
-                    throw new Exception(string.Format("登录名[{0}],已存在！", employee.LoginName));
-            }
-            employeeSpec=new EmployeeSpecification(employee.Id,null,null);
-            employees = await this._employeeRepository.ListAsync(employeeSpec);
-            Guard.Against.NullOrEmpty(employees,nameof(employees));
-            var updEmployee = employees[0];
-            updEmployee.Address = employee.Address;
-            updEmployee.Email = employee.Email;
-            updEmployee.Img = employee.Img;
-            updEmployee.Memo = employee.Memo;
-            updEmployee.Sex = employee.Sex;
-            updEmployee.Telephone = employee.Telephone;
-            updEmployee.LoginName = employee.LoginName;
-            updEmployee.LoginPwd = employee.LoginPwd;
-            await this._employeeRepository.UpdateAsync(updEmployee);
+            await  this._employeeRepository.UpdateAsync(employee);
         }
 
         public async Task AssignRole(int employeeId,List<int> roleIds)
@@ -106,7 +100,36 @@ namespace ApplicationCore.Services
             if (updEmployees.Count > 0)
                 await this._employeeRepository.UpdateAsync(updEmployees);
         }
+        
+        
+        public async Task AddEmployee(List<Employee> employees,bool unique=false)
+        {
+            Guard.Against.Null(employees, nameof(employees));
+            Guard.Against.NullOrEmpty(employees,nameof(employees));
+            if (unique)
+            {
+                List<Employee> adds=new List<Employee>();
+                employees.ForEach(async(em) =>
+                {
+                    EmployeeSpecification employeeSpec=new EmployeeSpecification(em.Id,null,null);
+                    var employees = await this._employeeRepository.ListAsync(employeeSpec);
+                    if(employees.Count>0)
+                        adds.Add(employees.First());
+                });
+                if (adds.Count > 0)
+                    await this._employeeRepository.AddAsync(adds);
+            }
+            else
+            {
+                await this._employeeRepository.AddAsync(employees);
+            }
+        }
 
+        public async Task UpdateEmployee(List<Employee> employees)
+        {
+            Guard.Against.Null(employees, nameof(employees));
+            await this._employeeRepository.UpdateAsync(employees);
+        }
         
     }
 }
