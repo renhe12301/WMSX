@@ -99,6 +99,7 @@
         </e>
         <e p="Specifications" t="Include">
           <e p="BaseSpecification.cs" t="Include" />
+          <e p="EmployeeIdSetSpecification.cs" t="Include" />
           <e p="EmployeeOrgPaginatedSpecification.cs" t="Include" />
           <e p="EmployeeOrgSpecification.cs" t="Include" />
           <e p="EmployeePaginatedSpecification.cs" t="Include" />
@@ -111,6 +112,7 @@
           <e p="InOutTaskSpecification.cs" t="Include" />
           <e p="LocationPaginatedSpecification.cs" t="Include" />
           <e p="LocationSpecification.cs" t="Include" />
+          <e p="MaterialDicIdSetSpecification.cs" t="Include" />
           <e p="MaterialDicPaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicSpecification.cs" t="Include" />
           <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
@@ -120,14 +122,21 @@
           <e p="OrderPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowSpecification.cs" t="Include" />
           <e p="OrderSpecification.cs" t="Include" />
+          <e p="OrganizationIdSetSpecification.cs" t="Include" />
           <e p="OrganizationPaginatedSpecification.cs" t="Include" />
           <e p="OrganizationSpecification.cs" t="Include" />
+          <e p="OUIdSetSpecification.cs" t="Include" />
           <e p="OUPaginatedSpecification.cs" t="Include" />
           <e p="OUSpecification.cs" t="Include" />
+          <e p="PhyWarehousePaginatedSpecification.cs" t="Include" />
+          <e p="PhyWarehouseSpecification.cs" t="Include" />
+          <e p="ReservoirAreaIdSetSpecification.cs" t="Include" />
           <e p="ReservoirAreaPaginatedSpecification.cs" t="Include" />
           <e p="ReservoirAreaSpecification.cs" t="Include" />
           <e p="RoleMenuSpecification.cs" t="Include" />
+          <e p="SupplierIdSetSpecification.cs" t="Include" />
           <e p="SupplierPaginatedSpecification.cs" t="Include" />
+          <e p="SupplierSiteIdSetSpecification.cs" t="Include" />
           <e p="SupplierSitePaginatedSpecification.cs" t="Include" />
           <e p="SupplierSIteSpecification.cs" t="Include" />
           <e p="SupplierSpecification.cs" t="Include" />
@@ -135,6 +144,7 @@
           <e p="SysMenuSpecification.cs" t="Include" />
           <e p="SysRolePaginatedSpecification.cs" t="Include" />
           <e p="SysRoleSpecification.cs" t="Include" />
+          <e p="WarehouseIdSetSpecification.cs" t="Include" />
           <e p="WarehouseMaterialPaginatedSpecification.cs" t="Include" />
           <e p="WarehouseMaterialSpecification.cs" t="Include" />
           <e p="WarehousePaginatedSpecification.cs" t="Include" />
@@ -183,6 +193,7 @@
             <e p="OrderController.cs" t="Include" />
             <e p="OrganizationController.cs" t="Include" />
             <e p="OUController.cs" t="Include" />
+            <e p="PhyWarehouseController.cs" t="Include" />
             <e p="ReservoirAreaController.cs" t="Include" />
             <e p="SupplierController.cs" t="Include" />
             <e p="SysMenuController.cs" t="Include" />
@@ -202,6 +213,7 @@
           <e p="IOrderViewModelService.cs" t="Include" />
           <e p="IOrganizationViewModelService.cs" t="Include" />
           <e p="IOUViewModelService.cs" t="Include" />
+          <e p="IPhyWarehouseViewModelService.cs" t="Include" />
           <e p="IReservoirAreaViewModelService.cs" t="Include" />
           <e p="ISupplierViewModelService.cs" t="Include" />
           <e p="ISysMenuViewModelService.cs" t="Include" />
@@ -239,6 +251,7 @@
           <e p="OrderViewModelService.cs" t="Include" />
           <e p="OrganizationViewModelService.cs" t="Include" />
           <e p="OUViewModelService.cs" t="Include" />
+          <e p="PhyWarehouseViewModelService.cs" t="Include" />
           <e p="ReservoirAreaViewModelService.cs" t="Include" />
           <e p="SupplierViewModelService.cs" t="Include" />
           <e p="SysMenuViewModelService.cs" t="Include" />
@@ -262,6 +275,7 @@
             <e p="MaterialTypeViewModel.cs" t="Include" />
             <e p="OrganizationViewModel.cs" t="Include" />
             <e p="OUViewModel.cs" t="Include" />
+            <e p="PhyWarehouseViewModel.cs" t="Include" />
             <e p="ReservoirAreaViewModel.cs" t="Include" />
             <e p="SupplierSiteViewModel.cs" t="Include" />
             <e p="SupplierViewModel.cs" t="Include" />

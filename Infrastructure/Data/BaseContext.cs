@@ -29,6 +29,7 @@ namespace Infrastructure.Data
         public DbSet<InOutTask> InOutTask { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<SupplierSite> SupplierSite { get; set; }
+        public DbSet<PhyWarehouse> PhyWarehouse { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

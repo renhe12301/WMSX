@@ -76,7 +76,7 @@ namespace Web
             services.AddScoped(typeof(IMaterialTypeService), typeof(MaterialTypeService));
             services.AddScoped(typeof(IInOutRecordService), typeof(InOutRecordService));
             services.AddScoped(typeof(ISysMenuService), typeof(SysMenuService));
-
+         
             services.AddScoped(typeof(IOrderViewModelService), typeof(InOrderViewModelService));
             services.AddScoped(typeof(IEmployeeViewModelService), typeof(EmployeeViewModelService));
             services.AddScoped(typeof(IInOutTaskViewModelService), typeof(InOutTaskViewModelService));
@@ -93,6 +93,7 @@ namespace Web
             services.AddScoped(typeof(IInOutRecordViewModelService), typeof(InOutRecordViewModelService));
             services.AddScoped(typeof(IOUViewModelService), typeof(OUViewModelService));
             services.AddScoped(typeof(ISysMenuViewModelService), typeof(SysMenuViewModelService));
+            services.AddScoped(typeof(IPhyWarehouseViewModelService), typeof(PhyWarehouseViewModelService));
 
             services.AddScoped(typeof(IJobFactory), typeof(IOCJobFactory));
 

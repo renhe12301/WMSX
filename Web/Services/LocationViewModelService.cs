@@ -135,12 +135,12 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetMaxFloorItemCol(int orgId)
+        public async Task<ResponseResultViewModel> GetMaxFloorItemCol(int phyId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,phyId,null,
                     null,null,null,null,null,null,null,null);
                 var ls = await this._locationRepository.ListAsync(locationSpec);
                 List<int> fics=new List<int>
