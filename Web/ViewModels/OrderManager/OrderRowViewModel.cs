@@ -13,8 +13,7 @@ namespace Web.ViewModels.OrderManager
 
         public int MaterialDicId { get; set; }
         public string MaterialDicName { get; set; }
-
-       
+        
         public string CreateTime { get; set; }
         public string FinishTime { get; set; }
         public int PreCount { get; set; }

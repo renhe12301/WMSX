@@ -106,8 +106,10 @@
         <e p="Specifications" t="Include">
           <e p="BaseSpecification.cs" t="Include" />
           <e p="EBSProjectIdSetSpecification.cs" t="Include" />
+          <e p="EBSProjectPaginatedSpecification.cs" t="Include" />
           <e p="EBSProjectSpecification.cs" t="Include" />
           <e p="EBSTaskIdSetSpecification.cs" t="Include" />
+          <e p="EBSTaskPaginatedSpecification.cs" t="Include" />
           <e p="EBSTaskSpecification.cs" t="Include" />
           <e p="EmployeeIdSetSpecification.cs" t="Include" />
           <e p="EmployeeOrgPaginatedSpecification.cs" t="Include" />
@@ -193,6 +195,8 @@
         <e p="Controllers" t="Include">
           <e p="Api" t="Include">
             <e p="BaseApiController.cs" t="Include" />
+            <e p="EBSProjectController.cs" t="Include" />
+            <e p="EBSTaskController.cs" t="Include" />
             <e p="EmployeeController.cs" t="Include" />
             <e p="InOutRecordController.cs" t="Include" />
             <e p="InOutTaskController.cs" t="Include" />
@@ -213,6 +217,8 @@
           </e>
         </e>
         <e p="Interfaces" t="Include">
+          <e p="IEBSProjectViewModelService.cs" t="Include" />
+          <e p="IEBSTaskViewModelService.cs" t="Include" />
           <e p="IEmployeeViewModelService.cs" t="Include" />
           <e p="IInOutRecordViewModelService.cs" t="Include" />
           <e p="IInOutTaskViewModelService.cs" t="Include" />
@@ -252,12 +258,15 @@
         </e>
         <e p="quartz_jobs.xml" t="Include" />
         <e p="Services" t="Include">
+          <e p="EBSProjectViewModelservice.cs" t="Include" />
+          <e p="EBSTaskViewModelService.cs" t="Include" />
           <e p="EmployeeViewModelService.cs" t="Include" />
           <e p="InOutRecordViewModelService.cs" t="Include" />
           <e p="InOutTaskViewModelService.cs" t="Include" />
           <e p="LocationViewModelService.cs" t="Include" />
           <e p="MaterialDicViewModelService.cs" t="Include" />
           <e p="MaterialTypeViewModelService.cs" t="Include" />
+          <e p="OrderRowViewModelService.cs" t="Include" />
           <e p="OrderViewModelService.cs" t="Include" />
           <e p="OrganizationViewModelService.cs" t="Include" />
           <e p="OUViewModelService.cs" t="Include" />
@@ -279,6 +288,8 @@
             <e p="SysRoleViewModel.cs" t="Include" />
           </e>
           <e p="BasicInformation" t="Include">
+            <e p="EBSProjectViewModel.cs" t="Include" />
+            <e p="EBSTaskViewModel.cs" t="Include" />
             <e p="EmployeeViewModel.cs" t="Include" />
             <e p="LocationViewModel.cs" t="Include" />
             <e p="MaterialDicViewModel.cs" t="Include" />

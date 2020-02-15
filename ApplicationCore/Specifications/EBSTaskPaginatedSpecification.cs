@@ -3,9 +3,9 @@ using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Specifications
 {
-    public class EBSTaskSpecification:BaseSpecification<EBSTask>
+    public class EBSTaskPaginatedSpecification:BaseSpecification<EBSTask>
     {
-        public EBSTaskSpecification(int? id,string taskName,int? projectId, 
+        public EBSTaskPaginatedSpecification(int skip,int take,int? id,string taskName,int? projectId, 
                 string sCreateTime, string eCreateTime,
                 string sEndTime, string eEndTime)
             : base(b =>(!id.HasValue || b.Id == id)&&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                        (sEndTime == null || b.EndTime >= DateTime.Parse(sEndTime)) &&
                        (eEndTime == null || b.EndTime <= DateTime.Parse(eEndTime)))
         {
+            ApplyPaging(skip,take);
             AddInclude(b=>b.EBSProject);
         }
     }

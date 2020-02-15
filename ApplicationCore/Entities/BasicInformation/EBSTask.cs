@@ -8,9 +8,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public string TaskName { get; set; }
         public string Summary { get; set; }
         public string TaskLevel { get; set; }
-        public int ProjectId { get; set; }
         public int EBSProjectId { get; set; }
-        public EBSProject EbsProject { get; set; }
+        public EBSProject EBSProject { get; set; }
         public DateTime? CreateTime { get; set; }
         public DateTime? EndTime { get; set; }
     }

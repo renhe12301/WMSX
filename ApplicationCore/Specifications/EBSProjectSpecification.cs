@@ -15,7 +15,7 @@ namespace ApplicationCore.Specifications
                        (sEndTime == null || b.EndTime >= DateTime.Parse(sEndTime)) &&
                        (eEndTime == null || b.EndTime <= DateTime.Parse(eEndTime)))
         {
-           
+            AddInclude(b=>b.OU);
         }
     }
 }

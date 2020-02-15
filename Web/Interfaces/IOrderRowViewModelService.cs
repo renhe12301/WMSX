@@ -5,6 +5,7 @@ namespace Web.Interfaces
 {
     public interface IOrderRowViewModelService
     {
-        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int?id, int? orderId, string status);
+        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId, string status,
+                                       string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
     }
 }

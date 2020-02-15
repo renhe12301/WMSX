@@ -3,20 +3,20 @@ using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Specifications
 {
-    public class EBSTaskSpecification:BaseSpecification<EBSTask>
+    public class EBSProjectPaginatedSpecification:BaseSpecification<EBSProject>
     {
-        public EBSTaskSpecification(int? id,string taskName,int? projectId, 
+        public EBSProjectPaginatedSpecification(int skip,int take,int? id,string projectName,int? ouId, 
                 string sCreateTime, string eCreateTime,
                 string sEndTime, string eEndTime)
             : base(b =>(!id.HasValue || b.Id == id)&&
-                       (taskName == null || b.TaskName.Contains(taskName)) &&
-                       (projectId == null || b.EBSProjectId==projectId) &&
+                       (projectName == null || b.ProjectName.Contains(projectName)) &&
                        (sCreateTime == null || b.CreateTime >= DateTime.Parse(sCreateTime)) &&
                        (eCreateTime == null || b.CreateTime <= DateTime.Parse(eCreateTime)) &&
                        (sEndTime == null || b.EndTime >= DateTime.Parse(sEndTime)) &&
                        (eEndTime == null || b.EndTime <= DateTime.Parse(eEndTime)))
         {
-            AddInclude(b=>b.EBSProject);
+           ApplyPaging(skip,take);
+           AddInclude(b=>b.OU);
         }
     }
 }

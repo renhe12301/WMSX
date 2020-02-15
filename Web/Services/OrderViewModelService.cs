@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Web.Services
 {
-    public class InOrderViewModelService:IOrderViewModelService
+    public class OrderViewModelService:IOrderViewModelService
     {
 
         private readonly IOrderService _orderService;
@@ -23,7 +23,7 @@ namespace Web.Services
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly IAsyncRepository<Warehouse> _warehouseRepository;
 
-        public InOrderViewModelService(IOrderService orderService,
+        public OrderViewModelService(IOrderService orderService,
                                        IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
                                        IAsyncRepository<Warehouse> warehouseRepository)
@@ -43,23 +43,23 @@ namespace Web.Services
             try
             {
                 BaseSpecification<Order> spec = null;
-                List<int> orderProgress = null;
+                List<int> orderStatuss = null;
                 if (!string.IsNullOrEmpty(status))
                 {
-                    orderProgress = status.Split(new char[]{','}, 
+                    orderStatuss = status.Split(new char[]{','}, 
                                                   StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
+                        orderStatuss, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
                     spec = new OrderSpecification(id, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
+                        orderStatuss, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
                         sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orders = await this._orderRepository.ListAsync(spec);
@@ -104,7 +104,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
+                        orderStatuss, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
                         sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderViewModels;
