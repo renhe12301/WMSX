@@ -506,7 +506,7 @@
             仓库信息操作API
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
         <member name="T:Web.SlugifyParameterTransformer">
             <summary>
             转换url地址

@@ -54,15 +54,18 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
-            LocationSpecification locationSpec = new LocationSpecification(null,null,null,
-                null,null, null, null, null,  null, null,null,
-                 null,null);
-            var locations = await this._locationRepository.ListAsync(locationSpec);
+            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
+                null, null, null, null);
+            var ares = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+            Guard.Against.NullOrEmpty(ares,nameof(ares));
+            var locations = await this._locationRepository.ListAllAsync();
             List<Location> updLocations=new List<Location>();
             locationIds.ForEach(async (id) =>
             {
                 var location = locations.Find(l=>l.Id==id);
                 location.ReservoirAreaId = areaId;
+                location.OUId = ares[0].OUId;
+                location.WarehouseId = ares[0].WarehouseId;
                 updLocations.Add(location);
             });
             await this._locationRepository.UpdateAsync(updLocations);

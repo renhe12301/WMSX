@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     {
         public MaterialTypeSpecification(int? id,int? parentId,string typeName)
             :base(b=>(!id.HasValue||b.Id==id)&&
-                  (typeName==null||b.TypeName==typeName)&&
+                  (typeName==null||b.TypeName.Contains(typeName))&&
                   (!parentId.HasValue||b.ParentId==parentId))
         {
             

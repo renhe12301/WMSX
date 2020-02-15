@@ -127,7 +127,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyAwaitInApply(warehouseTrayViewModel.Code,
+                await this._inOutTaskService.EmptyAwaitInApply(warehouseTrayViewModel.TrayCode,
                                              warehouseTrayViewModel.WarehouseId);
             }
             catch (Exception ex)

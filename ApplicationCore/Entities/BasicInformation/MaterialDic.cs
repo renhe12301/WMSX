@@ -21,9 +21,9 @@ namespace ApplicationCore.Entities.BasicInformation
         public Warehouse Warehouse { get; set; }
 
         public string Brand { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
-        public int IsStock { get; set; }
+        public int? IsStock { get; set; }
 
         public int? MaterialTypeId { get; set; }
         public MaterialType MaterialType { get; set; }

@@ -7,8 +7,8 @@ namespace Web.Interfaces
 {
     public interface IWarehouseTrayViewModelService
     {
-        Task<ResponseResultViewModel> GetTrays(int? pageIdex, int? itemsPage,
-            int? includeDetail, int? id, string trayCode, string rangeMaterialCount,
+        Task<ResponseResultViewModel> GetTrays(int? pageIndex, int? itemsPage,
+             int? id, string trayCode, string rangeMaterialCount,
             int? orderId, int? orderRowId, int? carrier,
             string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId);
 
