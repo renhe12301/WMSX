@@ -25,6 +25,13 @@ namespace ApplicationCore.Misc
         采购入库 = 0,
         领料出库 = 1
     }
+    
+    public enum ORDER_STATUS
+    {
+        待处理=0,
+        执行中=1,
+        完成=2
+    }
 
     public enum AREA_STATUS
     {

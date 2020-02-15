@@ -16,6 +16,8 @@
           </e>
           <e p="BaseEntity.cs" t="Include" />
           <e p="BasicInformation" t="Include">
+            <e p="EBSProject.cs" t="Include" />
+            <e p="EBSTask.cs" t="Include" />
             <e p="Employee.cs" t="Include" />
             <e p="EmployeeOrg.cs" t="Include" />
             <e p="Location.cs" t="Include" />
@@ -52,6 +54,8 @@
         <e p="Interfaces" t="Include">
           <e p="IAppLogger.cs" t="Include" />
           <e p="IAsyncRepository.cs" t="Include" />
+          <e p="IEBSProjectService.cs" t="Include" />
+          <e p="IEBSTaskService.cs" t="Include" />
           <e p="IEmployeeService.cs" t="Include" />
           <e p="IInOutRecordService.cs" t="Include" />
           <e p="IInOutTaskService.cs" t="Include" />
@@ -82,6 +86,8 @@
           </e>
         </e>
         <e p="Services" t="Include">
+          <e p="EBSProjectServicecs.cs" t="Include" />
+          <e p="EBSTaskServicecs.cs" t="Include" />
           <e p="EmployeeService.cs" t="Include" />
           <e p="InOutRecordService.cs" t="Include" />
           <e p="InOutTaskService.cs" t="Include" />
@@ -99,6 +105,10 @@
         </e>
         <e p="Specifications" t="Include">
           <e p="BaseSpecification.cs" t="Include" />
+          <e p="EBSProjectIdSetSpecification.cs" t="Include" />
+          <e p="EBSProjectSpecification.cs" t="Include" />
+          <e p="EBSTaskIdSetSpecification.cs" t="Include" />
+          <e p="EBSTaskSpecification.cs" t="Include" />
           <e p="EmployeeIdSetSpecification.cs" t="Include" />
           <e p="EmployeeOrgPaginatedSpecification.cs" t="Include" />
           <e p="EmployeeOrgSpecification.cs" t="Include" />
@@ -117,9 +127,8 @@
           <e p="MaterialDicSpecification.cs" t="Include" />
           <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
           <e p="MaterialTypeSpecification.cs" t="Include" />
-          <e p="OrderDetailSpecification.cs" t="Include" />
-          <e p="OrderPaginatedDetailSpecification.cs" t="Include" />
           <e p="OrderPaginatedSpecification.cs" t="Include" />
+          <e p="OrderRowPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowSpecification.cs" t="Include" />
           <e p="OrderSpecification.cs" t="Include" />
           <e p="OrganizationIdSetSpecification.cs" t="Include" />
@@ -210,6 +219,7 @@
           <e p="ILocationViewModelService.cs" t="Include" />
           <e p="IMaterialDicViewModelService.cs" t="Include" />
           <e p="IMaterialTypeViewModelService.cs" t="Include" />
+          <e p="IOrderRowViewModelService.cs" t="Include" />
           <e p="IOrderViewModelService.cs" t="Include" />
           <e p="IOrganizationViewModelService.cs" t="Include" />
           <e p="IOUViewModelService.cs" t="Include" />

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using ApplicationCore.Entities.OrderManager;
 namespace ApplicationCore.Specifications
 {
-    public class OrderRowSpecification: BaseSpecification<OrderRow>
+    public class OrderRowPaginatedSpecification: BaseSpecification<OrderRow>
     {
-        public OrderRowSpecification(int? id,int? orderId,
+        public OrderRowPaginatedSpecification(int skip,int take,int? id,int? orderId,
              List<int> status,string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                   (sFinishTime == null || b.FinishTime >= DateTime.Parse(sFinishTime)) &&
                   (eFinishTime == null || b.FinishTime <= DateTime.Parse(eFinishTime)))
         {
+            ApplyPaging(skip,take);
             AddInclude(b => b.Order);
         }
     }

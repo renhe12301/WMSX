@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Entities.OrderManager;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels.OrderManager;
 
@@ -29,12 +31,14 @@ namespace Web.Controllers.Api
         /// </summary>
         /// <param name="pageIndex">当前页索引</param>
         /// <param name="itemsPage">一页显示条数</param>
-        /// <param name="includeDetail">是否包含订单物料明细</param>
+        /// <param name="id">订单id</param>
         /// <param name="orderNumber">订单编号</param>
-        /// <param name="orderTypeId">订单类型编号</param>
-        /// <param name="progressRange">订单进度范围</param>
+        /// <param name="orderTypeId">订单类型id</param>
+        /// <param name="status">订单状态</param>
         /// <param name="applyUserCode">申请人编码</param>
         /// <param name="approveUserCode">审批人编码</param>
+        /// <param name="employeeId">经办人编号</param>
+        /// <param name="employeeName">经办人名称</param>
         /// <param name="sApplyTime">申请开始时间</param>
         /// <param name="eApplyTime">申请结束时间</param>
         /// <param name="sApproveTime">审批开始时间</param>
@@ -45,18 +49,18 @@ namespace Web.Controllers.Api
         /// <param name="eFinishTime">完成结束时间</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,int? includeDetail,
-                     string orderNumber, int? orderTypeId,
-                     string progressRange, string applyUserCode, string approveUserCode,
-                     string sApplyTime, string eApplyTime,
+        public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
+                     int?id,string orderNumber, int? orderTypeId,
+                     string status, string applyUserCode, string approveUserCode,
+                     int?employeeId,string employeeName,string sApplyTime, string eApplyTime,
                      string sApproveTime, string eApproveTime,
                      string sCreateTime, string eCreateTime,
                      string sFinishTime, string eFinishTime)
         {
-            var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,includeDetail,orderNumber,
-                orderTypeId, progressRange, applyUserCode, approveUserCode, sApplyTime,
+            var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
+                orderTypeId, status, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime,
                 eApplyTime, sApproveTime, eApproveTime,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
 
@@ -69,22 +73,21 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> SortingOrder2Area(OrderRowViewModel orderRowViewModel)
         {
             var response = await this._orderViewModelService.SortingOrder2Area(orderRowViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
-
+        
         /// <summary>
         /// 创建订单
         /// </summary>
-        /// <param name="orderViewModel">订单JSON对象</param>
+        /// <param name="orderViewModel"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderViewModel orderViewModel)
         {
             var response = await this._orderViewModelService.CreateOrder(orderViewModel);
-            return Ok(response);
+            return Content(JsonConvert.SerializeObject(response));
         }
-
-
+        
 
     }
 

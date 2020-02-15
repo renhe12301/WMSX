@@ -67,6 +67,11 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public MaterialDic MaterialDic { get; set; }
 
+        /// <summary>
+        /// 订单行状态
+        /// </summary>
+        public int Status { get; set; }
+
 
     }
 }

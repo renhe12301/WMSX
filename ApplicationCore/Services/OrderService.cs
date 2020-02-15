@@ -67,12 +67,13 @@ namespace ApplicationCore.Services
             if (trayCode.Split('#').Length < 2)
                 throw new Exception("托盘编码不合法,无法分拣!");
             var orderSpec = new OrderSpecification(orderId, null,null, null, null,
-                null, null, null, null, null, null,null,null,null);
+                null, null,null,null, null, null, null, 
+                null,null,null,null);
             var orders = await this._orderRepository.ListAsync(orderSpec);
            
             Guard.Against.NullOrEmpty(orders, nameof(orders));
             Order order = orders[0];
-            var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null, null);
+            var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null);
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
             Guard.Against.NullOrEmpty(orderRows, nameof(orderRows));
             OrderRow orderRow = orderRows[0];

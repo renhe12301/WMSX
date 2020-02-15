@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.ViewModels;
@@ -32,70 +33,10 @@ namespace Web.Services
             this._areaRepository = areaRepository;
             this._warehouseRepository = warehouseRepository;
         }
-
-        async Task<ResponseResultViewModel> GetOrderList(int includeDetail,BaseSpecification<Order> spec)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                var orders = await this._orderRepository.ListAsync(spec);
-                List<OrderViewModel> orderViewModels = new List<OrderViewModel>();
-                orders.ForEach(order =>
-                {
-                    OrderViewModel ovm = new OrderViewModel
-                    {
-                        Id = order.Id,
-                        OrderNumber = order.OrderNumber,
-                        OrderType = Enum.GetName(typeof(ORDER_TYPE), order.OrderTypeId),
-                        ApplyUserCode = order.ApplyUserCode,
-                        ApproveUserCode = order.ApproveUserCode,
-                        ApplyTime = order.ApplyTime.ToString(),
-                        ApproveTime = order.ApproveTime.ToString(),
-                        CallingParty = order.CallingParty,
-                        CreateTime=order.CreateTime.ToString(),
-                        FinishTime=order.FinishTime.ToString(),
-                        Progress = order.Progress
-                    };
-                    if (includeDetail > 0)
-                    {
-                        List<OrderRowViewModel> orderRowViewModels = new List<OrderRowViewModel>();
-                        order.OrderRow.ForEach(om =>
-                        {
-                            var orderRowViewModel = new OrderRowViewModel
-                            {
-                                OrderId = order.Id,
-                                PreCount = om.PreCount,
-                                CreateTime = om.CreateTime.ToString(),
-                                FinishTime = om.FinishTime.ToString(),
-                                Progress = om.Progress,
-                                RealityCount=om.RealityCount,
-                                ReservoirAreaName=om.ReservoirArea.AreaName,
-                                Sorting = om.Sorting,
-                                Id = om.Id
-
-                            };
-                            orderRowViewModels.Add(orderRowViewModel);
-                        });
-                        ovm.OrderRows = orderRowViewModels;
-                    }
-                    orderViewModels.Add(ovm);
-                });
-                response.Data = orderViewModels;
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-      
-
+        
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
-            int? includeDetail,string orderNumber,
-            int? orderTypeId,string progressRange, string applyUserCode, string approveUserCode,
-            string sApplyTime, string eApplyTime, string sApproveTime,
+            int?id,string orderNumber, int? orderTypeId,string status, string applyUserCode, string approveUserCode,
+            int? employeeId,string employeeName,string sApplyTime, string eApplyTime, string sApproveTime,
             string eApproveTime,string sCreateTime,string eCreateTime,string sFinishTime,string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -103,46 +44,78 @@ namespace Web.Services
             {
                 BaseSpecification<Order> spec = null;
                 List<int> orderProgress = null;
-                if (!string.IsNullOrEmpty(progressRange))
+                if (!string.IsNullOrEmpty(status))
                 {
-                    orderProgress = progressRange.Split(new char[]{
-               ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+                    orderProgress = status.Split(new char[]{','}, 
+                                                  StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
-                if (includeDetail.HasValue&&includeDetail > 0)
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
-                    {
-                        spec = new OrderPaginatedDetailSpecification(pageIndex.Value,itemsPage.Value,null, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
-                          sCreateTime, eCreateTime, sFinishTime, eFinishTime);
-                    }
-                    else
-                    {
-                        spec = new OrderDetailSpecification(null, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
-                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
-                    }
-                   
+                    spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber, orderTypeId,
+                        orderProgress, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
+                        sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
-                    if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
-                    {
-                        spec = new OrderPaginatedSpecification(pageIndex.Value, itemsPage.Value, null, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
-                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
-                    }
-                    else
-                    {
-                        spec = new OrderSpecification(null, orderNumber, orderTypeId,
-                        orderProgress, applyUserCode, approveUserCode, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
-                        sCreateTime,eCreateTime,sFinishTime,eFinishTime);
-                    }
+                    spec = new OrderSpecification(id, orderNumber, orderTypeId,
+                        orderProgress, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
+                        sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
+                var orders = await this._orderRepository.ListAsync(spec);
+                List<OrderViewModel> orderViewModels = new List<OrderViewModel>();
 
-                var result = await GetOrderList(includeDetail.HasValue?includeDetail.Value:0,spec);
-                response.Data = result;
+                orders.ForEach(e =>
+                {
+                    OrderViewModel orderViewModel = new OrderViewModel
+                    {
+                        Id = e.Id,
+                        OrderNumber = e.OrderNumber,
+                        OrderType = e.OrderType?.TypeName,
+                        OrderTypeId = e.OrderTypeId,
+                        ApplyUserCode = e.ApplyUserCode,
+                        ApproveUserCode = e.ApproveUserCode,
+                        ApplyTime = e.ApplyTime?.ToString(),
+                        ApproveTime = e.ApproveTime?.ToString(),
+                        CallingParty = e.CallingParty,
+                        Progress = e.Progress,
+                        Memo = e.Memo,
+                        CreateTime = e.CreateTime?.ToString(),
+                        FinishTime = e.FinishTime?.ToString(),
+                        WarehouseId = e.WarehouseId,
+                        WarehouseName = e.Warehouse?.WhName,
+                        OUName = e.OU?.OUName,
+                        OUId = e.OUId,
+                        EBSProjectId = e.EBSProjectId,
+                        ProjectName = e.EBSProject?.ProjectName,
+                        SupplierId = e.SupplierId,
+                        SupplierName = e.Supplier?.SupplierName,
+                        SupplierSiteId = e.SupplierSiteId,
+                        SupplierSiteName = e.SupplierSite?.SiteName,
+                        Currency = e.Currency,
+                        TotalAmount = e.TotalAmount,
+                        Status = e.Status,
+                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
+                        EmployeeId = e.EmployeeId,
+                        EmployeeName = e.Employee?.UserName
+                    };
+                    orderViewModels.Add(orderViewModel);
+                });
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber, orderTypeId,
+                        orderProgress, applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
+                        sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = orderViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = orderViewModels;
+                }
+              
             }
             catch (Exception ex)
             {
@@ -180,10 +153,6 @@ namespace Web.Services
                         if (areas.Count == 0) throw new Exception(string.Format("子库区[{0}]不存在！",or.ReservoirAreaId));
                         area = areas[0];
                     }
-                    WarehouseSpecification warehouseSpec = new WarehouseSpecification(or.WarehouseId, null,null);
-                    var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-                    if (warehouses.Count == 0) throw new Exception(string.Format("库组织[{0}],不存在！", or.WarehouseId));
-                    var warehouse = warehouses[0];
                     OrderRow orderRow = new OrderRow
                     {
                         CreateTime=DateTime.Now,

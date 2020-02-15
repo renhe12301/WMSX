@@ -14,7 +14,6 @@ namespace ApplicationCore.Entities.TaskManager
         public int Status { get; set; }
         public int Step { get; set; }
         public int Progress { get; set; }
-        public int Feedback { get; set; }
         public int Type { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? FinishTime { get; set; }

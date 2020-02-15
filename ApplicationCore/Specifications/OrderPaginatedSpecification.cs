@@ -7,17 +7,19 @@ namespace ApplicationCore.Specifications
     public class OrderPaginatedSpecification : BaseSpecification<Order>
     {
         public OrderPaginatedSpecification(int skip, int take, int? id, string orderNumber, int? orderTypeId,
-             List<int> progressRange, string applyUserCode, string approveUserCode,
-             string sApplyTime, string eApplyTime,
+             List<int> status, string applyUserCode, string approveUserCode,
+             int? employeeId,string employeeName,string sApplyTime, string eApplyTime,
              string sApproveTime, string eApproveTime,
              string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
             : base(b => (!id.HasValue || b.Id == id) &&
                        (orderNumber == null || b.OrderNumber == orderNumber) &&
                        (!orderTypeId.HasValue || b.OrderTypeId == orderTypeId) &&
-                       (progressRange == null || (b.Progress >= progressRange[0] && b.Progress <= progressRange[1])) &&
+                       (status == null || status.Contains(b.Status)) &&
                        (applyUserCode == null || b.ApplyUserCode == applyUserCode) &&
                        (approveUserCode == null || b.ApproveUserCode == approveUserCode) &&
+                       (!employeeId.HasValue || b.EmployeeId == employeeId) &&
+                       (employeeName==null || b.Employee.UserName == employeeName) &&
                        (sApplyTime == null || b.ApplyTime >= DateTime.Parse(sApplyTime)) &&
                        (eApplyTime == null || b.ApplyTime <= DateTime.Parse(eApplyTime)) &&
                        (sApproveTime == null || b.ApproveTime >= DateTime.Parse(sApproveTime)) &&

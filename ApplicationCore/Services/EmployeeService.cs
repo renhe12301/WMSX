@@ -112,8 +112,8 @@ namespace ApplicationCore.Services
                 employees.ForEach(async(em) =>
                 {
                     EmployeeSpecification employeeSpec=new EmployeeSpecification(em.Id,null,null);
-                    var employees = await this._employeeRepository.ListAsync(employeeSpec);
-                    if(employees.Count>0)
+                    var findEmployees = await this._employeeRepository.ListAsync(employeeSpec);
+                    if(findEmployees.Count>0)
                         adds.Add(employees.First());
                 });
                 if (adds.Count > 0)

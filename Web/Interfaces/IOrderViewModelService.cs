@@ -10,12 +10,13 @@ namespace Web.Interfaces
     {
 
         Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage,
-            int? includeDetail, string orderNumber,
-            int? orderTypeId, string progressRange, string applyUserCode, string approveUserCode,
-            string sApplyTime, string eApplyTime, string sApproveTime,
-            string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
-
-        Task<ResponseResultViewModel> CreateOrder(OrderViewModel order);
+             int?id,string orderNumber, int? orderTypeId, string status, string applyUserCode, string approveUserCode,
+             int? employeeId,string employeeName,string sApplyTime, string eApplyTime, string sApproveTime,
+             string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
+        
+        
+        Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel);
+        
         Task<ResponseResultViewModel> SortingOrder2Area(OrderRowViewModel orderRow);
 
     }
