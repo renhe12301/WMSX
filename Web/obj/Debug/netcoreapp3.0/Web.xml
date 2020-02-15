@@ -4,6 +4,36 @@
         <name>Web</name>
     </assembly>
     <members>
+        <member name="M:Web.Controllers.Api.EBSProjectController.GetProjects(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String)">
+            <summary>
+            获取项目信息
+            </summary>
+            <param name="pageIndex">分页索引</param>
+            <param name="itemsPage">一页条数</param>
+            <param name="id">编号</param>
+            <param name="projectName">项目名称</param>
+            <param name="ouId">业务实体编号</param>
+            <param name="sCreateTime">创建开始时间</param>
+            <param name="eCreateTime">创建结束时间</param>
+            <param name="sEndTime">有效期开始时间</param>
+            <param name="eEndTime">有效期结束时间</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.EBSTaskController.GetTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String)">
+            <summary>
+            获取任务信息
+            </summary>
+            <param name="pageIndex">分页索引</param>
+            <param name="itemsPage">一页条数</param>
+            <param name="id">编号</param>
+            <param name="taskName">任务名称</param>
+            <param name="projectId">关联项目编号</param>
+            <param name="sCreateTime">创建开始时间</param>
+            <param name="eCreateTime">创建结束时间</param>
+            <param name="sEndTime">有效期开始时间</param>
+            <param name="eEndTime">有效期结束时间</param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Controllers.Api.EmployeeController">
             <summary>
             员工信息操作API
@@ -243,18 +273,20 @@
             订单操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             查询订单信息
             </summary>
             <param name="pageIndex">当前页索引</param>
             <param name="itemsPage">一页显示条数</param>
-            <param name="includeDetail">是否包含订单物料明细</param>
+            <param name="id">订单id</param>
             <param name="orderNumber">订单编号</param>
-            <param name="orderTypeId">订单类型编号</param>
-            <param name="progressRange">订单进度范围</param>
+            <param name="orderTypeId">订单类型id</param>
+            <param name="status">订单状态</param>
             <param name="applyUserCode">申请人编码</param>
             <param name="approveUserCode">审批人编码</param>
+            <param name="employeeId">经办人编号</param>
+            <param name="employeeName">经办人名称</param>
             <param name="sApplyTime">申请开始时间</param>
             <param name="eApplyTime">申请结束时间</param>
             <param name="sApproveTime">审批开始时间</param>
@@ -276,7 +308,22 @@
             <summary>
             创建订单
             </summary>
-            <param name="orderViewModel">订单JSON对象</param>
+            <param name="orderViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.OrderRowController.GetOrderRows(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            获取订单行信息
+            </summary>
+            <param name="pageIndex">当前页索引</param>
+            <param name="itemsPage">一页显示条数</param>
+            <param name="id">行编号</param>
+            <param name="orderId">订单编号</param>
+            <param name="status">订单行状态</param>
+            <param name="sCreateTime">订单行创建时间范围</param>
+            <param name="eCreateTime">订单行创建时间范围</param>
+            <param name="sFinishTime">订单行结束开始时间范围</param>
+            <param name="eFinishTime">订单行结束时间范围</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.OrganizationController">

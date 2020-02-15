@@ -109,7 +109,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 币种
         /// </summary>
-        public double Currency { get; set;  }
+        public string Currency { get; set;  }
 
         /// <summary>
         /// 总金额

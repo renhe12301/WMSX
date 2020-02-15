@@ -92,7 +92,8 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetInOutTasks(int? pageIndex, int? itemsPage,
-                                             int? id,string trayCode, string status,string steps,string types,
+                                             int? id,string trayCode, string status,
+                                             string steps,string types,
                                              int? ouId, int? wareHouseId, int? areaId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)

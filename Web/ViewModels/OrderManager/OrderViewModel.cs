@@ -32,7 +32,7 @@ namespace Web.ViewModels.OrderManager
         public int SupplierSiteId { get; set; }
 
         public string SupplierSiteName { get; set; }
-        public double Currency { get; set; }
+        public string Currency { get; set; }
         public double TotalAmount { get; set; }
         public int Status { get; set; }
         public string StatusStr { get; set; }

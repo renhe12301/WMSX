@@ -204,6 +204,7 @@
             <e p="MaterialDicController.cs" t="Include" />
             <e p="MaterialTypeController.cs" t="Include" />
             <e p="OrderController.cs" t="Include" />
+            <e p="OrderRowController.cs" t="Include" />
             <e p="OrganizationController.cs" t="Include" />
             <e p="OUController.cs" t="Include" />
             <e p="PhyWarehouseController.cs" t="Include" />

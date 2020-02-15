@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
              string sCreateTime,string eCreateTime,
              string sFinishTime,string eFinishTime)
             :base(b=> (!id.HasValue || b.Id == id) &&
-                      (orderNumber == null || b.OrderNumber == orderNumber) &&
+                      (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                       (!orderTypeId.HasValue || b.OrderTypeId == orderTypeId) &&
                       (status ==null|| status.Contains(b.Status)) &&
                       (applyUserCode == null || b.ApplyUserCode == applyUserCode) &&
@@ -33,6 +33,9 @@ namespace ApplicationCore.Specifications
             AddInclude(b=>b.OU);
             AddInclude(b=>b.Warehouse);
             AddInclude(b=>b.Employee);
+            AddInclude(b=>b.Supplier);
+            AddInclude(b=>b.SupplierSite);
+            AddInclude(b=>b.EBSProject);
         }
     }
 }

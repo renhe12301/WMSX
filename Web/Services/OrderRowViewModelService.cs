@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
 using Web.ViewModels;
@@ -64,6 +65,8 @@ namespace Web.Services
                         PreCount = e.PreCount,
                         RealityCount = e.PreCount,
                         Sorting = e.Sorting,
+                        Status = e.Status,
+                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress
 
                     };
