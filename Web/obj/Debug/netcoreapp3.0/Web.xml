@@ -77,13 +77,24 @@
             <param name="employeeViewModel">员工角色实体</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="T:Web.Controllers.Api.InOutRecordController">
+            <summary>
+            出入库记录API
+            </summary>
+        </member>
+        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取出入库记录
             </summary>
             <param name="pageIndex">当前页面索引</param>
             <param name="itemsPage">当前也显示大小</param>
             <param name="type">出入库类型</param>
+            <param name="orderId">订单编号</param>
+            <param name="orderRowId">订单行编号</param>
+            <param name="ouId">业务实体编号</param>
+            <param name="wareHouseId">库存组织编号</param>
+            <param name="areaId">库区编号</param>
+            <param name="status">执行状态</param>
             <param name="sCreateTime">创建开始时间</param>
             <param name="eCreateTime">创建结束时间</param>
             <returns></returns>

@@ -67,7 +67,8 @@ namespace Web.Services
                         Sorting = e.Sorting,
                         Status = e.Status,
                         StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
-                        Progress = e.Progress
+                        Progress = e.Progress.GetValueOrDefault(),
+                        EBSTaskName = e.EBSTask.TaskName
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

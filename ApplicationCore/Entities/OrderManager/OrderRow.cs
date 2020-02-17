@@ -28,11 +28,11 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         /// <summary>
         /// 订单完成时间
         /// </summary>
-        public DateTime FinishTime { get; set; }
+        public DateTime? FinishTime { get; set; }
         /// <summary>
         /// 订单物料数量
         /// </summary>
@@ -48,7 +48,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 完成进度
         /// </summary>
-        public int Progress { get; set; }
+        public int? Progress { get; set; }
         /// <summary>
         /// 备注
         /// </summary>
@@ -71,6 +71,15 @@ namespace ApplicationCore.Entities.OrderManager
         /// 订单行状态
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 任务编号
+        /// </summary>
+        public int EBSTaskId { get; set; }
+        /// <summary>
+        /// 关联任务实体
+        /// </summary>
+        public EBSTask EBSTask { get; set; }
 
 
     }

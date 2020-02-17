@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using ApplicationCore.Entities.AuthorityManager;
 using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Entities.TaskManager;
@@ -35,6 +36,7 @@ namespace Infrastructure.Data
         public DbSet<OrderRow> OrderRow { get; set; }
         public DbSet<EBSProject> EbsProject { get; set; }
         public DbSet<EBSTask> EbsTask { get; set; }
+        public DbSet<InOutRecord> InOutRecord { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

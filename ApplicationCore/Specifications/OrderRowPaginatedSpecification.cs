@@ -18,6 +18,9 @@ namespace ApplicationCore.Specifications
         {
             ApplyPaging(skip,take);
             AddInclude(b => b.Order);
+            AddInclude(b=>b.MaterialDic);
+            AddInclude(b=>b.ReservoirArea);
+            AddInclude(b=>b.EBSTask);
         }
     }
 }
