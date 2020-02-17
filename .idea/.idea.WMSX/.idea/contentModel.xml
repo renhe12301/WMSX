@@ -241,6 +241,7 @@
         </e>
         <e p="IOCJobFactory.cs" t="Include" />
         <e p="Jobs" t="Include">
+          <e p="BasicDataSyncJon.cs" t="Include" />
           <e p="CKJob.cs" t="Include" />
           <e p="ClearJob.cs" t="Include" />
           <e p="OrderSyncJob.cs" t="Include" />
