@@ -21,21 +21,18 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRespository;
-        private readonly IAsyncRepository<ModuleLock> _moduleLockRespository;
 
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                 IAsyncRepository<Location> locationRepository,
                                 IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                                IAsyncRepository<InOutRecord> inOutRespository,
-                                IAsyncRepository<ModuleLock> moduleLockRespository)
+                                IAsyncRepository<InOutRecord> inOutRespository)
         {
             this._inOutTaskRepository = inOutTaskRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._locationRepository = locationRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._inOutRecordRespository = inOutRespository;
-            this._moduleLockRespository = moduleLockRespository;
         }
 
 

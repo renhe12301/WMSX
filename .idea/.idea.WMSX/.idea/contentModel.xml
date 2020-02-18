@@ -34,7 +34,6 @@
           <e p="FlowRecord" t="Include">
             <e p="InOutRecord.cs" t="Include" />
           </e>
-          <e p="ModuleLock.cs" t="Include" />
           <e p="OrderManager" t="Include">
             <e p="Order.cs" t="Include" />
             <e p="OrderRow.cs" t="Include" />
@@ -76,6 +75,7 @@
         </e>
         <e p="Misc" t="Include">
           <e p="AppSettings.cs" t="Include" />
+          <e p="ModuleLock.cs" t="Include" />
           <e p="StatusConstant.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
