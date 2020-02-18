@@ -11,6 +11,9 @@ using System.Linq;
 
 namespace Web.Jobs
 {
+    /// <summary>
+    /// 出库订单处理定时任务
+    /// </summary>
     public class CkJob:IJob
     {
        

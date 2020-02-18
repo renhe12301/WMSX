@@ -7,6 +7,9 @@ using ApplicationCore.Specifications;
 
 namespace Web.Jobs
 {
+    /// <summary>
+    /// 库存同步处理定时任务
+    /// </summary>
     public class JyhStockJob: IJob
     {
         private readonly IInOutRecordService _inOutRecordService;

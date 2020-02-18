@@ -1,9 +1,9 @@
 namespace Web.Jobs
 {
     /// <summary>
-    /// 主数据同步定时任务
+    /// 入库订单处理定时任务
     /// </summary>
-    public class BasicDataSyncJob
+    public class RKJob
     {
         
     }
