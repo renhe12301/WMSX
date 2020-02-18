@@ -45,6 +45,12 @@ namespace ApplicationCore.Entities.OrderManager
         /// 实际数量
         /// </summary>
         public int RealityCount { get; set; }
+
+        /// <summary>
+        /// 取消数量
+        /// </summary>
+        public int CancelCount { get; set; }
+
         /// <summary>
         /// 完成进度
         /// </summary>
@@ -80,6 +86,26 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联任务实体
         /// </summary>
         public EBSTask EBSTask { get; set; }
+        
+        /// <summary>
+        /// 第三方系统编号
+        /// </summary>
+        public int SourceId { get; set; }
+        
+        /// <summary>
+        /// 不含税单价
+        /// </summary>
+        public double Price { get; set; }
+        
+        /// <summary>
+        /// 不含税金额
+        /// </summary>
+        public double Amount { get; set; }
+
+        /// <summary>
+        /// 用途
+        /// </summary>
+        public string UseFor { get; set; }
 
 
     }

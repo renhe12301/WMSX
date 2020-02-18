@@ -132,6 +132,11 @@ namespace ApplicationCore.Entities.OrderManager
         public int Status { get; set; }
 
         /// <summary>
+        /// 第三方系统状态标记
+        /// </summary>
+        public int StatusTag { get; set; }
+
+        /// <summary>
         /// 经办人编号
         /// </summary>
         public int EmployeeId { get; set; }
@@ -140,6 +145,11 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联经办人-员工
         /// </summary>
         public Employee Employee { get; set; }
+
+        /// <summary>
+        /// 第三方系统编号
+        /// </summary>
+        public int SourceId { get; set; }
 
         /// <summary>
         /// 关联订单行

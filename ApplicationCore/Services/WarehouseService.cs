@@ -27,7 +27,7 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(warehouse.WhCode, nameof(warehouse.WhCode));
             if (unique)
             {
-                WarehouseSpecification warehouseSpec = new WarehouseSpecification(warehouse.Id, null, null);
+                WarehouseSpecification warehouseSpec = new WarehouseSpecification(warehouse.Id, null, null,null);
                 List<Warehouse> warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
                 if (warehouses.Count == 0)
                     await this._warehouseRepository.AddAsync(warehouse);
@@ -41,7 +41,7 @@ namespace ApplicationCore.Services
 
         public async Task Disable(int id)
         {
-            var wareHouseSpec = new WarehouseSpecification(id,null,null);
+            var wareHouseSpec = new WarehouseSpecification(id,null,null,null);
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
@@ -50,7 +50,7 @@ namespace ApplicationCore.Services
 
         public async Task Enable(int id)
         {
-            var wareHouseSpec = new WarehouseSpecification(id,null,null);
+            var wareHouseSpec = new WarehouseSpecification(id,null,null,null);
             var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
             Guard.Against.NullOrEmpty(wareHouses, nameof(wareHouses));
             var wareHouse = wareHouses[0];
@@ -71,7 +71,7 @@ namespace ApplicationCore.Services
                 List<Warehouse> adds=new List<Warehouse>();
                 warehouses.ForEach(async (w) =>
                 {
-                    var wareHouseSpec = new WarehouseSpecification(w.Id,null,null);
+                    var wareHouseSpec = new WarehouseSpecification(w.Id,null,null,null);
                     var wareHouses = await this._warehouseRepository.ListAsync(wareHouseSpec);
                     if (wareHouses.Count > 0)
                         adds.Add(wareHouses.First());

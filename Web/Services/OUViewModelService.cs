@@ -88,7 +88,7 @@ namespace Web.Services
                 var ouSpec = new OUSpecification(null, null, null,null);
                 var allOus =  await this._ouRepository.ListAsync(ouSpec);
                 if (allOus.Count == 0) throw new Exception(string.Format("业务实体不存在"));
-                var warehouseSpec=new WarehouseSpecification(null,null,null);
+                var warehouseSpec=new WarehouseSpecification(null,null,null,null);
                 var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
                 var areaSpec=new ReservoirAreaSpecification(null,null,null,null,null,null);
                 var areas = await this._areaRepository.ListAsync(areaSpec);

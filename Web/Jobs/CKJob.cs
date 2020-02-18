@@ -52,7 +52,7 @@ namespace Web.Jobs
                     try
                     {
                         var wid = gTray.Key;
-                        WarehouseSpecification warehouseSpec = new WarehouseSpecification(wid,  null, null);
+                        WarehouseSpecification warehouseSpec = new WarehouseSpecification(wid,  null, null,null);
                         var warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
                         if (warehouses.Count > 0)
                         {

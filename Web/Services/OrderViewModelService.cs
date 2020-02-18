@@ -162,7 +162,8 @@ namespace Web.Services
                     if (area != null)
                         orderRow.ReservoirAreaId = area.Id;
                 });
-               await this._orderService.CreateOrder(order);
+               var id = await this._orderService.CreateOrder(order);
+               response.Data = id;
             }
             catch (Exception ex)
             {

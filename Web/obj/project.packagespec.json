@@ -61,9 +61,17 @@
           "target": "Package",
           "version": "[3.0.7, )"
         },
+        "SoapCore": {
+          "target": "Package",
+          "version": "[1.0.0.2-alpha, )"
+        },
         "Swashbuckle.AspNetCore": {
           "target": "Package",
           "version": "[5.0.0-rc3, )"
+        },
+        "System.ServiceModel.Primitives": {
+          "target": "Package",
+          "version": "[4.7.0, )"
         },
         "log4net": {
           "target": "Package",

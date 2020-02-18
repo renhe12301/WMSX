@@ -347,3 +347,25 @@ D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.xml
 D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
 /Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/NPinyin.Core.dll
 /Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/log4net.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Microsoft.VisualStudio.Validation.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/SoapCore.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.CodeDom.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Private.ServiceModel.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.Security.Cryptography.Pkcs.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.ServiceModel.Http.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.ServiceModel.Primitives.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/System.ServiceModel.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/cs/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/de/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/es/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/fr/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/it/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ja/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ko/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/pl/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/pt-BR/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/ru/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/tr/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll

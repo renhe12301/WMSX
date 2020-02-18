@@ -324,7 +324,22 @@
         </e>
         <e p="Views" t="Include" />
         <e p="Web.csproj" t="IncludeRecursive" />
-        <e p="WebServices" t="Include" />
+        <e p="WebServices" t="Include">
+          <e p="ClientProxys" t="Include" />
+          <e p="Interfaces" t="Include">
+            <e p="IOrderSOAPService.cs" t="Include" />
+          </e>
+          <e p="Models" t="Include">
+            <e p="RequestEnterOrder.cs" t="Include" />
+            <e p="RequestEnterOrderRow.cs" t="Include" />
+            <e p="RequestOutOrder.cs" t="Include" />
+            <e p="RequestOutOrderRow.cs" t="Include" />
+            <e p="ResponseResult.cs" t="Include" />
+          </e>
+          <e p="Services" t="Include">
+            <e p="OrderSOAPService.cs" t="Include" />
+          </e>
+        </e>
         <e p="wwwroot" t="Include">
           <e p="css" t="Include">
             <e p="site.css" t="Include" />

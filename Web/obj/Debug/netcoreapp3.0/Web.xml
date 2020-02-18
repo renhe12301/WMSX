@@ -570,5 +570,19 @@
             转换url地址
             </summary>
         </member>
+        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateEnterOrder(Web.WebServices.Models.RequestEnterOrder)">
+            <summary>
+            创建入库订单[入库接收]
+            </summary>
+            <param name="requestEnterOrder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateOutOrder(Web.WebServices.Models.RequestOutOrder)">
+            <summary>
+            创建出库订单[出库领料、出库退料]
+            </summary>
+            <param name="requestOutOrder"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

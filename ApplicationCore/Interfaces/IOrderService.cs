@@ -7,7 +7,7 @@ namespace ApplicationCore.Interfaces
 {
     public interface IOrderService
     {
-        Task CreateOrder(Order order);
+        Task<int> CreateOrder(Order order);
         Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,
                                                    string trayCode);
 

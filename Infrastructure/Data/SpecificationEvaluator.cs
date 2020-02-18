@@ -20,7 +20,7 @@ namespace Infrastructure.Data
 
             query = specification.IncludeStrings.Aggregate(query,
                                     (current, include) => current.Include(include));
-
+            
             if (specification.OrderBy != null)
             {
                 query = query.OrderBy(specification.OrderBy);

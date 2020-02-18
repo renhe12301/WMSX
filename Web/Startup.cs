@@ -27,7 +27,9 @@ using Web.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using System.ServiceModel;
 using Quartz.Spi;
+using SoapCore;
 
 namespace Web
 {
@@ -100,7 +102,11 @@ namespace Web
             services.AddScoped(typeof(IEBSProjectViewModelService), typeof(EBSProjectViewModelservice));
             services.AddScoped(typeof(IEBSTaskViewModelService), typeof(EBSTaskViewModelService));
             
+            //工作流
             services.AddScoped(typeof(IJobFactory), typeof(IOCJobFactory));
+            
+            //soap 服务
+            services.AddScoped(typeof(WebServices.Interfaces.IOrderSOAPService), typeof(WebServices.Services.OrderSOAPService));
 
             services.Configure<AppSettings>(Configuration);
 
@@ -128,6 +134,7 @@ namespace Web
                          new SlugifyParameterTransformer()));
 
             });
+            
 
             //开始试图到控制器映射功能
             services.AddControllersWithViews();
@@ -183,7 +190,11 @@ namespace Web
             //app.UseAuthorization();
 
             app.UseCors();
+           
+            // WSDL 服务类
+            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.asmx", new BasicHttpBinding());
 
+           
             //路由url格式转换，统一转换成小写
             app.UseEndpoints(endpoints =>
             {

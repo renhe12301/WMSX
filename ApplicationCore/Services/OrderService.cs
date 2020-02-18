@@ -38,9 +38,11 @@ namespace ApplicationCore.Services
         }
 
 
-        public async Task CreateOrder(Order order)
+        public async Task<int> CreateOrder(Order order)
         {
             Guard.Against.Null(order, nameof(order));
+
+            int id = 0;
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
@@ -49,13 +51,16 @@ namespace ApplicationCore.Services
                     order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
                     this._orderRowRepository.Add(order.OrderRow);
                     scope.Complete();
+                    id = addOrder.Id;
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
             }
-           
+
+            return id;
+
         }
 
         public async Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,string trayCode)
