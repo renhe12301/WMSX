@@ -180,7 +180,7 @@ namespace ApplicationCore.Services
                 task.Progress = 10;
                 if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.待出库))
                 {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未下架);
+                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中);
                     await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
                 }
             }
@@ -195,9 +195,9 @@ namespace ApplicationCore.Services
             else if (taskStep == Convert.ToInt32(TASK_STEP.取货完成))
             {
                 task.Progress = 40;
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中未下架))
+                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中))
                 {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已下架);
+                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已下架);
                     LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId,null,
                         null, null,null, null, null,  null, null,null,
                          null,null);
@@ -223,7 +223,7 @@ namespace ApplicationCore.Services
             {
                 task.Status = Convert.ToInt32(TASK_STATUS.完成);
                 task.Progress = 100;
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已下架))
+                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
                 {
                     // this._transactionRepository.Transaction(async () =>
                     // {
@@ -265,7 +265,7 @@ namespace ApplicationCore.Services
                 }
                 else if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中))
                 {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已上架);
+                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
                     warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
 
                     // this._transactionRepository.Transaction(async () =>
