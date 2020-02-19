@@ -21,8 +21,10 @@
             <e p="Employee.cs" t="Include" />
             <e p="EmployeeOrg.cs" t="Include" />
             <e p="Location.cs" t="Include" />
+            <e p="LogRecord.cs" t="Include" />
             <e p="MaterialDic.cs" t="Include" />
             <e p="MaterialType.cs" t="Include" />
+            <e p="OrderRowBatch.cs" t="Include" />
             <e p="Organization.cs" t="Include" />
             <e p="OU.cs" t="Include" />
             <e p="PhyWarehouse.cs" t="Include" />
