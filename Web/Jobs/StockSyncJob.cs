@@ -10,13 +10,13 @@ namespace Web.Jobs
     /// <summary>
     /// 库存同步处理定时任务
     /// </summary>
-    public class JyhStockJob: IJob
+    public class StockSyncJob: IJob
     {
         private readonly IInOutRecordService _inOutRecordService;
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
 
 
-        public JyhStockJob(IInOutRecordService inOutRecordService,
+        public StockSyncJob(IInOutRecordService inOutRecordService,
                              IAsyncRepository<InOutRecord> inOutRecordRepository)
         {
             this._inOutRecordRepository = inOutRecordRepository;
