@@ -70,9 +70,9 @@ namespace Web.Controllers.Api
         /// <param name="orderRowViewModel">入库订单行JSON对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SortingOrder2Area(OrderRowViewModel orderRowViewModel)
+        public async Task<IActionResult> SortingOrder(OrderRowViewModel orderRowViewModel)
         {
-            var response = await this._orderViewModelService.SortingOrder2Area(orderRowViewModel);
+            var response = await this._orderViewModelService.SortingOrder(orderRowViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
         

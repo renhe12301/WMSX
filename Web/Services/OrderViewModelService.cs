@@ -174,13 +174,13 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> SortingOrder2Area(OrderRowViewModel orderRow)
+        public async Task<ResponseResultViewModel> SortingOrder(OrderRowViewModel orderRow)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._orderService.SortingOrder2Area(orderRow.OrderId,
-                    orderRow.Id, orderRow.Sorting, orderRow.TrayCode);
+                await this._orderService.SortingOrder(orderRow.OrderId,
+                    orderRow.Id, orderRow.Sorting, orderRow.TrayCode,orderRow.ReservoirAreaId.Value);
             }
             catch (Exception ex)
             {

@@ -8,8 +8,8 @@ namespace ApplicationCore.Interfaces
     public interface IOrderService
     {
         Task<int> CreateOrder(Order order);
-        Task SortingOrder2Area(int orderId, int orderRowId, int sortingCount,
-                                                   string trayCode);
+        Task SortingOrder(int orderId, int orderRowId, int sortingCount,
+                                string trayCode,int areaId);
 
     }
 }

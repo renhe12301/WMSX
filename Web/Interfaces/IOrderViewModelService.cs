@@ -17,7 +17,7 @@ namespace Web.Interfaces
         
         Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel);
         
-        Task<ResponseResultViewModel> SortingOrder2Area(OrderRowViewModel orderRow);
+        Task<ResponseResultViewModel> SortingOrder(OrderRowViewModel orderRow);
 
     }
 

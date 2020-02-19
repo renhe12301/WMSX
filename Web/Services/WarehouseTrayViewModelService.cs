@@ -56,14 +56,14 @@ namespace Web.Services
                 if (pageIndex.HasValue && itemsPage.HasValue && pageIndex > -1 && itemsPage > 0)
                 {
 
-                    baseSpecification = new WarehouseTrayPaginatedDetailSpecification(pageIndex.Value, itemsPage.Value,
+                    baseSpecification = new WarehouseTrayPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,
                         trayCode, trayMaterilCount, orderId, orderRowId,
                         carrier, trayStatus, locationId, ouId, wareHouseId, areaId);
                 }
                 else
                 {
-                    baseSpecification = new WarehouseTrayDetailSpecification(id,
+                    baseSpecification = new WarehouseTraySpecification(id,
                         trayCode, trayMaterilCount, orderId, orderRowId,
                         carrier, trayStatus, locationId, ouId, wareHouseId, areaId);
                 }
@@ -91,7 +91,7 @@ namespace Web.Services
 
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._warehouseTrayRepository.CountAsync(new WarehouseTrayDetailSpecification(id,
+                    var count = await this._warehouseTrayRepository.CountAsync(new WarehouseTraySpecification(id,
                         trayCode, trayMaterilCount, orderId, orderRowId,
                         carrier, trayStatus, locationId, ouId, wareHouseId, areaId));
                     dynamic dyn = new ExpandoObject();

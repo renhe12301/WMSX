@@ -71,7 +71,7 @@ namespace ApplicationCore.Services
         public async Task InApply(string trayCode,string locationCode)
         {
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
-            WarehouseTrayDetailSpecification traySpec = new WarehouseTrayDetailSpecification(null, trayCode,
+            WarehouseTraySpecification traySpec = new WarehouseTraySpecification(null, trayCode,
                null, null, null,null, null,null,null,
                null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(traySpec);
@@ -167,7 +167,7 @@ namespace ApplicationCore.Services
             var tasks = await this._inOutTaskRepository.ListAsync(taskSpec);
             Guard.Against.NullOrEmpty(tasks, nameof(tasks));
             var task = tasks[0];
-            WarehouseTrayDetailSpecification warehouseTraySpec = new WarehouseTrayDetailSpecification(null,
+            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
                                        task.TrayCode, null, null, null,null,null, 
                                        null, null, null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
