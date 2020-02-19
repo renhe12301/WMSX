@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ApplicationCore.Misc;
 using Quartz;
 
 namespace Web.Jobs
@@ -13,9 +14,16 @@ namespace Web.Jobs
         {
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            throw new NotImplementedException();
+            try
+            {
+                    
+            }
+            catch (Exception ex)
+            {
+                   
+            }
         }
     }
 }

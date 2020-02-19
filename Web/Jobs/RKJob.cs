@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using ApplicationCore.Misc;
 using Quartz;
 
 namespace Web.Jobs
@@ -8,9 +10,19 @@ namespace Web.Jobs
     /// </summary>
     public class RKJob:IJob
     {
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            using (ModuleLock.GetAsyncLock().LockAsync())
+            {
+                try
+                {
+                    
+                }
+                catch (Exception ex)
+                {
+                   
+                }
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Quartz;
 
@@ -8,9 +9,16 @@ namespace Web.Jobs
     /// </summary>
     public class BasicDataSyncJob:IJob
     {
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                    
+            }
+            catch (Exception ex)
+            {
+                   
+            }
         }
     }
 }

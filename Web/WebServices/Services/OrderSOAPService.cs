@@ -6,8 +6,10 @@ using Web.WebServices.Interfaces;
 using Web.WebServices.Models;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.OrderManager;
+using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using Ardalis.GuardClauses;
+using NeoSmart.AsyncLock;
 using IOrderService = ApplicationCore.Interfaces.IOrderService;
 
 namespace Web.WebServices.Services
@@ -145,39 +147,50 @@ namespace Web.WebServices.Services
 
         public async Task<ResponseResult> CreateOutOrder(RequestOutOrder requestOutOrder)
         {
-            ResponseResult responseResult=new ResponseResult();
+            ResponseResult responseResult = new ResponseResult();
             responseResult.Code = 200;
             try
             {
-                Guard.Against.Null(requestOutOrder,nameof(requestOutOrder));
-                Guard.Against.NullOrEmpty(requestOutOrder.RequestOutOrderRows,nameof(requestOutOrder.RequestOutOrderRows));
-                
-                OUSpecification ouSpec= new OUSpecification(null,null,requestOutOrder.BusinessEntity,null);
+                Guard.Against.Null(requestOutOrder, nameof(requestOutOrder));
+                Guard.Against.NullOrEmpty(requestOutOrder.RequestOutOrderRows,
+                    nameof(requestOutOrder.RequestOutOrderRows));
+
+                OUSpecification ouSpec = new OUSpecification(null, null, requestOutOrder.BusinessEntity, null);
                 List<OU> ous = await this._ouRepository.ListAsync(ouSpec);
-                if(ous.Count==0)throw new Exception(string.Format("业务实体编码[{0}],不存在!",requestOutOrder.BusinessEntity));
+                if (ous.Count == 0)
+                    throw new Exception(string.Format("业务实体编码[{0}],不存在!", requestOutOrder.BusinessEntity));
                 OU ou = ous[0];
-                WarehouseSpecification warehouseSpec = new WarehouseSpecification(null,null,null,requestOutOrder.InventoryOrg);
+                WarehouseSpecification warehouseSpec =
+                    new WarehouseSpecification(null, null, null, requestOutOrder.InventoryOrg);
                 List<Warehouse> warehouses = await this._warehouseRepository.ListAsync(warehouseSpec);
-                if(warehouses.Count==0)throw new Exception(string.Format("库存组织编码[{0}],不存在!",requestOutOrder.InventoryOrg));
+                if (warehouses.Count == 0)
+                    throw new Exception(string.Format("库存组织编码[{0}],不存在!", requestOutOrder.InventoryOrg));
                 Warehouse warehouse = warehouses[0];
-               
-                EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(Convert.ToInt32(requestOutOrder.ItemId),null,
-                    null,null,null,null,null);
+
+                EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
+                    Convert.ToInt32(requestOutOrder.ItemId), null,
+                    null, null, null, null, null);
                 List<EBSProject> ebsProjects = await this._ebsProjectRepository.ListAsync(ebsProjectSpec);
-                if(ebsProjects.Count==0)throw new Exception(string.Format("订单关联项目编号[{0}],不存在!",requestOutOrder.ItemId));
-                EmployeeSpecification employeeSpec = new EmployeeSpecification(Convert.ToInt32(requestOutOrder.CreationBy),null,null);
+                if (ebsProjects.Count == 0)
+                    throw new Exception(string.Format("订单关联项目编号[{0}],不存在!", requestOutOrder.ItemId));
+                EmployeeSpecification employeeSpec =
+                    new EmployeeSpecification(Convert.ToInt32(requestOutOrder.CreationBy), null, null);
                 List<Employee> employees = await this._employeeRepository.ListAsync(employeeSpec);
-                if(employees.Count==0)throw new Exception(string.Format("经办人编号[{0}],不存在!",requestOutOrder.CreationBy));
-                OrganizationSpecification organizationSpec = new OrganizationSpecification(null,requestOutOrder.AlyDepCode,null,null);
+                if (employees.Count == 0)
+                    throw new Exception(string.Format("经办人编号[{0}],不存在!", requestOutOrder.CreationBy));
+                OrganizationSpecification organizationSpec =
+                    new OrganizationSpecification(null, requestOutOrder.AlyDepCode, null, null);
                 List<Organization> alyOrgs = await this._organizationRepository.ListAsync(organizationSpec);
-                if(alyOrgs.Count==0) throw  new Exception(string.Format("申请部门编码[{0}],不存在！",requestOutOrder.AlyDepCode));
+                if (alyOrgs.Count == 0)
+                    throw new Exception(string.Format("申请部门编码[{0}],不存在！", requestOutOrder.AlyDepCode));
                 Organization alyOrg = alyOrgs[0];
-                organizationSpec = new OrganizationSpecification(null,requestOutOrder.TransDepCode,null,null);
+                organizationSpec = new OrganizationSpecification(null, requestOutOrder.TransDepCode, null, null);
                 List<Organization> transOrgs = await this._organizationRepository.ListAsync(organizationSpec);
-                if(transOrgs.Count==0) throw  new Exception(string.Format("领料部门编码[{0}],不存在！",requestOutOrder.TransDepCode));
+                if (transOrgs.Count == 0)
+                    throw new Exception(string.Format("领料部门编码[{0}],不存在！", requestOutOrder.TransDepCode));
                 Organization transOrg = transOrgs[0];
                 Order order = new Order
-                { 
+                {
                     SourceId = Convert.ToInt32(requestOutOrder.HeaderId),
                     OrderNumber = requestOutOrder.AlyNumber,
                     EmployeeId = Convert.ToInt32(requestOutOrder.CreationBy),
@@ -195,19 +208,23 @@ namespace Web.WebServices.Services
                 List<OrderRow> orderRows = new List<OrderRow>();
                 requestOutOrder.RequestOutOrderRows.ForEach(async (eor) =>
                 {
-                    MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(Convert.ToInt32(eor.MaterialId),
-                                                                                 null,null,null,null);
+                    MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
+                        Convert.ToInt32(eor.MaterialId),
+                        null, null, null, null);
                     List<MaterialDic> materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
-                    if(materialDics.Count==0)throw new Exception(string.Format("物料编号[{0}],不存在!",eor.MaterialId));
+                    if (materialDics.Count == 0)
+                        throw new Exception(string.Format("物料编号[{0}],不存在!", eor.MaterialId));
                     MaterialDic materialDic = materialDics[0];
-                    EBSTaskSpecification ebsTaskSpec = new EBSTaskSpecification(Convert.ToInt32(eor.TaskId),null,null,
-                        null,null,null,null);
+                    EBSTaskSpecification ebsTaskSpec = new EBSTaskSpecification(Convert.ToInt32(eor.TaskId), null,
+                        null,
+                        null, null, null, null);
                     List<EBSTask> ebsTasks = await this._ebsTaskRepository.ListAsync(ebsTaskSpec);
-                    if(ebsTasks.Count==0) throw new Exception(string.Format("订单行关联任务编号[{0}],不存在！",eor.TaskId));
+                    if (ebsTasks.Count == 0) throw new Exception(string.Format("订单行关联任务编号[{0}],不存在！", eor.TaskId));
                     EBSTask ebsTask = ebsTasks[0];
-                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,eor.InventoryCode,null,null,null,null);
+                    ReservoirAreaSpecification reservoirAreaSpec =
+                        new ReservoirAreaSpecification(null, eor.InventoryCode, null, null, null, null);
                     List<ReservoirArea> areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
-                    if(areas.Count==0) throw new Exception(string.Format("子库存编码[{0}],不存在！",eor.InventoryCode));
+                    if (areas.Count == 0) throw new Exception(string.Format("子库存编码[{0}],不存在！", eor.InventoryCode));
                     ReservoirArea area = areas[0];
                     OrderRow orderRow = new OrderRow
                     {
@@ -232,7 +249,9 @@ namespace Web.WebServices.Services
                 responseResult.Code = 500;
                 responseResult.Data = ex.Message;
             }
+
             return responseResult;
+
         }
     }
 }
