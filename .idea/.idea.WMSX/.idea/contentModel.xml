@@ -133,6 +133,7 @@
           <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
           <e p="MaterialTypeSpecification.cs" t="Include" />
           <e p="OrderPaginatedSpecification.cs" t="Include" />
+          <e p="OrderRowBatchSpecification.cs" t="Include" />
           <e p="OrderRowPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowSpecification.cs" t="Include" />
           <e p="OrderSpecification.cs" t="Include" />

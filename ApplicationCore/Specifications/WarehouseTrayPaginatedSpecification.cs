@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
             List<int> traySteps, int? locationId, int? ouId, int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (trayCode == null || b.TrayCode == trayCode) &&
-                      (rangeMaterialCount == null || (b.MaterialCount >= rangeMaterialCount[0] && b.MaterialCount <= rangeMaterialCount[0])) &&
+                      (rangeMaterialCount == null || (b.MaterialCount >= rangeMaterialCount[0] && b.MaterialCount <= rangeMaterialCount[1])) &&
                       (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
                       (!orderId.HasValue || b.OrderId == orderId) &&
                       (carrier == null || b.Carrier == carrier)&&

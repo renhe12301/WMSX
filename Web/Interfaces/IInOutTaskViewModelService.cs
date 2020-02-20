@@ -8,10 +8,12 @@ namespace Web.Interfaces
 {
     public interface IInOutTaskViewModelService
     {
-       Task<ResponseResultViewModel> EmptyAwaitInApply(WarehouseTrayViewModel warehouseTrayViewModel);
-       Task<ResponseResultViewModel> InApply(InOutTaskViewModel inOutTaskViewModel);
-       Task<ResponseResultViewModel> AwaitOutApply(InOutTaskViewModel inOutTaskViewModel);
-       Task<ResponseResultViewModel> TaskStepReport(InOutTaskViewModel inOutTaskViewModel);
+
+        Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel);
+
+        Task<ResponseResultViewModel> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel);
+        
+        Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel);
         Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,
                                                     string status,string steps,string types,int? ouId,
                                                     int? wareHouseId, int? areaId,

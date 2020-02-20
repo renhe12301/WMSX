@@ -25,6 +25,7 @@ namespace Web.Controllers.Api
         /// </summary>
         /// <param name="pageIndex">当前页面索引</param>
         /// <param name="itemsPage">当前也显示大小</param>
+        /// <param name="trayCode">托盘编码</param>
         /// <param name="type">出入库类型</param>
         /// <param name="orderId">订单编号</param>
         /// <param name="orderRowId">订单行编号</param>
@@ -36,12 +37,14 @@ namespace Web.Controllers.Api
         /// <param name="eCreateTime">创建结束时间</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetInOutRecords(int? pageIndex,int? itemsPage,int? type,int? orderId,int? orderRowId,int? ouId,
+        public async Task<IActionResult> GetInOutRecords(int? pageIndex,int? itemsPage,string trayCode,
+                                                         int? type,int? orderId,int? orderRowId,int? ouId,
                                                          int? wareHouseId, int? areaId,string status,
                                                          string sCreateTime, string eCreateTime)
         {
             var response = await this._inOutRecordViewModelService.GetInOutRecords(pageIndex,
-                                       itemsPage, type,ouId,wareHouseId,areaId,orderId,orderRowId,status, sCreateTime, eCreateTime);
+                                       itemsPage, trayCode,type,ouId,wareHouseId,areaId,
+                                       orderId,orderRowId,status, sCreateTime, eCreateTime);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

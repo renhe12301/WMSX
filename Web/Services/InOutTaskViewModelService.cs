@@ -122,62 +122,46 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> EmptyAwaitInApply(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)
         {
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyAwaitInApply(warehouseTrayViewModel.TrayCode,
-                                             warehouseTrayViewModel.WarehouseId);
+                await this._inOutTaskService.EmptyOut(warehouseTrayViewModel.ReservoirId,
+                    warehouseTrayViewModel.OutCount);
             }
             catch (Exception ex)
             {
                 responseResultViewModel.Code = 500;
                 responseResultViewModel.Data = ex.Message;
             }
+
             return responseResultViewModel;
         }
 
-        public async Task<ResponseResultViewModel> AwaitOutApply(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<ResponseResultViewModel> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel)
         {
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.AwaitOutApply(inOutTaskViewModel.OrderId.Value,
-                    inOutTaskViewModel.OrderRowId.Value,inOutTaskViewModel.WarehouseTrays);
+                await this._inOutTaskService.EmptyEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.ReservoirId);
             }
             catch (Exception ex)
             {
                 responseResultViewModel.Code = 500;
                 responseResultViewModel.Data = ex.Message;
             }
+
             return responseResultViewModel;
         }
 
-        public async Task<ResponseResultViewModel> InApply(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel)
         {
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                if (!inOutTaskViewModel.WarehouseId.HasValue) throw new Exception("仓库编号不能为空！");
-                await this._inOutTaskService.InApply(inOutTaskViewModel.TrayCode,inOutTaskViewModel.LocationCode);
-            }
-            catch (Exception ex)
-            {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
-            }
-            return responseResultViewModel;
-        }
-
-        public async Task<ResponseResultViewModel> TaskStepReport(InOutTaskViewModel inOutTaskViewModel)
-        {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                if (!inOutTaskViewModel.WarehouseId.HasValue) throw new Exception("仓库编号不能为空！");
-                await this._inOutTaskService.TaskStepReport(inOutTaskViewModel.Id,
-                    inOutTaskViewModel.VehicleId.GetValueOrDefault(0), inOutTaskViewModel.Step);
+                await this._inOutTaskService.TaskReport(inOutTaskViewModel.Id,0,
+                    inOutTaskViewModel.Step,inOutTaskViewModel.Memo);
             }
             catch (Exception ex)
             {

@@ -27,22 +27,7 @@ namespace Web.Jobs
         {
             try
             {
-                InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null,null,null,
-                    null,null,null,null,0,null,null);
-                var records = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-                foreach (var record in records)
-                {
-                    try
-                    {
-                        // todo 集约化系统库存反馈
-                        record.IsRead = 1;
-                        await this._inOutRecordRepository.UpdateAsync(record);
-                    }
-                    catch (Exception ex)
-                    {
-                        // todo 添加异常日志记录
-                    }
-                }
+               
             }
             catch (Exception ex)
             {

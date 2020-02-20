@@ -7,10 +7,8 @@ namespace ApplicationCore.Interfaces
 {
     public interface IInOutTaskService
     {
-        Task EmptyAwaitOutApply(List<WarehouseTray> warehouseTrays);
-        Task EmptyAwaitInApply(string trayCode,int orgId);
-        Task InApply(string trayCode, string locationCode);
-        Task AwaitOutApply(int orderId,int orderRowId,List<WarehouseTray> warehouseTrays);
-        Task TaskStepReport(int id,int vid, int taskStep);
+        Task EmptyOut(int areaId,int outCount);
+        Task EmptyEntry(string trayCode,int areaId);
+        Task TaskReport(int taskId, long reportTime, int taskStatus, string error);
     }
 }

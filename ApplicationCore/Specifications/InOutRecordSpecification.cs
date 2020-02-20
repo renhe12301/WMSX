@@ -6,18 +6,19 @@ namespace ApplicationCore.Specifications
 {
     public class InOutRecordSpecification : BaseSpecification<InOutRecord>
     {
-        public InOutRecordSpecification(int? type,int? ouId,int? wareHouseId,int? areaId,int? orderId,int? orderRowId,
+        public InOutRecordSpecification(string trayCode,int? type,int? ouId,int? wareHouseId,int? areaId,int? orderId,int? orderRowId,
                                         List<int> status,int? isRead,string sCreateTime,string eCreateTime)
-            : base(b => (!type.HasValue || b.Type == type) &&
-                                            (!ouId.HasValue || b.OUId == ouId)&&
-                                            (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&
-                                            (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
-                                            (!orderId.HasValue || b.OrderId == orderId)&&
-                                            (!orderRowId.HasValue || b.OrderRowId == orderRowId)&&
-                                            (!isRead.HasValue || b.IsRead == isRead)&&
-                                            (status==null||status.Contains(b.Status))&&
-                                            (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
-                                            (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
+            : base(b =>   (trayCode==null || b.TrayCode == trayCode) &&
+                                             (!type.HasValue || b.Type == type) &&
+                                             (!ouId.HasValue || b.OUId == ouId)&&
+                                             (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&
+                                             (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
+                                             (!orderId.HasValue || b.OrderId == orderId)&&
+                                             (!orderRowId.HasValue || b.OrderRowId == orderRowId)&&
+                                             (!isRead.HasValue || b.IsRead == isRead)&&
+                                             (status==null||status.Contains(b.Status))&&
+                                             (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
+                                             (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
             AddInclude(b=>b.OU);
             AddInclude(b => b.Warehouse);

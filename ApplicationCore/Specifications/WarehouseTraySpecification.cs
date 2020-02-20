@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
              int? ouId, int? wareHouseId,int? areaId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (trayCode == null || b.TrayCode == trayCode) &&
-                      (rangeMaterialCount==null|| (b.MaterialCount >= rangeMaterialCount[0]&& b.MaterialCount <= rangeMaterialCount[0])) &&
+                      (rangeMaterialCount==null|| (b.MaterialCount >= rangeMaterialCount[0]&& b.MaterialCount <= rangeMaterialCount[1])) &&
                       (!orderId.HasValue || b.OrderId == orderId) &&
                       (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
                       (carrier == null || b.Carrier == carrier)&&

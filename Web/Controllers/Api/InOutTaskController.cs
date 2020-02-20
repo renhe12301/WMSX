@@ -25,51 +25,39 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
-        /// 空托盘待入库任务申请
+        /// 空托盘入库任务申请
         /// </summary>
         /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> EmptyAwaitInApply(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<IActionResult> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel)
         {
-            var response = await this._inOutTaskViewModelService.EmptyAwaitInApply(warehouseTrayViewModel);
-            return Ok(response);
+            var response = await this._inOutTaskViewModelService.EmptyEntry(warehouseTrayViewModel);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
-        /// 入库申请
+        /// 空托盘出库任务申请
         /// </summary>
-        /// <param name="inOutTaskViewModel">出入库任务实体对象</param>
+        /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> InApply(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<IActionResult> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)
         {
-            var response = await this._inOutTaskViewModelService.InApply(inOutTaskViewModel);
-            return Ok(response);
+            var response = await this._inOutTaskViewModelService.EmptyOut(warehouseTrayViewModel);
+            return Content(JsonConvert.SerializeObject(response));
         }
-
-        /// <summary>
-        /// 待出库任务申请
-        /// </summary>
-        /// <param name="inOutTaskViewModel">出入库任务实体对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> AwaitOutApply(InOutTaskViewModel inOutTaskViewModel)
-        {
-            var response = await this._inOutTaskViewModelService.AwaitOutApply(inOutTaskViewModel);
-            return Ok(response);
-        }
-
+        
         /// <summary>
         /// 出入库任务步骤上报
         /// </summary>
         /// <param name="inOutTaskViewModel">出入库任务实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> TaskStepReport(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<IActionResult> TaskReport(InOutTaskViewModel inOutTaskViewModel)
         {
-            var response = await this._inOutTaskViewModelService.TaskStepReport(inOutTaskViewModel);
-            return Ok(response);
+            var response = await this._inOutTaskViewModelService.TaskReport(inOutTaskViewModel);
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
