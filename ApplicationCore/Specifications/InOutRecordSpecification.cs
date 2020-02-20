@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class InOutRecordSpecification : BaseSpecification<InOutRecord>
     {
         public InOutRecordSpecification(string trayCode,int? type,int? ouId,int? wareHouseId,int? areaId,int? orderId,int? orderRowId,
-                                        List<int> status,int? isRead,string sCreateTime,string eCreateTime)
+                                        List<int> status,int? isRead,int? isSync,string sCreateTime,string eCreateTime)
             : base(b =>   (trayCode==null || b.TrayCode == trayCode) &&
                                              (!type.HasValue || b.Type == type) &&
                                              (!ouId.HasValue || b.OUId == ouId)&&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                                              (!orderId.HasValue || b.OrderId == orderId)&&
                                              (!orderRowId.HasValue || b.OrderRowId == orderRowId)&&
                                              (!isRead.HasValue || b.IsRead == isRead)&&
+                                             (!isSync.HasValue || b.IsSync == isSync)&&
                                              (status==null||status.Contains(b.Status))&&
                                              (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
                                              (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))

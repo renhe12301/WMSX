@@ -45,7 +45,7 @@ namespace Web.Services
                 else
                 {
                     baseSpecification = new InOutRecordSpecification(trayCode,type,ouId,wareHouseId,areaId,orderId,orderRowId,
-                                                                     taskStatus,null,sCreateTime,eCreateTime);
+                                                                     taskStatus,null,null,sCreateTime,eCreateTime);
                 }
                 var inOutRecords = await this._inOutRepository.ListAsync(baseSpecification);
                 List<InOutRecordViewModel> inOutRecordViewModels = new List<InOutRecordViewModel>();
@@ -75,7 +75,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._inOutRepository.CountAsync(new InOutRecordSpecification(trayCode,type,ouId,
-                                                      wareHouseId,areaId,orderId,orderRowId,taskStatus,null,sCreateTime,eCreateTime));
+                                                      wareHouseId,areaId,orderId,orderRowId,taskStatus,null,null,sCreateTime,eCreateTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = inOutRecordViewModels;
                     dyn.total = count;

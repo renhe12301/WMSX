@@ -15,6 +15,7 @@ namespace ApplicationCore.Entities.FlowRecord
         public int MaterialDicId { get; set; }
         public int InOutCount { get; set; }
         public int IsRead { get; set; }
+        public int IsSync { get; set; }
         public DateTime? CreateTime { get; set; }
         public int Type { get; set; }
 

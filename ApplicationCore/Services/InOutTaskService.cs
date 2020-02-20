@@ -157,7 +157,7 @@ namespace ApplicationCore.Services
             InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,
                 null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
-                    null,null,null );
+                    null,null,null,null );
             List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
             task.Step = taskStatus;
             if (taskStatus == Convert.ToInt32(TASK_STEP.任务开始))
