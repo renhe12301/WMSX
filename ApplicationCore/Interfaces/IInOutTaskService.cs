@@ -9,6 +9,9 @@ namespace ApplicationCore.Interfaces
     {
         Task EmptyOut(int areaId,int outCount);
         Task EmptyEntry(string trayCode,int areaId);
+
+        Task EntryApply(string fromPort,string barCode,int cargoHeight,string cargoWeight);
+        
         Task TaskReport(int taskId, long reportTime, int taskStatus, string error);
     }
 }

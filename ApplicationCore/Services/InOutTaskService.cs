@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Transactions;
 using ApplicationCore.Entities.TaskManager;
@@ -78,49 +79,65 @@ namespace ApplicationCore.Services
         {
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
             Guard.Against.Zero(areaId, nameof(areaId));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+
+            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null, null,
+                null, null, null);
+            List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+            if (areas.Count == 0) throw new Exception(string.Format("子库存[{0}],不存在！", areaId));
+            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
+                null, null, null, null, null, null, null, null);
+            List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+            if (warehouseTrays.Count > 0)
             {
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId,null,null,
-                                                         null,null, null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                if(areas.Count==0)throw new Exception(string.Format("子库存[{0}],不存在！",areaId));
-                WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,trayCode,null,
-                    null,null,null,null,null,null,null,null);
-                List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
-                if (warehouseTrays.Count > 0)
+                WarehouseTray warehouseTray = warehouseTrays[0];
+                if (warehouseTray.MaterialCount > 0)
                 {
-                    WarehouseTray warehouseTray = warehouseTrays[0];
-                    if (warehouseTray.MaterialCount > 0)
-                    {
-                        throw new Exception(string.Format("托盘[{0}]有物料,无法空盘入库！",trayCode));
-                    }
-                    if (warehouseTray.TrayStep!=Convert.ToInt32(TRAY_STEP.初始化))
-                    {
-                        throw new Exception(string.Format("托盘[{0}]状态！",trayCode));
-                    }
-
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
-                    await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
-                }
-                else
-                {
-                    WarehouseTray warehouseTray = new WarehouseTray
-                    {
-                        TrayCode = trayCode,
-                        CreateTime = DateTime.Now,
-                        MaterialCount = 0,
-                        TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
-                        ReservoirAreaId = areaId,
-                        OUId = areas[0].OUId,
-                        WarehouseId = areas[0].WarehouseId
-                    };
-                    await this._warehouseTrayRepository.AddAsync(warehouseTray);
+                    throw new Exception(string.Format("托盘[{0}]有物料,无法空盘入库！", trayCode));
                 }
 
+                if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
+                {
+                    throw new Exception(string.Format("托盘[{0}]状态！", trayCode));
+                }
+
+                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
+                await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
             }
-
+            else
+            {
+                WarehouseTray warehouseTray = new WarehouseTray
+                {
+                    TrayCode = trayCode,
+                    CreateTime = DateTime.Now,
+                    MaterialCount = 0,
+                    TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
+                    ReservoirAreaId = areaId,
+                    OUId = areas[0].OUId,
+                    WarehouseId = areas[0].WarehouseId
+                };
+                await this._warehouseTrayRepository.AddAsync(warehouseTray);
+            }
+            
         }
-        
+
+        public async Task EntryApply(string fromPort, string barCode, int cargoHeight, string cargoWeight)
+        {
+            Guard.Against.NullOrEmpty(fromPort, nameof(fromPort));
+            Guard.Against.NullOrEmpty(barCode, nameof(barCode));
+            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode, null, null,
+                null, null, null, null, null, null, null);
+            List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+            if (warehouseTrays.Count == 0)
+                throw new Exception(string.Format("托盘码[{0}],不存在！", barCode));
+            WarehouseTray warehouseTray = warehouseTrays[0];
+            if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.待入库))
+                throw new Exception(string.Format("托盘[{0}]未进行待入库操作", barCode));
+            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
+            warehouseTray.CargoHeight = cargoHeight;
+            warehouseTray.CargoWeight = cargoWeight;
+            await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+        }
+
         public async Task TaskReport(int taskId,long reportTime, int taskStatus,string error)
         {
             InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,
@@ -155,6 +172,7 @@ namespace ApplicationCore.Services
                 }
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
+                    
                     if (inOutRecords.Count > 0)
                     {
                         InOutRecord inOutRecord = inOutRecords[0];
@@ -163,6 +181,7 @@ namespace ApplicationCore.Services
                     }
                      this._warehouseTrayRepository.Update(warehouseTray);
                      this._inOutTaskRepository.Update(task);
+                     scope.Complete();
                 }
             }
             else if (taskStatus == Convert.ToInt32(TASK_STEP.取货完成))
@@ -174,7 +193,7 @@ namespace ApplicationCore.Services
                
                 LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId,null,
                     null, null,null, null, null,  null, null,null,
-                    null,null);
+                    null,null,null);
                 var locations = await this._locationRepository.ListAsync(locationSpec);
                 var location = locations[0];
                 location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
@@ -185,6 +204,7 @@ namespace ApplicationCore.Services
                      this._warehouseTrayRepository.Update(warehouseTray);
                      this._locationRepository.Update(location);
                      this._inOutTaskRepository.Update(task);
+                     scope.Complete();
                 }
             }
             else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
@@ -196,7 +216,7 @@ namespace ApplicationCore.Services
                 }
                 LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId,null,
                     null, null,null, null, null,  null, null,null,
-                    null,null);
+                    null,null,null);
                 var locations = await this._locationRepository.ListAsync(locationSpec);
                 var location = locations[0];
                 location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
@@ -213,6 +233,7 @@ namespace ApplicationCore.Services
                     this._warehouseTrayRepository.Update(warehouseTray);
                     this._inOutTaskRepository.Update(task);
                     this._locationRepository.Update(location);
+                    scope.Complete();
                 }
                 
             }

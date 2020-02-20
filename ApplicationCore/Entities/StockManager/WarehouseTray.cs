@@ -29,6 +29,11 @@ namespace ApplicationCore.Entities.StockManager
         public double Amount { get; set; }
 
         public string Memo { get; set; }
+
+        public int CargoHeight { get; set; }
+
+        public string CargoWeight { get; set; }
+
         public Location Location { get; set; }
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }

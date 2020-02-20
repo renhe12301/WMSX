@@ -31,6 +31,7 @@ namespace Web.Controllers.Api
         /// <param name="id">货位编号</param>
         /// <param name="sysCode">货位系统编码</param>
         /// <param name="userCode">货位用户编码</param>
+        /// <param name="type">货位类型</param>
         /// <param name="phyId">物理仓库编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">仓库编号</param>
@@ -44,10 +45,10 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string sysCode,string userCode, int? phyId,int? ouId, int? wareHouseId, int? areaId,  string status,
+            string sysCode,string userCode,int? type, int? phyId,int? ouId, int? wareHouseId, int? areaId,  string status,
             string inStocks,string isTasks,string floors,string items,string cols)
         {
-            var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, sysCode,userCode,
+            var response = await this._locationViewModelService.GetLocations(pageIndex, itemsPage, id, sysCode,userCode,type,
                 phyId,ouId, wareHouseId, areaId,  status,inStocks,isTasks,floors,items,cols);
             return Content(JsonConvert.SerializeObject(response));
         }

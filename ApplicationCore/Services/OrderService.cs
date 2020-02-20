@@ -24,13 +24,15 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<InOutRecord> _inOutTaskRepository;
+        private readonly IAsyncRepository<OrderRowBatch> _orderRowBatchRepository;
         public OrderService(IAsyncRepository<Order> orderRepository,
                                IAsyncRepository<OrderRow> orderRowRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
                                IAsyncRepository<ReservoirArea> reservoirRepository,
-                               IAsyncRepository<InOutRecord> inOutRecordRepository
+                               IAsyncRepository<InOutRecord> inOutRecordRepository,
+                               IAsyncRepository<OrderRowBatch> orderRowBatchRepository
                                )
         {
             this._orderRepository = orderRepository;
@@ -40,6 +42,7 @@ namespace ApplicationCore.Services
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._reservoirAreaRepository = reservoirRepository;
             this._inOutTaskRepository = inOutRecordRepository;
+            this._orderRowBatchRepository = orderRowBatchRepository;
         }
 
 
@@ -77,16 +80,15 @@ namespace ApplicationCore.Services
                 null, null,null,null, null, null, null, 
                 null,null,null,null);
             var orders = await this._orderRepository.ListAsync(orderSpec);
-           
-            Guard.Against.NullOrEmpty(orders, nameof(orders));
+           if(orders.Count==0)throw new Exception(string.Format("订单编号[{0}],不存在！",orderId));
             Order order = orders[0];
             var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null);
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-            Guard.Against.NullOrEmpty(orderRows, nameof(orderRows));
+            if(orderRows.Count==0)throw new Exception(string.Format("订单行编号[{0}],不存在！",orderRowId));
             OrderRow orderRow = orderRows[0];
             var areaSpec = new ReservoirAreaSpecification(areaId,null, null, null,null,null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            Guard.Against.NullOrEmpty(areas, nameof(areas));
+            if(areas.Count==0)throw new Exception(string.Format("子库存编号[{0}],不存在！",areaId));
             var area = areas[0];
             var materialDicSpec = new MaterialDicSpecification(orderRow.MaterialDicId, null,null,null,null);
             var materialDics = await this._materialDicRepository.ListAsync(materialDicSpec);
@@ -126,9 +128,10 @@ namespace ApplicationCore.Services
                 {
                     orderRow.Sorting += sortingCount;
                     this._orderRowRepository.Update(orderRow);
+                    WarehouseTray warehouseTray = null;
                     if (whTrays.Count == 0)
                     {
-                        WarehouseTray warehouseTray = new WarehouseTray
+                        warehouseTray= new WarehouseTray
                         {
                             TrayCode = trayCode,
                             CreateTime = now,
@@ -139,6 +142,7 @@ namespace ApplicationCore.Services
                             Amount = orderRow.Price * sortingCount,
                             TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
                             ReservoirAreaId = areaId,
+                            OutCount = 0,
                             OUId = area.OUId
                         };
                         var addTray = this._warehouseTrayRepository.Add(warehouseTray);
@@ -160,13 +164,13 @@ namespace ApplicationCore.Services
                     }
                     else
                     {
-                        WarehouseTray warehouseTray = whTrays[0];
+                        warehouseTray = whTrays[0];
                         int oldCount = 0;
-                        if (oldMaterials.Count > 0)
+                        if (warehouseTray.MaterialCount > 0)
                         {
                             if (oldMaterials[0].MaterialDicId != orderRow.MaterialDicId)
                                 throw new Exception("分拣物料与原有托盘上的物料不一致！");
-                            oldCount += oldMaterials[0].MaterialCount;
+                            oldCount = warehouseTray.MaterialCount ;
                         }
                         warehouseTray.MaterialCount = oldCount + sortingCount;
                         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
@@ -222,7 +226,7 @@ namespace ApplicationCore.Services
                         WarehouseId = area.WarehouseId,
                         ReservoirAreaId = areaId,
                         MaterialDicId = materialDic.Id,
-                        InOutCount = sortingCount,
+                        InOutCount = warehouseTray.MaterialCount+warehouseTray.OutCount,
                         IsRead = 0,
                         CreateTime = DateTime.Now,
                         Type = 0,
@@ -240,5 +244,71 @@ namespace ApplicationCore.Services
            
         }
 
+        public async Task OrderOut(int orderId, int orderRowId, int areaId, int sortingCount,int type)
+        {
+            Guard.Against.Zero(orderId,nameof(orderId));
+            Guard.Against.Zero(orderRowId,nameof(orderRowId));
+            Guard.Against.Zero(areaId,nameof(areaId));
+            Guard.Against.Zero(sortingCount,nameof(sortingCount));
+            
+            var orderSpec = new OrderSpecification(orderId, null,null, null, null,
+                null, null,null,null, null, null, null, 
+                null,null,null,null);
+            var orders = await this._orderRepository.ListAsync(orderSpec);
+            if(orders.Count==0)throw new Exception(string.Format("订单编号[{0}],不存在！",orderId));
+            Order order = orders[0];
+            var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null);
+            var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+            if(orderRows.Count==0)throw new Exception(string.Format("订单行编号[{0}],不存在！",orderRowId));
+            OrderRow orderRow = orderRows[0];
+            var areaSpec = new ReservoirAreaSpecification(areaId,null, null, null,null,null);
+            var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
+            if(areas.Count==0)throw new Exception(string.Format("子库存编号[{0}],不存在！",areaId));
+            var area = areas[0];
+            
+            using (ModuleLock.GetAsyncLock().LockAsync())
+            {
+                if ((orderRow.PreCount - orderRow.Sorting) > sortingCount)
+                    throw new Exception(string.Format("出库数量不能大于订单行申请数量！", areaId));
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    try
+                    {
+                        //订单，订单行数量更新
+                        if (order.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                        {
+                            order.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                            this._orderRepository.Update(order);
+                        }
+
+                        if (orderRow.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                        {
+                            orderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                        }
+
+                        orderRow.Sorting += sortingCount;
+                        this._orderRowRepository.Update(orderRow);
+                        OrderRowBatch orderRowBatch = new OrderRowBatch
+                        {
+                           Type = type,
+                           CreateTime = DateTime.Now,
+                           OrderId = orderId,
+                           OrderRowId = orderId,
+                           ReservoirAreaId = areaId,
+                           BatchCount = sortingCount
+                        };
+
+                        this._orderRowBatchRepository.Add(orderRowBatch);
+                        
+                        scope.Complete();
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

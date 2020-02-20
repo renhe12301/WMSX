@@ -11,5 +11,7 @@ namespace ApplicationCore.Interfaces
         Task SortingOrder(int orderId, int orderRowId, int sortingCount,
                                 string trayCode,int areaId);
 
+        Task OrderOut(int orderId, int orderRowId,int areaId , int sortingCount,int type);
+
     }
 }

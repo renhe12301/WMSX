@@ -27,7 +27,7 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string sysCode,string userCode,int? phyId,int? ouId, int? wareHouseId,int? areaId,string status,
+            string sysCode,string userCode,int? type,int? phyId,int? ouId, int? wareHouseId,int? areaId,string status,
             string inStocks,string isTasks,string floors,string items,string cols)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -79,12 +79,12 @@ namespace Web.Services
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,phyId,
-                        ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
+                    baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,
+                        type,phyId,ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
                 else
                 {
-                    baseSpecification = new LocationSpecification(id,sysCode,userCode,phyId,
+                    baseSpecification = new LocationSpecification(id,sysCode,userCode,phyId,type,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
 
@@ -119,7 +119,7 @@ namespace Web.Services
               
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,phyId,
+                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,type,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;
@@ -144,7 +144,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                LocationSpecification locationSpec=new LocationSpecification(null,null,null,phyId,null,
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,null,phyId,null,
                     null,null,null,null,null,null,null,null);
                 var ls = await this._locationRepository.ListAsync(locationSpec);
                 List<int> fics=new List<int>
@@ -168,7 +168,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,null,orgId,null,
                     null,null,null,null,null,null,null,null);
                 var ls = await this._locationRepository.ListAsync(locationSpec);
                 response.Data = ls.Max(l=>l.Floor);
@@ -186,7 +186,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,null,orgId,null,
                     null,null,null,null,null,null,null,null);
                 var ls = await this._locationRepository.ListAsync(locationSpec);
                 response.Data = ls.Max(l=>l.Item);
@@ -204,7 +204,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                LocationSpecification locationSpec=new LocationSpecification(null,null,null,orgId,null,
+                LocationSpecification locationSpec=new LocationSpecification(null,null,null,null,orgId,null,
                     null,null,null,null,null,null,null,null);
                 var ls = await this._locationRepository.ListAsync(locationSpec);
                 response.Data = ls.Max(l=>l.Col);
