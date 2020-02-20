@@ -88,7 +88,7 @@ namespace Web.Services
                         TargetId=e.TargetId,
                         StatusStr= Enum.GetName(typeof(TASK_STATUS), e.Status),
                         StepStr = Enum.GetName(typeof(TASK_STEP), e.Step),
-                        Type =  Enum.GetName(typeof(TASK_Type), e.Type),
+                        Type =  Enum.GetName(typeof(TASK_TYPE), e.Type),
                         OUName = e.OU?.OUName,
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
                         WarehouseName = e.Warehouse?.WhName,
@@ -120,6 +120,22 @@ namespace Web.Services
                 response.Data = ex.Message;
             }
             return response;
+        }
+
+        public async Task<ResponseResultViewModel> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel)
+        {
+            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._inOutTaskService.OutConfirm(warehouseTrayViewModel.TrayCode);
+            }
+            catch (Exception ex)
+            {
+                responseResultViewModel.Code = 500;
+                responseResultViewModel.Data = ex.Message;
+            }
+
+            return responseResultViewModel;
         }
 
         public async Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)

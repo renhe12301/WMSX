@@ -54,10 +54,9 @@ namespace ApplicationCore.Misc
 
     public enum LOCATION_TYPE
     {
-        入库区货位 = 0,
-        出库区货位 = 1,
-        出入库区货位 = 2,
-        仓库区货位 = 3
+        仓库区货位 = 0,
+        入库区货位 = 1,
+        出库区货位 = 2
     }
     
     public enum LOCATION_TASK
@@ -128,7 +127,7 @@ namespace ApplicationCore.Misc
         完成=2
     }
     
-    public enum TASK_Type
+    public enum TASK_TYPE
     {
         物料入库=0,
         物料出库=1,
@@ -142,11 +141,5 @@ namespace ApplicationCore.Misc
         出库 = 1
     }
 
-    public enum TASK_FLAG
-    {
-        入库 = 0,
-        出库 = 1
-    }
-    
-   
+
 }

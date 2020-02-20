@@ -190,5 +190,22 @@ namespace Web.Services
 
             return response;
         }
+
+        public async Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.Value,orderRowBatchViewModel.OrderRowId.Value,
+                    orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

@@ -311,6 +311,7 @@
             <e p="InOutRecordViewModel.cs" t="Include" />
           </e>
           <e p="OrderManager" t="Include">
+            <e p="OrderRowBatchViewModel.cs" t="Include" />
             <e p="OrderRowViewModel.cs" t="Include" />
             <e p="OrderTypeViewModel.cs" t="Include" />
             <e p="OrderViewModel.cs" t="Include" />

@@ -49,6 +49,18 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
+        /// 出库完成待确认
+        /// </summary>
+        /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel)
+        {
+            var response = await this._inOutTaskViewModelService.OutConfirm(warehouseTrayViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
         /// 出入库任务步骤上报
         /// </summary>
         /// <param name="inOutTaskViewModel">出入库任务实体对象</param>

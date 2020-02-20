@@ -13,5 +13,7 @@ namespace ApplicationCore.Interfaces
         Task EntryApply(string fromPort,string barCode,int cargoHeight,string cargoWeight);
         
         Task TaskReport(int taskId, long reportTime, int taskStatus, string error);
+
+        Task OutConfirm(string trayCode);
     }
 }

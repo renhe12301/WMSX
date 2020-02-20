@@ -87,6 +87,17 @@ namespace Web.Controllers.Api
             var response = await this._orderViewModelService.CreateOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
+        /// <summary>
+        /// 订单出库
+        /// </summary>
+        /// <param name="orderRowBatchViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
+        {
+            var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
         
 
     }

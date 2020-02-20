@@ -18,6 +18,8 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel);
         
         Task<ResponseResultViewModel> SortingOrder(OrderRowViewModel orderRow);
+        
+        Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel);
 
     }
 

@@ -97,7 +97,8 @@ namespace ApplicationCore.Services
 
                 if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
                 {
-                    throw new Exception(string.Format("托盘[{0}]状态！", trayCode));
+                    throw new Exception(string.Format("托盘[{0}]状态未初始化,当前状态为[{1}]！",
+                        trayCode, Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep)));
                 }
 
                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
@@ -241,6 +242,23 @@ namespace ApplicationCore.Services
             {
                 this._inOutTaskRepository.Update(task);
             }
+        }
+
+        public async Task OutConfirm(string trayCode)
+        {
+           Guard.Against.NullOrEmpty(trayCode,nameof(trayCode));
+           WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
+               null, null, null, null, null, null, null, null);
+           List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+           if(warehouseTrays.Count==0)
+               throw new Exception(string.Format("托盘[{0}],不存在！",trayCode));
+           WarehouseTray warehouseTray = warehouseTrays[0];
+           if(warehouseTray.TrayStep!=Convert.ToInt32(TRAY_STEP.出库完成等待确认))
+               throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
+                   trayCode));
+           warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount;
+           warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
+           await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
         }
     }
 }

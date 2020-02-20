@@ -19,5 +19,7 @@ namespace Web.Interfaces
                                                     int? wareHouseId, int? areaId,
                                                     string sCreateTime,string eCreateTIme,
                                                     string sFinishTime,string eFinishTime);
+        
+        Task<ResponseResultViewModel> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel);
     }
 }
