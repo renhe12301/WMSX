@@ -20,16 +20,13 @@ namespace Web.Services
 
         private readonly IEmployeeService _employeeService;
         private readonly IAsyncRepository<Employee> _employeeRepository;
-        private readonly IAsyncRepository<EmployeeOrg> _employeeOrgRepository;
         private readonly IAsyncRepository<EmployeeRole> _employeeRoleRepository;
         public EmployeeViewModelService(IEmployeeService employeeService,
-                                        IAsyncRepository<EmployeeOrg> employeeOrgRepository,
                                         IAsyncRepository<Employee> employeeRepository,
                                         IAsyncRepository<EmployeeRole> employeeRoleRepository)
             
         {
             this._employeeService = employeeService;
-            this._employeeOrgRepository = employeeOrgRepository;
             this._employeeRepository = employeeRepository;
             this._employeeRoleRepository = employeeRoleRepository;
         }
@@ -98,23 +95,22 @@ namespace Web.Services
             try
             {
                 EmployeeRoleSpecification employeeRoleSpec = new EmployeeRoleSpecification(null, null, null);
-                EmployeeOrgSpecification employeeOrgSpec = new EmployeeOrgSpecification(null, null, null);
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(null, orgId, null);
                 var employeeRoles = await this._employeeRoleRepository.ListAsync(employeeRoleSpec);
-                var employeeOrgs = await this._employeeOrgRepository.ListAsync(employeeOrgSpec);
+                var employees = await this._employeeRepository.ListAsync(employeeSpec);
                 
                 if (orgId.HasValue)
                 {
-                    BaseSpecification<EmployeeOrg> baseSpecification = null;
+                    BaseSpecification<Employee> baseSpecification = null;
                     if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                     {
-                        baseSpecification = new EmployeeOrgPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            orgId,employeeId, employeeName);
+                        baseSpecification = new EmployeePaginatedSpecification(pageIndex.Value, itemsPage.Value,
+                            employeeId, orgId, employeeName);
                     }
                     else
                     {
-                        baseSpecification = new EmployeeOrgSpecification(orgId,employeeId, employeeName);
+                        baseSpecification = new EmployeeSpecification(employeeId,orgId, employeeName);
                     }
-                    var employees = await this._employeeOrgRepository.ListAsync(baseSpecification);
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
                     {
@@ -123,25 +119,25 @@ namespace Web.Services
                         EmployeeViewModel employViewModel = new EmployeeViewModel
                         {
                             Id = e.Id,
-                            UserName = e.Employee.UserName,
-                            UserCode = e.Employee.UserCode,
-                            Sex = e.Employee.Sex,
-                            Telephone = e.Employee.Telephone,
-                            Email = e.Employee.Email,
-                            Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Employee.Status),
-                            CreateTime = e.Employee.CreateTime.ToString(),
-                            LoginName = e.Employee.LoginName,
-                            LoginPwd = e.Employee.LoginPwd,
+                            UserName = e.UserName,
+                            UserCode = e.UserCode,
+                            Sex = e.Sex,
+                            Telephone = e.Telephone,
+                            Email = e.Email,
+                            Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Status),
+                            CreateTime = e.CreateTime.ToString(),
+                            LoginName = e.LoginName,
+                            LoginPwd = e.LoginPwd,
                             RoleName = string.Join('、', roleNames),
                             OrgName = e.Organization.OrgName,
-                            Img = e.Employee.Img
+                            Img = e.Img
                         };
                         employViewModels.Add(employViewModel);
                     });
                     if (pageIndex > -1 && itemsPage > 0)
                     {
-                        var count = await this._employeeOrgRepository.CountAsync(
-                            new EmployeeOrgSpecification(orgId,null, employeeName));
+                        var count = await this._employeeRepository.CountAsync(
+                            new EmployeeSpecification(orgId,orgId, employeeName));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = employViewModels;
                         dyn.total = count;
@@ -158,21 +154,19 @@ namespace Web.Services
                     if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                     {
                         baseSpecification = new EmployeePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            employeeId, employeeName);
+                            employeeId,orgId, employeeName);
                     }
                     else
                     {
-                        baseSpecification = new EmployeeSpecification(employeeId, employeeName,null);
+                        baseSpecification = new EmployeeSpecification(employeeId, orgId,employeeName);
                     }
-
-                    var employees = await this._employeeRepository.ListAsync(baseSpecification);
+                    
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
                     {
                         var roleNames = employeeRoles.FindAll(er => er.EmployeeId == e.Id)
                             .ConvertAll(er => er.SysRole.RoleName);
-                        var orgNames = employeeOrgs.FindAll(eo => eo.EmployeeId == e.Id)
-                            .ConvertAll(eo => eo.Organization.OrgName);
+                       
                         EmployeeViewModel employViewModel = new EmployeeViewModel
                         {
                             Id = e.Id,
@@ -186,7 +180,7 @@ namespace Web.Services
                             LoginName = e.LoginName,
                             LoginPwd = e.LoginPwd,
                             RoleName = string.Join('、', roleNames),
-                            OrgName = string.Join('、', orgNames),
+                            OrgName = e.Organization.OrgName,
                             Img = e.Img
                         };
                         employViewModels.Add(employViewModel);
@@ -194,7 +188,7 @@ namespace Web.Services
                     if (pageIndex > -1 && itemsPage > 0)
                     {
                         var count = await this._employeeRepository.CountAsync(
-                            new EmployeeSpecification(employeeId, employeeName,null));
+                            new EmployeeSpecification(employeeId, orgId,employeeName));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = employViewModels;
                         dyn.total = count;

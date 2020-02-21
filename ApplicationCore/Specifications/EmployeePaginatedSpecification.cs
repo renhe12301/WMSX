@@ -5,9 +5,10 @@ namespace ApplicationCore.Specifications
 {
     public class EmployeePaginatedSpecification:BaseSpecification<Employee>
     {
-        public EmployeePaginatedSpecification(int skip,int take,int? id,string userName)
+        public EmployeePaginatedSpecification(int skip,int take,int? id,int? orgId,string userName)
             : base(b =>(!id.HasValue || b.Id == id) &&
-                  (userName == null || b.UserName == userName))
+                       (!orgId.HasValue || b.OrganizationId == orgId) &&    
+                       (userName == null || b.UserName.Contains(userName)))
         {
             ApplyPaging(skip, take);
         }

@@ -22,7 +22,6 @@ namespace Infrastructure.Data
         public DbSet<RoleMenu> RoleMenu { get; set; }
         public DbSet<Employee> Employee { get; set; }
         public DbSet<EmployeeRole> EmployeeRole { get; set; }
-        public DbSet<EmployeeOrg> EmployeeOrg { get; set; }
         public DbSet<MaterialType> MaterialType { get; set; }
         public DbSet<MaterialDic> MaterialDic { get; set; }
         public DbSet<Location> Location { get; set; }

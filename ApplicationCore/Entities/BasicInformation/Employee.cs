@@ -17,6 +17,8 @@ namespace ApplicationCore.Entities.BasicInformation
         public DateTime? EndTime { get; set; }
         public string Memo { get; set; }
         public string Img { get; set; }
+        public int OrganizationId { get; set; }
+        public Organization Organization { get; set; }
 
     }
 }

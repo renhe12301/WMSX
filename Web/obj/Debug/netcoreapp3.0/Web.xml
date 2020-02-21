@@ -82,12 +82,13 @@
             出入库记录API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取出入库记录
             </summary>
             <param name="pageIndex">当前页面索引</param>
             <param name="itemsPage">当前也显示大小</param>
+            <param name="trayCode">托盘编码</param>
             <param name="type">出入库类型</param>
             <param name="orderId">订单编号</param>
             <param name="orderRowId">订单行编号</param>
@@ -104,28 +105,28 @@
             出入库任务操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.InOutTaskController.EmptyAwaitInApply(Web.ViewModels.StockManager.WarehouseTrayViewModel)">
+        <member name="M:Web.Controllers.Api.InOutTaskController.EmptyEntry(Web.ViewModels.StockManager.WarehouseTrayViewModel)">
             <summary>
-            空托盘待入库任务申请
+            空托盘入库任务申请
             </summary>
             <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.InOutTaskController.InApply(Web.ViewModels.TaskManager.InOutTaskViewModel)">
+        <member name="M:Web.Controllers.Api.InOutTaskController.EmptyOut(Web.ViewModels.StockManager.WarehouseTrayViewModel)">
             <summary>
-            入库申请
+            空托盘出库任务申请
             </summary>
-            <param name="inOutTaskViewModel">出入库任务实体对象</param>
+            <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.InOutTaskController.AwaitOutApply(Web.ViewModels.TaskManager.InOutTaskViewModel)">
+        <member name="M:Web.Controllers.Api.InOutTaskController.OutConfirm(Web.ViewModels.StockManager.WarehouseTrayViewModel)">
             <summary>
-            待出库任务申请
+            出库完成待确认
             </summary>
-            <param name="inOutTaskViewModel">出入库任务实体对象</param>
+            <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.InOutTaskController.TaskStepReport(Web.ViewModels.TaskManager.InOutTaskViewModel)">
+        <member name="M:Web.Controllers.Api.InOutTaskController.TaskReport(Web.ViewModels.TaskManager.InOutTaskViewModel)">
             <summary>
             出入库任务步骤上报
             </summary>
@@ -138,7 +139,7 @@
             货位信息操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.LocationController.GetLocations(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             获取货位信息
             </summary>
@@ -147,6 +148,7 @@
             <param name="id">货位编号</param>
             <param name="sysCode">货位系统编码</param>
             <param name="userCode">货位用户编码</param>
+            <param name="type">货位类型</param>
             <param name="phyId">物理仓库编号</param>
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">仓库编号</param>
@@ -308,7 +310,7 @@
             <param name="eFinishTime">完成结束时间</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.SortingOrder2Area(Web.ViewModels.OrderManager.OrderRowViewModel)">
+        <member name="M:Web.Controllers.Api.OrderController.SortingOrder(Web.ViewModels.OrderManager.OrderRowViewModel)">
             <summary>
             订单入库分拣
             </summary>
@@ -320,6 +322,13 @@
             创建订单
             </summary>
             <param name="orderViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.OrderController.OrderOut(Web.ViewModels.OrderManager.OrderRowBatchViewModel)">
+            <summary>
+            订单出库
+            </summary>
+            <param name="orderRowBatchViewModel"></param>
             <returns></returns>
         </member>
         <member name="M:Web.Controllers.Api.OrderRowController.GetOrderRows(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String)">
@@ -590,7 +599,7 @@
             入库订单处理定时任务
             </summary>
         </member>
-        <member name="T:Web.Jobs.JyhStockJob">
+        <member name="T:Web.Jobs.StockSyncJob">
             <summary>
             库存同步处理定时任务
             </summary>

@@ -5,10 +5,10 @@ namespace ApplicationCore.Specifications
 {
     public class EmployeeSpecification:BaseSpecification<Employee>
     {
-        public EmployeeSpecification(int? id,string userName,string loginName)
+        public EmployeeSpecification(int? id,int? orgId,string userName)
             : base(b =>(!id.HasValue || b.Id == id) &&
-                  (userName == null || b.UserName == userName)&&
-                  (loginName == null || b.LoginName == loginName))
+                       (!orgId.HasValue || b.OrganizationId == orgId)&&
+                       (userName == null || b.UserName.Contains(userName)))
         {
            
         }
