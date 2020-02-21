@@ -40,16 +40,16 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 分拣数量
         /// </summary>
-        public int Sorting { get; set; }
+        public int? Sorting { get; set; }
         /// <summary>
         /// 实际数量
         /// </summary>
-        public int RealityCount { get; set; }
+        public int? RealityCount { get; set; }
 
         /// <summary>
         /// 取消数量
         /// </summary>
-        public int CancelCount { get; set; }
+        public int? CancelCount { get; set; }
 
         /// <summary>
         /// 完成进度
@@ -90,7 +90,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 第三方系统编号
         /// </summary>
-        public int SourceId { get; set; }
+        public int? SourceId { get; set; }
         
         /// <summary>
         /// 不含税单价

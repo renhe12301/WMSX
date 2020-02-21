@@ -134,7 +134,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 第三方系统状态标记
         /// </summary>
-        public int StatusTag { get; set; }
+        public int? StatusTag { get; set; }
 
         /// <summary>
         /// 经办人编号
@@ -149,7 +149,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 第三方系统编号
         /// </summary>
-        public int SourceId { get; set; }
+        public int? SourceId { get; set; }
 
         /// <summary>
         /// 关联订单行

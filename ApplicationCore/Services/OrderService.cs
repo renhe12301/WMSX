@@ -101,7 +101,7 @@ namespace ApplicationCore.Services
             MaterialDic materialDic = materialDics[0];
             
             if (sortingCount > orderRow.PreCount) throw new Exception("分拣数量不能大于申请数量！");
-            int surplusCount = orderRow.PreCount - orderRow.Sorting;
+            int surplusCount = orderRow.PreCount - orderRow.Sorting.GetValueOrDefault();
             if (sortingCount > surplusCount)
                 throw new Exception(string.Format("已经分拣了{0}个,最多还能分拣{1}个", orderRow.Sorting,surplusCount));
             

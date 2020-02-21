@@ -64,7 +64,7 @@ namespace Web.Services
                         FinishTime = e.FinishTime.ToString(),
                         PreCount = e.PreCount,
                         RealityCount = e.PreCount,
-                        Sorting = e.Sorting,
+                        Sorting = e.Sorting.GetValueOrDefault(),
                         Status = e.Status,
                         StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress.GetValueOrDefault(),
