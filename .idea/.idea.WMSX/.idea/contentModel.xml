@@ -19,7 +19,6 @@
             <e p="EBSProject.cs" t="Include" />
             <e p="EBSTask.cs" t="Include" />
             <e p="Employee.cs" t="Include" />
-            <e p="EmployeeOrg.cs" t="Include" />
             <e p="Location.cs" t="Include" />
             <e p="LogRecord.cs" t="Include" />
             <e p="MaterialDic.cs" t="Include" />
@@ -115,8 +114,6 @@
           <e p="EBSTaskPaginatedSpecification.cs" t="Include" />
           <e p="EBSTaskSpecification.cs" t="Include" />
           <e p="EmployeeIdSetSpecification.cs" t="Include" />
-          <e p="EmployeeOrgPaginatedSpecification.cs" t="Include" />
-          <e p="EmployeeOrgSpecification.cs" t="Include" />
           <e p="EmployeePaginatedSpecification.cs" t="Include" />
           <e p="EmployeeRolePaginatedSpecification.cs" t="Include" />
           <e p="EmployeeRoleSpecification.cs" t="Include" />

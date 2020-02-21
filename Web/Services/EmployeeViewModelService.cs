@@ -95,7 +95,7 @@ namespace Web.Services
             try
             {
                 EmployeeRoleSpecification employeeRoleSpec = new EmployeeRoleSpecification(null, null, null);
-                EmployeeSpecification employeeSpec = new EmployeeSpecification(null, orgId, null);
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(employeeId, orgId, employeeName);
                 var employeeRoles = await this._employeeRoleRepository.ListAsync(employeeRoleSpec);
                 var employees = await this._employeeRepository.ListAsync(employeeSpec);
                 
