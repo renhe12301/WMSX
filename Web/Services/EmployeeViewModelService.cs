@@ -152,7 +152,7 @@ namespace Web.Services
                 else
                 {
                     BaseSpecification<Employee> baseSpecification = null;
-                    if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                    if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                     {
                         baseSpecification = new EmployeePaginatedSpecification(pageIndex.Value, itemsPage.Value,
                             employeeId,orgId, employeeName);
@@ -165,6 +165,7 @@ namespace Web.Services
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
                     {
+                        string md5 = e.MD5String();
                         var roleNames = employeeRoles.FindAll(er => er.EmployeeId == e.Id)
                             .ConvertAll(er => er.SysRole.RoleName);
                        
