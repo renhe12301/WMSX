@@ -130,6 +130,7 @@ namespace Web.Services
                             LoginPwd = e.LoginPwd,
                             RoleName = string.Join('、', roleNames),
                             OrgName = e.Organization.OrgName,
+                            OrgId = e.OrganizationId.GetValueOrDefault(),
                             Img = e.Img
                         };
                         employViewModels.Add(employViewModel);
@@ -181,6 +182,7 @@ namespace Web.Services
                             LoginPwd = e.LoginPwd,
                             RoleName = string.Join('、', roleNames),
                             OrgName = e.Organization.OrgName,
+                            OrgId = e.OrganizationId.GetValueOrDefault(),
                             Img = e.Img
                         };
                         employViewModels.Add(employViewModel);
@@ -208,7 +210,30 @@ namespace Web.Services
             return response;
         }
 
-      
+
+        public async Task<ResponseResultViewModel> Login(EmployeeViewModel employViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                EmployeeLoginSpecification employeeLoginSpec = new EmployeeLoginSpecification(employViewModel.LoginName,employViewModel.LoginPwd);
+                List<Employee> employees = await this._employeeRepository.ListAsync(employeeLoginSpec);
+                if(employees.Count==0)throw new Exception("用户名或者密码错误,登录失败！");
+                EmployeeRoleSpecification employeeRoleSpec = new EmployeeRoleSpecification(null,employees[0].Id,null);
+                List<EmployeeRole> employeeRoles = await this._employeeRoleRepository.ListAsync(employeeRoleSpec);
+                dynamic dym = new ExpandoObject();
+                dym.Roles = employeeRoles.ConvertAll(e => e.SysRole);
+                dym.OrgId = employees[0].OrganizationId.GetValueOrDefault();
+                response.Data = dym;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> Logout(EmployeeViewModel employViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };

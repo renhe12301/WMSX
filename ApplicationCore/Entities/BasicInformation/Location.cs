@@ -27,7 +27,7 @@ namespace ApplicationCore.Entities.BasicInformation
 
         public int? PhyWarehouseId { get; set; }
 
-        public int Type { get; set; }
+        public int? Type { get; set; }
         public OU OU { get; set; }
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }

@@ -39,6 +39,13 @@
             员工信息操作API
             </summary>
         </member>
+        <member name="M:Web.Controllers.Api.EmployeeController.Login(Web.ViewModels.BasicInformation.EmployeeViewModel)">
+            <summary>
+            员工登录
+            </summary>
+            <param name="employViewModel"></param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.EmployeeController.GetEmployees(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
             <summary>
             获取员工信息

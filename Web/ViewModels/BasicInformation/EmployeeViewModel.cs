@@ -19,6 +19,7 @@ namespace Web.ViewModels.BasicInformation
         public string CreateTime { get; set; }
         public string Memo { get; set; }
         public string OrgName { get; set; }
+        public int OrgId { get; set; }
         public string RoleName { get; set; }
         public string Img { get; set; }
         public List<int> UserIds { get; set; }

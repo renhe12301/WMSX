@@ -12,6 +12,7 @@ namespace ApplicationCore.Specifications
             : base(b => (!id.HasValue || b.Id == id) &&
                         (sysCode==null || b.SysCode.Contains(sysCode))&&
                         (userCode==null || b.UserCode.Contains(userCode))&&
+                        (!type.HasValue || b.Type == type) &&
                         (!phyId.HasValue || b.PhyWarehouseId == phyId) &&
                         (!ouId.HasValue || b.OUId== ouId) &&
                        (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&

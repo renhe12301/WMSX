@@ -8,6 +8,9 @@ namespace Web.Interfaces
 {
     public interface IEmployeeViewModelService
     {
+        
+        Task<ResponseResultViewModel> Login(EmployeeViewModel employViewModel);
+        
         Task<ResponseResultViewModel> Logout(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> Enable(EmployeeViewModel employViewModel);
         Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel);

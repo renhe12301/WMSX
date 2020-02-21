@@ -84,7 +84,7 @@ namespace Web.Services
                 }
                 else
                 {
-                    baseSpecification = new LocationSpecification(id,sysCode,userCode,phyId,type,
+                    baseSpecification = new LocationSpecification(id,sysCode,userCode,type,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
 

@@ -22,6 +22,17 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
+        /// 员工登录
+        /// </summary>
+        /// <param name="employViewModel"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Login(EmployeeViewModel employViewModel)
+        {
+            var response = await this._employeeViewModelService.Login(employViewModel);
+            return Content(JsonConvert.SerializeObject(response));;
+        }
+
+        /// <summary>
         /// 获取员工信息
         /// </summary>
         /// <param name="pageIndex">分页索引</param>

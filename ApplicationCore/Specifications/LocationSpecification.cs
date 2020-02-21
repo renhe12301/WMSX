@@ -24,7 +24,6 @@ namespace ApplicationCore.Specifications
                         (items==null || items.Contains(b.Item.Value))&&
                         (cols==null || cols.Contains(b.Col.Value)))
         {
-            ApplyOrderBy(b=>b.Floor&b.Item&b.Col);
             AddInclude(b => b.OU);
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.ReservoirArea);
