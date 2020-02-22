@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using ApplicationCore.Entities.FlowRecord;
@@ -9,6 +10,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
+using Web.Interfaces;
 
 namespace Web.Jobs
 {
@@ -20,15 +22,17 @@ namespace Web.Jobs
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
-
+        private readonly ILogRecordService _logRecordService;
         public OrderStatusSyncJob(IAsyncRepository<InOutRecord> inOutRecordRepository,
             IAsyncRepository<Order> orderRepository,
-            IAsyncRepository<OrderRow> orderRowRepository
+            IAsyncRepository<OrderRow> orderRowRepository,
+            ILogRecordService logRecordService
         )
         {
             this._inOutRecordRepository = inOutRecordRepository;
             this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
+            this._logRecordService = logRecordService;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -82,10 +86,31 @@ namespace Web.Jobs
                     this._inOutRecordRepository.Update(updInOutRecords);
                     scope.Complete();
                 }
+                StringBuilder logBuilder = new StringBuilder();
+                if (updOrders.Count > 0)
+                    logBuilder.Append(string.Format("同步订单[{0}]状态！\n",string.Join(',',updOrders.ConvertAll(o=>o.Id))));
+                if(updOrderRows.Count>0)
+                    logBuilder.Append(string.Format("同步订单行[{0}]状态！\n",string.Join(',',updOrderRows.ConvertAll(or=>or.Id))));
+                if(inOutRecords.Count>0)
+                    logBuilder.Append(string.Format("同步订单行子行[{0}]状态！",string.Join(',',inOutRecords.ConvertAll(ior=>ior.Id))));
+
+                string record = logBuilder.ToString();
+                if(!string.IsNullOrEmpty(record))
+                    await this._logRecordService.AddLog(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.定时任务日志),
+                        LogDesc = record,
+                        CreateTime = DateTime.Now
+                    });
             }
             catch (Exception ex)
             {
-                
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
         }
     }

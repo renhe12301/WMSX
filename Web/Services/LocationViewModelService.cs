@@ -7,6 +7,7 @@ using Web.Interfaces;
 using Web.ViewModels;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using Web.ViewModels.BasicInformation;
@@ -17,12 +18,15 @@ namespace Web.Services
     {
         private readonly ILocationService _locationService;
         private readonly IAsyncRepository<Location> _locationRepository;
+        private readonly ILogRecordService _logRecordService;
 
         public LocationViewModelService(ILocationService locationService,
-                                        IAsyncRepository<Location> locationRepository)
+                                        IAsyncRepository<Location> locationRepository,
+                                        ILogRecordService logRecordService)
         {
             this._locationService = locationService;
             this._locationRepository = locationRepository;
+            this._logRecordService = logRecordService;
         }
         
         
@@ -234,11 +238,27 @@ namespace Web.Services
                 };
                 await this._locationService.AddLocation(location);
                 response.Data = location.Id;
+                
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],添加货位[{1}]",
+                              locationViewModel.PhyWarehouseId,
+                              locationViewModel.SysCode),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -251,11 +271,28 @@ namespace Web.Services
                 if(!locationViewModel.PhyWarehouseId.HasValue)throw new Exception("生成货位,实体仓库编号不能为空！");
                 await this._locationService.BuildLocation(locationViewModel.PhyWarehouseId.Value,
                     locationViewModel.Row, locationViewModel.Rank, locationViewModel.Col);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],生成[{1}]层,[{2}]排,[{3}]列货位",
+                                            locationViewModel.PhyWarehouseId,
+                                            locationViewModel.Row,
+                                            locationViewModel.Rank,
+                                            locationViewModel.Col),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -266,11 +303,27 @@ namespace Web.Services
             try
             {
                 await this._locationService.Clear(locationViewModel.LocationIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],清理货位[{1}]",
+                        locationViewModel.PhyWarehouseId,
+                        locationViewModel.SysCode),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
+                
             }
             return response;
         }
@@ -281,11 +334,26 @@ namespace Web.Services
             try
             {
                 await this._locationService.Disable(locationViewModel.LocationIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],禁用货位[{1}]",
+                        locationViewModel.PhyWarehouseId,
+                        locationViewModel.SysCode),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -296,11 +364,26 @@ namespace Web.Services
             try
             {
                 await this._locationService.Enable(locationViewModel.LocationIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],启用货位[{1}]",
+                        locationViewModel.PhyWarehouseId,
+                        locationViewModel.SysCode),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -312,11 +395,26 @@ namespace Web.Services
             try
             {
                 await this._locationService.UpdateLocation(locationViewModel.Id,locationViewModel.SysCode,locationViewModel.UserCode);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("物理仓库[{0}],更新货位[{1}]",
+                        locationViewModel.PhyWarehouseId,
+                        locationViewModel.SysCode),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }

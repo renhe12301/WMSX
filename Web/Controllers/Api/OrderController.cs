@@ -72,6 +72,7 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> SortingOrder(OrderRowViewModel orderRowViewModel)
         {
+            orderRowViewModel.Tag = GetLoginUser();
             var response = await this._orderViewModelService.SortingOrder(orderRowViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -84,6 +85,7 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderViewModel orderViewModel)
         {
+            orderViewModel.Tag = GetLoginUser();
             var response = await this._orderViewModelService.CreateOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -95,6 +97,7 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
         {
+            orderRowBatchViewModel.Tag = GetLoginUser();
             var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }

@@ -32,6 +32,7 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> AssignLocation(LocationViewModel locationViewModel)
         {
+            locationViewModel.Tag = GetLoginUser();
             var response = await this._reservoirAreaViewModelService.AssignLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }

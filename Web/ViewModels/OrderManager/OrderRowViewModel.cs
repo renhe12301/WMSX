@@ -37,5 +37,7 @@ namespace Web.ViewModels.OrderManager
         public string EBSTaskName { get; set; }
 
         public string TrayCode { get; set; }
+
+        public object Tag { get; set; }
     }
 }

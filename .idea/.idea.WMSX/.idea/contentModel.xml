@@ -20,7 +20,6 @@
             <e p="EBSTask.cs" t="Include" />
             <e p="Employee.cs" t="Include" />
             <e p="Location.cs" t="Include" />
-            <e p="LogRecord.cs" t="Include" />
             <e p="MaterialDic.cs" t="Include" />
             <e p="MaterialType.cs" t="Include" />
             <e p="Organization.cs" t="Include" />

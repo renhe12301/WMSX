@@ -28,6 +28,9 @@ namespace Web.ViewModels.BasicInformation
         public int Row { get; set; }
         public int Rank { get; set; }
         public int Col { get; set; }
+
+        public object Tag { get; set; }
+
         public List<int> LocationIds { get; set; }
     }
 

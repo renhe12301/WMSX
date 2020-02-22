@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
+using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Interfaces;
 using Web.ViewModels;
 using Web.Interfaces;
 using Web.ViewModels.BasicInformation;
 using ApplicationCore.Specifications;
 using ApplicationCore.Misc;
+using Microsoft.AspNetCore.Http;
 
 namespace Web.Services
 {
@@ -16,11 +18,14 @@ namespace Web.Services
     {
         private readonly IReservoirAreaService _reservoirAreaService;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
+        private readonly ILogRecordService _logRecordService;
         public ReservoirAreaViewModelService(IReservoirAreaService reservoirAreaService,
-                                             IAsyncRepository<ReservoirArea> reservoirAreaRepository)
+                                             IAsyncRepository<ReservoirArea> reservoirAreaRepository,
+                                             ILogRecordService logRecordService)
         {
             this._reservoirAreaService = reservoirAreaService;
             this._reservoirAreaRepository = reservoirAreaRepository;
+            this._logRecordService = logRecordService;
         }
 
 
@@ -89,11 +94,24 @@ namespace Web.Services
             {
                 if(!locationViewModel.ReservoirAreaId.HasValue)throw new Exception("分配货位,库区编号不能为空！");
                 await this._reservoirAreaService.AssignLocation(locationViewModel.ReservoirAreaId.Value, locationViewModel.LocationIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = string.Format("子库存[{0}],分配货位！",locationViewModel.ReservoirAreaId),
+                    Founder = locationViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }

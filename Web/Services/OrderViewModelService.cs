@@ -134,13 +134,6 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                    LogDesc = string.Format("创建退库订单[{0}]",orderViewModel.OrderNumber),
-                    CreateTime = DateTime.Now
-                });
-                
                 Order order = new Order
                 {
                     OrderNumber = orderViewModel.OrderNumber,
@@ -175,6 +168,14 @@ namespace Web.Services
                 });
                var id = await this._orderService.CreateOrder(order);
                response.Data = id;
+               await this._logRecordService.AddLog(new LogRecord
+               {
+                   LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                   LogDesc = string.Format("创建退库订单[{0}]",
+                              orderViewModel.OrderNumber),
+                   Founder = orderViewModel.Tag.ToString(),
+                   CreateTime = DateTime.Now
+               });
             }
             catch (Exception ex)
             {
@@ -198,6 +199,17 @@ namespace Web.Services
             {
                 await this._orderService.SortingOrder(orderRow.OrderId,
                     orderRow.Id, orderRow.Sorting, orderRow.TrayCode,orderRow.ReservoirAreaId.Value);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("订单[{0}]出库,订单行[{1}],分拣数量[{2}],分拣托盘[{3}]",
+                              orderRow.OrderId,
+                              orderRow.Id,
+                              orderRow.Sorting,
+                              orderRow.TrayCode),
+                    Founder = orderRow.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
@@ -221,6 +233,17 @@ namespace Web.Services
             {
                 await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.Value,orderRowBatchViewModel.OrderRowId.Value,
                     orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("订单[{0}]出库,订单行[{1}],出库批次数量[{2}],出库方式[{3}]",
+                                    orderRowBatchViewModel.OrderId,
+                                    orderRowBatchViewModel.OrderRowId,
+                                    orderRowBatchViewModel.BatchCount,
+                                    orderRowBatchViewModel.Type),
+                    Founder = orderRowBatchViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {

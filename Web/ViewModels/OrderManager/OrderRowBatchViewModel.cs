@@ -7,5 +7,7 @@ namespace Web.ViewModels.OrderManager
         public int BatchCount { get; set; }
         public int ReservoirAreaId { get; set; }
         public int Type { get; set; }
+
+        public object Tag { get; set; }
     }
 }
