@@ -8,6 +8,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
+using ApplicationCore.Entities.FlowRecord;
 using Ardalis.GuardClauses;
 using NeoSmart.AsyncLock;
 using IOrderService = ApplicationCore.Interfaces.IOrderService;
@@ -28,7 +29,8 @@ namespace Web.WebServices.Services
         private readonly IAsyncRepository<Employee> _employeeRepository;
         private readonly IAsyncRepository<Organization> _organizationRepository;
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
-        
+        private readonly ILogRecordService _logRecordService;
+
         public OrderSOAPService(IOrderService orderService,
                                 IAsyncRepository<OU> ouRepository,
                                 IAsyncRepository<Order> orderRepository,
@@ -40,7 +42,8 @@ namespace Web.WebServices.Services
                                 IAsyncRepository<EBSTask> ebsTaskRepository,
                                 IAsyncRepository<Employee> employeeRepository,
                                 IAsyncRepository<Organization> organizationRepository,
-                                IAsyncRepository<ReservoirArea> areaRepository)
+                                IAsyncRepository<ReservoirArea> areaRepository,
+                                ILogRecordService logRecordService)
         {
             this._orderService = orderService;
             this._ouRepository = ouRepository;
@@ -54,6 +57,7 @@ namespace Web.WebServices.Services
             this._employeeRepository = employeeRepository;
             this._organizationRepository = organizationRepository;
             this._areaRepository = areaRepository;
+            this._logRecordService = logRecordService;
         }
         
         public async Task<ResponseResult> CreateEnterOrder(RequestEnterOrder requestEnterOrder)
@@ -64,7 +68,12 @@ namespace Web.WebServices.Services
             {
                 Guard.Against.Null(requestEnterOrder,nameof(requestEnterOrder));
                 Guard.Against.NullOrEmpty(requestEnterOrder.RequestEnterOrderRows,nameof(requestEnterOrder.RequestEnterOrderRows));
-                
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
+                    LogDesc = string.Format("创建入库订单[{0}]",requestEnterOrder.DocumentNumber),
+                    CreateTime = DateTime.Now
+                });
                 OUSpecification ouSpec= new OUSpecification(null,null,requestEnterOrder.OuCode,null);
                 List<OU> ous = await this._ouRepository.ListAsync(ouSpec);
                 if(ous.Count==0)throw new Exception(string.Format("业务实体编码[{0}],不存在!",requestEnterOrder.OuCode));
@@ -141,6 +150,12 @@ namespace Web.WebServices.Services
             {
                 responseResult.Code = 500;
                 responseResult.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return responseResult;
         }
@@ -154,7 +169,12 @@ namespace Web.WebServices.Services
                 Guard.Against.Null(requestOutOrder, nameof(requestOutOrder));
                 Guard.Against.NullOrEmpty(requestOutOrder.RequestOutOrderRows,
                     nameof(requestOutOrder.RequestOutOrderRows));
-
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
+                    LogDesc = string.Format("创建领退料订单[{0}]",requestOutOrder.AlyNumber),
+                    CreateTime = DateTime.Now
+                });
                 OUSpecification ouSpec = new OUSpecification(null, null, requestOutOrder.BusinessEntity, null);
                 List<OU> ous = await this._ouRepository.ListAsync(ouSpec);
                 if (ous.Count == 0)
@@ -248,6 +268,12 @@ namespace Web.WebServices.Services
             {
                 responseResult.Code = 500;
                 responseResult.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
 
             return responseResult;

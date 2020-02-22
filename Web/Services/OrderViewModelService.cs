@@ -12,6 +12,7 @@ using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Specifications;
 using ApplicationCore.Misc;
 using System.Linq;
+using LogRecord = ApplicationCore.Entities.FlowRecord.LogRecord;
 
 namespace Web.Services
 {
@@ -22,16 +23,19 @@ namespace Web.Services
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly IAsyncRepository<Warehouse> _warehouseRepository;
+        private readonly ILogRecordService _logRecordService;
 
         public OrderViewModelService(IOrderService orderService,
                                        IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
-                                       IAsyncRepository<Warehouse> warehouseRepository)
+                                       IAsyncRepository<Warehouse> warehouseRepository,
+                                       ILogRecordService _logRecordService)
         {
             this._orderService = orderService;
             this._orderRepository = orderRepository;
             this._areaRepository = areaRepository;
             this._warehouseRepository = warehouseRepository;
+            this._logRecordService = _logRecordService;
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
@@ -130,6 +134,13 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("创建退库订单[{0}]",orderViewModel.OrderNumber),
+                    CreateTime = DateTime.Now
+                });
+                
                 Order order = new Order
                 {
                     OrderNumber = orderViewModel.OrderNumber,
@@ -169,6 +180,12 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
 
             return response;
@@ -186,6 +203,12 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
 
             return response;
@@ -203,6 +226,12 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
 
             return response;
