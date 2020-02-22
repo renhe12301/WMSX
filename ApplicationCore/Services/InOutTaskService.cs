@@ -215,6 +215,11 @@ namespace ApplicationCore.Services
                 {
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
                 }
+                else
+                {
+                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
+                }
+
                 LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId,null,
                     null, null,null, null, null,  null, null,null,
                     null,null,null);
@@ -225,7 +230,7 @@ namespace ApplicationCore.Services
                 warehouseTray.LocationId = location.Id;
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    if (inOutRecords.Count > 0)
+                    if (inOutRecords.Count > 0&&(warehouseTray.TrayStep==Convert.ToInt32(TRAY_STEP.入库完成)))
                     {
                         InOutRecord inOutRecord = inOutRecords[0];
                         inOutRecord.Status = Convert.ToInt32(ORDER_STATUS.完成);
@@ -258,7 +263,23 @@ namespace ApplicationCore.Services
                    trayCode));
            warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount;
            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
-           await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+           InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(trayCode,null,null,null,
+               null,null,null,null,
+               new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
+               null,null,null,null );
+           List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
+           using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+           {
+               if (inOutRecords.Count > 0)
+               {
+                   InOutRecord inOutRecord = inOutRecords[0];
+                   inOutRecord.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                   this._inOutRecordRepository.Update(inOutRecord);
+               }
+               this._warehouseTrayRepository.Update(warehouseTray);
+               await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+               scope.Complete();
+           }
         }
     }
 }
