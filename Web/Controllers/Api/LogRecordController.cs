@@ -10,7 +10,7 @@ namespace Web.Controllers.Api
     /// 日志信息操作API
     /// </summary>
     [EnableCors("AllowCORS")]
-    public class LogRecordController
+    public class LogRecordController:BaseApiController
     {
         private readonly ILogRecordViewModelService _logRecordViewModelService;
 

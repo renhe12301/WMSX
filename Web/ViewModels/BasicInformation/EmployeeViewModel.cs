@@ -22,6 +22,7 @@ namespace Web.ViewModels.BasicInformation
         public int OrgId { get; set; }
         public string RoleName { get; set; }
         public string Img { get; set; }
+        public object Tag { get; set; }
         public List<int> UserIds { get; set; }
         public List<int> RoleIds { get; set; }
     }

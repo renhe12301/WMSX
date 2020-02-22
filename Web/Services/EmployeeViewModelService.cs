@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.AuthorityManager;
+using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
 using ApplicationCore.Services;
@@ -21,14 +22,17 @@ namespace Web.Services
         private readonly IEmployeeService _employeeService;
         private readonly IAsyncRepository<Employee> _employeeRepository;
         private readonly IAsyncRepository<EmployeeRole> _employeeRoleRepository;
+        private readonly ILogRecordService _logRecordService;
         public EmployeeViewModelService(IEmployeeService employeeService,
                                         IAsyncRepository<Employee> employeeRepository,
-                                        IAsyncRepository<EmployeeRole> employeeRoleRepository)
+                                        IAsyncRepository<EmployeeRole> employeeRoleRepository,
+                                        ILogRecordService logRecordService)
             
         {
             this._employeeService = employeeService;
             this._employeeRepository = employeeRepository;
             this._employeeRoleRepository = employeeRoleRepository;
+            this._logRecordService = logRecordService;
         }
 
        
@@ -38,11 +42,25 @@ namespace Web.Services
             try
             {
                 await this._employeeService.AssignRole(employeeViewModel.Id,employeeViewModel.RoleIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("给用户[{0}],分配角色[{1}]",employeeViewModel.Id,
+                              string.Join(',',employeeViewModel.RoleIds.ConvertAll(e=>e))),
+                    Founder = employeeViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -70,6 +88,7 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+               
             }
             return response;
         }
@@ -80,11 +99,24 @@ namespace Web.Services
             try
             {
                 await this._employeeService.Enable(employViewModel.UserIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("启用用户[{0}]",string.Join(',',employViewModel.UserIds.ConvertAll(e=>e))),
+                    Founder = employViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -227,11 +259,25 @@ namespace Web.Services
                 dym.Roles = employeeRoles.ConvertAll(e => e.SysRole);
                 dym.OrgId = employees[0].OrganizationId.GetValueOrDefault();
                 response.Data = dym;
+                
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("登录系统！"),
+                    Founder = employViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
@@ -242,11 +288,24 @@ namespace Web.Services
             try
             {
                 await this._employeeService.Logout(employViewModel.UserIds);
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogDesc = string.Format("注销用户[{0}]",string.Join(',',employViewModel.UserIds.ConvertAll(e=>e))),
+                    Founder = employViewModel.Tag.ToString(),
+                    CreateTime = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.Message,
+                    CreateTime = DateTime.Now
+                });
             }
             return response;
         }
