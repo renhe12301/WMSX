@@ -7,6 +7,7 @@ using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Entities.TaskManager;
+using LogRecord = ApplicationCore.Entities.FlowRecord.LogRecord;
 
 namespace Infrastructure.Data
 {
@@ -36,6 +37,7 @@ namespace Infrastructure.Data
         public DbSet<EBSProject> EbsProject { get; set; }
         public DbSet<EBSTask> EbsTask { get; set; }
         public DbSet<InOutRecord> InOutRecord { get; set; }
+        public DbSet<LogRecord> LogRecord { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

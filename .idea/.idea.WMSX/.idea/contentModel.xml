@@ -33,6 +33,7 @@
           </e>
           <e p="FlowRecord" t="Include">
             <e p="InOutRecord.cs" t="Include" />
+            <e p="LogRecord.cs" t="Include" />
           </e>
           <e p="OrderManager" t="Include">
             <e p="Order.cs" t="Include" />
@@ -60,6 +61,7 @@
           <e p="IInOutRecordService.cs" t="Include" />
           <e p="IInOutTaskService.cs" t="Include" />
           <e p="ILocationService.cs" t="Include" />
+          <e p="ILogRecordService.cs" t="Include" />
           <e p="IMaterialDicService.cs" t="Include" />
           <e p="IMaterialTypeService.cs" t="Include" />
           <e p="IOrderService.cs" t="Include" />
@@ -95,6 +97,7 @@
           <e p="InOutRecordService.cs" t="Include" />
           <e p="InOutTaskService.cs" t="Include" />
           <e p="LocationService.cs" t="Include" />
+          <e p="LogRecordService.cs" t="Include" />
           <e p="MaterialDicService.cs" t="Include" />
           <e p="MaterialTypeService.cs" t="Include" />
           <e p="OrderService.cs" t="Include" />
@@ -126,6 +129,8 @@
           <e p="InOutTaskSpecification.cs" t="Include" />
           <e p="LocationPaginatedSpecification.cs" t="Include" />
           <e p="LocationSpecification.cs" t="Include" />
+          <e p="LogRecordPaginatedSpecification.cs" t="Include" />
+          <e p="LogRecordSpecification.cs" t="Include" />
           <e p="MaterialDicIdSetSpecification.cs" t="Include" />
           <e p="MaterialDicPaginatedSpecification.cs" t="Include" />
           <e p="MaterialDicSpecification.cs" t="Include" />
@@ -202,6 +207,7 @@
             <e p="InOutRecordController.cs" t="Include" />
             <e p="InOutTaskController.cs" t="Include" />
             <e p="LocationController.cs" t="Include" />
+            <e p="LogRecordController.cs" t="Include" />
             <e p="MaterialDicController.cs" t="Include" />
             <e p="MaterialTypeController.cs" t="Include" />
             <e p="OrderController.cs" t="Include" />
@@ -225,6 +231,7 @@
           <e p="IInOutRecordViewModelService.cs" t="Include" />
           <e p="IInOutTaskViewModelService.cs" t="Include" />
           <e p="ILocationViewModelService.cs" t="Include" />
+          <e p="ILogRecordViewModelService.cs" t="Include" />
           <e p="IMaterialDicViewModelService.cs" t="Include" />
           <e p="IMaterialTypeViewModelService.cs" t="Include" />
           <e p="IOrderRowViewModelService.cs" t="Include" />
@@ -268,6 +275,7 @@
           <e p="InOutRecordViewModelService.cs" t="Include" />
           <e p="InOutTaskViewModelService.cs" t="Include" />
           <e p="LocationViewModelService.cs" t="Include" />
+          <e p="LogRecordViewModelService.cs" t="Include" />
           <e p="MaterialDicViewModelService.cs" t="Include" />
           <e p="MaterialTypeViewModelService.cs" t="Include" />
           <e p="OrderRowViewModelService.cs" t="Include" />
@@ -308,6 +316,7 @@
           </e>
           <e p="FlowRecord" t="Include">
             <e p="InOutRecordViewModel.cs" t="Include" />
+            <e p="LogRecordViewModel.cs" t="Include" />
           </e>
           <e p="OrderManager" t="Include">
             <e p="OrderRowBatchViewModel.cs" t="Include" />

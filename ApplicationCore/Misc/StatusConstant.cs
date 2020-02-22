@@ -141,5 +141,14 @@ namespace ApplicationCore.Misc
         出库 = 1
     }
 
+    public enum LOG_TYPE
+    {
+        登录日志 = 0,
+        操作日志 = 1,
+        WebService调用日志 = 2,
+        定时任务日志 = 3,
+        异常日志 = 4
+    }
+
 
 }
