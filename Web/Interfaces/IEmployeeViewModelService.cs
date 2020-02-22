@@ -16,7 +16,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> AssignRole(EmployeeViewModel employeeViewModel);
         Task<ResponseResultViewModel> GetRoles(int employeeId);
         Task<ResponseResultViewModel> GetEmployees(int? pageIndex, int? itemsPage,
-                                                   int? orgId,int? employeeId,string employeeName);
+                                                   int? orgId,int? employeeId,string employeeName,string loginName);
 
     }
 }

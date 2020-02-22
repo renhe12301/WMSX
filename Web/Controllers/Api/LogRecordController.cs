@@ -22,19 +22,20 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 获取日志信息
         /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="itemsPage"></param>
-        /// <param name="logType"></param>
-        /// <param name="logDesc"></param>
-        /// <param name="sCreateTime"></param>
-        /// <param name="eCreateTIme"></param>
+        /// <param name="pageIndex">分页索引</param>
+        /// <param name="itemsPage">页面显示大小</param>
+        /// <param name="logType">日志类型</param>
+        /// <param name="logDesc">日志内容</param>
+        /// <param name="founder">日志记录者</param>
+        /// <param name="sCreateTime">日志创建开始时间</param>
+        /// <param name="eCreateTIme">日志创建结束时间</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<ResponseResultViewModel> GetLogRecords(int? pageIndex, int? itemsPage, int? logType,
-            string logDesc,string sCreateTime, string eCreateTIme)
+            string logDesc,string founder,string sCreateTime, string eCreateTIme)
         {
             var response = await this._logRecordViewModelService.GetLogRecords(pageIndex, itemsPage, logType, logDesc,
-                sCreateTime, eCreateTIme);
+                founder,sCreateTime, eCreateTIme);
             return response;
         }
     }

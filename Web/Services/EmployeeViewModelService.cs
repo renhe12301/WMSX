@@ -89,13 +89,14 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetEmployees(int? pageIndex,int? itemsPage,int? orgId,int? employeeId, string employeeName)
+        public async Task<ResponseResultViewModel> GetEmployees(int? pageIndex,int? itemsPage,int? orgId,int? employeeId,
+                                                   string employeeName,string loginName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
                 EmployeeRoleSpecification employeeRoleSpec = new EmployeeRoleSpecification(null, null, null);
-                EmployeeSpecification employeeSpec = new EmployeeSpecification(employeeId, orgId, employeeName);
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(employeeId, orgId, employeeName,loginName);
                 var employeeRoles = await this._employeeRoleRepository.ListAsync(employeeRoleSpec);
                 var employees = await this._employeeRepository.ListAsync(employeeSpec);
                 
@@ -105,11 +106,11 @@ namespace Web.Services
                     if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
                     {
                         baseSpecification = new EmployeePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            employeeId, orgId, employeeName);
+                            employeeId, orgId, employeeName,loginName);
                     }
                     else
                     {
-                        baseSpecification = new EmployeeSpecification(employeeId,orgId, employeeName);
+                        baseSpecification = new EmployeeSpecification(employeeId,orgId, employeeName,loginName);
                     }
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
                     employees.ForEach(e =>
@@ -138,7 +139,7 @@ namespace Web.Services
                     if (pageIndex > -1 && itemsPage > 0)
                     {
                         var count = await this._employeeRepository.CountAsync(
-                            new EmployeeSpecification(orgId,orgId, employeeName));
+                            new EmployeeSpecification(orgId,orgId, employeeName,loginName));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = employViewModels;
                         dyn.total = count;
@@ -155,11 +156,11 @@ namespace Web.Services
                     if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                     {
                         baseSpecification = new EmployeePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                            employeeId,orgId, employeeName);
+                            employeeId,orgId, employeeName,loginName);
                     }
                     else
                     {
-                        baseSpecification = new EmployeeSpecification(employeeId, orgId,employeeName);
+                        baseSpecification = new EmployeeSpecification(employeeId, orgId,employeeName,loginName);
                     }
                     
                     List<EmployeeViewModel> employViewModels = new List<EmployeeViewModel>();
@@ -191,7 +192,7 @@ namespace Web.Services
                     if (pageIndex > -1 && itemsPage > 0)
                     {
                         var count = await this._employeeRepository.CountAsync(
-                            new EmployeeSpecification(employeeId, orgId,employeeName));
+                            new EmployeeSpecification(employeeId, orgId,employeeName,loginName));
                         dynamic dyn = new ExpandoObject();
                         dyn.rows = employViewModels;
                         dyn.total = count;

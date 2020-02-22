@@ -96,7 +96,7 @@ namespace Web.WebServices.Services
                 List<EBSProject> ebsProjects = await this._ebsProjectRepository.ListAsync(ebsProjectSpec);
                 if(ebsProjects.Count==0)throw new Exception(string.Format("订单关联项目编号[{0}],不存在!",requestEnterOrder.ItemId));
                 
-                EmployeeSpecification employeeSpec = new EmployeeSpecification(Convert.ToInt32(requestEnterOrder.ManagerId),null,null);
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(Convert.ToInt32(requestEnterOrder.ManagerId),null,null,null);
                 List<Employee> employees = await this._employeeRepository.ListAsync(employeeSpec);
                 if(employees.Count==0)throw new Exception(string.Format("经办人编号[{0}],不存在!",requestEnterOrder.ManagerId));
                 Order order = new Order
@@ -194,7 +194,7 @@ namespace Web.WebServices.Services
                 if (ebsProjects.Count == 0)
                     throw new Exception(string.Format("订单关联项目编号[{0}],不存在!", requestOutOrder.ItemId));
                 EmployeeSpecification employeeSpec =
-                    new EmployeeSpecification(Convert.ToInt32(requestOutOrder.CreationBy), null, null);
+                    new EmployeeSpecification(Convert.ToInt32(requestOutOrder.CreationBy), null, null,null);
                 List<Employee> employees = await this._employeeRepository.ListAsync(employeeSpec);
                 if (employees.Count == 0)
                     throw new Exception(string.Format("经办人编号[{0}],不存在!", requestOutOrder.CreationBy));

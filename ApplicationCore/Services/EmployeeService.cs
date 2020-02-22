@@ -31,7 +31,7 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(employee.UserName,nameof(employee.UserName));
             if (unique)
             {
-                EmployeeSpecification employeeSpec = new EmployeeSpecification(employee.Id, null, null);
+                EmployeeSpecification employeeSpec = new EmployeeSpecification(employee.Id, null, null,null);
                 var employees = await this._employeeRepository.ListAsync(employeeSpec);
                 if (employees.Count == 0)
                     await this._employeeRepository.AddAsync(employee);
@@ -111,7 +111,7 @@ namespace ApplicationCore.Services
                 List<Employee> adds=new List<Employee>();
                 employees.ForEach(async(em) =>
                 {
-                    EmployeeSpecification employeeSpec=new EmployeeSpecification(em.Id,null,null);
+                    EmployeeSpecification employeeSpec=new EmployeeSpecification(em.Id,null,null,null);
                     var findEmployees = await this._employeeRepository.ListAsync(employeeSpec);
                     if(findEmployees.Count>0)
                         adds.Add(employees.First());
