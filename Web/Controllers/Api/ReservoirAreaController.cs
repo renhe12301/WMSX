@@ -36,7 +36,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._reservoirAreaViewModelService.AssignLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));

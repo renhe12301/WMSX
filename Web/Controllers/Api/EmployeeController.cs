@@ -33,7 +33,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employViewModel.Tag = cookie.userName;
+                employViewModel.Tag = cookie.loginName;
             }
             var response = await this._employeeViewModelService.Login(employViewModel);
             return Content(JsonConvert.SerializeObject(response));;
@@ -82,7 +82,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employViewModel.Tag = cookie.userName;
+                employViewModel.Tag = cookie.loginName;
             }
             var response = await this._employeeViewModelService.Enable(employViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -100,7 +100,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employViewModel.Tag = cookie.userName;
+                employViewModel.Tag = cookie.loginName;
             }
             var response = await this._employeeViewModelService.Logout(employViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -118,7 +118,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employeeViewModel.Tag = cookie.userName;
+                employeeViewModel.Tag = cookie.loginName;
             }
             var response = await this._employeeViewModelService.AssignRole(employeeViewModel);
             return Content(JsonConvert.SerializeObject(response));

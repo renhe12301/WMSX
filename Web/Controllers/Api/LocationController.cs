@@ -113,7 +113,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.AddLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -131,7 +131,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.BuildLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -149,7 +149,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.Enable(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -167,7 +167,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.Disable(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -185,7 +185,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.Clear(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -203,7 +203,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                locationViewModel.Tag = cookie.userName;
+                locationViewModel.Tag = cookie.loginName;
             }
             var response = await this._locationViewModelService.UpdateLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));

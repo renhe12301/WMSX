@@ -5,7 +5,7 @@ namespace ApplicationCore.Specifications
 {
     public class LogRecordPaginatedSpecification:BaseSpecification<LogRecord>
     {
-        public LogRecordPaginatedSpecification(int skip,int take,int? logType,string founder,string logDesc,
+        public LogRecordPaginatedSpecification(int skip,int take,int? logType,string logDesc,string founder,
                                                string sCreateTime,string eCreateTime):
             base(b=>(!logType.HasValue||b.LogType==logType)&&
                                       (logDesc==null||b.LogDesc.Contains(logDesc))&&

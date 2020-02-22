@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels;
 
@@ -31,12 +32,12 @@ namespace Web.Controllers.Api
         /// <param name="eCreateTIme">日志创建结束时间</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ResponseResultViewModel> GetLogRecords(int? pageIndex, int? itemsPage, int? logType,
+        public async Task<IActionResult> GetLogRecords(int? pageIndex, int? itemsPage, int? logType,
             string logDesc,string founder,string sCreateTime, string eCreateTIme)
         {
             var response = await this._logRecordViewModelService.GetLogRecords(pageIndex, itemsPage, logType, logDesc,
                 founder,sCreateTime, eCreateTIme);
-            return response;
+            return Content(JsonConvert.SerializeObject(response));
         }
     }
 }

@@ -258,6 +258,9 @@ namespace Web.Services
                 dynamic dym = new ExpandoObject();
                 dym.Roles = employeeRoles.ConvertAll(e => e.SysRole);
                 dym.OrgId = employees[0].OrganizationId.GetValueOrDefault();
+                dym.UserId = employees[0].Id;
+                dym.UserName = employees[0].UserName;
+                dym.UserCode = employees[0].UserCode;
                 response.Data = dym;
                 
                 await this._logRecordService.AddLog(new LogRecord

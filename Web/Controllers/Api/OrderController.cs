@@ -76,7 +76,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderRowViewModel.Tag = cookie.userName;
+                orderRowViewModel.Tag = cookie.loginName;
             }
             var response = await this._orderViewModelService.SortingOrder(orderRowViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -94,7 +94,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderViewModel.Tag = cookie.userName;
+                orderViewModel.Tag = cookie.loginName;
             }
             var response = await this._orderViewModelService.CreateOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -111,7 +111,7 @@ namespace Web.Controllers.Api
             if (!string.IsNullOrEmpty(value))
             {
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderRowBatchViewModel.Tag = cookie.userName;
+                orderRowBatchViewModel.Tag = cookie.loginName;
             }
             var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
             return Content(JsonConvert.SerializeObject(response));
