@@ -5,6 +5,7 @@ namespace Web.ViewModels.FlowRecord
         public int Id { get; set; }
         public string LogType { get; set; }
         public string LogDesc { get; set; }
+        public string Founder { get; set; }
         public string CreateTime { get; set; }
     }
 }

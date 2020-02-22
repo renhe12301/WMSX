@@ -173,7 +173,7 @@ namespace Web.Services
                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                    LogDesc = string.Format("创建退库订单[{0}]",
                               orderViewModel.OrderNumber),
-                   Founder = orderViewModel.Tag.ToString(),
+                   Founder = orderViewModel.Tag?.ToString(),
                    CreateTime = DateTime.Now
                });
             }
@@ -184,7 +184,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -207,7 +207,7 @@ namespace Web.Services
                               orderRow.Id,
                               orderRow.Sorting,
                               orderRow.TrayCode),
-                    Founder = orderRow.Tag.ToString(),
+                    Founder = orderRow.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -218,7 +218,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -241,7 +241,7 @@ namespace Web.Services
                                     orderRowBatchViewModel.OrderRowId,
                                     orderRowBatchViewModel.BatchCount,
                                     orderRowBatchViewModel.Type),
-                    Founder = orderRowBatchViewModel.Tag.ToString(),
+                    Founder = orderRowBatchViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -252,7 +252,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }

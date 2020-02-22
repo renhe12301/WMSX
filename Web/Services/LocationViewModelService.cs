@@ -245,7 +245,7 @@ namespace Web.Services
                     LogDesc = string.Format("物理仓库[{0}],添加货位[{1}]",
                               locationViewModel.PhyWarehouseId,
                               locationViewModel.SysCode),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -256,7 +256,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -279,7 +279,7 @@ namespace Web.Services
                                             locationViewModel.Row,
                                             locationViewModel.Rank,
                                             locationViewModel.Col),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -290,7 +290,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -309,7 +309,7 @@ namespace Web.Services
                     LogDesc = string.Format("物理仓库[{0}],清理货位[{1}]",
                         locationViewModel.PhyWarehouseId,
                         locationViewModel.SysCode),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -320,7 +320,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
                 
@@ -340,7 +340,7 @@ namespace Web.Services
                     LogDesc = string.Format("物理仓库[{0}],禁用货位[{1}]",
                         locationViewModel.PhyWarehouseId,
                         locationViewModel.SysCode),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -351,7 +351,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -370,7 +370,7 @@ namespace Web.Services
                     LogDesc = string.Format("物理仓库[{0}],启用货位[{1}]",
                         locationViewModel.PhyWarehouseId,
                         locationViewModel.SysCode),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -381,7 +381,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -401,7 +401,7 @@ namespace Web.Services
                     LogDesc = string.Format("物理仓库[{0}],更新货位[{1}]",
                         locationViewModel.PhyWarehouseId,
                         locationViewModel.SysCode),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -412,7 +412,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }

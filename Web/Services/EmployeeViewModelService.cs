@@ -47,7 +47,7 @@ namespace Web.Services
                     LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                     LogDesc = string.Format("给用户[{0}],分配角色[{1}]",employeeViewModel.Id,
                               string.Join(',',employeeViewModel.RoleIds.ConvertAll(e=>e))),
-                    Founder = employeeViewModel.Tag.ToString(),
+                    Founder = employeeViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -58,7 +58,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -103,7 +103,7 @@ namespace Web.Services
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                     LogDesc = string.Format("启用用户[{0}]",string.Join(',',employViewModel.UserIds.ConvertAll(e=>e))),
-                    Founder = employViewModel.Tag.ToString(),
+                    Founder = employViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -114,7 +114,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -262,9 +262,9 @@ namespace Web.Services
                 
                 await this._logRecordService.AddLog(new LogRecord
                 {
-                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                    LogType = Convert.ToInt32(LOG_TYPE.登录日志),
                     LogDesc = string.Format("登录系统！"),
-                    Founder = employViewModel.Tag.ToString(),
+                    Founder = employViewModel.LoginName,
                     CreateTime = DateTime.Now
                 });
             }
@@ -275,7 +275,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }
@@ -292,7 +292,7 @@ namespace Web.Services
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                     LogDesc = string.Format("注销用户[{0}]",string.Join(',',employViewModel.UserIds.ConvertAll(e=>e))),
-                    Founder = employViewModel.Tag.ToString(),
+                    Founder = employViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -303,7 +303,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }

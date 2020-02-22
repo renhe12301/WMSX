@@ -98,7 +98,7 @@ namespace Web.Services
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
                     LogDesc = string.Format("子库存[{0}],分配货位！",locationViewModel.ReservoirAreaId),
-                    Founder = locationViewModel.Tag.ToString(),
+                    Founder = locationViewModel.Tag?.ToString(),
                     CreateTime = DateTime.Now
                 });
             }
@@ -109,7 +109,7 @@ namespace Web.Services
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.Message,
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
             }

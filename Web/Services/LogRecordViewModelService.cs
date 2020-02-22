@@ -50,6 +50,7 @@ namespace Web.Services
                             Id = e.Id,
                             LogType = Enum.GetName(typeof(LOG_TYPE),e.LogType),
                             LogDesc = e.LogDesc,
+                            Founder = e.Founder,
                             CreateTime = e.CreateTime.ToString()
                         };
                         logRecordViewModels.Add(logRecordViewModel);
