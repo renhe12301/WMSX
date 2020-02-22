@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.Api
 {
@@ -6,16 +7,5 @@ namespace Web.Controllers.Api
     [ApiController]
     public class BaseApiController : ControllerBase
     {
-        public dynamic GetLoginUser()
-        {
-            string val = "";
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                val = cookie.userName;
-            }
-            return val;
-        }
     }
 }

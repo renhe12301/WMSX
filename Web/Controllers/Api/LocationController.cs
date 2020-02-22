@@ -109,7 +109,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> AddLocation(LocationViewModel locationViewModel)
         {
-            locationViewModel.Tag = GetLoginUser();
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.AddLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -121,8 +126,13 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> BuildLocation(LocationViewModel locationViewModel)
-        {
-            locationViewModel.Tag = GetLoginUser();
+        { 
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.BuildLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -135,7 +145,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Enable(LocationViewModel locationViewModel)
         {
-            locationViewModel.Tag = GetLoginUser();
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.Enable(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -148,7 +163,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Disable(LocationViewModel locationViewModel)
         {
-            locationViewModel.Tag = GetLoginUser();
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.Disable(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -161,7 +181,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Clear(LocationViewModel locationViewModel)
         {
-            locationViewModel.Tag = GetLoginUser();
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.Clear(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -174,7 +199,12 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> UpdateLocation(LocationViewModel locationViewModel)
         {
-            locationViewModel.Tag = GetLoginUser();
+            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
+            if (!string.IsNullOrEmpty(value))
+            {
+                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                locationViewModel.Tag = cookie.userName;
+            }
             var response = await this._locationViewModelService.UpdateLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
