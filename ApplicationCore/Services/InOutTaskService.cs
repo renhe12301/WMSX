@@ -154,7 +154,7 @@ namespace ApplicationCore.Services
                                        null, null, null, null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
-            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,
+            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,null,
                 null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
                     null,null,null,null );

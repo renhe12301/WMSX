@@ -6,9 +6,11 @@ namespace ApplicationCore.Specifications
 {
     public class InOutRecordSpecification : BaseSpecification<InOutRecord>
     {
-        public InOutRecordSpecification(string trayCode,int? type,int? ouId,int? wareHouseId,int? areaId,int? orderId,int? orderRowId,
+        public InOutRecordSpecification(string trayCode,string materialName,int? type,int? ouId,int? wareHouseId,
+                                        int? areaId,int? orderId,int? orderRowId,
                                         List<int> status,int? isRead,int? isSync,string sCreateTime,string eCreateTime)
             : base(b =>   (trayCode==null || b.TrayCode == trayCode) &&
+                                             (materialName==null || b.MaterialDic.MaterialName.Contains(materialName)) &&
                                              (!type.HasValue || b.Type == type) &&
                                              (!ouId.HasValue || b.OUId == ouId)&&
                                              (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&
@@ -21,6 +23,7 @@ namespace ApplicationCore.Specifications
                                              (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
                                              (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
+            AddInclude(b=>b.MaterialDic);
             AddInclude(b=>b.OU);
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.ReservoirArea);

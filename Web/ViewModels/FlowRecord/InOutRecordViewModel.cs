@@ -6,6 +6,9 @@ namespace Web.ViewModels.FlowRecord
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int OrderRowId { get; set; }
+
+        public int OUId { get; set; }
+
         public int WarehouseId { get; set; }
         public int ReservoirAreaId { get; set; }
         public string TrayCode { get; set; }
@@ -15,6 +18,8 @@ namespace Web.ViewModels.FlowRecord
         public string CreateTime { get; set; }
         public int Type { get; set; }
         public int InOutFlag { get; set; }
+
+        public string OUName { get; set; }
         public string WarehouseName { get; set; }
         public string ReservoirAreaName { get; set; }
         public string MaterialDicName { get; set; }

@@ -47,7 +47,7 @@ namespace Web.Jobs
                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,
                     new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null );
                 List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-                InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null,null,null,null,
+                InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null,null,null,null,null,
                     null,null,null,new List<int>{Convert.ToInt32(ORDER_STATUS.完成)},null,0,null,null );
                 List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
                 List<Order> updOrders = new List<Order>();

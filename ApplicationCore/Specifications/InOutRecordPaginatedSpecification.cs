@@ -6,11 +6,13 @@ namespace ApplicationCore.Specifications
 {
     public class InOutRecordPaginatedSpecification : BaseSpecification<InOutRecord>
     {
-        public InOutRecordPaginatedSpecification(int skip,int take,int? type,int? ouId,int? wareHouseId, 
+        public InOutRecordPaginatedSpecification(int skip,int take,string trayCode,string materialName,int? type,int? ouId,int? wareHouseId, 
                                                 int? areaId,int? orderId,int? orderRowId,
                                                 List<int> status,int? isRead,string sCreateTime,string eCreateTime)
             : base(b => (!type.HasValue || b.Type == type) &&
                                            (!ouId.HasValue || b.OUId == ouId)&&
+                                           (trayCode==null||b.TrayCode==trayCode)&&
+                                           (materialName==null||b.MaterialDic.MaterialName.Contains(materialName))&&
                                            (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&
                                            (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
                                            (!orderId.HasValue || b.OrderId == orderId)&&
@@ -21,6 +23,7 @@ namespace ApplicationCore.Specifications
                                            (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
             ApplyPaging(skip, take);
+            AddInclude(b=>b.MaterialDic);
             AddInclude(b=>b.OU);
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.ReservoirArea);

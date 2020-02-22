@@ -23,7 +23,8 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetInOutRecords(int? pageIndex,
-            int? itemsPage,string trayCode,int? type,int? ouId,int? wareHouseId, int? areaId,int? orderId,int? orderRowId,string status,
+            int? itemsPage,string trayCode,string materialName,int? type,int? ouId,int? wareHouseId, 
+            int? areaId,int? orderId,int? orderRowId,string status,
             string sCreateTime, string eCreateTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -37,14 +38,14 @@ namespace Web.Services
                         ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
-                if (pageIndex.HasValue && pageIndex > 0 && itemsPage.HasValue && itemsPage > 0)
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutRecordPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        type,ouId,wareHouseId,areaId,orderId,orderRowId,taskStatus,null,sCreateTime,eCreateTime);
+                        trayCode,materialName,type,ouId,wareHouseId,areaId,orderId,orderRowId,taskStatus,null,sCreateTime,eCreateTime);
                 }
                 else
                 {
-                    baseSpecification = new InOutRecordSpecification(trayCode,type,ouId,wareHouseId,areaId,orderId,orderRowId,
+                    baseSpecification = new InOutRecordSpecification(trayCode,materialName,type,ouId,wareHouseId,areaId,orderId,orderRowId,
                                                                      taskStatus,null,null,sCreateTime,eCreateTime);
                 }
                 var inOutRecords = await this._inOutRepository.ListAsync(baseSpecification);
@@ -62,6 +63,8 @@ namespace Web.Services
                         TrayCode = e.TrayCode,
                         OrderId = e.OrderId,
                         OrderRowId = e.OrderRowId,
+                        OUId = e.OUId.GetValueOrDefault(),
+                        OUName = e.OU.OUName,
                         ReservoirAreaId = e.ReservoirAreaId,
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
                         WarehouseName = e.Warehouse?.WhName,
@@ -74,7 +77,7 @@ namespace Web.Services
                 
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._inOutRepository.CountAsync(new InOutRecordSpecification(trayCode,type,ouId,
+                    var count = await this._inOutRepository.CountAsync(new InOutRecordSpecification(trayCode,materialName,type,ouId,
                                                       wareHouseId,areaId,orderId,orderRowId,taskStatus,null,null,sCreateTime,eCreateTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = inOutRecordViewModels;
