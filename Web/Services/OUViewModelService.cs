@@ -115,7 +115,22 @@ namespace Web.Services
                         Type = "ou"
                     };
                 }
-                if (depthTag == "warehouse")
+
+                if (depthTag == "ou")
+                {
+                    allOus.ForEach(cw =>
+                    {
+                        var ouChild = new TreeViewModel
+                        {
+                            Id = cw.Id,
+                            ParentId = current.Id,
+                            Name = cw.OUName,
+                            Type = "ou"
+                        };
+                        current.Children.Add(ouChild);
+                    });
+                }
+                else if (depthTag == "warehouse")
                 {
                     if (rootId > 0)
                     {
