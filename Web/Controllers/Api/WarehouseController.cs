@@ -38,5 +38,30 @@ namespace Web.Controllers.Api
                 itemsPage, id, ouId, whName);
             return Content(JsonConvert.SerializeObject(response));
         }
+
+        /// <summary>
+        /// 库存组织资产统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> WarehouseAssetChart(int ouId)
+        {
+            var response = await this._warehouseViewModelService.WarehouseAssetChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 库存组织物料统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> WarehouseMaterialChart(int ouId)
+        {
+            var response = await this._warehouseViewModelService.WarehouseMaterialChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
     }
 }

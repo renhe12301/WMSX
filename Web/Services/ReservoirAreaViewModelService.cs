@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.FlowRecord;
+using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Interfaces;
 using Web.ViewModels;
 using Web.Interfaces;
@@ -19,13 +21,16 @@ namespace Web.Services
         private readonly IReservoirAreaService _reservoirAreaService;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly ILogRecordService _logRecordService;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         public ReservoirAreaViewModelService(IReservoirAreaService reservoirAreaService,
                                              IAsyncRepository<ReservoirArea> reservoirAreaRepository,
-                                             ILogRecordService logRecordService)
+                                             ILogRecordService logRecordService,
+                                             IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
             this._reservoirAreaService = reservoirAreaService;
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._logRecordService = logRecordService;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
         }
 
 
@@ -85,7 +90,85 @@ namespace Web.Services
             }
             return response;
         }
-        
+
+        public async Task<ResponseResultViewModel> AreaAssetChart(int ouId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                 
+                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                    null,null,null,null,null,null,null,
+                    null,null,null,null,ouId,null,null);
+                List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                List<string> lables = new List<string>();
+                List<double> datas = new List<double>();
+                var warehouseGroup = warehouseMaterials.GroupBy(w => w.ReservoirAreaId);
+                foreach (var w in areas)
+                {
+                    lables.Add(w.AreaName);
+                }
+                foreach (var wg in warehouseGroup)
+                {
+                    double sumPrice = wg.Sum(w => w.Price);
+                    datas.Add(sumPrice);
+                }
+               
+                dynamic result = new ExpandoObject();
+                result.labels = lables;
+                result.datas = datas;
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> AreaMaterialChart(int ouId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                 
+                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                    null,null,null,null,null,null,null,
+                    null,null,null,null,ouId,null,null);
+                List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                List<string> lables = new List<string>();
+                List<double> datas = new List<double>();
+                var warehouseGroup = warehouseMaterials.GroupBy(w => w.ReservoirAreaId);
+                foreach (var w in areas)
+                {
+                    lables.Add(w.AreaName);
+                }
+                foreach (var wg in warehouseGroup)
+                {
+                    double sumCount = wg.Sum(w => w.MaterialCount);
+                    datas.Add(sumCount);
+                }
+               
+                dynamic result = new ExpandoObject();
+                result.labels = lables;
+                result.datas = datas;
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+
 
         public async Task<ResponseResultViewModel> AssignLocation(LocationViewModel locationViewModel)
         {

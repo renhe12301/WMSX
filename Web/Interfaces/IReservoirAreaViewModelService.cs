@@ -11,5 +11,9 @@ namespace Web.Interfaces
     {
         Task<ResponseResultViewModel> AssignLocation(LocationViewModel locationViewModel);
         Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? ouId,int? wareHouseId,int? type, string areaName);
+        
+        Task<ResponseResultViewModel> AreaAssetChart(int ouId);
+        
+        Task<ResponseResultViewModel> AreaMaterialChart(int ouId);
     }
 }

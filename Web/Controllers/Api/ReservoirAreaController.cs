@@ -58,6 +58,30 @@ namespace Web.Controllers.Api
             var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,ouId,wareHouseId,type, areaName);
             return Content(JsonConvert.SerializeObject(response));
         }
+
+        /// <summary>
+        /// 子库存资产统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> AreaAssetChart(int ouId)
+        {
+            var response = await this._reservoirAreaViewModelService.AreaAssetChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
         
+        /// <summary>
+        /// 子库存物料统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> AreaMaterialChart(int ouId)
+        {
+            var response = await this._reservoirAreaViewModelService.AreaMaterialChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
     }
 }

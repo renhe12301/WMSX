@@ -8,6 +8,8 @@ using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Specifications;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
+using ApplicationCore.Entities.StockManager;
 
 namespace Web.Services
 {
@@ -16,13 +18,16 @@ namespace Web.Services
         private readonly IMaterialTypeService _materialTypeService;
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         public MaterialTypeViewModelService(IMaterialTypeService materialTypeService,
                                             IAsyncRepository<MaterialType> materialTypeRepository,
-                                            IAsyncRepository<MaterialDic> materialRepository)
+                                            IAsyncRepository<MaterialDic> materialRepository,
+                                            IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
             this._materialTypeService = materialTypeService;
             this._materialTypeRepository = materialTypeRepository;
             this._materialDicRepository = materialRepository;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
         }
 
         public async Task<ResponseResultViewModel> AddMaterialType(MaterialTypeViewModel materialTypeViewModel)
@@ -182,6 +187,42 @@ namespace Web.Services
             }
             return response;
         }
+
+        public async Task<ResponseResultViewModel> MaterialTypeChart(int ouId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                List<MaterialType> materialTypes = await this._materialTypeRepository.ListAllAsync();
+                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                    null,null,null,null,null,null,null,
+                    null,null,null,null,ouId,null,null);
+                List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                List<string> lables = new List<string>();
+                List<double> datas = new List<double>();
+                var warehouseGroup = warehouseMaterials.GroupBy(w => w.MaterialDic.MaterialTypeId);
+                foreach (var wg in warehouseGroup)
+                {
+                    MaterialType materialType = materialTypes.Find(m => m.Id == wg.Key);
+                    lables.Add(materialType.TypeName);
+                    double sumCount = wg.Sum(w => w.MaterialCount);
+                    datas.Add(sumCount);
+                }
+               
+                dynamic result = new ExpandoObject();
+                result.labels = lables;
+                result.datas = datas;
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+
         private async Task _MaterialTypeTree(TreeViewModel current, List<TreeViewModel> childs,List<MaterialType> materialTypes)
         {
             var types = materialTypes.FindAll(m=>m.ParentId==current.Id);

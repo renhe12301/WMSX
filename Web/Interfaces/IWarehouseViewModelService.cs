@@ -10,5 +10,9 @@ namespace Web.Interfaces
     {
         Task<ResponseResultViewModel> GetWarehouses(int? pageIndex, int? itemsPage,
                                       int? id,int? ouId, string whName);
+        
+        Task<ResponseResultViewModel> WarehouseAssetChart(int ouId);
+        
+        Task<ResponseResultViewModel> WarehouseMaterialChart(int ouId);
     }
 }

@@ -309,6 +309,13 @@
             <param name="rootId"></param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.MaterialTypeController.MaterialTypeChart(System.Int32)">
+            <summary>
+            物料类型物料统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Controllers.Api.OrderController">
             <summary>
             订单操作API
@@ -455,6 +462,20 @@
             <param name="areaName">库区名称</param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.AreaAssetChart(System.Int32)">
+            <summary>
+            子库存资产统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.AreaMaterialChart(System.Int32)">
+            <summary>
+            子库存物料统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Controllers.Api.SupplierController">
             <summary>
             供应商操作API
@@ -565,6 +586,20 @@
             <param name="id">库存组织编号</param>
             <param name="ouId">业务实体编号</param>
             <param name="whName">仓库名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.WarehouseController.WarehouseAssetChart(System.Int32)">
+            <summary>
+            库存组织资产统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.WarehouseController.WarehouseMaterialChart(System.Int32)">
+            <summary>
+            库存组织物料统计
+            </summary>
+            <param name="ouId"></param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseMaterialController">

@@ -11,5 +11,6 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> GetMaterialTypes(int? pageIndex, int? itemsPage,int? id,int? parentId,string typeName);
         Task<ResponseResultViewModel> GetMaterialTypeDics(int? pageIndex, int? itemsPage,int? typeId);
         Task<ResponseResultViewModel> GetMaterialTypeTrees(int rootId);
+        Task<ResponseResultViewModel> MaterialTypeChart(int ouId);
     }
 }

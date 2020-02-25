@@ -63,5 +63,17 @@ namespace Web.Controllers.Api
             var response = await this._materialTypeViewModelService.GetMaterialTypeTrees(rootId);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 物料类型物料统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> MaterialTypeChart(int ouId)
+        {
+            var response = await this._materialTypeViewModelService.MaterialTypeChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
     }
 }
