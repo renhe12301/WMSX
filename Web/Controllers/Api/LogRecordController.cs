@@ -32,10 +32,10 @@ namespace Web.Controllers.Api
         /// <param name="eCreateTIme">日志创建结束时间</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetLogRecords(int? pageIndex, int? itemsPage, int? logType,
+        public async Task<IActionResult> GetLogRecords(int? pageIndex, int? itemsPage, string logTypes,
             string logDesc,string founder,string sCreateTime, string eCreateTIme)
         {
-            var response = await this._logRecordViewModelService.GetLogRecords(pageIndex, itemsPage, logType, logDesc,
+            var response = await this._logRecordViewModelService.GetLogRecords(pageIndex, itemsPage, logTypes, logDesc,
                 founder,sCreateTime, eCreateTIme);
             return Content(JsonConvert.SerializeObject(response));
         }

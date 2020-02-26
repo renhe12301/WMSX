@@ -246,7 +246,7 @@
             日志信息操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.LogRecordController.GetLogRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.LogRecordController.GetLogRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String)">
             <summary>
             获取日志信息
             </summary>
