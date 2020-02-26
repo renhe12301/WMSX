@@ -37,6 +37,8 @@ namespace Web.WebServices.Models
         [DataMember]
         public string Remark { get; set; }
         [DataMember]
+        public string AddUpdateFlag { get; set; }
+        [DataMember]
         public List<RequestEnterOrderRow> RequestEnterOrderRows { get; set; }
     }
 }

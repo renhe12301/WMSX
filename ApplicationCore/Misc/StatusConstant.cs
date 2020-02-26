@@ -22,8 +22,10 @@ namespace ApplicationCore.Misc
 
     public enum ORDER_TYPE
     {
-        采购入库 = 0,
-        领料出库 = 1
+        入库接收 = 1,
+        入库退库 = 2,
+        出库领料 = 3,
+        出库退料 = 4
     }
     
     public enum ORDER_STATUS

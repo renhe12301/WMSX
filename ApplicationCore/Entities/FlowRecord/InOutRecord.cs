@@ -19,6 +19,8 @@ namespace ApplicationCore.Entities.FlowRecord
         public DateTime? CreateTime { get; set; }
         public int Type { get; set; }
 
+        public int? BadCount { get; set; }
+
         public int Status { get; set; }
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
