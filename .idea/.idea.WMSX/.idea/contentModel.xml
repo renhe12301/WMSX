@@ -223,6 +223,7 @@
             <e p="WarehouseTrayController.cs" t="Include" />
           </e>
         </e>
+        <e p="Dashboard" t="Include" />
         <e p="Interfaces" t="Include">
           <e p="IEBSProjectViewModelService.cs" t="Include" />
           <e p="IEBSTaskViewModelService.cs" t="Include" />

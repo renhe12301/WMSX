@@ -62,6 +62,32 @@ namespace Web.Controllers.Api
             var response = await this._warehouseViewModelService.WarehouseMaterialChart(ouId);
             return Content(JsonConvert.SerializeObject(response));
         }
+        /// <summary>
+        /// 库存组织托盘统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> WarehouseTrayChart(int ouId)
+        {
+            var response = await this._warehouseViewModelService.WarehouseTrayChart(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 库存组织出入库记录统计
+        /// </summary>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="inOutType">出入库类型 0-入库 1-出库</param>
+        /// <param name="queryType">查询类型 0-当天 1-本周 2-本月 3-本季度 4-本年</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> WarehouseEntryOutRecordChart(int ouId,int inOutType,int queryType)
+        {
+            var response = await this._warehouseViewModelService.WarehouseEntryOutRecordChart(ouId,inOutType,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
 
     }
 }

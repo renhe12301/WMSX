@@ -311,7 +311,7 @@
         </member>
         <member name="M:Web.Controllers.Api.MaterialTypeController.MaterialTypeChart(System.Int32)">
             <summary>
-            物料类型物料统计
+            物料类型统计
             </summary>
             <param name="ouId"></param>
             <returns></returns>
@@ -476,6 +476,22 @@
             <param name="ouId"></param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.AreaWarehouseTrayChart(System.Int32)">
+            <summary>
+            子库存托盘统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.ReservoirAreaController.AreaEntryOutRecordChart(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            子库存出入库记录统计
+            </summary>
+            <param name="ouId">业务实体编号</param>
+            <param name="inOutType">出入库类型 0-入库 1-出库</param>
+            <param name="queryType">查询类型 0-当天 1-本周 2-本月 3-本季度 4-本年</param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Controllers.Api.SupplierController">
             <summary>
             供应商操作API
@@ -600,6 +616,22 @@
             库存组织物料统计
             </summary>
             <param name="ouId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.WarehouseController.WarehouseTrayChart(System.Int32)">
+            <summary>
+            库存组织托盘统计
+            </summary>
+            <param name="ouId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.WarehouseController.WarehouseEntryOutRecordChart(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            库存组织出入库记录统计
+            </summary>
+            <param name="ouId">业务实体编号</param>
+            <param name="inOutType">出入库类型 0-入库 1-出库</param>
+            <param name="queryType">查询类型 0-当天 1-本周 2-本月 3-本季度 4-本年</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseMaterialController">

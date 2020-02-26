@@ -15,5 +15,11 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> AreaAssetChart(int ouId);
         
         Task<ResponseResultViewModel> AreaMaterialChart(int ouId);
+        
+        Task<ResponseResultViewModel> AreaWarehouseTrayChart(int ouId);
+        
+        Task<ResponseResultViewModel> AreaEntryOutRecordChart(int ouId, int inOutType, int queryType);
+        
+        
     }
 }

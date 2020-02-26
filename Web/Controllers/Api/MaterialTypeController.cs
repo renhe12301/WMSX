@@ -65,7 +65,7 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
-        /// 物料类型物料统计
+        /// 物料类型统计
         /// </summary>
         /// <param name="ouId"></param>
         /// <returns></returns>
