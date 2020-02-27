@@ -49,24 +49,27 @@ namespace ApplicationCore.Services
         public async Task<int> CreateOrder(Order order)
         {
             Guard.Against.Null(order, nameof(order));
-
-            int id = 0;
-            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                try
+                int id = 0;
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    Order addOrder = this._orderRepository.Add(order);
-                    order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
-                    this._orderRowRepository.Add(order.OrderRow);
-                    scope.Complete();
-                    id = addOrder.Id;
+                    try
+                    {
+                        Order addOrder = this._orderRepository.Add(order);
+                        order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
+                        this._orderRowRepository.Add(order.OrderRow);
+                        scope.Complete();
+                        id = addOrder.Id;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+
+                return id;
             }
-            return id;
         }
 
         public async Task SortingOrder(int orderId, int orderRowId, int sortingCount,int badCount,string trayCode,int areaId)
