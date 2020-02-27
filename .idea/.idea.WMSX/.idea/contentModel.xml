@@ -358,9 +358,14 @@
           </e>
           <e p="favicon.ico" t="Include" />
           <e p="js" t="Include">
+            <e p="basic-information" t="Include" />
+            <e p="order-manager" t="Include" />
+            <e p="organization-manager" t="Include" />
             <e p="site.js" t="Include" />
+            <e p="stock-manager" t="Include" />
+            <e p="task-manager" t="Include" />
+            <e p="transfer-manager" t="Include" />
           </e>
-          <e p="lib" t="Include" />
         </e>
       </e>
       <e p="WMSX.sln" t="IncludeFlat" />
