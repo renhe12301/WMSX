@@ -10,6 +10,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
+using Microsoft.EntityFrameworkCore;
 using Web.Interfaces;
 
 namespace Web.Jobs
@@ -23,16 +24,19 @@ namespace Web.Jobs
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly ILogRecordService _logRecordService;
+        private readonly IAsyncRepository<OrderRowBatch> _orderRowBatchRepository;
         public OrderStatusSyncJob(IAsyncRepository<InOutRecord> inOutRecordRepository,
             IAsyncRepository<Order> orderRepository,
             IAsyncRepository<OrderRow> orderRowRepository,
-            ILogRecordService logRecordService
+            ILogRecordService logRecordService,
+            IAsyncRepository<OrderRowBatch> orderRowBatchRepository
         )
         {
             this._inOutRecordRepository = inOutRecordRepository;
             this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
             this._logRecordService = logRecordService;
+            this._orderRowBatchRepository = orderRowBatchRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -80,23 +84,47 @@ namespace Web.Jobs
                         updOrders.Add(order);
                     }
                 });
+                
+                OrderRowBatchSpecification orderRowBatchSpec = new OrderRowBatchSpecification(null,null,
+                    null,null,1,null,0,null);
+                List<OrderRowBatch> orderRowBatchs = await this._orderRowBatchRepository.ListAsync(orderRowBatchSpec);
+                List<OrderRowBatch> updOrderRowBatchs = new List<OrderRowBatch>();
+                orderRowBatchs.ForEach(async (orb) =>
+                {
+                    InOutRecordSpecification childSpec = new InOutRecordSpecification(null,null,null,
+                        null,null,null,null,null,orb.Id,
+                        null,null,null,null,null );
+                    List<InOutRecord> childInOutRecords = await this._inOutRecordRepository.ListAsync(childSpec);
+                    List<InOutRecord> finishInOutRecords = childInOutRecords.Where(r => r.Status == Convert.ToInt32(ORDER_STATUS.完成)).ToList();
+                    if (finishInOutRecords.Count() == childInOutRecords.Count())
+                    {
+                        orb.IsSync = 1;
+                        orb.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                        updOrderRowBatchs.Add(orb);
+                    }
+                });
+
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     this._orderRepository.Update(updOrders);
                     this._orderRowRepository.Update(updOrderRows);
                     this._inOutRecordRepository.Update(updInOutRecords);
+                    this._orderRowBatchRepository.Update(updOrderRowBatchs);
                     scope.Complete();
                 }
 
                 StringBuilder logBuilder = new StringBuilder();
                 if (updOrders.Count > 0)
                     logBuilder.Append(
-                        string.Format("同步订单[{0}]状态！\n", string.Join(',', updOrders.ConvertAll(o => o.Id))));
+                        string.Format("同步订单Id[{0}]状态！\n", string.Join(',', updOrders.ConvertAll(o => o.Id))));
                 if (updOrderRows.Count > 0)
-                    logBuilder.Append(string.Format("同步订单行[{0}]状态！\n",
+                    logBuilder.Append(string.Format("同步订单行Id[{0}]状态！\n",
                         string.Join(',', updOrderRows.ConvertAll(or => or.Id))));
+                if (updOrderRowBatchs.Count > 0)
+                    logBuilder.Append(string.Format("同步订单出库批次Id[{0}]状态！\n",
+                        string.Join(',', updOrderRowBatchs.ConvertAll(orb => orb.Id))));
                 if (inOutRecords.Count > 0)
-                    logBuilder.Append(string.Format("同步订单行子行[{0}]状态！",
+                    logBuilder.Append(string.Format("同步订单行子行Id[{0}]状态！",
                         string.Join(',', inOutRecords.ConvertAll(ior => ior.Id))));
 
                 string record = logBuilder.ToString();

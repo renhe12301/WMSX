@@ -54,21 +54,27 @@ namespace ApplicationCore.Services
                     new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)},
                     null, null, null, areaId);
                 List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
-                OrderRowBatchSpecification orderRowBatchSpec = new OrderRowBatchSpecification(0);
+                OrderRowBatchSpecification orderRowBatchSpec = new OrderRowBatchSpecification(null, null,
+                    null, areaId, null, 0,null, new List<int>
+                    {
+                        Convert.ToInt32(ORDER_STATUS.待处理),
+                        Convert.ToInt32(ORDER_STATUS.执行中)
+                    });
                 List<OrderRowBatch> orderRowBatches = await this._orderRowBatchRepository.ListAsync(orderRowBatchSpec);
                 orderRowBatches.RemoveAll(orb => orb.OrderId.HasValue);
-                List<OrderRowBatch> areaOrderRowBatches = orderRowBatches.FindAll(orb => orb.ReservoirAreaId == areaId);
-                int awaitOutCount = areaOrderRowBatches.Sum(orb => orb.BatchCount);
-                if((warehouseTrays.Count-awaitOutCount)<outCount)throw new Exception(
-                    string.Format("子库区[{0}]空托盘库存数量{1},小于出库需求数量！",areas,warehouseTrays.Count-awaitOutCount));
-                
+                int awaitOutCount = orderRowBatches.Sum(orb => orb.BatchCount);
+                if ((warehouseTrays.Count - awaitOutCount) < outCount)
+                    throw new Exception(
+                        string.Format("子库区[{0}]空托盘库存数量{1},小于出库需求数量！", areas, warehouseTrays.Count - awaitOutCount));
+
                 OrderRowBatch orderRowBatch = new OrderRowBatch
                 {
                     ReservoirAreaId = areaId,
                     BatchCount = outCount,
                     CreateTime = DateTime.Now,
                     IsRead = 0,
-                    Type = 0
+                    Type = 0,
+                    Status = 0
                 };
                 await this._orderRowBatchRepository.AddAsync(orderRowBatch);
             }

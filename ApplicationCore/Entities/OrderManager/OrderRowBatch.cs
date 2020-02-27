@@ -12,6 +12,8 @@ namespace ApplicationCore.Entities.OrderManager
         public int ReservoirAreaId { get; set; }
         public int IsRead { get; set; }
 
+        public int IsSync { get; set; }
+
         public int Type { get; set; }
 
         public int Status { get; set; }
