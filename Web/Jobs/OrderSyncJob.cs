@@ -67,9 +67,10 @@ namespace Web.Jobs
                         if (rowRecords.Count > 0)
                         {
                             or.RealityCount += rowRecords.Sum(r => r.InOutCount);
+                            or.BadCount += rowRecords.Sum(r => r.BadCount);
                             rowRecords.ForEach(r => r.IsSync = 1);
                             updInOutRecords.AddRange(rowRecords);
-                            if (or.RealityCount >= or.PreCount)
+                            if ((or.RealityCount+or.BadCount) >= or.PreCount)
                                 or.Status = Convert.ToInt32(ORDER_STATUS.完成);
                             updOrderRows.Add(or);
                         }

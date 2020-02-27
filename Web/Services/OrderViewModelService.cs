@@ -198,7 +198,8 @@ namespace Web.Services
             try
             {
                 await this._orderService.SortingOrder(orderRow.OrderId,
-                    orderRow.Id, orderRow.Sorting, orderRow.TrayCode,orderRow.ReservoirAreaId.Value);
+                    orderRow.Id, orderRow.Sorting,orderRow.BadCount,
+                    orderRow.TrayCode,orderRow.ReservoirAreaId.Value);
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.操作日志),

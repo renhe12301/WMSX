@@ -47,6 +47,11 @@ namespace ApplicationCore.Entities.OrderManager
         public int? RealityCount { get; set; }
 
         /// <summary>
+        /// 不合格数量
+        /// </summary>
+        public int? BadCount { get; set; }
+
+        /// <summary>
         /// 取消数量
         /// </summary>
         public int? CancelCount { get; set; }

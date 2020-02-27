@@ -20,6 +20,8 @@ namespace Web.ViewModels.OrderManager
         
         public int RealityCount { get; set; }
         public int Sorting { get; set; }
+
+        public int BadCount { get; set; }
         public int Progress { get; set; }
       
         public string Memo { get; set; }
