@@ -13,6 +13,8 @@ namespace ApplicationCore.Entities.OrderManager
         public int IsRead { get; set; }
 
         public int Type { get; set; }
+
+        public int Status { get; set; }
         public DateTime? CreateTime { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }

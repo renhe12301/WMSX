@@ -262,7 +262,7 @@ namespace Web.Services
                 }
                 
                 inOutRecordSpec = new InOutRecordSpecification(null, null,
-                    inOutType, ouId, null, null, null, null,
+                    inOutType, ouId, null, null, null, null,null,
                     new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, sCreateTime, eCreateTime);
                 
                 List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);

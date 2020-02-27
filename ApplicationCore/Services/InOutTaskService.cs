@@ -155,7 +155,7 @@ namespace ApplicationCore.Services
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
             InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,null,
-                null,null,null,null,
+                null,null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
                     null,null,null,null );
             List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
@@ -264,7 +264,7 @@ namespace ApplicationCore.Services
            warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount;
            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(trayCode,null,null,null,
-               null,null,null,null,
+               null,null,null,null,null,
                new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
                null,null,null,null );
            List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);

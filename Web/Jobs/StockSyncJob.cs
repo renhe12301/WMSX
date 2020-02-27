@@ -33,7 +33,7 @@ namespace Web.Jobs
             try
             {
                 InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null,null,null,null,null,
-                    null,null,null,new List<int>{Convert.ToInt32(ORDER_STATUS.完成)},0,null,null,null );
+                    null,null,null,null,new List<int>{Convert.ToInt32(ORDER_STATUS.完成)},0,null,null,null );
                 List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
                 List<InOutRecord> updRecords = new List<InOutRecord>();
                 inOutRecords.ForEach(async (inOutRecord) =>
@@ -43,23 +43,20 @@ namespace Web.Jobs
                     {
                         try
                         {
+                            if (inOutRecord.BadCount.HasValue)
+                            {
+                                // todo 调用集约化物资管理系统入库不合格品接口反馈
+                            }
+                            
                             if (inOutRecord.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收))
                             {
-                                if (inOutRecord.BadCount.HasValue)
-                                {
-                                    // todo 调用集约化物资管理系统入库不合格品接口反馈
-                                }
                                 // todo 调用集约化物资管理系统入库接口反馈
                             }
                             else if (inOutRecord.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料))
                             {
-                                if (inOutRecord.BadCount.HasValue)
-                                {
-                                    // todo 调用集约化物资管理系统入库不合格品接口反馈
-                                }
                                 // todo 调用集约化物资管理系统入库接口反馈
                             }
-                            inOutRecord.IsSync = 1;
+                            inOutRecord.IsRead = 1;
                             updRecords.Add(inOutRecord);
                         }
                         catch (Exception ex)
@@ -76,8 +73,8 @@ namespace Web.Jobs
                     {
                         try
                         {
-                           
-                            inOutRecord.IsSync = 1;
+                            
+                            inOutRecord.IsRead = 1;
                             updRecords.Add(inOutRecord);
                         }
                         catch (Exception ex)

@@ -13,6 +13,9 @@ namespace ApplicationCore.Entities.FlowRecord
         public int? OUId { get; set; }
         public string TrayCode { get; set; }
         public int MaterialDicId { get; set; }
+
+        public int OrderRowBatchId { get; set; }
+
         public int InOutCount { get; set; }
         public int IsRead { get; set; }
         public int IsSync { get; set; }
@@ -29,5 +32,7 @@ namespace ApplicationCore.Entities.FlowRecord
 
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
+
+        public OrderRowBatch OrderRowBatch { get; set; }
     }
 }

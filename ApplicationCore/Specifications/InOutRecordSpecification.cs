@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class InOutRecordSpecification : BaseSpecification<InOutRecord>
     {
         public InOutRecordSpecification(string trayCode,string materialName,int? type,int? ouId,int? wareHouseId,
-                                        int? areaId,int? orderId,int? orderRowId,
+                                        int? areaId,int? orderId,int? orderRowId,int? orderRowBatchId,
                                         List<int> status,int? isRead,int? isSync,string sCreateTime,string eCreateTime)
             : base(b =>   (trayCode==null || b.TrayCode == trayCode) &&
                                              (materialName==null || b.MaterialDic.MaterialName.Contains(materialName)) &&
@@ -17,6 +17,7 @@ namespace ApplicationCore.Specifications
                                              (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
                                              (!orderId.HasValue || b.OrderId == orderId)&&
                                              (!orderRowId.HasValue || b.OrderRowId == orderRowId)&&
+                                             (!orderRowBatchId.HasValue || b.OrderRowBatchId == orderRowBatchId)&&
                                              (!isRead.HasValue || b.IsRead == isRead)&&
                                              (!isSync.HasValue || b.IsSync == isSync)&&
                                              (status==null||status.Contains(b.Status))&&
@@ -29,6 +30,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.ReservoirArea);
             AddInclude(b=>b.Order);
             AddInclude(b=>b.OrderRow);
+            AddInclude(b=>b.OrderRowBatch);
             
         }
     }
