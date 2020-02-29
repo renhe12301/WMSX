@@ -36,6 +36,9 @@ namespace Web.WebServices.Models
         public string CreationDate { get; set; }
         [DataMember]
         public string Remark { get; set; }
+        
+        [DataMember]
+        public string AddUpdateFlag { get; set; }
 
         [DataMember]
         public List<RequestOutOrderRow> RequestOutOrderRows { get; set; }

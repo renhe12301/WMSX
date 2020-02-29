@@ -91,7 +91,7 @@
             出入库记录API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取出入库记录
             </summary>
@@ -102,6 +102,7 @@
             <param name="type">出入库类型</param>
             <param name="orderId">订单编号</param>
             <param name="orderRowId">订单行编号</param>
+            <param name="orderRowBatchId">订单行批次编号</param>
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">库存组织编号</param>
             <param name="areaId">库区编号</param>

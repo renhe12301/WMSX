@@ -48,7 +48,7 @@ namespace Web.Jobs
                     null, null, null, null, null, null, null,
                     null, null);
                 List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
-                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
+                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,
                     new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
                 List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                 InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, 
@@ -67,15 +67,14 @@ namespace Web.Jobs
                         if (rowRecords.Count > 0)
                         {
                             or.RealityCount += rowRecords.Sum(r => r.InOutCount);
-                            or.BadCount += rowRecords.Sum(r => r.BadCount);
                             rowRecords.ForEach(r => r.IsSync = 1);
                             updInOutRecords.AddRange(rowRecords);
-                            if ((or.RealityCount+or.BadCount) >= or.PreCount)
+                            if ((or.RealityCount) >= (or.PreCount-or.BadCount-or.CancelCount))
                                 or.Status = Convert.ToInt32(ORDER_STATUS.完成);
                             updOrderRows.Add(or);
                         }
                     });
-                    OrderRowSpecification allOrderRowSpec = new OrderRowSpecification(null, order.Id,
+                    OrderRowSpecification allOrderRowSpec = new OrderRowSpecification(null, order.Id,null,
                         null, null, null, null, null);
                     List<OrderRow> allOrderRows = await this._orderRowRepository.ListAsync(allOrderRowSpec);
                     int finishCount = allOrderRows.Count(or => or.Status == Convert.ToInt32(ORDER_STATUS.完成));

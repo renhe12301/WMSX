@@ -87,7 +87,7 @@ namespace ApplicationCore.Services
                 var orders = await this._orderRepository.ListAsync(orderSpec);
                 if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
                 Order order = orders[0];
-                var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null);
+                var orderRowSpec = new OrderRowSpecification(orderRowId, null,null, null, null, null, null, null);
                 var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                 if (orderRows.Count == 0) throw new Exception(string.Format("订单行编号[{0}],不存在！", orderRowId));
                 OrderRow orderRow = orderRows[0];
@@ -269,7 +269,7 @@ namespace ApplicationCore.Services
             var orders = await this._orderRepository.ListAsync(orderSpec);
             if(orders.Count==0)throw new Exception(string.Format("订单编号[{0}],不存在！",orderId));
             Order order = orders[0];
-            var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null);
+            var orderRowSpec = new OrderRowSpecification(orderRowId, null,null, null, null, null, null, null);
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
             if(orderRows.Count==0)throw new Exception(string.Format("订单行编号[{0}],不存在！",orderRowId));
             OrderRow orderRow = orderRows[0];
@@ -280,8 +280,9 @@ namespace ApplicationCore.Services
             
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                if ((orderRow.PreCount - orderRow.Sorting) > sortingCount)
-                    throw new Exception(string.Format("出库数量不能大于订单行申请数量！", areaId));
+                if ((orderRow.PreCount-orderRow.CancelCount - orderRow.Sorting) > sortingCount)
+                    throw new Exception(string.Format("出库数量[{0}]大于订单行申请数量[{1}]！",
+                        sortingCount,orderRow.PreCount-orderRow.CancelCount));
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try
@@ -302,18 +303,18 @@ namespace ApplicationCore.Services
                         this._orderRowRepository.Update(orderRow);
                         OrderRowBatch orderRowBatch = new OrderRowBatch
                         {
-                           Type = type,
-                           CreateTime = DateTime.Now,
-                           OrderId = orderId,
-                           OrderRowId = orderId,
-                           ReservoirAreaId = areaId,
-                           BatchCount = sortingCount
+                            Type = type,
+                            CreateTime = DateTime.Now,
+                            OrderId = orderId,
+                            OrderRowId = orderId,
+                            ReservoirAreaId = areaId,
+                            BatchCount = sortingCount
                         };
 
                         this._orderRowBatchRepository.Add(orderRowBatch);
-                        
+
                         scope.Complete();
-                        
+
                     }
                     catch (Exception ex)
                     {

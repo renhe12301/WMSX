@@ -25,5 +25,7 @@ namespace Web.WebServices.Models
         public string ExpenditrueType { get; set; }
         [DataMember]
         public string Remark { get; set; }
+        
+        
     }
 }

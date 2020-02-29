@@ -44,7 +44,7 @@ namespace Web.Services
                 }
                 else
                 {
-                    spec = new OrderRowSpecification(id,orderId,orderStatuss,
+                    spec = new OrderRowSpecification(id,orderId,null,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orderRows = await this._orderRowRepository.ListAsync(spec);
@@ -75,8 +75,8 @@ namespace Web.Services
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,orderStatuss,
-                        sCreateTime, eCreateTime, sFinishTime, eFinishTime));
+                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,null
+                        ,orderStatuss,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
                     dyn.total = count;
