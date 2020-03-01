@@ -51,16 +51,24 @@ namespace ApplicationCore.Services
             Guard.Against.Null(order, nameof(order));
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                int id = 0;
+                try
+                {
+
+                }
+
+                catch (Exception ex)
+                {
+                    
+                }
+
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try
                     {
-                        Order addOrder = this._orderRepository.Add(order);
-                        order.OrderRow.ForEach(om => om.OrderId = addOrder.Id);
+                        this._orderRepository.Add(order);
+                        order.OrderRow.ForEach(om => om.OrderId = order.Id);
                         this._orderRowRepository.Add(order.OrderRow);
                         scope.Complete();
-                        id = addOrder.Id;
                     }
                     catch (Exception ex)
                     {
@@ -68,7 +76,7 @@ namespace ApplicationCore.Services
                     }
                 }
 
-                return id;
+                return order.Id;
             }
         }
 
