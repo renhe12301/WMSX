@@ -32,7 +32,8 @@ namespace ApplicationCore.Misc
     {
         待处理=0,
         执行中=1,
-        完成=2
+        完成=2,
+        关闭=3
     }
 
     public enum AREA_STATUS
@@ -126,7 +127,8 @@ namespace ApplicationCore.Misc
     {
         待处理=0,
         执行中=1,
-        完成=2
+        完成=2,
+        终止=3
     }
     
     public enum TASK_TYPE

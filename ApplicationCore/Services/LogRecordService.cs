@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -18,8 +19,14 @@ namespace ApplicationCore.Services
 
         public async Task AddLog(LogRecord logRecord)
         {
-            Guard.Against.Null(logRecord,nameof(logRecord));
-            await this._logRecordRepository.AddAsync(logRecord);
+            try
+            {
+                Guard.Against.Null(logRecord, nameof(logRecord));
+                await this._logRecordRepository.AddAsync(logRecord);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         public async Task DeleteLog(List<LogRecord> logRecords)
