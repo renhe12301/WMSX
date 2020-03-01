@@ -178,7 +178,7 @@ namespace Web.WebServices.Services
                                     if (Convert.ToInt32(eor.ProcessingQuantity) <
                                         (existRow.PreCount - existRow.Sorting))
                                         throw new Exception(string.Format(
-                                            "修改入库订单[{0}],订单行[{1}],修改数量大于剩余数量,已分拣[{2}],剩余[{3}]",
+                                            "修改入库订单[{0}],订单行[{1}],修改数量大于剩余数量,已处理[{2}],剩余[{3}]",
                                             requestEnterOrder.DocumentNumber, eor.LineNumber, existRow.Sorting,
                                             existRow.PreCount - existRow.Sorting));
                                     existRow.PreCount = Convert.ToInt32(eor.ProcessingQuantity);
