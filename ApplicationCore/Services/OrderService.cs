@@ -149,14 +149,12 @@ namespace ApplicationCore.Services
                                  if (existRow.Status != Convert.ToInt32(ORDER_STATUS.完成) &&
                                      existRow.Status != Convert.ToInt32(ORDER_STATUS.关闭))
                                  {
-                                     bool isUpd = false;
                                      if (eor.Status == Convert.ToInt32(ORDER_STATUS.关闭))
                                      {
                                          if (existRow.Status == Convert.ToInt32(ORDER_STATUS.执行中))
                                              throw new Exception(string.Format("修改订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
                                                  order.OrderNumber, eor.RowNumber));
                                          existRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
-                                         isUpd = true;
                                      }
 
                                      if (Convert.ToInt32(eor.PreCount) < (existRow.PreCount - existRow.Sorting))
@@ -164,14 +162,9 @@ namespace ApplicationCore.Services
                                              "修改订单[{0}],订单行[{1}],修改数量大于剩余数量,已处理[{2}],剩余[{3}]",
                                              order.OrderNumber, eor.RowNumber, existRow.Sorting,
                                              existRow.PreCount - existRow.Sorting));
-                                     else
-                                     {
-                                         existRow.PreCount = Convert.ToInt32(eor.PreCount);
-                                         isUpd = true;
-                                     }
 
-                                     if (isUpd)
-                                         updOrderRows.Add(existRow);
+                                     existRow.PreCount = Convert.ToInt32(eor.PreCount);
+                                     updOrderRows.Add(existRow);
                                  }
                              }
                          });

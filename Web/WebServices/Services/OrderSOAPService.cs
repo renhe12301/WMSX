@@ -172,8 +172,7 @@ namespace Web.WebServices.Services
                             }
                             else
                             {
-                                if (Convert.ToInt32(eor.ProcessingQuantity) < existRow.PreCount&&
-                                    existRow.Status!=Convert.ToInt32(ORDER_STATUS.完成))
+                                if (existRow.Status!=Convert.ToInt32(ORDER_STATUS.完成))
                                 {
                                     if (Convert.ToInt32(eor.ProcessingQuantity) <
                                         (existRow.PreCount - existRow.Sorting))
@@ -477,6 +476,7 @@ namespace Web.WebServices.Services
                                             if(existRow.Status==Convert.ToInt32(ORDER_STATUS.执行中))
                                                 throw new Exception(string.Format("修改出库订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
                                                     requestOutOrder.AlyNumber,eor.LineNum));
+                                            existRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
                                         }
                                         if (Convert.ToInt32(eor.CancelQty) > (existRow.PreCount-existRow.Sorting))
                                         {
@@ -490,6 +490,7 @@ namespace Web.WebServices.Services
                                                 throw new Exception(string.Format("修改出库订单[{0}],订单行[{1}],修改数量大于剩余数量,已出库[{2}],剩余[{3}]",
                                                     requestOutOrder.AlyNumber,eor.LineNum,existRow.Sorting,existRow.PreCount-existRow.Sorting));
                                         }
+                                       
                                         existRow.CancelCount = Convert.ToInt32(eor.CancelQty);
                                         existRow.PreCount = Convert.ToInt32(eor.ReqQty);
                                         updOrderRows.Add(existRow);
