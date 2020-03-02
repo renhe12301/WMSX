@@ -83,12 +83,12 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
-        /// 创建订单
+        /// 创建出库订单
         /// </summary>
         /// <param name="orderViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(OrderViewModel orderViewModel)
+        public async Task<IActionResult> CreateOutOrder(OrderViewModel orderViewModel)
         {
             HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
             if (!string.IsNullOrEmpty(value))
@@ -96,7 +96,7 @@ namespace Web.Controllers.Api
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
                 orderViewModel.Tag = cookie.loginName;
             }
-            var response = await this._orderViewModelService.CreateOrder(orderViewModel);
+            var response = await this._orderViewModelService.CreateOutOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
         /// <summary>

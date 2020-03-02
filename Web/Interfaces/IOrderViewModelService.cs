@@ -16,7 +16,7 @@ namespace Web.Interfaces
         
         Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int areaId);
         
-        Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel);
+        Task<ResponseResultViewModel> CreateOutOrder(OrderViewModel orderViewModel);
         
         Task<ResponseResultViewModel> SortingOrder(OrderRowViewModel orderRow);
         

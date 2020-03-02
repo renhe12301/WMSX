@@ -188,15 +188,16 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel)
+        public async Task<ResponseResultViewModel> CreateOutOrder(OrderViewModel orderViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
+                DateTime now = DateTime.Now;
                 Order order = new Order
                 {
-                    OrderNumber = orderViewModel.OrderNumber,
-                    CreateTime = DateTime.Now,
+                    OrderNumber = "TK_Order_"+now.Ticks,
+                    CreateTime = now,
                     ApplyTime = DateTime.Parse(orderViewModel.ApplyTime),
                     ApplyUserCode = orderViewModel.ApplyUserCode,
                     ApproveTime = DateTime.Parse(orderViewModel.ApproveTime),
@@ -208,25 +209,16 @@ namespace Web.Services
               
                 orderViewModel.OrderRows.ForEach(async(or) =>
                 {
-                    ReservoirArea area = null;
-                    if (or.ReservoirAreaId.HasValue)
-                    {
-                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(or.ReservoirAreaId,
-                            null,null,null, null, null);
-                        var areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
-                        if (areas.Count == 0) throw new Exception(string.Format("子库区[{0}]不存在！",or.ReservoirAreaId));
-                        area = areas[0];
-                    }
                     OrderRow orderRow = new OrderRow
                     {
-                        CreateTime=DateTime.Now,
+                        RowNumber = "TK_Order_Row_"+now.Ticks,
+                        CreateTime=now,
                         PreCount=or.PreCount,
-                        RealityCount=or.PreCount
+                        ReservoirAreaId = or.ReservoirAreaId
+                        
                     };
-                    if (area != null)
-                        orderRow.ReservoirAreaId = area.Id;
                 });
-               var id = await this._orderService.CreateOrder(order);
+               var id = await this._orderService.CreateOutOrder(order);
                response.Data = id;
                await this._logRecordService.AddLog(new LogRecord
                {

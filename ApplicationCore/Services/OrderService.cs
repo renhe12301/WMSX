@@ -12,8 +12,6 @@ using ApplicationCore.Misc;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.StockManager;
-using ApplicationCore.Entities.SysManager;
-using ApplicationCore.Entities.TaskManager;
 
 namespace ApplicationCore.Services
 {
@@ -51,7 +49,7 @@ namespace ApplicationCore.Services
         }
 
 
-        public async Task<int> CreateOrder(Order order)
+        public async Task<int> CreateOutOrder(Order order)
         {
             Guard.Against.Null(order, nameof(order));
             using (ModuleLock.GetAsyncLock().LockAsync())
@@ -65,6 +63,30 @@ namespace ApplicationCore.Services
                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
                     order.OrderNumber, null, null, null, null, null);
                 List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+                
+                //对占用订单行里面物料数量进行校验
+                OrderRowSpecification checkOrderRowSpec = new OrderRowSpecification(null,null,null,
+                    new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
+                    null,null,null);
+                List<OrderRow> checkOrderRows = await this._orderRowRepository.ListAsync(checkOrderRowSpec);
+                List<OrderRow> tkOrderRows = checkOrderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                StringBuilder errorSB = new StringBuilder();
+                order.OrderRow.ForEach(async (o) =>
+                {
+                    WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
+                        o.MaterialDicId,null,null,null,null,null,null,
+                        null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
+                        null,order.OUId,order.WarehouseId,o.ReservoirAreaId );
+                    List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                    int stockCount = warehouseMaterials.Sum(m => m.MaterialCount);
+                    int occCount = tkOrderRows.Sum(or => or.MaterialDicId = o.MaterialDicId);
+                    int remainingCount = stockCount - occCount;
+                    if (remainingCount < o.PreCount)
+                        errorSB.Append(string.Format("物料Id[{0}],物料名称[{1}],库存不足,出库失败！\n", o.MaterialDicId,
+                            o.MaterialDic.MaterialName));
+                });
+                if(!string.IsNullOrEmpty(errorSB.ToString()))
+                    throw new Exception(errorSB.ToString());
 
                 if (orders.Count > 0)
                 {
