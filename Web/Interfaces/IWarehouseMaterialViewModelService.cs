@@ -8,7 +8,7 @@ namespace Web.Interfaces
     {
         Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId,string materialName,string materialSpec, string trayCode,
-            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string trayTaskStatus, int? locationId,
+            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string traySteps, int? locationId,
             int? orgId, int? ouId, int? wareHouseId, int? areaId);
     }
 }

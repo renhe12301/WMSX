@@ -35,7 +35,7 @@ namespace Web.Controllers.Api
         /// <param name="orderId">关联订单编号</param>
         /// <param name="orderRowId">关联订单行编号</param>
         /// <param name="carrier">所属载体</param>
-        /// <param name="trayTaskStatus">关联托盘状态,多个以逗号隔开</param>
+        /// <param name="traySteps">关联托盘状态,多个以逗号隔开</param>
         /// <param name="locationId">所在货位编号</param>
         /// <param name="orgId">所属公司编号</param>
         /// <param name="ouId">业务实体编号</param>
@@ -45,12 +45,12 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
-            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string trayTaskStatus, int? locationId, int? orgId, int? ouId
+            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string traySteps, int? locationId, int? orgId, int? ouId
             , int? wareHouseId, int? areaId)
         {
             var response = await this._warehouseMaterialViewModelService.GetMaterials(pageIndex,
                 itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId,
-                carrier, trayTaskStatus, locationId,orgId,ouId,wareHouseId, areaId);
+                carrier, traySteps, locationId,orgId,ouId,wareHouseId, areaId);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

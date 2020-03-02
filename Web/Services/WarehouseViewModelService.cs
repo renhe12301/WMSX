@@ -51,7 +51,7 @@ namespace Web.Services
                 }
                 else
                 {
-                    baseSpecification = new WarehouseSpecification(id, null, whName,null);
+                    baseSpecification = new WarehouseSpecification(id, ouId, whName,null);
                 }
                 var warehouses = await this._wareHouseRepository.ListAsync(baseSpecification);
                 List<WarehouseViewModel> warehouseViewModels = new List<WarehouseViewModel>();
@@ -69,7 +69,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._wareHouseRepository.CountAsync(new WarehouseSpecification(id, null,  whName,null));
+                    var count = await this._wareHouseRepository.CountAsync(new WarehouseSpecification(id, ouId,  whName,null));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseViewModels;
                     dyn.total = count;

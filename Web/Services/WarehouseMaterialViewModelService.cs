@@ -25,16 +25,16 @@ namespace Web.Services
 
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
-            int? trayDicId,int? orderId,int? orderRowId , int? carrier, string trayTaskStatus, int? locationId,
+            int? trayDicId,int? orderId,int? orderRowId , int? carrier, string traySteps, int? locationId,
             int? orgId,int? ouId,int? wareHouseId, int? areaId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
                 List<int> trayStatus = null;
-                if (trayTaskStatus != null)
+                if (traySteps != null)
                 {
-                    trayStatus = trayTaskStatus.Split(new char[]{
+                    trayStatus = traySteps.Split(new char[]{
                      ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
