@@ -12,6 +12,7 @@ using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Specifications;
 using ApplicationCore.Misc;
 using System.Linq;
+using ApplicationCore.Entities.StockManager;
 using LogRecord = ApplicationCore.Entities.FlowRecord.LogRecord;
 
 namespace Web.Services
@@ -24,18 +25,24 @@ namespace Web.Services
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly IAsyncRepository<Warehouse> _warehouseRepository;
         private readonly ILogRecordService _logRecordService;
+        private readonly IAsyncRepository<OrderRow> _orderRowRepository;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
         public OrderViewModelService(IOrderService orderService,
                                        IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
                                        IAsyncRepository<Warehouse> warehouseRepository,
-                                       ILogRecordService _logRecordService)
+                                       ILogRecordService logRecordService,
+                                       IAsyncRepository<OrderRow> orderRowRepository,
+                                       IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
             this._orderService = orderService;
             this._orderRepository = orderRepository;
             this._areaRepository = areaRepository;
             this._warehouseRepository = warehouseRepository;
-            this._logRecordService = _logRecordService;
+            this._logRecordService = logRecordService;
+            this._orderRowRepository = orderRowRepository;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
@@ -129,6 +136,58 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId, int warehouseId, int areaId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,
+                     new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
+                     null,null,null);
+                 List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+                 List<OrderRow> tkOrderRows = orderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                 WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
+                     null,null,null,null,null,null,null,
+                     null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
+                     null,ouId,warehouseId,areaId );
+                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+
+                 var materialGroup = warehouseMaterials.GroupBy(m => m.MaterialDicId);
+                 List<dynamic> result = new List<dynamic>();
+                 foreach (var mg in materialGroup)
+                 {
+                     dynamic dyn = new ExpandoObject();
+                     dyn.MaterialId = mg.First().MaterialDic.Id;
+                     dyn.MaterialName = mg.First().MaterialDic.MaterialName;
+                     int materialCount = mg.Sum(m => m.MaterialCount);
+                     dyn.MaterialCount = materialCount;
+                     int occCount = orderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
+                         .Sum(or => or.PreCount);
+                     dyn.RemainingCount = materialCount - occCount;
+                     dyn.OccCount = occCount;
+                     dyn.MaterialCode = mg.First().MaterialDic.MaterialCode;
+                     dyn.MaterialSpec = mg.First().MaterialDic.Spec;
+                     result.Add(dyn);
+                 }
+
+                 response.Data = result;
+
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.StackTrace,
+                    CreateTime = DateTime.Now
+                });
+            }
+
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> CreateOrder(OrderViewModel orderViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -152,7 +211,8 @@ namespace Web.Services
                     ReservoirArea area = null;
                     if (or.ReservoirAreaId.HasValue)
                     {
-                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(or.ReservoirAreaId,null,null,null, null, null);
+                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(or.ReservoirAreaId,
+                            null,null,null, null, null);
                         var areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
                         if (areas.Count == 0) throw new Exception(string.Format("子库区[{0}]不存在！",or.ReservoirAreaId));
                         area = areas[0];

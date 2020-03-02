@@ -367,6 +367,15 @@
             <param name="orderRowBatchViewModel"></param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.OrderController.GetTKOrderMaterials(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            获取退库物料信息
+            </summary>
+            <param name="ouId">业务实体编号</param>
+            <param name="warehouseId">库存组织编号</param>
+            <param name="areaId">子库存编号</param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.OrderRowController.GetOrderRows(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String)">
             <summary>
             获取订单行信息

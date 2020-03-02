@@ -116,7 +116,21 @@ namespace Web.Controllers.Api
             var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
-        
+
+
+        /// <summary>
+        /// 获取退库物料信息
+        /// </summary>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="warehouseId">库存组织编号</param>
+        /// <param name="areaId">子库存编号</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetTKOrderMaterials(int ouId, int warehouseId, int areaId)
+        {
+            var response = await this._orderViewModelService.GetTKOrderMaterials(ouId,warehouseId,areaId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
     }
 
