@@ -41,6 +41,6 @@ namespace Web.ViewModels.OrderManager
 
         public object Tag { get; set; }
 
-        public List<OrderRowViewModel> OrderRows;
+        public List<OrderRowViewModel> OrderRows { get; set; }
     }
 }

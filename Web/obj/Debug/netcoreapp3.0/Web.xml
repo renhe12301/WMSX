@@ -353,9 +353,9 @@
             <param name="orderRowViewModel">入库订单行JSON对象</param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.CreateOrder(Web.ViewModels.OrderManager.OrderViewModel)">
+        <member name="M:Web.Controllers.Api.OrderController.CreateOutOrder(Web.ViewModels.OrderManager.OrderViewModel)">
             <summary>
-            创建订单
+            创建出库订单
             </summary>
             <param name="orderViewModel"></param>
             <returns></returns>

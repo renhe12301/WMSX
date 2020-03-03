@@ -10,12 +10,12 @@ namespace ApplicationCore.Entities.StockManager
     /// </summary>
     public class WarehouseTray : BaseEntity
     {
-        public int OrderId { get; set; }
-        public int OrderRowId { get; set; }
+        public int? OrderId { get; set; }
+        public int? OrderRowId { get; set; }
         public string TrayCode { get; set; }
         public int? LocationId { get; set; }
         public int MaterialCount { get; set; }
-        public int OutCount { get; set; }
+        public int? OutCount { get; set; }
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
@@ -30,7 +30,7 @@ namespace ApplicationCore.Entities.StockManager
 
         public string Memo { get; set; }
 
-        public int CargoHeight { get; set; }
+        public int? CargoHeight { get; set; }
 
         public string CargoWeight { get; set; }
 

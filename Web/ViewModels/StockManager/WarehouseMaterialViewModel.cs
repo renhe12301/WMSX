@@ -19,6 +19,8 @@ namespace Web.ViewModels.StockManager
         public string Img { get; set; }
         public string OrgName { get; set; }
         public string OUName { get; set; }
-        
+
+        public string Spec { get; set; }
+
     }
 }

@@ -30,7 +30,7 @@ namespace Web.Controllers.Api
         /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<IActionResult> EmptyEntry([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
         {
             var response = await this._inOutTaskViewModelService.EmptyEntry(warehouseTrayViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -42,7 +42,7 @@ namespace Web.Controllers.Api
         /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<IActionResult> EmptyOut([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
         {
             var response = await this._inOutTaskViewModelService.EmptyOut(warehouseTrayViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -54,7 +54,7 @@ namespace Web.Controllers.Api
         /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<IActionResult> OutConfirm([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
         {
             var response = await this._inOutTaskViewModelService.OutConfirm(warehouseTrayViewModel);
             return Content(JsonConvert.SerializeObject(response));
@@ -66,7 +66,7 @@ namespace Web.Controllers.Api
         /// <param name="inOutTaskViewModel">出入库任务实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> TaskReport(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<IActionResult> TaskReport([FromBody]InOutTaskViewModel inOutTaskViewModel)
         {
             var response = await this._inOutTaskViewModelService.TaskReport(inOutTaskViewModel);
             return Content(JsonConvert.SerializeObject(response));

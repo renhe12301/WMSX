@@ -68,6 +68,7 @@ namespace Web.Services
                         LocationCode = e.Location.SysCode,
                         MaterialCount = e.MaterialCount,
                         MaterialName = e.MaterialDic.MaterialName,
+                        Spec = e.MaterialDic.Spec,
                         ReservoirAreaName = e.ReservoirArea.AreaName,
                         TrayCode = e.WarehouseTray.TrayCode,
                         WarehouseName = e.Warehouse.WhName,

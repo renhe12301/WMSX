@@ -70,7 +70,7 @@ namespace Web.Controllers.Api
         /// <param name="orderRowViewModel">入库订单行JSON对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SortingOrder(OrderRowViewModel orderRowViewModel)
+        public async Task<IActionResult> SortingOrder([FromBody]OrderRowViewModel orderRowViewModel)
         {
             HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
             if (!string.IsNullOrEmpty(value))
@@ -88,7 +88,7 @@ namespace Web.Controllers.Api
         /// <param name="orderViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> CreateOutOrder(OrderViewModel orderViewModel)
+        public async Task<IActionResult> CreateOutOrder([FromBody]OrderViewModel orderViewModel)
         {
             HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
             if (!string.IsNullOrEmpty(value))
@@ -96,6 +96,7 @@ namespace Web.Controllers.Api
                 dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
                 orderViewModel.Tag = cookie.loginName;
             }
+            
             var response = await this._orderViewModelService.CreateOutOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -105,7 +106,7 @@ namespace Web.Controllers.Api
         /// <param name="orderRowBatchViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
+        public async Task<IActionResult> OrderOut([FromBody]OrderRowBatchViewModel orderRowBatchViewModel)
         {
             HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
             if (!string.IsNullOrEmpty(value))

@@ -407,7 +407,7 @@ namespace ApplicationCore.Services
                             ReservoirAreaId = areaId,
                             MaterialDicId = materialDic.Id,
                             BadCount = badCount,
-                            InOutCount = warehouseTray.MaterialCount + warehouseTray.OutCount,
+                            InOutCount = warehouseTray.MaterialCount + warehouseTray.OutCount.GetValueOrDefault(),
                             IsRead = 0,
                             CreateTime = DateTime.Now,
                             Type = 0,

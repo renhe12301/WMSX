@@ -7,8 +7,8 @@ namespace ApplicationCore.Entities.StockManager
   
     public class WarehouseMaterial:BaseEntity
     {
-        public int OrderId { get; set; }
-        public int OrderRowId { get; set; }
+        public int? OrderId { get; set; }
+        public int? OrderRowId { get; set; }
         public int MaterialDicId { get; set; }
         public int WarehouseTrayId { get; set; }
         public int MaterialCount { get; set; }

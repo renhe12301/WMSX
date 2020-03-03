@@ -267,7 +267,7 @@ namespace ApplicationCore.Services
            if(warehouseTray.TrayStep!=Convert.ToInt32(TRAY_STEP.出库完成等待确认))
                throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
                    trayCode));
-           warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount;
+           warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(trayCode,null,null,null,
                null,null,null,null,null,

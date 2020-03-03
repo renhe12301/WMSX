@@ -161,12 +161,14 @@ namespace Web.Services
                      dyn.MaterialName = mg.First().MaterialDic.MaterialName;
                      int materialCount = mg.Sum(m => m.MaterialCount);
                      dyn.MaterialCount = materialCount;
-                     int occCount = orderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
+                     int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
                          .Sum(or => or.PreCount);
                      dyn.RemainingCount = materialCount - occCount;
                      dyn.OccCount = occCount;
                      dyn.MaterialCode = mg.First().MaterialDic.MaterialCode;
                      dyn.MaterialSpec = mg.First().MaterialDic.Spec;
+                     dyn.TKCount = 0;
+                     dyn.AreaId = mg.First().ReservoirAreaId;
                      result.Add(dyn);
                  }
 
