@@ -54,49 +54,61 @@ namespace ApplicationCore.Services
             Guard.Against.Null(order, nameof(order));
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                OrderSpecification orderSpec = new OrderSpecification(null, order.OrderNumber, null,
-                    null,
-                    null, null, null, null, null, null, null,
-                    null, null, null, null, null);
-                List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
-
-                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
-                    order.OrderNumber, null, null, null, null, null);
-                List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-                
-                //对占用订单行里面物料数量进行校验
-                OrderRowSpecification checkOrderRowSpec = new OrderRowSpecification(null,null,null,
-                    new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
-                    null,null,null);
-                List<OrderRow> checkOrderRows = await this._orderRowRepository.ListAsync(checkOrderRowSpec);
-                List<OrderRow> tkOrderRows = checkOrderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
-                StringBuilder errorSB = new StringBuilder();
-                order.OrderRow.ForEach(async (o) =>
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
-                        o.MaterialDicId,null,null,null,null,null,null,
-                        null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
-                        null,order.OUId,order.WarehouseId,o.ReservoirAreaId );
-                    List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
-                    int stockCount = warehouseMaterials.Sum(m => m.MaterialCount);
-                    int occCount = tkOrderRows.Sum(or => or.MaterialDicId = o.MaterialDicId);
-                    int remainingCount = stockCount - occCount;
-                    if (remainingCount < o.PreCount)
-                        errorSB.Append(string.Format("物料Id[{0}],物料名称[{1}],库存不足,出库失败！\n", o.MaterialDicId,
-                            o.MaterialDic.MaterialName));
-                });
-                if(!string.IsNullOrEmpty(errorSB.ToString()))
-                    throw new Exception(errorSB.ToString());
+                    OrderSpecification orderSpec = new OrderSpecification(null, order.OrderNumber, null,
+                        null,
+                        null, null, null, null, null, null, null,
+                        null, null, null, null, null);
+                    List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
-                if (orders.Count > 0)
-                {
-                    var srcOrder = orders[0];
-                    if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
+                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
+                        order.OrderNumber, null, null, null, null, null);
+                    List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+
+                    //对占用订单行里面物料数量进行校验
+                    OrderRowSpecification checkOrderRowSpec = new OrderRowSpecification(null, null, null,
+                        new List<int> {Convert.ToInt32(ORDER_STATUS.待处理), Convert.ToInt32(ORDER_STATUS.执行中)}, null,
+                        null, null, null);
+                    List<OrderRow> checkOrderRows = await this._orderRowRepository.ListAsync(checkOrderRowSpec);
+                    List<OrderRow> tkOrderRows = checkOrderRows
+                        .Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                    StringBuilder errorSB = new StringBuilder();
+
+                    WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                        null,
+                        null, null, null, null, null, null, null,
+                        null, new List<int>() {Convert.ToInt32(TRAY_STEP.入库完成), Convert.ToInt32(TRAY_STEP.初始化)},
+                        null, order.OUId, order.WarehouseId, null,null,null);
+                    List<WarehouseMaterial> allWarehouseMaterials =
+                        await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                    if (allWarehouseMaterials.Count > 0)
+                    {
+                        order.OrderRow.ForEach((o) =>
+                        {
+                            List<WarehouseMaterial> warehouseMaterials = allWarehouseMaterials.Where(w =>
+                                w.MaterialDicId == o.MaterialDicId && w.ReservoirAreaId == o.ReservoirAreaId).ToList();
+                            int stockCount = warehouseMaterials.Sum(m => m.MaterialCount);
+                            int occCount = tkOrderRows.Sum(or => or.MaterialDicId = o.MaterialDicId);
+                            int remainingCount = stockCount - occCount;
+                            if (remainingCount < o.PreCount)
+                                errorSB.Append(string.Format("物料Id[{0}],物料名称[{1}],库存不足,出库失败！\n", o.MaterialDicId,
+                                    o.MaterialDic.MaterialName));
+
+                        });
+                        if (!string.IsNullOrEmpty(errorSB.ToString()))
+                            throw new Exception(errorSB.ToString());
+                    }
+
+                    if (orders.Count > 0)
+                    {
+                        var srcOrder = orders[0];
+                        if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
                             throw new Exception(string.Format("订单[{0}]已经完成无法修改！", srcOrder.OrderNumber));
-                    
-                    if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
-                        throw new Exception(string.Format("订单[{0}]已经关闭无法修改！", srcOrder.OrderNumber));
-                     if (order.Status ==Convert.ToInt32(ORDER_STATUS.关闭))
+
+                        if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
+                            throw new Exception(string.Format("订单[{0}]已经关闭无法修改！", srcOrder.OrderNumber));
+                        if (order.Status == Convert.ToInt32(ORDER_STATUS.关闭))
                         {
                             if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.执行中))
                                 throw new Exception(string.Format("订单[{0}]正在执行无法关闭！", order.OrderNumber));
@@ -114,130 +126,108 @@ namespace ApplicationCore.Services
                             updOrders.Add(srcOrder);
                             updOrderRows.AddRange(queueExeRows);
 
-                            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                            {
-                                try
-                                {
-                                    this._orderRepository.Update(updOrders);
-                                    this._orderRowRepository.Update(updOrderRows);
-                                    scope.Complete();
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw ex;
-                                }
-                            }
-                             
+                            this._orderRepository.Update(updOrders);
+                            this._orderRowRepository.Update(updOrderRows);
+
                             await this._logRecordRepository.AddAsync(new LogRecord
                             {
                                 LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                                LogDesc = "关闭订单[{0}]"+srcOrder.OrderNumber,
+                                LogDesc = "关闭订单[{0}]" + srcOrder.OrderNumber,
                                 CreateTime = DateTime.Now
                             });
-                            
+
                         }
-                     else
-                     {
-                         List<OrderRow> addOrderRows = new List<OrderRow>();
-                         List<OrderRow> updOrderRows = new List<OrderRow>();
-                         order.OrderRow.ForEach(async (eor) =>
-                         {
-                             var existRow = orderRows.Find(r => r.RowNumber == eor.RowNumber);
-                             if (existRow == null)
-                             {
-                                 MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
-                                     Convert.ToInt32(eor.MaterialDicId),
-                                     null, null, null, null);
-                                 List<MaterialDic> materialDics =
-                                     await this._materialDicRepository.ListAsync(materialDicSpec);
-                                 if (materialDics.Count == 0)
-                                     throw new Exception(string.Format("订单[{0}],订单行[{1}],关联物料Id[{2}]不存在！",
-                                         order.OrderNumber, eor.RowNumber, eor.MaterialDicId));
-                                 MaterialDic materialDic = materialDics[0];
+                        else
+                        {
+                            List<OrderRow> addOrderRows = new List<OrderRow>();
+                            List<OrderRow> updOrderRows = new List<OrderRow>();
+                            order.OrderRow.ForEach(async (eor) =>
+                            {
+                                var existRow = orderRows.Find(r => r.RowNumber == eor.RowNumber);
+                                if (existRow == null)
+                                {
+                                    MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
+                                        Convert.ToInt32(eor.MaterialDicId),
+                                        null, null, null, null);
+                                    List<MaterialDic> materialDics =
+                                        await this._materialDicRepository.ListAsync(materialDicSpec);
+                                    if (materialDics.Count == 0)
+                                        throw new Exception(string.Format("订单[{0}],订单行[{1}],关联物料Id[{2}]不存在！",
+                                            order.OrderNumber, eor.RowNumber, eor.MaterialDicId));
+                                    MaterialDic materialDic = materialDics[0];
 
-                                 OrderRow addOrderRow = new OrderRow
-                                 {
-                                     OrderId = srcOrder.Id,
-                                     RowNumber = eor.RowNumber,
-                                     MaterialDicId = materialDic.Id,
-                                     PreCount = Convert.ToInt32(eor.PreCount),
-                                     Price = Convert.ToInt32(eor.Price),
-                                     Amount = Convert.ToInt32(eor.Amount)
-                                 };
-                                 addOrderRows.Add(addOrderRow);
-                             }
-                             else
-                             {
-                                 if (existRow.Status != Convert.ToInt32(ORDER_STATUS.完成) &&
-                                     existRow.Status != Convert.ToInt32(ORDER_STATUS.关闭))
-                                 {
-                                     if (eor.Status == Convert.ToInt32(ORDER_STATUS.关闭))
-                                     {
-                                         if (existRow.Status == Convert.ToInt32(ORDER_STATUS.执行中))
-                                             throw new Exception(string.Format("修改订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
-                                                 order.OrderNumber, eor.RowNumber));
-                                         existRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
-                                     }
+                                    OrderRow addOrderRow = new OrderRow
+                                    {
+                                        OrderId = srcOrder.Id,
+                                        RowNumber = eor.RowNumber,
+                                        MaterialDicId = materialDic.Id,
+                                        PreCount = Convert.ToInt32(eor.PreCount),
+                                        Price = Convert.ToInt32(eor.Price),
+                                        Amount = Convert.ToInt32(eor.Amount)
+                                    };
+                                    addOrderRows.Add(addOrderRow);
+                                }
+                                else
+                                {
+                                    if (existRow.Status != Convert.ToInt32(ORDER_STATUS.完成) &&
+                                        existRow.Status != Convert.ToInt32(ORDER_STATUS.关闭))
+                                    {
+                                        if (eor.Status == Convert.ToInt32(ORDER_STATUS.关闭))
+                                        {
+                                            if (existRow.Status == Convert.ToInt32(ORDER_STATUS.执行中))
+                                                throw new Exception(string.Format("修改订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
+                                                    order.OrderNumber, eor.RowNumber));
+                                            existRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
+                                        }
 
-                                     if (Convert.ToInt32(eor.PreCount) < (existRow.PreCount - existRow.Sorting))
-                                         throw new Exception(string.Format(
-                                             "修改订单[{0}],订单行[{1}],修改数量大于剩余数量,已处理[{2}],剩余[{3}]",
-                                             order.OrderNumber, eor.RowNumber, existRow.Sorting,
-                                             existRow.PreCount - existRow.Sorting));
+                                        if (Convert.ToInt32(eor.PreCount) < (existRow.PreCount - existRow.Sorting))
+                                            throw new Exception(string.Format(
+                                                "修改订单[{0}],订单行[{1}],修改数量大于剩余数量,已处理[{2}],剩余[{3}]",
+                                                order.OrderNumber, eor.RowNumber, existRow.Sorting,
+                                                existRow.PreCount - existRow.Sorting));
 
-                                     existRow.PreCount = Convert.ToInt32(eor.PreCount);
-                                     updOrderRows.Add(existRow);
-                                 }
-                             }
-                         });
-                         using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                         {
-                             try
-                             {
-                                 this._orderRowRepository.Add(addOrderRows);
-                                 this._orderRowRepository.Update(updOrderRows);
-                                 scope.Complete();
-                             }
-                             catch (Exception ex)
-                             {
-                                 throw ex;
-                             }
-                         }
+                                        existRow.PreCount = Convert.ToInt32(eor.PreCount);
+                                        updOrderRows.Add(existRow);
+                                    }
+                                }
+                            });
+                            this._orderRowRepository.Add(addOrderRows);
+                            this._orderRowRepository.Update(updOrderRows);
 
-                         StringBuilder sb = new StringBuilder(string.Format("修改订单[{0}]\n", srcOrder.Id));
-                         if (addOrderRows.Count > 0)
-                             sb.Append(string.Format("新增订单行[{0}]\n",
-                                 string.Join(',', addOrderRows.ConvertAll(r => r.Id))));
-                         if (updOrderRows.Count > 0)
-                             sb.Append(string.Format("修改订单行[{0}]\n",
-                                 string.Join(',', updOrderRows.ConvertAll(r => r.Id))));
+                            StringBuilder sb = new StringBuilder(string.Format("修改订单[{0}]\n", srcOrder.Id));
+                            if (addOrderRows.Count > 0)
+                                sb.Append(string.Format("新增订单行[{0}]\n",
+                                    string.Join(',', addOrderRows.ConvertAll(r => r.Id))));
+                            if (updOrderRows.Count > 0)
+                                sb.Append(string.Format("修改订单行[{0}]\n",
+                                    string.Join(',', updOrderRows.ConvertAll(r => r.Id))));
 
-                         await this._logRecordRepository.AddAsync(new LogRecord
-                         {
-                             LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                             LogDesc = sb.ToString(),
-                             CreateTime = DateTime.Now
-                         });
-                     }
-                }
-                else
-                {
-                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                            await this._logRecordRepository.AddAsync(new LogRecord
+                            {
+                                LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                                LogDesc = sb.ToString(),
+                                CreateTime = DateTime.Now
+                            });
+                        }
+                    }
+                    else
                     {
+
                         this._orderRepository.Add(order);
                         order.OrderRow.ForEach(om => om.OrderId = order.Id);
                         this._orderRowRepository.Add(order.OrderRow);
-                        scope.Complete();
+                        await this._logRecordRepository.AddAsync(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
+                            LogDesc = string.Format("新增入库订单[{0}]\n新增入库订单行[{1}]", order.Id,
+                                string.Join(',', order.OrderRow.ConvertAll(r => r.Id))),
+                            CreateTime = DateTime.Now
+                        });
                     }
-                    await this._logRecordRepository.AddAsync(new LogRecord
-                    {
-                        LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
-                        LogDesc = string.Format("新增入库订单[{0}]\n新增入库订单行[{1}]", order.Id,
-                            string.Join(',', order.OrderRow.ConvertAll(r => r.Id))),
-                        CreateTime = DateTime.Now
-                    });
+
+                    scope.Complete();
                 }
-               
+
                 return order.Id;
             }
         }
@@ -292,7 +282,7 @@ namespace ApplicationCore.Services
 
                 WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
                     null, null, null, null, trayCode, null, null,
-                    null, null, null, null, null, null, null);
+                    null, null, null, null, null, null, null,null,null);
 
                 List<WarehouseMaterial> oldMaterials =
                     await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
@@ -335,7 +325,9 @@ namespace ApplicationCore.Services
                                 Amount = orderRow.Price * sortingCount,
                                 WarehouseId = area.WarehouseId,
                                 ReservoirAreaId = areaId,
-                                OUId = area.OUId
+                                OUId = area.OUId,
+                                SupplierId = order.SupplierId,
+                                SupplierSiteId = order.SupplierSiteId
                             };
                             this._warehouseMaterialRepository.Add(warehouseMaterial);
                         }
@@ -375,6 +367,8 @@ namespace ApplicationCore.Services
                             warehouseMaterial.WarehouseId = area.WarehouseId;
                             warehouseMaterial.ReservoirAreaId = areaId;
                             warehouseMaterial.OUId = area.OUId;
+                            warehouseMaterial.SupplierId = order.SupplierId;
+                            warehouseMaterial.SupplierSiteId = order.SupplierSiteId;
 
                             if (oldMaterials.Count > 0)
                                 this._warehouseMaterialRepository.Update(warehouseMaterial);

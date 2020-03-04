@@ -69,7 +69,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 项目编号
         /// </summary>
-        public int EBSProjectId { get; set; }
+        public int? EBSProjectId { get; set; }
 
         /// <summary>
         /// 关联EBS项目
@@ -89,7 +89,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 供应商编号
         /// </summary>
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
 
         /// <summary>
         /// 关联供应商头
@@ -99,7 +99,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 供应商站点编号
         /// </summary>
-        public int SupplierSiteId { get; set; }
+        public int? SupplierSiteId { get; set; }
         
         /// <summary>
         /// 关联供应商地址

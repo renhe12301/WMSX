@@ -39,8 +39,8 @@ namespace Web.ViewModels.OrderManager
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
 
-        public object Tag { get; set; }
-
+        public string Tag { get; set; }
+        
         public List<OrderRowViewModel> OrderRows { get; set; }
     }
 }

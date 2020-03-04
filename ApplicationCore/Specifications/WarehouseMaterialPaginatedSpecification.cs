@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseMaterialPaginatedSpecification(int skip,int take,int? id, string materialCode, int? materialDicId,
             string materialName,string materialSpec,string trayCode, int? trayDicId,int? orderId,int? orderRowId, 
-            int? carrier, List<int> traySteps, int? locationId, int? ouId, int? wareHouseId, int? areaId)
+            int? carrier, List<int> traySteps, int? locationId, int? ouId, int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId)
             : base(b =>(!id.HasValue || b.Id == id) &&
                        (materialCode == null || b.MaterialDic.MaterialCode == materialCode) &&
                        (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
@@ -25,7 +25,9 @@ namespace ApplicationCore.Specifications
                        (!locationId.HasValue || b.LocationId == locationId) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
                        (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
-                       (!areaId.HasValue || b.ReservoirAreaId == areaId))
+                       (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
+                       (!supplierId.HasValue||b.SupplierId==supplierId)&&
+                       (!supplierSiteId.HasValue||b.SupplierSiteId==supplierSiteId))
         {
             ApplyPaging(skip, take);
             AddInclude(b => b.MaterialDic);
@@ -36,6 +38,8 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Order);
             AddInclude(b => b.OrderRow);
             AddInclude(b=>b.OU);
+            AddInclude(b=>b.Supplier);
+            AddInclude(b=>b.SupplierSite);
         }
     }
 }

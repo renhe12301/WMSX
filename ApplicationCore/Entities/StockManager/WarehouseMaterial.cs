@@ -32,5 +32,25 @@ namespace ApplicationCore.Entities.StockManager
         public Location Location { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
+        
+        /// <summary>
+        /// 供应商编号
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
+        /// 关联供应商头
+        /// </summary>
+        public Supplier Supplier { get; set; }
+
+        /// <summary>
+        /// 供应商站点编号
+        /// </summary>
+        public int? SupplierSiteId { get; set; }
+        
+        /// <summary>
+        /// 关联供应商地址
+        /// </summary>
+        public SupplierSite SupplierSite { get; set; }
     }
 }

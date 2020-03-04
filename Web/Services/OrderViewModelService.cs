@@ -97,11 +97,11 @@ namespace Web.Services
                         WarehouseName = e.Warehouse?.WhName,
                         OUName = e.OU?.OUName,
                         OUId = e.OUId,
-                        EBSProjectId = e.EBSProjectId,
+                        EBSProjectId = e.EBSProjectId.GetValueOrDefault(),
                         ProjectName = e.EBSProject?.ProjectName,
-                        SupplierId = e.SupplierId,
+                        SupplierId = e.SupplierId.GetValueOrDefault(),
                         SupplierName = e.Supplier?.SupplierName,
-                        SupplierSiteId = e.SupplierSiteId,
+                        SupplierSiteId = e.SupplierSiteId.GetValueOrDefault(),
                         SupplierSiteName = e.SupplierSite?.SiteName,
                         Currency = e.Currency,
                         TotalAmount = e.TotalAmount,
@@ -149,7 +149,7 @@ namespace Web.Services
                  WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
                      null,null,null,null,null,null,null,
                      null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
-                     null,ouId,warehouseId,areaId );
+                     null,ouId,warehouseId,areaId,null,null);
                  List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
                  var materialGroup = warehouseMaterials.GroupBy(m => m.MaterialDicId);
@@ -198,11 +198,13 @@ namespace Web.Services
                 DateTime now = DateTime.Now;
                 Order order = new Order
                 {
+                    OUId = orderViewModel.OUId,
+                    WarehouseId = orderViewModel.WarehouseId,
                     OrderNumber = "TK_Order_"+now.Ticks,
                     CreateTime = now,
-                    ApplyTime = DateTime.Parse(orderViewModel.ApplyTime),
+                    ApplyTime = now,
                     ApplyUserCode = orderViewModel.ApplyUserCode,
-                    ApproveTime = DateTime.Parse(orderViewModel.ApproveTime),
+                    ApproveTime = now,
                     ApproveUserCode = orderViewModel.ApproveUserCode,
                     CallingParty = orderViewModel.CallingParty,
                     OrderTypeId = orderViewModel.OrderTypeId
@@ -216,10 +218,12 @@ namespace Web.Services
                         RowNumber = "TK_Order_Row_"+now.Ticks,
                         CreateTime=now,
                         PreCount=or.PreCount,
-                        ReservoirAreaId = or.ReservoirAreaId
-                        
+                        ReservoirAreaId = or.ReservoirAreaId,
+                        MaterialDicId = or.MaterialDicId
                     };
+                    orderRows.Add(orderRow);
                 });
+                order.OrderRow = orderRows;
                var id = await this._orderService.CreateOutOrder(order);
                response.Data = id;
                await this._logRecordService.AddLog(new LogRecord

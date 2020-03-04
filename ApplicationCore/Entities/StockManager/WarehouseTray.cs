@@ -39,6 +39,7 @@ namespace ApplicationCore.Entities.StockManager
         public ReservoirArea ReservoirArea { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
+
         public List<WarehouseMaterial> WarehouseMaterial { get; set; }
     }
 }

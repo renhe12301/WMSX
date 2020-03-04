@@ -26,7 +26,7 @@ namespace Web.Services
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
             int? trayDicId,int? orderId,int? orderRowId , int? carrier, string traySteps, int? locationId,
-            int? orgId,int? ouId,int? wareHouseId, int? areaId)
+            int? orgId,int? ouId,int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -43,13 +43,13 @@ namespace Web.Services
                 {
                     baseSpecification = new WarehouseMaterialPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,materialCode,materialDicId,materialName,materialSpec,trayCode,trayDicId,orderId,orderRowId,
-                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId);
+                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId,supplierId,supplierSiteId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId);
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId);
                 }
 
                 var materials = await this._warehouseMaterialRepository.ListAsync(baseSpecification);
@@ -62,17 +62,19 @@ namespace Web.Services
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
                         Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier),
-                        Code = e.MaterialDic.MaterialCode,
-                        Img = e.MaterialDic.Img,
+                        Code = e.MaterialDic?.MaterialCode,
+                        Img = e.MaterialDic?.Img,
                         LocationId = e.LocationId,
-                        LocationCode = e.Location.SysCode,
+                        LocationCode = e.Location?.SysCode,
                         MaterialCount = e.MaterialCount,
-                        MaterialName = e.MaterialDic.MaterialName,
-                        Spec = e.MaterialDic.Spec,
-                        ReservoirAreaName = e.ReservoirArea.AreaName,
-                        TrayCode = e.WarehouseTray.TrayCode,
-                        WarehouseName = e.Warehouse.WhName,
-                        OUName = e.OU.OUName
+                        MaterialName = e.MaterialDic?.MaterialName,
+                        Spec = e.MaterialDic?.Spec,
+                        ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        TrayCode = e.WarehouseTray?.TrayCode,
+                        WarehouseName = e.Warehouse?.WhName,
+                        OUName = e.OU?.OUName,
+                        SupplierName = e.Supplier?.SupplierName,
+                        SupplierSiteName = e.SupplierSite?.SiteName
 
                     };
                     warehouseMaterialViewModels.Add(warehouseMaterialViewModel);
@@ -81,7 +83,7 @@ namespace Web.Services
                 {
                     var count = await this._warehouseMaterialRepository.CountAsync(new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId));
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseMaterialViewModels;
                     dyn.total = count;

@@ -72,12 +72,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> SortingOrder([FromBody]OrderRowViewModel orderRowViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderRowViewModel.Tag = cookie.loginName;
-            }
             var response = await this._orderViewModelService.SortingOrder(orderRowViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -90,13 +84,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> CreateOutOrder([FromBody]OrderViewModel orderViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderViewModel.Tag = cookie.loginName;
-            }
-            
             var response = await this._orderViewModelService.CreateOutOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -108,12 +95,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> OrderOut([FromBody]OrderRowBatchViewModel orderRowBatchViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                orderRowBatchViewModel.Tag = cookie.loginName;
-            }
             var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }

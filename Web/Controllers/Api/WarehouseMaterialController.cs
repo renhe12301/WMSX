@@ -41,16 +41,18 @@ namespace Web.Controllers.Api
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">所在仓库编号</param>
         /// <param name="areaId">所在分区编号</param>
+        /// <param name="supplierId">供应商编号</param>
+        /// <param name="supplierSiteId">供应商站编号</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
             int? trayDicId, int? orderId, int? orderRowId, int? carrier, string traySteps, int? locationId, int? orgId, int? ouId
-            , int? wareHouseId, int? areaId)
+            , int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId)
         {
             var response = await this._warehouseMaterialViewModelService.GetMaterials(pageIndex,
                 itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId,
-                carrier, traySteps, locationId,orgId,ouId,wareHouseId, areaId);
+                carrier, traySteps, locationId,orgId,ouId,wareHouseId, areaId,supplierId,supplierSiteId);
             return Content(JsonConvert.SerializeObject(response));
         }
     }
