@@ -136,7 +136,7 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId, int warehouseId, int areaId)
+        public async Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId, int warehouseId, int? areaId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -146,33 +146,42 @@ namespace Web.Services
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                  List<OrderRow> tkOrderRows = orderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                 ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId,null,ouId,warehouseId,null,null);
+                 List<ReservoirArea> areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
+                 
                  WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
                      null,null,null,null,null,null,null,
                      null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
-                     null,ouId,warehouseId,areaId,null,null);
-                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                     null,ouId,warehouseId,null,null,null);
+                 List<WarehouseMaterial> allWarehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
-                 var materialGroup = warehouseMaterials.GroupBy(m => m.MaterialDicId);
                  List<dynamic> result = new List<dynamic>();
-                 foreach (var mg in materialGroup)
+                 foreach (var area in areas)
                  {
-                     dynamic dyn = new ExpandoObject();
-                     dyn.MaterialId = mg.First().MaterialDic.Id;
-                     dyn.MaterialName = mg.First().MaterialDic.MaterialName;
-                     int materialCount = mg.Sum(m => m.MaterialCount);
-                     double totalAmount = mg.Sum(m => m.Amount);
-                     dyn.MaterialCount = materialCount;
-                     int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
-                         .Sum(or => or.PreCount);
-                     dyn.RemainingCount = materialCount - occCount;
-                     dyn.OccCount = occCount;
-                     dyn.MaterialCode = mg.First().MaterialDic.MaterialCode;
-                     dyn.MaterialSpec = mg.First().MaterialDic.Spec;
-                     dyn.TKCount = 0;
-                     dyn.AreaId = mg.First().ReservoirAreaId;
-                     dyn.Price = mg.First().Price;
-                     dyn.Amount = totalAmount;
-                     result.Add(dyn);
+                     List<WarehouseMaterial> areaWarehouseMaterials =
+                         allWarehouseMaterials.Where(a => a.ReservoirAreaId == area.Id).ToList();
+                     var groupMaterial = areaWarehouseMaterials.GroupBy(g => g.MaterialDicId);
+                     foreach (var mg in groupMaterial)
+                     {
+                         dynamic dyn = new ExpandoObject();
+                         dyn.MaterialId = mg.First().MaterialDic.Id;
+                         dyn.MaterialName = mg.First().MaterialDic.MaterialName;
+                         int materialCount = mg.Sum(m => m.MaterialCount);
+                         double totalAmount = mg.Sum(m => m.Amount);
+                         dyn.MaterialCount = materialCount;
+                         int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
+                             .Sum(or => or.PreCount);
+                         dyn.RemainingCount = materialCount - occCount;
+                         dyn.OccCount = occCount;
+                         dyn.MaterialCode = mg.First().MaterialDic.MaterialCode;
+                         dyn.MaterialSpec = mg.First().MaterialDic.Spec;
+                         dyn.TKCount = 0;
+                         dyn.AreaId = mg.First().ReservoirAreaId;
+                         dyn.AreaName = mg.First().ReservoirArea?.AreaName;
+                         dyn.Price = mg.First().Price;
+                         dyn.Amount = totalAmount;
+                         result.Add(dyn);
+                     }
                  }
 
                  response.Data = result;
@@ -265,7 +274,7 @@ namespace Web.Services
             {
                 await this._orderService.SortingOrder(orderRow.OrderId,
                     orderRow.Id, orderRow.Sorting,orderRow.BadCount,
-                    orderRow.TrayCode,orderRow.ReservoirAreaId.Value);
+                    orderRow.TrayCode,orderRow.ReservoirAreaId.GetValueOrDefault());
                 await this._logRecordService.AddLog(new LogRecord
                 {
                     LogType = Convert.ToInt32(LOG_TYPE.操作日志),
@@ -298,7 +307,8 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.Value,orderRowBatchViewModel.OrderRowId.Value,
+                await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.GetValueOrDefault(),
+                    orderRowBatchViewModel.OrderRowId.GetValueOrDefault(),
                     orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type);
                 await this._logRecordService.AddLog(new LogRecord
                 {

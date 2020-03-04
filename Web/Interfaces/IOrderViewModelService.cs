@@ -14,7 +14,7 @@ namespace Web.Interfaces
              int? employeeId,string employeeName,string sApplyTime, string eApplyTime, string sApproveTime,
              string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
-        Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int areaId);
+        Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int? areaId);
         
         Task<ResponseResultViewModel> CreateOutOrder(OrderViewModel orderViewModel);
         
