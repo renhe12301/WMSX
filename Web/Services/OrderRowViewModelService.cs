@@ -61,14 +61,16 @@ namespace Web.Services
                         MaterialDicId = e.MaterialDicId,
                         MaterialDicName = e.MaterialDic?.MaterialName,
                         CreateTime = e.CreateTime.ToString(),
-                        FinishTime = e.FinishTime.ToString(),
+                        FinishTime = e.FinishTime?.ToString(),
                         PreCount = e.PreCount,
-                        RealityCount = e.PreCount,
+                        RealityCount = e.RealityCount.GetValueOrDefault(),
                         Sorting = e.Sorting.GetValueOrDefault(),
                         Status = e.Status,
                         StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress.GetValueOrDefault(),
-                        EBSTaskName = e.EBSTask.TaskName
+                        EBSTaskName = e.EBSTask?.TaskName,
+                        Price = e.Price,
+                        Amount = e.Amount
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

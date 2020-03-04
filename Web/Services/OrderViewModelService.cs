@@ -160,6 +160,7 @@ namespace Web.Services
                      dyn.MaterialId = mg.First().MaterialDic.Id;
                      dyn.MaterialName = mg.First().MaterialDic.MaterialName;
                      int materialCount = mg.Sum(m => m.MaterialCount);
+                     double totalAmount = mg.Sum(m => m.Amount);
                      dyn.MaterialCount = materialCount;
                      int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
                          .Sum(or => or.PreCount);
@@ -169,6 +170,8 @@ namespace Web.Services
                      dyn.MaterialSpec = mg.First().MaterialDic.Spec;
                      dyn.TKCount = 0;
                      dyn.AreaId = mg.First().ReservoirAreaId;
+                     dyn.Price = mg.First().Price;
+                     dyn.Amount = totalAmount;
                      result.Add(dyn);
                  }
 
@@ -207,7 +210,10 @@ namespace Web.Services
                     ApproveTime = now,
                     ApproveUserCode = orderViewModel.ApproveUserCode,
                     CallingParty = orderViewModel.CallingParty,
-                    OrderTypeId = orderViewModel.OrderTypeId
+                    OrderTypeId = orderViewModel.OrderTypeId,
+                    Status = 0,
+                    EmployeeId = orderViewModel.EmployeeId
+                    
                 };
                 List<OrderRow> orderRows = new List<OrderRow>();
               
@@ -219,7 +225,9 @@ namespace Web.Services
                         CreateTime=now,
                         PreCount=or.PreCount,
                         ReservoirAreaId = or.ReservoirAreaId,
-                        MaterialDicId = or.MaterialDicId
+                        MaterialDicId = or.MaterialDicId,
+                        Price = or.Price,
+                        Amount = or.Amount
                     };
                     orderRows.Add(orderRow);
                 });

@@ -86,7 +86,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 任务编号
         /// </summary>
-        public int EBSTaskId { get; set; }
+        public int? EBSTaskId { get; set; }
         /// <summary>
         /// 关联任务实体
         /// </summary>

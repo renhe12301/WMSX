@@ -54,8 +54,9 @@ namespace ApplicationCore.Services
             Guard.Against.Null(order, nameof(order));
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                try
                 {
+
                     OrderSpecification orderSpec = new OrderSpecification(null, order.OrderNumber, null,
                         null,
                         null, null, null, null, null, null, null,
@@ -79,7 +80,7 @@ namespace ApplicationCore.Services
                         null,
                         null, null, null, null, null, null, null,
                         null, new List<int>() {Convert.ToInt32(TRAY_STEP.入库完成), Convert.ToInt32(TRAY_STEP.初始化)},
-                        null, order.OUId, order.WarehouseId, null,null,null);
+                        null, order.OUId, order.WarehouseId, null, null, null);
                     List<WarehouseMaterial> allWarehouseMaterials =
                         await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
                     if (allWarehouseMaterials.Count > 0)
@@ -87,7 +88,8 @@ namespace ApplicationCore.Services
                         order.OrderRow.ForEach((o) =>
                         {
                             List<WarehouseMaterial> warehouseMaterials = allWarehouseMaterials.Where(w =>
-                                w.MaterialDicId == o.MaterialDicId && w.ReservoirAreaId == o.ReservoirAreaId).ToList();
+                                    w.MaterialDicId == o.MaterialDicId && w.ReservoirAreaId == o.ReservoirAreaId)
+                                .ToList();
                             int stockCount = warehouseMaterials.Sum(m => m.MaterialCount);
                             int occCount = tkOrderRows.Sum(or => or.MaterialDicId = o.MaterialDicId);
                             int remainingCount = stockCount - occCount;
@@ -125,16 +127,25 @@ namespace ApplicationCore.Services
                             srcOrder.Status = Convert.ToInt32(ORDER_STATUS.关闭);
                             updOrders.Add(srcOrder);
                             updOrderRows.AddRange(queueExeRows);
-
-                            this._orderRepository.Update(updOrders);
-                            this._orderRowRepository.Update(updOrderRows);
-
-                            await this._logRecordRepository.AddAsync(new LogRecord
+                            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                             {
-                                LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                                LogDesc = "关闭订单[{0}]" + srcOrder.OrderNumber,
-                                CreateTime = DateTime.Now
-                            });
+                                try
+                                {
+                                    this._orderRepository.Update(updOrders);
+                                    this._orderRowRepository.Update(updOrderRows);
+                                    this._logRecordRepository.Add(new LogRecord
+                                    {
+                                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                                        LogDesc = "关闭订单[{0}]" + srcOrder.OrderNumber,
+                                        CreateTime = DateTime.Now
+                                    });
+                                    scope.Complete();
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw ex;
+                                }
+                            }
 
                         }
                         else
@@ -175,7 +186,8 @@ namespace ApplicationCore.Services
                                         if (eor.Status == Convert.ToInt32(ORDER_STATUS.关闭))
                                         {
                                             if (existRow.Status == Convert.ToInt32(ORDER_STATUS.执行中))
-                                                throw new Exception(string.Format("修改订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
+                                                throw new Exception(string.Format(
+                                                    "修改订单[{0}],关闭订单行[{1}],关闭失败,订单行执行中",
                                                     order.OrderNumber, eor.RowNumber));
                                             existRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
                                         }
@@ -191,43 +203,70 @@ namespace ApplicationCore.Services
                                     }
                                 }
                             });
-                            this._orderRowRepository.Add(addOrderRows);
-                            this._orderRowRepository.Update(updOrderRows);
-
-                            StringBuilder sb = new StringBuilder(string.Format("修改订单[{0}]\n", srcOrder.Id));
-                            if (addOrderRows.Count > 0)
-                                sb.Append(string.Format("新增订单行[{0}]\n",
-                                    string.Join(',', addOrderRows.ConvertAll(r => r.Id))));
-                            if (updOrderRows.Count > 0)
-                                sb.Append(string.Format("修改订单行[{0}]\n",
-                                    string.Join(',', updOrderRows.ConvertAll(r => r.Id))));
-
-                            await this._logRecordRepository.AddAsync(new LogRecord
+                            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                             {
-                                LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                                LogDesc = sb.ToString(),
-                                CreateTime = DateTime.Now
-                            });
+                                try
+                                {
+                                    this._orderRowRepository.Add(addOrderRows);
+                                    this._orderRowRepository.Update(updOrderRows);
+                                    StringBuilder sb = new StringBuilder(string.Format("修改订单[{0}]\n", srcOrder.Id));
+                                    if (addOrderRows.Count > 0)
+                                        sb.Append(string.Format("新增订单行[{0}]\n",
+                                            string.Join(',', addOrderRows.ConvertAll(r => r.Id))));
+                                    if (updOrderRows.Count > 0)
+                                        sb.Append(string.Format("修改订单行[{0}]\n",
+                                            string.Join(',', updOrderRows.ConvertAll(r => r.Id))));
+
+                                    this._logRecordRepository.Add(new LogRecord
+                                    {
+                                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                                        LogDesc = sb.ToString(),
+                                        CreateTime = DateTime.Now
+                                    });
+                                    scope.Complete();
+                                }
+                                catch (Exception ex)
+                                {
+                                    throw ex;
+                                }
+                            }
                         }
                     }
                     else
                     {
-
-                        this._orderRepository.Add(order);
-                        order.OrderRow.ForEach(om => om.OrderId = order.Id);
-                        this._orderRowRepository.Add(order.OrderRow);
-                        await this._logRecordRepository.AddAsync(new LogRecord
+                        using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                         {
-                            LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
-                            LogDesc = string.Format("新增入库订单[{0}]\n新增入库订单行[{1}]", order.Id,
-                                string.Join(',', order.OrderRow.ConvertAll(r => r.Id))),
-                            CreateTime = DateTime.Now
-                        });
+                            try
+                            {
+                                this._orderRepository.Add(order);
+                                order.OrderRow.ForEach(om => om.OrderId = order.Id);
+                                this._orderRowRepository.Add(order.OrderRow);
+                                this._logRecordRepository.Add(new LogRecord
+                                {
+                                    LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
+                                    LogDesc = string.Format("新增入库订单[{0}]\n新增入库订单行[{1}]", order.Id,
+                                        string.Join(',', order.OrderRow.ConvertAll(r => r.Id))),
+                                    CreateTime = DateTime.Now
+                                });
+                                scope.Complete();
+                            }
+                            catch (Exception ex)
+                            {
+                                throw ex;
+                            }
+                        }
+
                     }
-
-                    scope.Complete();
                 }
-
+                catch (Exception ex)
+                {
+                    await this._logRecordRepository.AddAsync(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.InnerException==null?ex.StackTrace:ex.InnerException.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                }
                 return order.Id;
             }
         }

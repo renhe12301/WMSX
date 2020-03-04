@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Entities.OrderManager
@@ -154,6 +155,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 关联订单行
         /// </summary>
+        [NotMapped]
         public List<OrderRow> OrderRow { get; set; }
     }
 }

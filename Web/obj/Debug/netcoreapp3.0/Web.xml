@@ -649,7 +649,7 @@
             仓库物料操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             获取仓库物料信息
             </summary>
@@ -671,6 +671,8 @@
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">所在仓库编号</param>
             <param name="areaId">所在分区编号</param>
+            <param name="supplierId">供应商编号</param>
+            <param name="supplierSiteId">供应商站编号</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseTrayController">
