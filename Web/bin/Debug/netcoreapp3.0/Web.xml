@@ -367,6 +367,20 @@
             <param name="orderRowBatchViewModel"></param>
             <returns></returns>
         </member>
+        <member name="M:Web.Controllers.Api.OrderController.CloseOrder(Web.ViewModels.OrderManager.OrderViewModel)">
+            <summary>
+            关闭订单
+            </summary>
+            <param name="orderViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.Api.OrderController.CloseOrderRow(Web.ViewModels.OrderManager.OrderRowViewModel)">
+            <summary>
+            关闭订单行
+            </summary>
+            <param name="orderRowViewModel"></param>
+            <returns></returns>
+        </member>
         <member name="M:Web.Controllers.Api.OrderController.GetTKOrderMaterials(System.Int32,System.Int32,System.Int32)">
             <summary>
             获取退库物料信息
