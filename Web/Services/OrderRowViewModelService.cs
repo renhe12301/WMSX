@@ -70,7 +70,8 @@ namespace Web.Services
                         Progress = e.Progress.GetValueOrDefault(),
                         EBSTaskName = e.EBSTask?.TaskName,
                         Price = e.Price,
-                        Amount = e.Amount
+                        Amount = e.Amount,
+                        OrderId = e.OrderId
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

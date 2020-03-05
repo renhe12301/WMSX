@@ -381,7 +381,7 @@
             <param name="orderRowViewModel"></param>
             <returns></returns>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.GetTKOrderMaterials(System.Int32,System.Int32,System.Int32)">
+        <member name="M:Web.Controllers.Api.OrderController.GetTKOrderMaterials(System.Int32,System.Int32,System.Nullable{System.Int32})">
             <summary>
             获取退库物料信息
             </summary>

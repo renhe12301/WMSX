@@ -131,7 +131,7 @@ namespace Web.Controllers.Api
         /// <param name="areaId">子库存编号</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetTKOrderMaterials(int ouId, int warehouseId, int areaId)
+        public async Task<IActionResult> GetTKOrderMaterials(int ouId, int warehouseId, int? areaId)
         {
             var response = await this._orderViewModelService.GetTKOrderMaterials(ouId,warehouseId,areaId);
             return Content(JsonConvert.SerializeObject(response));

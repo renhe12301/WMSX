@@ -18,6 +18,9 @@ namespace ApplicationCore.Specifications
                   (eFinishTime == null || b.FinishTime <= DateTime.Parse(eFinishTime)))
         {
             AddInclude(b => b.Order);
+            AddInclude(b=>b.MaterialDic);
+            AddInclude(b=>b.ReservoirArea);
+            AddInclude(b=>b.EBSTask);
         }
     }
 }

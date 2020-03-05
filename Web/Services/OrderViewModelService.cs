@@ -180,6 +180,8 @@ namespace Web.Services
                          dyn.AreaName = mg.First().ReservoirArea?.AreaName;
                          dyn.Price = mg.First().Price;
                          dyn.Amount = totalAmount;
+                         dyn.OUId = mg.First().OUId;
+                         dyn.WarehouseId = mg.First().WarehouseId;
                          result.Add(dyn);
                      }
                  }
@@ -212,7 +214,7 @@ namespace Web.Services
                 {
                     OUId = orderViewModel.OUId,
                     WarehouseId = orderViewModel.WarehouseId,
-                    OrderNumber = "TK_Order_"+now.Ticks,
+                    OrderNumber = orderViewModel.OrderNumber??"TK_Order_"+now.Ticks,
                     CreateTime = now,
                     ApplyTime = now,
                     ApplyUserCode = orderViewModel.ApplyUserCode,
@@ -231,7 +233,7 @@ namespace Web.Services
                 {
                     OrderRow orderRow = new OrderRow
                     {
-                        RowNumber = "TK_Order_Row_"+now.Ticks,
+                        RowNumber = or.RowNumber??"TK_Order_"+now.Ticks,
                         CreateTime=now,
                         PreCount=or.PreCount,
                         ReservoirAreaId = or.ReservoirAreaId,
