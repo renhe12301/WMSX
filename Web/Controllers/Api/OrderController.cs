@@ -99,6 +99,29 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
+        /// <summary>
+        /// 关闭订单
+        /// </summary>
+        /// <param name="orderViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CloseOrder([FromBody]OrderViewModel orderViewModel)
+        {
+            var response = await this._orderViewModelService.CloseOrder(orderViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 关闭订单行
+        /// </summary>
+        /// <param name="orderRowViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CloseOrderRow([FromBody]OrderRowViewModel orderRowViewModel)
+        {
+            var response = await this._orderViewModelService.CloseOrderRow(orderRowViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
         /// <summary>
         /// 获取退库物料信息

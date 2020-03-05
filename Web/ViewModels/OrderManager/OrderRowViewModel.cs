@@ -40,6 +40,6 @@ namespace Web.ViewModels.OrderManager
 
         public string TrayCode { get; set; }
 
-        public object Tag { get; set; }
+        public string Tag { get; set; }
     }
 }

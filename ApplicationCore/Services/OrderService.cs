@@ -137,7 +137,8 @@ namespace ApplicationCore.Services
                                     {
                                         LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                                         LogDesc = "关闭订单[{0}]" + srcOrder.OrderNumber,
-                                        CreateTime = DateTime.Now
+                                        CreateTime = DateTime.Now,
+                                        Founder = order.Tag
                                     });
                                     scope.Complete();
                                 }
@@ -221,7 +222,8 @@ namespace ApplicationCore.Services
                                     {
                                         LogType = Convert.ToInt32(LOG_TYPE.操作日志),
                                         LogDesc = sb.ToString(),
-                                        CreateTime = DateTime.Now
+                                        CreateTime = DateTime.Now,
+                                        Founder = order.Tag
                                     });
                                     scope.Complete();
                                 }
@@ -246,7 +248,8 @@ namespace ApplicationCore.Services
                                     LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
                                     LogDesc = string.Format("新增入库订单[{0}]\n新增入库订单行[{1}]", order.Id,
                                         string.Join(',', order.OrderRow.ConvertAll(r => r.Id))),
-                                    CreateTime = DateTime.Now
+                                    CreateTime = DateTime.Now,
+                                    Founder = order.Tag
                                 });
                                 scope.Complete();
                             }
@@ -271,7 +274,8 @@ namespace ApplicationCore.Services
             }
         }
 
-        public async Task SortingOrder(int orderId, int orderRowId, int sortingCount,int badCount,string trayCode,int areaId)
+        public async Task SortingOrder(int orderId, int orderRowId, int sortingCount,int badCount,string trayCode,
+                                       int areaId, string tag)
         {
             Guard.Against.Zero(orderId, nameof(orderId));
             Guard.Against.Zero(orderRowId, nameof(orderRowId));
@@ -447,7 +451,17 @@ namespace ApplicationCore.Services
                             Status = Convert.ToInt32(TASK_STATUS.待处理)
                         };
                         this._inOutTaskRepository.Add(inOutRecord);
-
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("订单[{0}]出库,订单行[{1}],分拣数量[{2}],分拣托盘[{3}]",
+                                orderRow.OrderId,
+                                orderRow.Id,
+                                orderRow.Sorting,
+                                trayCode),
+                            Founder = tag,
+                            CreateTime = DateTime.Now
+                        });
                         scope.Complete();
                     }
                     catch (Exception ex)
@@ -459,33 +473,33 @@ namespace ApplicationCore.Services
 
         }
 
-        public async Task OrderOut(int orderId, int orderRowId, int areaId, int sortingCount,int type)
+        public async Task OrderOut(int orderId, int orderRowId, int areaId, int sortingCount, int type, string tag)
         {
-            Guard.Against.Zero(orderId,nameof(orderId));
-            Guard.Against.Zero(orderRowId,nameof(orderRowId));
-            Guard.Against.Zero(areaId,nameof(areaId));
-            Guard.Against.Zero(sortingCount,nameof(sortingCount));
-            
-            var orderSpec = new OrderSpecification(orderId, null,null, null, null,
-                null, null,null,null, null, null, null, 
-                null,null,null,null);
+            Guard.Against.Zero(orderId, nameof(orderId));
+            Guard.Against.Zero(orderRowId, nameof(orderRowId));
+            Guard.Against.Zero(areaId, nameof(areaId));
+            Guard.Against.Zero(sortingCount, nameof(sortingCount));
+
+            var orderSpec = new OrderSpecification(orderId, null, null, null, null,
+                null, null, null, null, null, null, null,
+                null, null, null, null);
             var orders = await this._orderRepository.ListAsync(orderSpec);
-            if(orders.Count==0)throw new Exception(string.Format("订单编号[{0}],不存在！",orderId));
+            if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
             Order order = orders[0];
-            var orderRowSpec = new OrderRowSpecification(orderRowId, null,null, null, null, null, null, null);
+            var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null, null);
             var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-            if(orderRows.Count==0)throw new Exception(string.Format("订单行编号[{0}],不存在！",orderRowId));
+            if (orderRows.Count == 0) throw new Exception(string.Format("订单行编号[{0}],不存在！", orderRowId));
             OrderRow orderRow = orderRows[0];
-            var areaSpec = new ReservoirAreaSpecification(areaId,null, null, null,null,null);
+            var areaSpec = new ReservoirAreaSpecification(areaId, null, null, null, null, null);
             var areas = await this._reservoirAreaRepository.ListAsync(areaSpec);
-            if(areas.Count==0)throw new Exception(string.Format("子库存编号[{0}],不存在！",areaId));
+            if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
             var area = areas[0];
-            
+
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
-                if ((orderRow.PreCount-orderRow.CancelCount - orderRow.Sorting) > sortingCount)
+                if ((orderRow.PreCount - orderRow.CancelCount - orderRow.Sorting) > sortingCount)
                     throw new Exception(string.Format("出库数量[{0}]大于订单行申请数量[{1}]！",
-                        sortingCount,orderRow.PreCount-orderRow.CancelCount));
+                        sortingCount, orderRow.PreCount - orderRow.CancelCount));
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try
@@ -515,7 +529,17 @@ namespace ApplicationCore.Services
                         };
 
                         this._orderRowBatchRepository.Add(orderRowBatch);
-
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("订单[{0}]出库,订单行[{1}],出库批次数量[{2}],出库方式[{3}]",
+                                orderId,
+                                orderRowId,
+                                sortingCount,
+                                Enum.GetName(typeof(ORDER_BATCH_TYPE),type)),
+                            Founder = tag,
+                            CreateTime = DateTime.Now
+                        });
                         scope.Complete();
 
                     }
@@ -525,6 +549,87 @@ namespace ApplicationCore.Services
                     }
                 }
             }
+        }
+
+        public async Task CloseOrder(int orderId, string tag)
+        {
+            Guard.Against.Zero(orderId,nameof(orderId));
+            using (ModuleLock.GetAsyncLock().LockAsync())
+            {
+                OrderSpecification orderSpec = new OrderSpecification(orderId,null,null,null,
+                    null,null,null,null,null,null,
+                    null,null,null,null,null,null);
+                List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
+                if(orders.Count==0)
+                    throw new Exception(string.Format("订单Id[{0}],不存在！",orderId));
+
+                Order order = orders[0];
+                if(order.Status==Convert.ToInt32(ORDER_STATUS.执行中))
+                    throw new Exception(string.Format("订单Id[{0}],正在执行中,无法关闭！",orderId));
+                    
+
+                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, orderId,
+                    null, null, null, null, null, null);
+                List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+                
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    try
+                    {
+                        order.Status = Convert.ToInt32(ORDER_STATUS.关闭);
+                        orderRows.ForEach(om => om.Status = Convert.ToInt32(ORDER_STATUS.关闭));
+                        this._orderRepository.Update(order);
+                        this._orderRowRepository.Update(orderRows);
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("关闭订单[{0}],关闭订单行[{1}]",orderId,string.Join(',',orderRows.ConvertAll(r=>r.Id))),
+                            Founder = tag,
+                            CreateTime = DateTime.Now
+                        });
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public async Task CloseOrderRow(int orderRowId, string tag)
+        {
+            Guard.Against.Zero(orderRowId,nameof(orderRowId));
+            using (ModuleLock.GetAsyncLock().LockAsync())
+            {
+                OrderRowSpecification orderRowSpec = new OrderRowSpecification(orderRowId, null,
+                    null, null, null, null, null, null);
+                List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
+                if(orderRows.Count==0)
+                    throw new Exception(string.Format("订单行d[{0}],不存在！",orderRowId));
+                
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    try
+                    {
+                        orderRows[0].Status = Convert.ToInt32(ORDER_STATUS.关闭);
+                        this._orderRowRepository.Update(orderRows[0]);
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("关闭订单行[{0}]",orderRowId),
+                            Founder = tag,
+                            CreateTime = DateTime.Now
+                        });
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+
         }
     }
 }

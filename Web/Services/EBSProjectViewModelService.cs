@@ -14,11 +14,11 @@ using Web.ViewModels.TaskManager;
 
 namespace Web.Services
 {
-    public class EBSProjectViewModelservice:IEBSProjectViewModelService
+    public class EBSProjectViewModelService:IEBSProjectViewModelService
     {
 
         private readonly IAsyncRepository<EBSProject> _ebsProjectRepository;
-        public EBSProjectViewModelservice(IAsyncRepository<EBSProject> ebsProjectRepository)
+        public EBSProjectViewModelService(IAsyncRepository<EBSProject> ebsProjectRepository)
         {
             this._ebsProjectRepository = ebsProjectRepository;
         }

@@ -38,6 +38,7 @@ namespace Infrastructure.Data
         public DbSet<EBSTask> EbsTask { get; set; }
         public DbSet<InOutRecord> InOutRecord { get; set; }
         public DbSet<LogRecord> LogRecord { get; set; }
+        public DbSet<OrderRowBatch> OrderRowBatch { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {

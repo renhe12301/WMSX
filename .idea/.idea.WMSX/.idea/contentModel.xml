@@ -136,6 +136,7 @@
           <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
           <e p="MaterialTypeSpecification.cs" t="Include" />
           <e p="OrderPaginatedSpecification.cs" t="Include" />
+          <e p="OrderRowBatchPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowBatchSpecification.cs" t="Include" />
           <e p="OrderRowPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowSpecification.cs" t="Include" />
@@ -210,6 +211,7 @@
             <e p="MaterialDicController.cs" t="Include" />
             <e p="MaterialTypeController.cs" t="Include" />
             <e p="OrderController.cs" t="Include" />
+            <e p="OrderRowBatchController.cs" t="Include" />
             <e p="OrderRowController.cs" t="Include" />
             <e p="OrganizationController.cs" t="Include" />
             <e p="OUController.cs" t="Include" />
@@ -234,6 +236,7 @@
           <e p="ILogRecordViewModelService.cs" t="Include" />
           <e p="IMaterialDicViewModelService.cs" t="Include" />
           <e p="IMaterialTypeViewModelService.cs" t="Include" />
+          <e p="IOrderRowBatchViewModelService.cs" t="Include" />
           <e p="IOrderRowViewModelService.cs" t="Include" />
           <e p="IOrderViewModelService.cs" t="Include" />
           <e p="IOrganizationViewModelService.cs" t="Include" />
@@ -278,6 +281,7 @@
           <e p="LogRecordViewModelService.cs" t="Include" />
           <e p="MaterialDicViewModelService.cs" t="Include" />
           <e p="MaterialTypeViewModelService.cs" t="Include" />
+          <e p="OrderRowBatchViewModelService.cs" t="Include" />
           <e p="OrderRowViewModelService.cs" t="Include" />
           <e p="OrderViewModelService.cs" t="Include" />
           <e p="OrganizationViewModelService.cs" t="Include" />

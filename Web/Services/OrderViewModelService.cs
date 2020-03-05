@@ -221,7 +221,8 @@ namespace Web.Services
                     CallingParty = orderViewModel.CallingParty,
                     OrderTypeId = orderViewModel.OrderTypeId,
                     Status = 0,
-                    EmployeeId = orderViewModel.EmployeeId
+                    EmployeeId = orderViewModel.EmployeeId,
+                    Tag = orderViewModel.Tag
                     
                 };
                 List<OrderRow> orderRows = new List<OrderRow>();
@@ -243,14 +244,6 @@ namespace Web.Services
                 order.OrderRow = orderRows;
                var id = await this._orderService.CreateOutOrder(order);
                response.Data = id;
-               await this._logRecordService.AddLog(new LogRecord
-               {
-                   LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                   LogDesc = string.Format("创建退库订单[{0}]",
-                              orderViewModel.OrderNumber),
-                   Founder = orderViewModel.Tag?.ToString(),
-                   CreateTime = DateTime.Now
-               });
             }
             catch (Exception ex)
             {
@@ -273,19 +266,9 @@ namespace Web.Services
             try
             {
                 await this._orderService.SortingOrder(orderRow.OrderId,
-                    orderRow.Id, orderRow.Sorting,orderRow.BadCount,
-                    orderRow.TrayCode,orderRow.ReservoirAreaId.GetValueOrDefault());
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                    LogDesc = string.Format("订单[{0}]出库,订单行[{1}],分拣数量[{2}],分拣托盘[{3}]",
-                              orderRow.OrderId,
-                              orderRow.Id,
-                              orderRow.Sorting,
-                              orderRow.TrayCode),
-                    Founder = orderRow.Tag?.ToString(),
-                    CreateTime = DateTime.Now
-                });
+                    orderRow.Id, orderRow.Sorting, orderRow.BadCount,
+                    orderRow.TrayCode, orderRow.ReservoirAreaId.GetValueOrDefault(),
+                    orderRow.Tag);
             }
             catch (Exception ex)
             {
@@ -309,18 +292,52 @@ namespace Web.Services
             {
                 await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.GetValueOrDefault(),
                     orderRowBatchViewModel.OrderRowId.GetValueOrDefault(),
-                    orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type);
+                    orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type,
+                    orderRowBatchViewModel.Tag);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
                 await this._logRecordService.AddLog(new LogRecord
                 {
-                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                    LogDesc = string.Format("订单[{0}]出库,订单行[{1}],出库批次数量[{2}],出库方式[{3}]",
-                                    orderRowBatchViewModel.OrderId,
-                                    orderRowBatchViewModel.OrderRowId,
-                                    orderRowBatchViewModel.BatchCount,
-                                    orderRowBatchViewModel.Type),
-                    Founder = orderRowBatchViewModel.Tag?.ToString(),
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.StackTrace,
                     CreateTime = DateTime.Now
                 });
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> CloseOrder(OrderViewModel orderViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._orderService.CloseOrder(orderViewModel.Id,orderViewModel.Tag);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+                await this._logRecordService.AddLog(new LogRecord
+                {
+                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                    LogDesc = ex.StackTrace,
+                    CreateTime = DateTime.Now
+                });
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> CloseOrderRow(OrderRowViewModel orderRowViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._orderService.CloseOrderRow(orderRowViewModel.Id,orderRowViewModel.Tag);
             }
             catch (Exception ex)
             {

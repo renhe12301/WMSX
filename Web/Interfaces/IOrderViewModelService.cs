@@ -22,6 +22,9 @@ namespace Web.Interfaces
         
         Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel);
         
+        Task<ResponseResultViewModel> CloseOrder(OrderViewModel orderViewModel);
+        
+        Task<ResponseResultViewModel> CloseOrderRow(OrderRowViewModel orderRowViewModel);
         
 
     }

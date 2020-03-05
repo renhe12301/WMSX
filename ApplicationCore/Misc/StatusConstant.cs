@@ -153,6 +153,24 @@ namespace ApplicationCore.Misc
         定时任务日志 = 3,
         异常日志 = 4
     }
+    
+    public enum ORDER_BATCH_TYPE
+    {
+        立体库 = 0,
+        立体库剩余物料返库 = 1,
+        立体库加剩余物料返库加入库单 = 2,
+        入库单 = 3
+    }
+    public enum ORDER_BATCH_SYNC
+    {
+        未同步 = 0,
+        已同步 = 1
+    }
+    public enum ORDER_BATCH_READ
+    {
+        未读 = 0,
+        已读 = 1
+    }
 
 
 }

@@ -26,5 +26,9 @@ namespace Web.ViewModels.FlowRecord
         public int Status { get; set; }
 
         public string StatusStr { get; set; }
+        
+        public string IsSyncStr { get; set; }
+        
+        public string IsReadStr { get; set; }
     }
 }

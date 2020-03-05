@@ -157,5 +157,8 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         [NotMapped]
         public List<OrderRow> OrderRow { get; set; }
+
+        [NotMapped]
+        public string Tag { get; set; }
     }
 }

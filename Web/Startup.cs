@@ -81,6 +81,7 @@ namespace Web
             services.AddScoped(typeof(IEBSProjectService), typeof(EBSProjectServicecs));
             services.AddScoped(typeof(IEBSTaskService), typeof(EBSTaskServicecs));
             services.AddScoped(typeof(ILogRecordService), typeof(LogRecordService));
+            
          
             services.AddScoped(typeof(IOrderViewModelService), typeof(OrderViewModelService));
             services.AddScoped(typeof(IOrderRowViewModelService), typeof(OrderRowViewModelService));
@@ -100,9 +101,10 @@ namespace Web
             services.AddScoped(typeof(IOUViewModelService), typeof(OUViewModelService));
             services.AddScoped(typeof(ISysMenuViewModelService), typeof(SysMenuViewModelService));
             services.AddScoped(typeof(IPhyWarehouseViewModelService), typeof(PhyWarehouseViewModelService));
-            services.AddScoped(typeof(IEBSProjectViewModelService), typeof(EBSProjectViewModelservice));
+            services.AddScoped(typeof(IEBSProjectViewModelService), typeof(EBSProjectViewModelService));
             services.AddScoped(typeof(IEBSTaskViewModelService), typeof(EBSTaskViewModelService));
             services.AddScoped(typeof(ILogRecordViewModelService), typeof(LogRecordViewModelService));
+            services.AddScoped(typeof(IOrderRowBatchViewModelService), typeof(OrderRowBatchViewModelService));
             
             //定时器工厂
             services.AddScoped(typeof(IJobFactory), typeof(IOCJobFactory));

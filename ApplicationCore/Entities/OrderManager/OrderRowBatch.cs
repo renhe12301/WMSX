@@ -9,6 +9,8 @@ namespace ApplicationCore.Entities.OrderManager
         public int? OrderId { get; set; }
         public int? OrderRowId { get; set; }
         public int BatchCount { get; set; }
+
+        public int? RealityCount { get; set; }
         public int ReservoirAreaId { get; set; }
         public int IsRead { get; set; }
 

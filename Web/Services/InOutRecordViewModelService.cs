@@ -71,7 +71,9 @@ namespace Web.Services
                         WarehouseName = e.Warehouse?.WhName,
                         Type = e.Type,
                         Status = e.Status,
-                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status)
+                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
+                        IsReadStr = Enum.GetName(typeof(ORDER_BATCH_READ),e.IsRead),
+                        IsSyncStr = Enum.GetName(typeof(ORDER_BATCH_SYNC),e.IsSync)
                     };
                     inOutRecordViewModels.Add(inOutRecordViewModel);
                 });
