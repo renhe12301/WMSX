@@ -7,7 +7,7 @@ namespace Web.ViewModels.OrderManager
 {
     public class OrderViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string OrderNumber { get; set; }
         public int OrderTypeId { get; set; }
         public string OrderType { get; set; }

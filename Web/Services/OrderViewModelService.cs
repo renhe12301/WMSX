@@ -212,6 +212,7 @@ namespace Web.Services
                 DateTime now = DateTime.Now;
                 Order order = new Order
                 {
+                    Id = orderViewModel.Id.GetValueOrDefault(),
                     OUId = orderViewModel.OUId,
                     WarehouseId = orderViewModel.WarehouseId,
                     OrderNumber = orderViewModel.OrderNumber??"TK_Order_"+now.Ticks,
@@ -233,32 +234,24 @@ namespace Web.Services
                 {
                     OrderRow orderRow = new OrderRow
                     {
+                        Id = or.Id.GetValueOrDefault(),
                         RowNumber = or.RowNumber??"TK_Order_"+now.Ticks,
                         CreateTime=now,
                         PreCount=or.PreCount,
                         ReservoirAreaId = or.ReservoirAreaId,
                         MaterialDicId = or.MaterialDicId,
-                        Price = or.Price,
-                        Amount = or.Amount
+                        Price = or.Price
                     };
                     orderRows.Add(orderRow);
                 });
                 order.OrderRow = orderRows;
-               var id = await this._orderService.CreateOutOrder(order);
-               response.Data = id;
+                await this._orderService.CreateOutOrder(order);
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
-
             return response;
         }
 
@@ -268,7 +261,7 @@ namespace Web.Services
             try
             {
                 await this._orderService.SortingOrder(orderRow.OrderId,
-                    orderRow.Id, orderRow.Sorting, orderRow.BadCount,
+                    orderRow.Id.GetValueOrDefault(), orderRow.Sorting, orderRow.BadCount,
                     orderRow.TrayCode, orderRow.ReservoirAreaId.GetValueOrDefault(),
                     orderRow.Tag);
             }
@@ -276,14 +269,7 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
-
             return response;
         }
 
@@ -301,14 +287,7 @@ namespace Web.Services
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
-
             return response;
         }
 
@@ -317,20 +296,13 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._orderService.CloseOrder(orderViewModel.Id,orderViewModel.Tag);
+                await this._orderService.CloseOrder(orderViewModel.Id.GetValueOrDefault(),orderViewModel.Tag);
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
-
             return response;
         }
 
@@ -339,20 +311,13 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._orderService.CloseOrderRow(orderRowViewModel.Id,orderRowViewModel.Tag);
+                await this._orderService.CloseOrderRow(orderRowViewModel.Id.GetValueOrDefault(),orderRowViewModel.Tag);
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
-
             return response;
         }
     }

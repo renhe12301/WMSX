@@ -3,7 +3,7 @@ namespace Web.ViewModels.OrderManager
 {
     public class OrderRowViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public int OrderId { get; set; }
         public string RowNumber { get; set; }
