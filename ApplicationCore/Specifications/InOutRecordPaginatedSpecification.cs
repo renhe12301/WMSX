@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class InOutRecordPaginatedSpecification : BaseSpecification<InOutRecord>
     {
         public InOutRecordPaginatedSpecification(int skip,int take,string trayCode,string materialName,int? type,int? ouId,int? wareHouseId, 
-                                                int? areaId,int? orderId,int? orderRowId,int? orderRowBatchId,
+                                                int? areaId,int? pyId,int? orderId,int? orderRowId,int? orderRowBatchId,
                                                 List<int> status,int? isRead,string sCreateTime,string eCreateTime)
             : base(b => (!type.HasValue || b.Type == type) &&
                                            (!ouId.HasValue || b.OUId == ouId)&&
@@ -18,6 +18,7 @@ namespace ApplicationCore.Specifications
                                            (!orderId.HasValue || b.OrderId == orderId)&&
                                            (!orderRowId.HasValue || b.OrderRowId == orderRowId)&&
                                            (!orderRowBatchId.HasValue || b.OrderRowBatchId == orderRowBatchId)&&
+                                           (!pyId.HasValue || b.PhyWarehouseId == pyId)&&
                                            (!isRead.HasValue || b.IsRead == isRead)&&
                                            (status==null||status.Contains(b.Status))&&
                                            (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
@@ -29,7 +30,9 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.ReservoirArea);
             AddInclude(b=>b.Order);
-            AddInclude(b=>b.OrderRow);
+            AddInclude(b=>b.OrderRowBatch);
+            AddInclude(b=>b.PhyWarehouse);
+            
         }
     }
 }

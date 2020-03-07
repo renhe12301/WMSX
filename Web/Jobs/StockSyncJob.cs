@@ -40,7 +40,7 @@ namespace Web.Jobs
             {
                 InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null,null,
                     null,null,null,null,null,null,null,
-                    new List<int>{Convert.ToInt32(ORDER_STATUS.完成)},0,null,null,null );
+                    null,new List<int>{Convert.ToInt32(ORDER_STATUS.完成)},0,null,null,null );
                 List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
                 List<InOutRecord> updRecords = new List<InOutRecord>();
                 List<OrderRowBatch> updOrderRowBatchs = new List<OrderRowBatch>();
@@ -123,7 +123,7 @@ namespace Web.Jobs
                                 
                                 InOutRecordSpecification childSpec = new InOutRecordSpecification(null,null,null,
                                     null,null,null,null,null,inOutRecord.OrderRowBatchId,
-                                    null,null,null,null,null );
+                                    null,null,null,null,null,null );
                                 List<InOutRecord> childInOutRecords =
                                     await this._inOutRecordRepository.ListAsync(childSpec);
                                 List<InOutRecord> finishInOutRecords =

@@ -9,7 +9,7 @@ namespace Web.Interfaces
         public Task<ResponseResultViewModel> GetInOutRecords(int? pageIndex,
                                              int? itemsPage,string trayCode,string materialName,int? type,int? ouId,
                                              int? wareHouseId, int? areaId,int? orderId,int? orderRowId,int? orderRowBatchId,
-                                             string status,string sCreateTime, string eCreateTime);
+                                             int? pyId,string status,string sCreateTime, string eCreateTime);
 
     }
 }

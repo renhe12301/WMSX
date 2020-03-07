@@ -16,6 +16,8 @@ namespace ApplicationCore.Entities.FlowRecord
 
         public int OrderRowBatchId { get; set; }
 
+        public int PhyWarehouseId { get; set; }
+
         public int InOutCount { get; set; }
         public int IsRead { get; set; }
         public int IsSync { get; set; }
@@ -34,5 +36,7 @@ namespace ApplicationCore.Entities.FlowRecord
         public OrderRow OrderRow { get; set; }
 
         public OrderRowBatch OrderRowBatch { get; set; }
+
+        public PhyWarehouse PhyWarehouse { get; set; }
     }
 }
