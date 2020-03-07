@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class OrderPaginatedSpecification : BaseSpecification<Order>
     {
         public OrderPaginatedSpecification(int skip, int take, int? id, string orderNumber, int? orderTypeId,
-             List<int> status,int?ouId,int? warehouseId, string applyUserCode, string approveUserCode,
+             List<int> status,int?ouId,int? warehouseId,int? pyId, string applyUserCode, string approveUserCode,
              int? employeeId,string employeeName,string sApplyTime, string eApplyTime,
              string sApproveTime, string eApproveTime,
              string sCreateTime, string eCreateTime,
@@ -18,6 +18,7 @@ namespace ApplicationCore.Specifications
                        (status == null || status.Contains(b.Status)) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
                        (!warehouseId.HasValue || b.WarehouseId == warehouseId) &&
+                       (!pyId.HasValue || b.PhyWarehouseId == pyId) &&
                        (applyUserCode == null || b.ApplyUserCode == applyUserCode) &&
                        (approveUserCode == null || b.ApproveUserCode == approveUserCode) &&
                        (!employeeId.HasValue || b.EmployeeId == employeeId) &&
@@ -39,6 +40,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b=>b.Supplier);
             AddInclude(b=>b.SupplierSite);
             AddInclude(b=>b.EBSProject);
+            AddInclude(b=>b.PhyWarehouse);
         }
     }
 }

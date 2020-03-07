@@ -16,7 +16,7 @@ namespace ApplicationCore.Entities.FlowRecord
 
         public int OrderRowBatchId { get; set; }
 
-        public int PhyWarehouseId { get; set; }
+        public int? PhyWarehouseId { get; set; }
 
         public int InOutCount { get; set; }
         public int IsRead { get; set; }

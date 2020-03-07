@@ -58,7 +58,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(order.Id, null, null,
-                        null,null,null,null, null, null,
+                        null,null,null,null,null, null, null,
                         null, null, null, null,
                         null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
@@ -271,7 +271,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
-                        null, null, null, null, null, null, null,
+                        null,null, null, null, null, null, null, null,
                         null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
@@ -483,7 +483,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
-                        null, null, null, null, null, null, null,
+                        null,null, null, null, null, null, null, null,
                         null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
@@ -572,7 +572,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(orderId, null, null, null,
-                        null,null,null, null, null, null, null, null,
+                        null,null,null,null, null, null, null, null, null,
                         null, null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0)

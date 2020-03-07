@@ -24,7 +24,7 @@ namespace ApplicationCore.Entities.TaskManager
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
         
-        public int PhyWarehouseId { get; set; }
+        public int? PhyWarehouseId { get; set; }
         
         public PhyWarehouse PhyWarehouse { get; set; }
 

@@ -151,6 +151,14 @@ namespace ApplicationCore.Entities.OrderManager
         /// 第三方系统编号
         /// </summary>
         public int? SourceId { get; set; }
+        
+        /// <summary>
+        /// 物理仓库编号
+        /// </summary>
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public PhyWarehouse PhyWarehouse { get; set; }
 
         /// <summary>
         /// 关联订单行

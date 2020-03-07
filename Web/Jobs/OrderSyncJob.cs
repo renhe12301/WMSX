@@ -44,7 +44,7 @@ namespace Web.Jobs
             try
             {
                 OrderSpecification orderSpec = new OrderSpecification(null, null, null,
-                    new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)},null,null, null, null, null,
+                    new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null, null, null, null,
                     null, null, null, null, null, null, null,
                     null, null);
                 List<Order> orders = await this._orderRepository.ListAsync(orderSpec);

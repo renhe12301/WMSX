@@ -37,6 +37,7 @@ namespace Web.Controllers.Api
         /// <param name="status">订单状态</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="warehouseId">库存组织编号</param>
+        ///  <param name="pyId">物理仓库编号</param>
         /// <param name="applyUserCode">申请人编码</param>
         /// <param name="approveUserCode">审批人编码</param>
         /// <param name="employeeId">经办人编号</param>
@@ -53,14 +54,15 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
                      int?id,string orderNumber, int? orderTypeId,
-                     string status,int? ouId,int? warehouseId, string applyUserCode, string approveUserCode,
+                     string status,int? ouId,int? warehouseId,int? pyId,
+                     string applyUserCode, string approveUserCode,
                      int?employeeId,string employeeName,string sApplyTime, string eApplyTime,
                      string sApproveTime, string eApproveTime,
                      string sCreateTime, string eCreateTime,
                      string sFinishTime, string eFinishTime)
         {
             var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
-                orderTypeId, status,ouId,warehouseId, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime,
+                orderTypeId, status,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime,
                 eApplyTime, sApproveTime, eApproveTime,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
