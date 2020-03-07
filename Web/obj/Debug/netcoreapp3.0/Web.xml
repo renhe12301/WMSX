@@ -322,7 +322,7 @@
             订单操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             查询订单信息
             </summary>
@@ -332,6 +332,8 @@
             <param name="orderNumber">订单编号</param>
             <param name="orderTypeId">订单类型id</param>
             <param name="status">订单状态</param>
+            <param name="ouId">业务实体编号</param>
+            <param name="warehouseId">库存组织编号</param>
             <param name="applyUserCode">申请人编码</param>
             <param name="approveUserCode">审批人编码</param>
             <param name="employeeId">经办人编号</param>

@@ -74,8 +74,7 @@ namespace Web.WebServices.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(null, requestEnterOrder.DocumentNumber, null,
-                        null,
-                        null, null, null, null, null, null, null,
+                        null,null,null,null, null, null, null, null, null, null,
                         null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
@@ -319,7 +318,7 @@ namespace Web.WebServices.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(null, requestOutOrder.AlyNumber, null, null,
-                        null, null, null, null, null, null, null,
+                        null,null,null, null, null, null, null, null, null,
                         null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 

@@ -58,8 +58,8 @@ namespace ApplicationCore.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(order.Id, null, null,
-                        null,
-                        null, null, null, null, null, null, null,
+                        null,null,null,null, null, null,
+                        null, null, null, null,
                         null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
@@ -106,7 +106,7 @@ namespace ApplicationCore.Services
                                         w.ReservoirAreaId == eor.ReservoirAreaId)
                                     .ToList();
                                 int stockCount = warehouseMaterials.Sum(m => m.MaterialCount);
-                                int occCount = tkOrderRows.Where(or => or.ReservoirAreaId == existRow.ReservoirAreaId &&
+                                int occCount = tkOrderRows.Where(or => or.ReservoirAreaId == eor.ReservoirAreaId &&
                                                                        or.MaterialDicId == eor.MaterialDicId)
                                     .Sum(or => or.PreCount);
 
@@ -117,6 +117,7 @@ namespace ApplicationCore.Services
                                 OrderRow addOrderRow = new OrderRow
                                 {
                                     OrderId = srcOrder.Id,
+                                    ReservoirAreaId = eor.ReservoirAreaId,
                                     RowNumber = eor.RowNumber,
                                     MaterialDicId = eor.MaterialDicId,
                                     PreCount = Convert.ToInt32(eor.PreCount),
@@ -269,7 +270,7 @@ namespace ApplicationCore.Services
             {
                 try
                 {
-                    var orderSpec = new OrderSpecification(orderId, null, null, null, null,
+                    var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
                         null, null, null, null, null, null, null,
                         null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
@@ -481,7 +482,7 @@ namespace ApplicationCore.Services
             {
                 try
                 {
-                    var orderSpec = new OrderSpecification(orderId, null, null, null, null,
+                    var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
                         null, null, null, null, null, null, null,
                         null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
@@ -571,7 +572,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     OrderSpecification orderSpec = new OrderSpecification(orderId, null, null, null,
-                        null, null, null, null, null, null,
+                        null,null,null, null, null, null, null, null,
                         null, null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0)
