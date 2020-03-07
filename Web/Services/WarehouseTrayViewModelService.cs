@@ -26,7 +26,7 @@ namespace Web.Services
         public async Task<ResponseResultViewModel> GetTrays(int? pageIndex, int? itemsPage,
             int? id, string trayCode, string rangeMaterialCount,
             int? orderId, int? orderRowId, int? carrier,
-            string trayTaskStatus, int? locationId, int? ouId, int? wareHouseId, int? areaId)
+            string trayTaskStatus, int? locationId, int? ouId, int? wareHouseId, int? areaId,int? pyId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel {Code = 200};
 
@@ -57,15 +57,13 @@ namespace Web.Services
                 {
 
                     baseSpecification = new WarehouseTrayPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,
-                        trayCode, trayMaterilCount, orderId, orderRowId,
-                        carrier, trayStatus, locationId, ouId, wareHouseId, areaId);
+                        id, trayCode, trayMaterilCount, orderId, orderRowId,
+                        carrier, trayStatus, locationId, ouId, wareHouseId, areaId,pyId);
                 }
                 else
                 {
-                    baseSpecification = new WarehouseTraySpecification(id,
-                        trayCode, trayMaterilCount, orderId, orderRowId,
-                        carrier, trayStatus, locationId, ouId, wareHouseId, areaId);
+                    baseSpecification = new WarehouseTraySpecification(id,trayCode, trayMaterilCount, orderId, orderRowId,
+                        carrier, trayStatus, locationId, ouId, wareHouseId, areaId,pyId);
                 }
 
                 var trays = await this._warehouseTrayRepository.ListAsync(baseSpecification);
@@ -92,8 +90,7 @@ namespace Web.Services
                 if (pageIndex > -1 && itemsPage > 0)
                 {
                     var count = await this._warehouseTrayRepository.CountAsync(new WarehouseTraySpecification(id,
-                        trayCode, trayMaterilCount, orderId, orderRowId,
-                        carrier, trayStatus, locationId, ouId, wareHouseId, areaId));
+                        trayCode, trayMaterilCount, orderId, orderRowId, carrier, trayStatus, locationId, ouId, wareHouseId, areaId,pyId));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseTrayViewModels;
                     dyn.total = count;

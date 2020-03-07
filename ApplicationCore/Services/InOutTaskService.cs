@@ -52,7 +52,7 @@ namespace ApplicationCore.Services
                 WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
                     new List<int> {0, 0}, null, null, null,
                     new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)},
-                    null, null, null, areaId);
+                    null, null, null, areaId,null);
                 List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
                 OrderRowBatchSpecification orderRowBatchSpec = new OrderRowBatchSpecification(null, null,
                     null, areaId, null, 0,null, new List<int>
@@ -91,7 +91,7 @@ namespace ApplicationCore.Services
             List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
             if (areas.Count == 0) throw new Exception(string.Format("子库存[{0}],不存在！", areaId));
             WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
-                null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null,null);
             List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             if (warehouseTrays.Count > 0)
             {
@@ -132,7 +132,7 @@ namespace ApplicationCore.Services
             Guard.Against.NullOrEmpty(fromPort, nameof(fromPort));
             Guard.Against.NullOrEmpty(barCode, nameof(barCode));
             WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode, null, null,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null,null);
             List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             if (warehouseTrays.Count == 0)
                 throw new Exception(string.Format("托盘码[{0}],不存在！", barCode));
@@ -157,7 +157,7 @@ namespace ApplicationCore.Services
             
             WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
                                        task.TrayCode, null, null, null,null,null, 
-                                       null, null, null, null);
+                                       null, null, null, null,null);
             var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
             InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,null,
@@ -259,7 +259,7 @@ namespace ApplicationCore.Services
         {
            Guard.Against.NullOrEmpty(trayCode,nameof(trayCode));
            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
-               null, null, null, null, null, null, null, null);
+               null, null, null, null, null, null, null, null,null);
            List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
            if(warehouseTrays.Count==0)
                throw new Exception(string.Format("托盘[{0}],不存在！",trayCode));

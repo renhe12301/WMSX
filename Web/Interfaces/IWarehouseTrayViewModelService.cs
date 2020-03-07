@@ -10,7 +10,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> GetTrays(int? pageIndex, int? itemsPage,
              int? id, string trayCode, string rangeMaterialCount,
             int? orderId, int? orderRowId, int? carrier,
-            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId);
+            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId,int? pyId);
         
     }
 }

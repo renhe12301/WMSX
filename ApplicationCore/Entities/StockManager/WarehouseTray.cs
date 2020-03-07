@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
 
@@ -39,7 +40,16 @@ namespace ApplicationCore.Entities.StockManager
         public ReservoirArea ReservoirArea { get; set; }
         public Order Order { get; set; }
         public OrderRow OrderRow { get; set; }
+        
+        /// <summary>
+        /// 物理仓库编号
+        /// </summary>
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public PhyWarehouse PhyWarehouse { get; set; }
 
+        [NotMapped]
         public List<WarehouseMaterial> WarehouseMaterial { get; set; }
     }
 }

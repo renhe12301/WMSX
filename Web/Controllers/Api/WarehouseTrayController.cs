@@ -28,24 +28,24 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">一页显示大小</param>
         /// <param name="id">托盘唯一id</param>
         /// <param name="trayCode">托盘唯一编码</param>
-        /// <param name="rangeMaterialCount">托盘物料数量范围,例如 1,100/param>
+        /// <param name="rangeMaterialCount">托盘物料数量范围,例如 1,100</param>
         /// <param name="orderId">关联订单编号</param>
         /// <param name="orderRowId">关联订单行编号</param>
         /// <param name="carrier">载体</param>
         /// <param name="trayTaskStatus">托盘任务状态,多个以逗号隔开</param>
+        /// <param name="ouId">业务实体编号</param>
         /// <param name="locationId">所在货位编号</param>
         /// <param name="wareHouseId">所在仓库编号</param>
         /// <param name="areaId">所在库区编号</param>
+        /// <param name="pyId">物理仓库编号</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetTrays(int? pageIndex, int? itemsPage,
-              int? id, string trayCode, string rangeMaterialCount,
-             int? orderId, int? orderRowId, int? carrier,
-            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId)
+              int? id, string trayCode, string rangeMaterialCount,int? orderId, int? orderRowId, int? carrier,
+            string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId,int? pyId)
         {
             var response = await this._warehouseTrayViewModelService.GetTrays(pageIndex,itemsPage,id,
-                trayCode,rangeMaterialCount, orderId,orderRowId,
-                carrier, trayTaskStatus, locationId,ouId, wareHouseId, areaId);
+                trayCode,rangeMaterialCount, orderId,orderRowId,carrier, trayTaskStatus, locationId,ouId, wareHouseId, areaId,pyId);
             return Content(JsonConvert.SerializeObject(response));
         }
 

@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
     {
         public WarehouseTraySpecification(int? id,string trayCode,List<int> rangeMaterialCount,
             int? orderId,int? orderRowId, int? carrier,List<int> trayStatus,int? locationId,
-             int? ouId, int? wareHouseId,int? areaId)
+             int? ouId, int? wareHouseId,int? areaId,int? pyId)
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (trayCode == null || b.TrayCode == trayCode) &&
                       (rangeMaterialCount==null|| (b.MaterialCount >= rangeMaterialCount[0]&& b.MaterialCount <= rangeMaterialCount[1])) &&
@@ -21,13 +21,15 @@ namespace ApplicationCore.Specifications
                       (!locationId.HasValue||b.LocationId==locationId)&&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!wareHouseId.HasValue||b.WarehouseId==wareHouseId)&&
-                      (!areaId.HasValue||b.ReservoirAreaId==areaId))
+                      (!areaId.HasValue||b.ReservoirAreaId==areaId)&&
+                      (!pyId.HasValue||b.PhyWarehouseId==pyId))
         {
             AddInclude(b => b.Location);
             AddInclude(b => b.ReservoirArea);
             AddInclude(b => b.Warehouse);
             AddInclude(b => b.Order);
             AddInclude(b => b.OrderRow);
+            AddInclude(b => b.PhyWarehouse);
         }
     }
 }

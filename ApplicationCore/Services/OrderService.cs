@@ -302,7 +302,7 @@ namespace ApplicationCore.Services
 
                     var warehouseTraySpec = new WarehouseTraySpecification(null, trayCode,
                         null, null, null, null,
-                        null, null, null, null, null);
+                        null, null, null, null, null,null);
 
                     var whTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
                     if (whTrays.Count > 0 && whTrays[0].TrayStep != Convert.ToInt32(TRAY_STEP.初始化))

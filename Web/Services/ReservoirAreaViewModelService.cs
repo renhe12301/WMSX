@@ -187,7 +187,7 @@ namespace Web.Services
                  
                 WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,null,
                     null,null,null,null,null,null,ouId,
-                    null,null);
+                    null,null,null);
                 
                 List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
                 List<WarehouseTray> emptyWarehouseTrays = warehouseTrays.Where(w=>w.MaterialCount==0).ToList();
