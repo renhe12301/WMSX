@@ -52,5 +52,13 @@ namespace ApplicationCore.Entities.StockManager
         /// 关联供应商地址
         /// </summary>
         public SupplierSite SupplierSite { get; set; }
+        
+        /// <summary>
+        /// 物理仓库编号
+        /// </summary>
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public PhyWarehouse PhyWarehouse { get; set; }
     }
 }

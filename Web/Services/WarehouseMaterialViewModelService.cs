@@ -26,7 +26,7 @@ namespace Web.Services
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
             int? trayDicId,int? orderId,int? orderRowId , int? carrier, string traySteps, int? locationId,
-            int? orgId,int? ouId,int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId)
+            int? orgId,int? ouId,int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId,int? pyId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -43,13 +43,13 @@ namespace Web.Services
                 {
                     baseSpecification = new WarehouseMaterialPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,materialCode,materialDicId,materialName,materialSpec,trayCode,trayDicId,orderId,orderRowId,
-                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId,supplierId,supplierSiteId);
+                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId,supplierId,supplierSiteId,pyId);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId);
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId);
                 }
 
                 var materials = await this._warehouseMaterialRepository.ListAsync(baseSpecification);
@@ -83,7 +83,7 @@ namespace Web.Services
                 {
                     var count = await this._warehouseMaterialRepository.CountAsync(new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId));
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseMaterialViewModels;
                     dyn.total = count;

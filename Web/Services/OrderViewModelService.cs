@@ -152,7 +152,7 @@ namespace Web.Services
                  WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
                      null,null,null,null,null,null,null,
                      null,new List<int>(){Convert.ToInt32(TRAY_STEP.入库完成),Convert.ToInt32(TRAY_STEP.初始化)},
-                     null,ouId,warehouseId,null,null,null);
+                     null,ouId,warehouseId,null,null,null,null);
                  List<WarehouseMaterial> allWarehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
                  List<dynamic> result = new List<dynamic>();
