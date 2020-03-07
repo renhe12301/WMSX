@@ -23,6 +23,10 @@ namespace ApplicationCore.Entities.TaskManager
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
+        
+        public int PhyWarehouseId { get; set; }
+        
+        public PhyWarehouse PhyWarehouse { get; set; }
 
         public OU OU { get; set; }
 

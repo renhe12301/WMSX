@@ -85,6 +85,7 @@ namespace Web.Controllers.Api
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">所属仓库编号</param>
         /// <param name="areaId">所属库区编号</param>
+        /// <param name="pyId">物理仓库编号</param>
         /// <param name="sCreateTime">任务开始时间</param>
         /// <param name="eCreateTIme">任务开始时间</param>
         /// <param name="sFinishTime"><任务完成时间</param>
@@ -94,12 +95,12 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> GetInOutTasks(int? pageIndex, int? itemsPage,
                                              int? id,string trayCode, string status,
                                              string steps,string types,
-                                             int? ouId, int? wareHouseId, int? areaId,
+                                             int? ouId, int? wareHouseId, int? areaId,int? pyId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
         {
             var response = await this._inOutTaskViewModelService.GetInOutTasks(pageIndex,
-                itemsPage, id,trayCode, status, steps,types,ouId,wareHouseId,areaId,
+                itemsPage, id,trayCode, status, steps,types,ouId,wareHouseId,areaId,pyId,
                 sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }

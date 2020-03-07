@@ -149,7 +149,7 @@ namespace ApplicationCore.Services
         {
             InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,
                                               null,null,null,null,null, 
-                                              null, null, null, null);
+                                              null,null, null, null, null);
             var tasks = await this._inOutTaskRepository.ListAsync(taskSpec);
             if (tasks.Count==0)
                 throw  new Exception(string.Format("任务编号[{0}],不存在！",taskId));

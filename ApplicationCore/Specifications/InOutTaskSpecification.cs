@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class InOutTaskSpecification:BaseSpecification<InOutTask>
     {
         public InOutTaskSpecification(int? id,string trayCode,List<int> status,List<int> steps,List<int> types,
-            int? ouId,int? wareHouseId, int? areaId,
+            int? ouId,int? wareHouseId, int? areaId,int? pyId,
             string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
             :base(b=>(!id.HasValue||b.Id==id)&&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                      (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
                      (!areaId.HasValue || b.ReservoirAreaId == areaId) &&
                      (status==null||status.Contains(b.Status))&&
+                     (!pyId.HasValue || b.PhyWarehouseId == pyId) &&
                      (steps == null || steps.Contains(b.Step)) &&
                      (types == null || types.Contains(b.Type)) &&
                      (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
@@ -29,6 +30,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b=>b.OU);
             AddInclude(b => b.Order);
             AddInclude(b => b.OrderRow);
+            AddInclude(b => b.PhyWarehouse);
         }
     }
 }

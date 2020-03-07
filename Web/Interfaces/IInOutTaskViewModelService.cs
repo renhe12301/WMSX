@@ -16,7 +16,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel);
         Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,
                                                     string status,string steps,string types,int? ouId,
-                                                    int? wareHouseId, int? areaId,
+                                                    int? wareHouseId, int? areaId,int? pyId,
                                                     string sCreateTime,string eCreateTIme,
                                                     string sFinishTime,string eFinishTime);
         
