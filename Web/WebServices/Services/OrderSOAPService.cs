@@ -539,7 +539,6 @@ namespace Web.WebServices.Services
                             OUId = ou.Id,
                             OrderTypeId = Convert.ToInt32(ORDER_TYPE.出库领料),
                             WarehouseId = warehouse.Id,
-                            StatusTag = Convert.ToInt32(requestOutOrder.AlyStatusCode),
                             CallingParty = requestOutOrder.AplSourceCode,
                             BusinessTypeCode = requestOutOrder.BusinessTypeCode,
                             CreateTime = DateTime.Parse(requestOutOrder.CreationDate),

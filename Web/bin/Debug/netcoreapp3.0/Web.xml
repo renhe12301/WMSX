@@ -91,7 +91,7 @@
             出入库记录API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.InOutRecordController.GetInOutRecords(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
             获取出入库记录
             </summary>
@@ -106,6 +106,7 @@
             <param name="ouId">业务实体编号</param>
             <param name="wareHouseId">库存组织编号</param>
             <param name="areaId">库区编号</param>
+            <param name="pyId">物理仓库编号</param>
             <param name="status">执行状态</param>
             <param name="sCreateTime">创建开始时间</param>
             <param name="eCreateTime">创建结束时间</param>
@@ -144,7 +145,7 @@
             <param name="inOutTaskViewModel">出入库任务实体对象</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.InOutTaskController.GetInOutTasks(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String,System.String)" -->
         <member name="T:Web.Controllers.Api.LocationController">
             <summary>
             货位信息操作API
@@ -322,7 +323,7 @@
             订单操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             查询订单信息
             </summary>
@@ -334,6 +335,7 @@
             <param name="status">订单状态</param>
             <param name="ouId">业务实体编号</param>
             <param name="warehouseId">库存组织编号</param>
+             <param name="pyId">物理仓库编号</param>
             <param name="applyUserCode">申请人编码</param>
             <param name="approveUserCode">审批人编码</param>
             <param name="employeeId">经办人编号</param>
@@ -681,7 +683,7 @@
             仓库物料操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:Web.Controllers.Api.WarehouseMaterialController.GetMaterials(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             获取仓库物料信息
             </summary>
@@ -705,6 +707,7 @@
             <param name="areaId">所在分区编号</param>
             <param name="supplierId">供应商编号</param>
             <param name="supplierSiteId">供应商站编号</param>
+            <param name="pyId">物理仓库编号</param>
             <returns></returns>
         </member>
         <member name="T:Web.Controllers.Api.WarehouseTrayController">
@@ -712,7 +715,26 @@
             仓库信息操作API
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})" -->
+        <member name="M:Web.Controllers.Api.WarehouseTrayController.GetTrays(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            获取库区托盘数据
+            </summary>
+            <param name="pageIndex">当前页索引</param>
+            <param name="itemsPage">一页显示大小</param>
+            <param name="id">托盘唯一id</param>
+            <param name="trayCode">托盘唯一编码</param>
+            <param name="rangeMaterialCount">托盘物料数量范围,例如 1,100</param>
+            <param name="orderId">关联订单编号</param>
+            <param name="orderRowId">关联订单行编号</param>
+            <param name="carrier">载体</param>
+            <param name="trayTaskStatus">托盘任务状态,多个以逗号隔开</param>
+            <param name="ouId">业务实体编号</param>
+            <param name="locationId">所在货位编号</param>
+            <param name="wareHouseId">所在仓库编号</param>
+            <param name="areaId">所在库区编号</param>
+            <param name="pyId">物理仓库编号</param>
+            <returns></returns>
+        </member>
         <member name="T:Web.Jobs.BasicDataSyncJob">
             <summary>
             主数据同步定时任务

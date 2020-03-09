@@ -131,12 +131,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// 订单状态
         /// </summary>
         public int Status { get; set; }
-
-        /// <summary>
-        /// 第三方系统状态标记
-        /// </summary>
-        public int? StatusTag { get; set; }
-
+        
         /// <summary>
         /// 经办人编号
         /// </summary>
