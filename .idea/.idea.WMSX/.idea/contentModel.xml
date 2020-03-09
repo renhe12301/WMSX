@@ -258,6 +258,7 @@
           <e p="OrderSyncJob.cs" t="Include" />
           <e p="RKJob.cs" t="Include" />
           <e p="StockSyncJob.cs" t="Include" />
+          <e p="WCSTaskJob.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
