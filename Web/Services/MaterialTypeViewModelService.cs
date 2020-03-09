@@ -204,6 +204,7 @@ namespace Web.Services
                 foreach (var wg in warehouseGroup)
                 {
                     MaterialType materialType = materialTypes.Find(m => m.Id == wg.Key);
+                    if (materialType == null) continue;
                     lables.Add(materialType.TypeName);
                     double sumCount = wg.Sum(w => w.MaterialCount);
                     datas.Add(sumCount);
