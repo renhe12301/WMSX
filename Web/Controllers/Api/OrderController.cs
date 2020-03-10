@@ -81,7 +81,7 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
-        /// 创建出库订单
+        /// 创建退库订单
         /// </summary>
         /// <param name="orderViewModel"></param>
         /// <returns></returns>

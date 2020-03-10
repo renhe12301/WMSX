@@ -359,7 +359,7 @@
         </member>
         <member name="M:Web.Controllers.Api.OrderController.CreateOutOrder(Web.ViewModels.OrderManager.OrderViewModel)">
             <summary>
-            创建出库订单
+            创建退库订单
             </summary>
             <param name="orderViewModel"></param>
             <returns></returns>
@@ -740,7 +740,67 @@
             主数据同步定时任务
             </summary>
         </member>
-        <member name="T:Web.Jobs.CkJob">
+        <member name="M:Web.Jobs.BasicDataSyncJob.GetMD5WithString(System.String)">
+            <summary>
+            md5字符串转换
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Web.Jobs.BasicDataSyncJob.EBSProjectOld">
+            <summary>
+            项目信息同步
+            </summary>
+        </member>
+        <member name="F:Web.Jobs.BasicDataSyncJob.EBSTaskOld">
+            <summary>
+            任务信息同步
+            </summary>
+            
+        </member>
+        <member name="F:Web.Jobs.BasicDataSyncJob.OUOld">
+            <summary>
+            业务实体信息同步
+            </summary>
+             
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.OrganizationSyn">
+            <summary>
+            部门信息同步
+            </summary>
+            
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.EmployeeSyn">
+            <summary>
+            人员信息同步
+            </summary>
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.WarehouseSyn">
+            <summary>
+            库存组织信息同步
+            </summary>
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.ReservoirAreaSyn">
+            <summary>
+            子库存信息同步
+            </summary>
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.MaterialDicSyn">
+            <summary>
+            物料信息同步
+            </summary>
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.SupplierSyn">
+            <summary>
+            供应商头信息同步
+            </summary>
+        </member>
+        <member name="M:Web.Jobs.BasicDataSyncJob.SupplierSiteSyn">
+            <summary>
+            供应商地址信息同步
+            </summary>
+        </member>
+        <member name="T:Web.Jobs.CKJob">
             <summary>
             出库订单处理定时任务
             </summary>
@@ -764,6 +824,31 @@
             <summary>
             库存同步处理定时任务
             </summary>
+        </member>
+        <member name="M:Web.Jobs.WCSTaskJob.ConvertDateTimeInt(System.DateTime)">
+            <summary>  
+            DateTime时间格式转换为Unix时间戳格式  
+            </summary>  
+            <param name="time"> DateTime时间格式</param>  
+            <returns>Unix时间戳格式</returns>  
+        </member>
+        <member name="M:Web.Jobs.WCSTaskJob.PostWebRequest(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            Post数据接口
+            </summary>
+            <param name="postUrl">接口地址</param>
+            <param name="paramData">提交json数据</param>
+            <param name="dataEncode">编码方式(Encoding.UTF8)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.WCSTaskJob.PostRequestTest(System.String,System.String,System.String)">
+            <summary>
+            Post数据接口2
+            </summary>
+            <param name="content">文本</param>
+            <param name="url">连接</param>
+            <param name="contentType">文本传输格式</param>
+            <returns></returns>
         </member>
         <member name="T:Web.SlugifyParameterTransformer">
             <summary>
