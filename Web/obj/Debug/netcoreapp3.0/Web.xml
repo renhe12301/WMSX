@@ -735,6 +735,13 @@
             <param name="pyId">物理仓库编号</param>
             <returns></returns>
         </member>
+        <member name="M:Web.GeneralEngine.Resolve``1">
+            <summary>
+            构建实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:Web.Jobs.BasicDataSyncJob">
             <summary>
             主数据同步定时任务

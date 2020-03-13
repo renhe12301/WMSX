@@ -1514,6 +1514,32 @@
           "lib/netstandard2.0/Quartz.dll": {}
         }
       },
+      "Quartz.Jobs/3.0.7": {
+        "type": "package",
+        "dependencies": {
+          "Quartz": "3.0.7",
+          "System.Diagnostics.Process": "4.3.0",
+          "System.Threading.Tasks.Parallel": "4.3.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Quartz.Jobs.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Quartz.Jobs.dll": {}
+        }
+      },
+      "Quartz.Plugins/3.0.7": {
+        "type": "package",
+        "dependencies": {
+          "Quartz.Jobs": "3.0.7"
+        },
+        "compile": {
+          "lib/netstandard2.0/Quartz.Plugins.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Quartz.Plugins.dll": {}
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.1": {
         "type": "package",
         "runtimeTargets": {
@@ -5604,6 +5630,40 @@
         "lib/netstandard2.0/Quartz.xml",
         "quartz.3.0.7.nupkg.sha512",
         "quartz.nuspec"
+      ]
+    },
+    "Quartz.Jobs/3.0.7": {
+      "sha512": "G76Ugi6Le/4SGvt9qeNQoBOJdF4SnKHozl6fLJ8MAQaiZyRf4NUbfJN3gHotRwyciPoyoEfvPBnXwCljgBXQew==",
+      "type": "package",
+      "path": "quartz.jobs/3.0.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/Quartz.Jobs.dll",
+        "lib/net452/Quartz.Jobs.pdb",
+        "lib/net452/Quartz.Jobs.xml",
+        "lib/netstandard2.0/Quartz.Jobs.dll",
+        "lib/netstandard2.0/Quartz.Jobs.pdb",
+        "lib/netstandard2.0/Quartz.Jobs.xml",
+        "quartz.jobs.3.0.7.nupkg.sha512",
+        "quartz.jobs.nuspec"
+      ]
+    },
+    "Quartz.Plugins/3.0.7": {
+      "sha512": "JjZnTsGEnVG7GOcNL6+3WcCWEmVeOYEYb1QaPYIMrcdxkl2U/BMEOP10TbvPLr81zvfk7MPwYZqEK0uN/tcDnA==",
+      "type": "package",
+      "path": "quartz.plugins/3.0.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/Quartz.Plugins.dll",
+        "lib/net452/Quartz.Plugins.pdb",
+        "lib/net452/Quartz.Plugins.xml",
+        "lib/netstandard2.0/Quartz.Plugins.dll",
+        "lib/netstandard2.0/Quartz.Plugins.pdb",
+        "lib/netstandard2.0/Quartz.Plugins.xml",
+        "quartz.plugins.3.0.7.nupkg.sha512",
+        "quartz.plugins.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.1": {
@@ -11502,6 +11562,8 @@
       "Newtonsoft.Json >= 12.0.3",
       "Pomelo.EntityFrameworkCore.MySql >= 3.0.1",
       "Quartz >= 3.0.7",
+      "Quartz.Jobs >= 3.0.7",
+      "Quartz.Plugins >= 3.0.7",
       "SoapCore >= 1.0.0.2-alpha",
       "Swashbuckle.AspNetCore >= 5.0.0-rc3",
       "System.ServiceModel.Primitives >= 4.7.0",
@@ -11575,6 +11637,14 @@
             "version": "[3.0.1, )"
           },
           "Quartz": {
+            "target": "Package",
+            "version": "[3.0.7, )"
+          },
+          "Quartz.Jobs": {
+            "target": "Package",
+            "version": "[3.0.7, )"
+          },
+          "Quartz.Plugins": {
             "target": "Package",
             "version": "[3.0.7, )"
           },

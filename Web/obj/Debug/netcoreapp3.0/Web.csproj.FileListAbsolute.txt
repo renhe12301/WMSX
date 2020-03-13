@@ -369,3 +369,6 @@ D:/WMSX/Web/obj/Debug/netcoreapp3.0/Web.pdb
 /Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/zh-Hans/Microsoft.VisualStudio.Validation.resources.dll
 /Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/zh-Hant/Microsoft.VisualStudio.Validation.resources.dll
 /Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/runtimes/win/lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Quartz.Jobs.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/Quartz.Plugins.dll
+/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Web/bin/Debug/netcoreapp3.0/log4net.config

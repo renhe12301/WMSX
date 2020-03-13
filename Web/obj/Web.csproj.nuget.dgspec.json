@@ -205,6 +205,14 @@
               "target": "Package",
               "version": "[3.0.7, )"
             },
+            "Quartz.Jobs": {
+              "target": "Package",
+              "version": "[3.0.7, )"
+            },
+            "Quartz.Plugins": {
+              "target": "Package",
+              "version": "[3.0.7, )"
+            },
             "SoapCore": {
               "target": "Package",
               "version": "[1.0.0.2-alpha, )"
