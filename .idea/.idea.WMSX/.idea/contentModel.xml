@@ -363,6 +363,7 @@
         <e p="wwwroot" t="Include">
           <e p="config.js" t="Include" />
           <e p="favicon.ico" t="Include" />
+          <e p="hubtest.html" t="Include" />
           <e p="index.html" t="Include" />
           <e p="lib" t="Include">
             <e p="adminlte" t="Include">

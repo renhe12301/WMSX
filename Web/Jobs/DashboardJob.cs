@@ -13,23 +13,24 @@ namespace Web.Jobs
     public class DashboardJob:IJob
     {
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
-
-        public DashboardJob()
+        private readonly IHubContext<ClockHub> _hubContext;
+        public DashboardJob(IHubContext<ClockHub> hubContext)
         {
+            _hubContext = hubContext;
             _materialTypeRepository = EnginContext.Current.Resolve<IAsyncRepository<MaterialType>>();
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            //await _clockHub.Clients.All.ShowTime("mm");
+            await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
         }
     }
     
     public class ClockHub : Hub
     {
-        public async Task SendTimeToClients(string msg)
+        public async Task SendTimeToClients()
         {
-            await Clients.All.SendAsync("ShowTime","ssss");
+            await Clients.All.SendAsync("ShowTime",DateTime.Now.ToString());
         }
     }
 }

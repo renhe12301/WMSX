@@ -39,8 +39,6 @@ namespace Web
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
         }
 
-        readonly string AllowCORS = "AllowCORS";
-
         public IConfiguration Configuration { get; }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
@@ -132,14 +130,6 @@ namespace Web
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
 
-            services.AddCors(options => options.AddPolicy("CorsPolicy",
-                builder =>
-                {
-                    builder.AllowAnyMethod().AllowAnyHeader()
-                        .WithOrigins("http://localhost:44317")
-                        .AllowCredentials();
-                }));
-
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
@@ -199,6 +189,7 @@ namespace Web
             }
             
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
             //app.UseAuthorization();
@@ -225,9 +216,9 @@ namespace Web
             
             app.UseSignalR((routes) =>
             {
-                routes.MapHub<ClockHub>("/dashboard");
+                routes.MapHub<ClockHub>("/hubs/dashboard");
             });
-            app.UseCors("CorsPolicy");
+          
             var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
             quartz.Start().Wait();
 
