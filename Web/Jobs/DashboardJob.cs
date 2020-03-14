@@ -12,9 +12,6 @@ namespace Web.Jobs
 {
     public class DashboardJob:IJob
     {
-
-        private readonly IHubContext<ClockHub, IClock> _clockHub;
-
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
 
         public DashboardJob()
@@ -24,21 +21,15 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var materialDics = await this._materialTypeRepository.ListAllAsync();
-            Console.WriteLine(materialDics.Count);
+            //await _clockHub.Clients.All.ShowTime("mm");
         }
     }
     
-    public interface IClock
+    public class ClockHub : Hub
     {
-        Task ShowTime(DateTime currentTime);
-    }
-    
-    public class ClockHub : Hub<IClock>
-    {
-        public async Task SendTimeToClients(DateTime dateTime)
+        public async Task SendTimeToClients(string msg)
         {
-            await Clients.All.ShowTime(dateTime);
+            await Clients.All.SendAsync("ShowTime","ssss");
         }
     }
 }

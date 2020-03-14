@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/chart.js/Chart.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../common/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="js/entry-statistical.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-2">
+            <div id="sidebar" style="height: 600px;">
+                <div id="jsTree">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10" id="sidebar2" style="height: 600px;">
+            <div class="container-fluid">
+                <div class="row mb-md-1">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+
+                            <button type="button" id="today-btn" class="btn btn-info btn-flat">当天</button>
+                            <button type="button" id="week-btn" class="btn btn-success btn-flat">本周</button>
+                            <button type="button" id="month-btn" class="btn btn-primary btn-flat">本月</button>
+                                 <button type="button" id="season-btn" class="btn btn-warning btn-flat">本季度</button>
+                            <button type="button" id="year-btn" class="btn btn-danger btn-flat">本年</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-md-1">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title" id="warehouse-title">库存组织入库统计</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 900px;width: 900px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-md-1">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title" id="area-title">子库存入库统计</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 900px;width: 900px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

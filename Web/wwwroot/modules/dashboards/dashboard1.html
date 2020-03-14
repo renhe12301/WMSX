@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="css/BigData.css" rel="stylesheet" type="text/css" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <link href="css/index01.css" rel="stylesheet" type="text/css" />
+    <link href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../lib/adminlte/plugins/jquery/jquery.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="../../lib/echarts/echarts-all.js"></script>
+    <script src="js/dashboard1.js"></script>
+    <meta charset="UTF-8">
+    <title>大数据管理平台</title>
+</head>
+<body >
+<div class="data_bodey" style="padding-top: 60px;">
+    <div class="index_tabs" >
+        <div class="inner"  >
+            <div class="data_left01">
+                <div class="dataAll maginS">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">出入库记录</div>
+                            <div class="data_chart" id="buyTime"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">物料类型分析</div>
+                            <p class="data_chart" id="Package01"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">订单类型分析</div>
+                            <p class="data_chart" id="rode01"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="data_left01">
+                <div class="dataAll maginS">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">出入库订单分析</div>
+                            <p class="data_chart" id="bookAret"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">入库不合格分析</div>
+                            <p class="data_chart" id="bookBmonth"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">AGV任务分析</div>
+                            <p class="data_chart" id="whearAbook"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="data_left02">
+                <div class="dataAll01">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit2">数据汇总</div>
+
+                            <table class="table_data01" >
+                                <tr><td>总数</td><td colspan="3" class="font01">56320</td></tr>
+                                <tr><td>xxxxxx数</td><td colspan="3" class="font02">56320</td></tr>
+                                <tr>
+                                    <td>xxxxx数：</td>
+                                    <td>10个</td>
+                                    <td>类型数：</td>
+                                    <td>6个</td>
+                                </tr>
+                                <tr>
+                                    <td>xxxx最多数：</td>
+                                    <td>16-20点</td>
+                                    <td>xxxxx最多月：</td>
+                                    <td>12月</td>
+                                </tr>
+                                <tr>
+                                    <td>xxxxx最多季节：</td>
+                                    <td>xxxx</td>
+                                    <td>xxxxx天气：</td>
+                                    <td>晴天</td>
+                                </tr>
+                                <tr>
+                                    <td>xxxxxx：</td>
+                                    <td>套餐A</td>
+                                    <td>xxxxxx：</td>
+                                    <td>活动</td>
+                                </tr>
+                                <tr>
+                                    <td>xxxxxx：</td>
+                                    <td>交通畅通</td>
+                                    <td>xxxxx特殊时间：</td>
+                                    <td>国庆节</td>
+                                </tr>
+                                <tr>
+                                    <td>xxxxx：</td>
+                                    <td colspan="3" style="color: red">xxxxxB</td>
+
+                                </tr>
+                                <tr>
+                                    <td>xxxxx多季节：</td>
+                                    <td colspan="3" style="color: red">冬季</td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll02">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">一周订单分析</div>
+                            <p class="data_chart" id="rodeAbook"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="data_left01">
+                <div class="dataAll maginS">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">业务实体资产分析</div>
+                            <p class="data_chart" id="seaAbook01"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">库存利用率分析</div>
+                            <p class="data_chart" id="actionBook"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dataAll">
+                    <div class="dataAllBorder01">
+                        <div class="dataAllBorder02">
+                            <div class="data_tit1">盘存差异分析</div>
+                            <p class="data_chart" id="sperceBook01"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

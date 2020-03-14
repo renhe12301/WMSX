@@ -59,7 +59,13 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:5001");
+            }));
             //DI 注入
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -126,17 +132,13 @@ namespace Web
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(AllowCORS,
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder =>
                 {
-                    builder.WithOrigins("*")
-                                 .AllowAnyHeader()
-                                 .AllowAnyMethod()
-                                 .AllowAnyOrigin();
-                });
-            });
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                        .WithOrigins("http://localhost:44317")
+                        .AllowCredentials();
+                }));
 
             services.AddMvc(options =>
             {
@@ -195,6 +197,7 @@ namespace Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -203,7 +206,7 @@ namespace Web
             app.UseCors();
            
             // WSDL 服务类
-            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.asmx", new BasicHttpBinding());
+            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.wsdl", new BasicHttpBinding());
 
            
             //路由url格式转换，统一转换成小写
@@ -222,11 +225,9 @@ namespace Web
             
             app.UseSignalR((routes) =>
             {
-                routes.MapHub<ClockHub>("/hubs/clock");
+                routes.MapHub<ClockHub>("/dashboard");
             });
-
-          
-
+            app.UseCors("CorsPolicy");
             var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
             quartz.Start().Wait();
 

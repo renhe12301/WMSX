@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
+    <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/confirm-dlg.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="js/stock-location.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-2">
+            <div id="sidebar" style="height: 600px;">
+                <div id="jsTree">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="container-fluid">
+                <div class="row mb-md-2">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+                            <input type="text" class="form-control" style="height: 38px;" id="sys-code" placeholder="系统编码 ...">
+                            <input type="text" class="form-control" style="height: 38px;" id="user-code" placeholder="用户编码 ...">
+                            <span class="input-group-append">
+                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
+                                 <button type="button" id="more-query-btn" class="btn btn-secondary btn-flat">更多查询...</button>
+                                  <button type="button" id="disable-btn" class="btn btn-danger btn-flat">禁用</button>
+                                   <button type="button" id="enable-btn" class="btn btn-success btn-flat">启用</button>
+                                   <button type="button" id="clear-btn" class="btn btn-danger btn-flat">清空</button>
+                             </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" id="div-table">
+                                <table id="location-table" data-show-fullscreen="true"
+                                       class="table table-condensed" style="width: 100%">
+                                    <thead>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="more-query-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">更多货位筛选条件</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <form id="more-query-form" class="form-horizontal" method="post" novalidate="novalidate">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>货载类型</label>
+                                <select class="select2"  multiple="multiple" id="instock-select" data-placeholder="请选择货载类型" style="width: 100%;padding-top: 5px;">
+                                    <option value="0">无货</option>
+                                    <option value="1">有货</option>
+                                    <option value="2">空托盘</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>任务状态</label>
+                                <select class="select2" multiple="multiple" id="istask-select" data-placeholder="请选择任务状态" style="width: 100%;">
+                                    <option value="0">没有任务</option>
+                                    <option value="1">有任务</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>层</label>
+                                <select class="select2" multiple="multiple" id="floor-select" data-placeholder="请选择层" style="width: 100%;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>排</label>
+                                <select class="select2" multiple="multiple" id="rank-select" data-placeholder="请选择层" style="width: 100%;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>排</label>
+                                <select class="select2" multiple="multiple" id="col-select" data-placeholder="请选择列" style="width: 100%;">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="location-detail-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="location-title">货物信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <h3 class="profile-username text-center" id="location-code">2-01-01-01</h3>
+                        <p class="text-muted text-center" id="tray-code">T000001</p>
+                        <div id="sidebar3" style="height: 300px;">
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">物料编码</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-code" disabled="" value="lxg00001">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">物料名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-name" disabled="" value="二氧化碳">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">物料属性</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="material-spec" disabled="" >青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">物料数量</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-count" disabled="" value="10000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">库区</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="area-name" disabled="" >青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">仓库</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="warehouse-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">业务实体</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="ou-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">公司</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="org-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+</body>
+</html>

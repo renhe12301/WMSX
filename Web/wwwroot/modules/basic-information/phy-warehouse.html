@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="js/phy-warehouse.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="container-fluid">
+                <div class="row mb-md-2">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+                            <input type="text" class="form-control" style="height: 38px;width: 200px;" id="warehouse-name" placeholder="物理仓库 ...">
+                            <span class="input-group-append">
+                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
+                                <button type="button" id="add-btn" class="btn btn-primary btn-flat">新增货位</button>
+                                <button type="button" id="build-btn" class="btn btn-success btn-flat">生成货位</button>
+                             </span>
+
+                        </div>
+                        <div class="bootstrap-table bootstrap4">
+                            <table id="wh-table"
+                                   class="table table-condensed" style="width: 100%">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-location-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加货位</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <form id="add-location-form" class="form-horizontal" method="post" novalidate="novalidate">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="add-sys-code" class="col-sm-3 col-form-label">系统编码</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="add-sys-code" id="add-sys-code" placeholder="请输入系统编码...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="add-user-code" class="col-sm-3 col-form-label">用户编码</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="add-user-code" id="add-user-code" placeholder="请输入用户编码...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit"  class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="build-location-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">生成货位</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <form id="build-location-form" class="form-horizontal" method="post" novalidate="novalidate">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="build-row" class="col-sm-3 col-form-label">层</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="build-row" id="build-row" placeholder="请输入层...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-rank" class="col-sm-3 col-form-label">排</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="build-rank" id="build-rank" placeholder="请输入排...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="build-col" class="col-sm-3 col-form-label">列</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="build-col" id="build-col" placeholder="请输入列...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit"  class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</body>
+</html>

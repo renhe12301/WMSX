@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="js/organization.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="container-fluid">
+                <div class="row mb-md-2">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+                            <input type="text" class="form-control" id="org-name" style="height: 38px;width: 200px;" placeholder="公司部门...">
+                            <select class="select2" id="type-select" style="width: 200px;" data-placeholder="业务实体">
+                                <option value="0">全部</option>
+                            </select>
+                            <span class="input-group-append">
+                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
+                             </span>
+                        </div>
+                        <div class="bootstrap-table bootstrap4">
+                            <table id="org-table"
+                                   class="table table-condensed" style="width: 100%">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

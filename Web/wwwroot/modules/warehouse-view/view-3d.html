@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
+    <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/confirm-dlg.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/loading.js"></script>
+    <script src="js/view-3d.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="col-md-12">
+        <div class="container-fluid">
+            <div id="toolbar" class="input-group input-group-sm">
+                <select class="select2" id="phy-select" data-placeholder="物理仓库">
+                </select>
+            </div>
+            <div class="row mb-md-5">
+                <div class="col-md-12">
+                    <div class="card card-primary" style="height: 570px;">
+                        <iframe id="contentFrame" src=""  frameborder="no" width="100%" height="100%"  style="overflow: hidden" scrolling="no" >
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="location-detail-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="location-title">货物信息</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <h3 class="profile-username text-center" id="location-code">2-01-01-01</h3>
+                        <p class="text-muted text-center" id="tray-code">T000001</p>
+                        <div id="sidebar3" style="height: 300px;">
+                            <div class="form-group">
+                                <label for="material-code" class="col-sm-3 col-form-label">物料编码</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-code" disabled="" value="lxg00001">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="material-name" class="col-sm-3 col-form-label">物料名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-name" disabled="" value="二氧化碳">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="material-spec" class="col-sm-3 col-form-label">物料属性</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="material-spec" disabled="" >青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="material-count" class="col-sm-3 col-form-label">物料数量</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="material-count" disabled="" value="10000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="area-name" class="col-sm-3 col-form-label">库区</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="area-name" disabled="" >青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="warehouse-name" class="col-sm-3 col-form-label">仓库</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="warehouse-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ou-name" class="col-sm-3 col-form-label">业务实体</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="ou-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="org-name" class="col-sm-3 col-form-label">公司</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" id="org-name" disabled="">青海黄河上游水电开发有限责任公司共和风力发电分公司</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</body>
+</html>

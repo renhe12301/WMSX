@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="../../lib/adminlte/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
+    <script src="../common/js/confirm-dlg.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="js/role-manager.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="container-fluid">
+                <div class="row mb-auto">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+                            <input type="text" class="form-control" style="height: 38px;" id="role-name" placeholder="角色名 ...">
+                            <span class="input-group-append">
+                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
+                                 <button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#add-role-dlg">添加</button>
+                                 <button type="button" id="enable-btn" class="btn btn-success btn-flat">启用</button>
+                                 <button type="button" id="disable-btn" class="btn btn-danger btn-flat">禁用</button>
+                             </span>
+                        </div>
+                        <div class="bootstrap-table bootstrap4">
+                            <table id="role-table"
+                                   class="table table-condensed" style="width: 100%">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-role-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">添加角色</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add-role-form" class="form-horizontal" method="post" novalidate="novalidate">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="add-role-name" class="col-sm-3 col-form-label">角色名</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="addRoleName" id="add-role-name" placeholder="请输入角色名称...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit"  class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="edit-role-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">修改角色</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-role-form" class="form-horizontal" method="post" novalidate="novalidate">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="edit-role-name" class="col-sm-3 col-form-label">角色名</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="editRoleId"  id="edit-role-id" style="display: none">
+                                <input type="text" class="form-control" name="editRoleName" id="edit-role-name" placeholder="请输入角色名称...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit"  class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="assign-menu-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">分配菜单</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="card-body">
+                    <div id="sidebar" style="height: 300px;">
+                        <div id="jsTree">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="assign-btn" class="btn btn-primary">保存</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</body>
+</html>

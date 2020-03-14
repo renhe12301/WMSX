@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS登录</title>
+    <link rel="stylesheet" href="lib/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="lib/loading/css/loading.css">
+    <link rel="stylesheet" href="lib/adminlte/plugins/toastr/toastr.min.css">
+    <script src="lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="lib/jquery-cookie/jquery.cookie.js"></script>
+    <script src="lib/adminlte/dist/js/adminlte.min.js"></script>
+    <script src="lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="lib/adminlte/plugins/toastr/toastr.min.js"></script>
+    <script src="lib/loading/js/loading.js"></script>
+    <script src="modules/common/js/loading.js"></script>
+    <script src="config.js"></script>
+    <script>
+        $(function () {
+            var responseData = null;
+            $("#loginBtn").click(function () {
+                var loginName = $("#loginTxt").val();
+                var pwd = $("#pwdTxt").val();
+                if (loginName == "")
+                {
+                    alert("请输入用户名");
+                    $("loginTxt").focus();
+                    return;
+                }
+                if (pwd == "") {
+                    alert("请输入密码");
+                    $("pwdTxt").focus();
+                    return;
+                }
+                loadingShow();
+                $.ajax({
+                    type: 'post',
+                    url: controllers.employee.login,
+                    async: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(
+                        {
+                            LoginName: loginName,
+                            LoginPwd: pwd
+                        }),
+                    success: function (response) {
+                        loadingClose();
+                        if (response.Code == 200) {
+                            responseData = response.Data;
+                            var roles = response.Data.Roles;
+                            if(roles.length==0)
+                            {
+                                alert("当前用户没有分配系统角色,请联系管理员！");
+                                return;
+                            }
+                            if(roles.length>1)
+                            {
+                                $('#assign-role-dlg').modal('show');
+                                var data=[];
+                                $.each(roles, function(key, val) {
+                                    data.push({id:val.Id,text:val.RoleName,status:val.Status});
+                                });
+                                $("#role-select").select2({
+                                    data: data,
+                                    theme: 'bootstrap4'
+                                });
+                            }
+                            else
+                            {
+                                var role = roles[0];
+                                if(role.Status==1)
+                                {
+                                    alert("对不起,当前角色没有权限登录！");
+                                    return;
+                                }
+                                $.cookie('wms-user','{"loginName":"'+loginName+'","userId":"'+response.Data.UserId+'","userName":"'+response.Data.UserName+'","roleId":"'+role.Id+'","orgId":"'+response.Data.OrgId+'"}');
+                                window.location.href = 'index.html';
+                            }
+                        }
+                        else
+                        {
+                            alert(response.Data);
+                        }
+                    },
+                    error:function () {
+                        toastr.error("访问服务出现故障！", '错误信息', {timeOut: 3000});
+                    }
+                });
+           });
+
+            $("#assign-btn").click(function () {
+               var roles = $('.select2').val();
+              if(roles.length==0)
+              {
+                  alert("请选择角色！");
+                  return;
+              }
+                var role =  responseData.Roles.find(x => x.Id==roles[0]);
+                if(role.Status==1)
+                {
+                    alert("对不起,当前角色没有权限登录！");
+                    return;
+                }
+                $.cookie('wms-user','{"loginName":"'+$("#loginTxt").val()+'","userId":"'+responseData.UserId+'","userName":"'+responseData.UserName+'","roleId":"'+roles[0]+'","orgId":"'+responseData.OrgId+'"}');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#">仓库管理系统</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card card-primary card-outline">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">请先登录</p>
+            <form method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="loginTxt" placeholder="登录名"/>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" id="pwdTxt" placeholder="密码">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-xs-12">
+                        <button type="button" id="loginBtn" class="btn bg-red btn-block btn-flat">登录</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+<!-- /.login-box -->
+<div class="modal fade" id="assign-role-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">当前用户多个角色,必须选择一个</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div  style="height: 50px;">
+                        <input type="text" class="form-control"   id="user-id" style="display: none">
+                        <select class="select2" id="role-select" data-placeholder="请选择角色" style="width: 100%;">
+                        </select>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="assign-btn" class="btn btn-primary">保存</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</body>
+</html>

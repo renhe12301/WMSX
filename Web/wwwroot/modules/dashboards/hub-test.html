@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../lib/adminlte/plugins/jquery/jquery.js"></script>
+    <script src="../../lib/signalr/signalr.js"></script>
+    <script>
+        $(function () {
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/dashboard")
+                .build();
+            console.log(connection);
+            connection.on("ShowTime", (time) => {
+                console.log("xxxxx");
+                $("#time-lab").text(time);
+            });
+            connection.start();
+            // async function start() {
+            //     try {
+            //         await connection.start();
+            //         console.log("connected");
+            //     } catch (err) {
+            //         console.log(err);
+            //         setTimeout(() => start(), 5000);
+            //     }
+            // };
+            // connection.onclose(async () => {
+            //     console.log("x");
+            //     //await start();
+            // });
+            $("#test-btn").click(function () {
+                connection.invoke("SendTimeToClients","nn");
+            });
+        });
+    </script>
+</head>
+<body>
+<label id="time-lab">ssss</label>
+<button id="test-btn">ceshi</button>
+</body>
+</html>
