@@ -817,6 +817,12 @@
             清理系统日志定时任务
             </summary>
         </member>
+        <member name="M:Web.Jobs.DashboardJob.GetInOutRecordAnalysis">
+            <summary>
+            出入库记录分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Web.Jobs.OrderStatusSyncJob">
             <summary>
             订单,订单行数据同步定时任务

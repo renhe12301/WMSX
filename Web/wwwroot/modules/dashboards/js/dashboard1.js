@@ -1,85 +1,126 @@
-/**
- * Created by Administrator on 2017/5/17.
- */
-
 $(function(){
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/hubs/dashboard")
+        .build();
+    
+    var inOutRecordChartChart = echarts.init($("#buyTime")[0]);
+    initInOutRecordAnalysis(inOutRecordChartChart);
+    connection.on("ShowInOutRecordAnalysis", (datas) => {
+        var option = inOutRecordChartChart.getOption();
+        option.series[0].data = datas[0];
+        option.series[1].data = datas[1];
+        option.series[2].data = datas[2];
+        option.series[3].data = datas[3];
+        inOutRecordChartChart.setOption(option);
+    });
+    
+    connection.start().catch(err => console.error(err));
+    
     yingXiao();
 });
 
+//出入库记录图表
+function initInOutRecordAnalysis(chart) {
+    option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        grid: {
+            x: 46,
+            y: 30,
+            x2: 30,
+            y2: 20,
+            borderWidth: 0
+        },
+
+        calculable: false,
+        legend: {
+            data: ['接收', '退料', '领料', '退库'],
+            textStyle: {
+                color: "#e9ebee"
+
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#a4a7ab',
+                        align: 'center'
+                    }
+                }
+
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} ',
+                    textStyle: {
+                        color: '#a4a7ab',
+                        align: 'right'
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+            }
+
+        ],
+        series: [
+            {
+                name: '接收',
+                type: 'bar',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                itemStyle: {
+                    normal: {
+                        color: "#0ad5ff"
+                    }
+                }
+            },
+            {
+                name: '退料',
+                type: 'bar',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                itemStyle: {
+                    normal: {
+                        color: "#005ea1"
+                    }
+                }
+            },
+            {
+                name: '领料',
+                type: 'bar',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                itemStyle: {
+                    normal: {
+                        color: "#2e7cff"
+                    }
+                }
+            },
+            {
+                name: '退库',
+                type: 'bar',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                itemStyle: {
+                    normal: {
+                        color: "#1afffd"
+                    }
+                }
+            }
+        ]
+    };
+    chart.setOption(option);
+}
+
 function yingXiao(){
-// 营销分析
-// 24小时购买时间分析
-    $(function(){
-        var myChart = echarts.init($("#buyTime")[0]);
-        var option = {
-            tooltip: {   //提示框，鼠标悬浮交互时的信息提示
-                show: true,
-                trigger: 'axis'
-            },
-            grid: {
-                x: 46,
-                y:30,
-                x2:30,
-                y2:40,
-                borderWidth: 0
-            },
-            legend: {
-                data: [],
-                orient: 'vertical',
-                textStyle: { fontWeight: 'bold', color: '#a4a7ab' }
-            },
-
-            calculable: false,
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12','13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#a4a7ab',
-                            align: 'center'
-                        }
-                    }
-                }
-
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#a4a7ab',
-                            align: 'right'
-                        }
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: '',
-                    type: 'line',
-                    stack: '24小时购买时间',
-                    data: [120, 132, 101, 146, 199, 230, 210, 230, 240, 256, 278, 300,120, 132, 101, 146, 199, 230, 210, 230, 240, 256, 278, 300],
-                    itemStyle: {
-                        normal: {
-                            color: '#02bcbc'
-                        }
-                    }
-                }
-            ]
-        };
-
-        myChart.setOption(option);
-    });
 // 套餐类型分析
     $(function(){
         var myChart = echarts.init($("#Package01")[0]);
@@ -246,101 +287,6 @@ function yingXiao(){
 // 订退分析
     $(function(){
         var myChart = echarts.init($("#bookAret")[0]);
-        option = {
-
-            tooltip : {
-                trigger: 'axis'
-            },
-            grid: {
-                x: 46,
-                y:30,
-                x2:30,
-                y2:40,
-                borderWidth: 0
-            },
-            legend: {
-                data:['退订数','订单数'],
-                textStyle:{
-                    color:"#e9ebee"
-
-                }
-            },
-
-            calculable : false,
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-                    axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#a4a7ab',
-                        align: 'center'
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                }
-                }
-
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#a4a7ab',
-                            align: 'right'
-                        }
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                }
-            ],
-            series : [
-                {
-                    name:'退订数',
-                    type:'bar',
-                    data:[100, 80, 136, 150, 120, 56, 200, 162, 105, 63, 169, 236],
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                },
-                {
-                    name:'订单数',
-                    type:'bar',
-                    data:[983, 820, 1236, 930, 1600, 1032, 890, 1300, 1921, 984, 1960, 2630],
-                    markPoint : {
-                        data : [
-                            {name : '月最高', value : 2630, xAxis: 12, yAxis: 2630, symbolSize:18},
-                            {name : '月最低', value : 820, xAxis: 2, yAxis: 830}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name : '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
-
-
-        myChart.setOption(option);
-    });
-// 按月进行趋势分析
-    $(function(){
-        var myChart = echarts.init($("#bookBmonth")[0]);
         var option = {
             tooltip: {   //提示框，鼠标悬浮交互时的信息提示
                 show: true,
@@ -364,7 +310,7 @@ function yingXiao(){
                 {
                     type: 'category',
                     boundaryGap: false,
-                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+                    data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12','13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
                     splitLine: {
                         show: false
                     },
@@ -397,11 +343,131 @@ function yingXiao(){
                 {
                     name: '',
                     type: 'line',
-                    stack: '订单数',
-                    data:[983, 820, 1236, 930, 1600, 1032, 890, 1300, 1921, 984, 1960, 2630],
+                    stack: '24小时购买时间',
+                    data: [120, 132, 101, 146, 199, 230, 210, 230, 240, 256, 278, 300,120, 132, 101, 146, 199, 230, 210, 230, 240, 256, 278, 300],
                     itemStyle: {
                         normal: {
                             color: '#02bcbc'
+                        }
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+    });
+// 按月进行趋势分析
+    $(function(){
+        var myChart = echarts.init($("#bookBmonth")[0]);
+        option = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            grid: {
+                x: 46,
+                y:30,
+                x2:30,
+                y2:20,
+                borderWidth: 0
+            },
+
+            calculable : false,
+            legend: {
+                data:['下雨','下雪','晴天','订单量'],
+                textStyle:{
+                    color:"#e9ebee"
+
+                }
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#a4a7ab',
+                            align: 'center'
+                        }
+                    }
+
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+
+                    name : '订单量',
+                    axisLabel : {
+                        formatter: '{value} ',
+                        textStyle: {
+                            color: '#a4a7ab',
+                            align: 'right'
+                        }
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                },
+                {
+                    type : 'value',
+                    name : '温度',
+                    axisLabel : {
+                        formatter: '{value} °C',
+                        textStyle: {
+                            color: '#a4a7ab',
+                            align: 'right'
+                        }
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                },
+
+            ],
+            series : [
+
+                {
+                    name:'下雨',
+                    type:'bar',
+                    data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                    itemStyle: {
+                        normal: {
+                            color:"#0ad5ff"
+                        }
+                    }
+                },
+                {
+                    name:'下雪',
+                    type:'bar',
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                    itemStyle: {
+                        normal: {
+                            color:"#005ea1"
+                        }
+                    }
+                },
+                {
+                    name:'晴天',
+                    type:'bar',
+                    data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+                    itemStyle: {
+                        normal: {
+                            color:"#2e7cff"
+                        }
+                    }
+                },
+                {
+                    name:'订单量',
+                    type:'line',
+                    yAxisIndex: 1,
+                    data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+                    itemStyle: {
+                        normal: {
+                            color:"#1afffd"
                         }
                     }
                 }
