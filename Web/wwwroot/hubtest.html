@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>hub测试页面</title>
+    <script src="lib/signalr/signalr.js"></script>
+    <script src="lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var date = new Date();
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/hubs/dashboard")
+                .build();
+            connection.on("ShowTime", (msg) => {
+                $("#dw-txt").val(msg);
+            });
+            document.getElementById("sendButton").addEventListener("click", event => {
+                connection.invoke("SendTimeToClients").catch(err => console.error(err));
+                event.preventDefault();
+            });
+
+            connection.start().catch(err => console.error(err));
+        });
+    </script>
+</head>
+<body>
+   <input type="button" id="sendButton" value="点我"/>
+   <input type="text" id="dw-txt"/>
+</body>
+</html>
