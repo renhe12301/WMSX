@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.SignalR;
 using Quartz;
 using Web;
 using ApplicationCore.Specifications;
+using Web.Hubs;
 
 namespace Web.Jobs
 {
     public class DashboardJob:IJob
     {
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
-        private readonly IHubContext<ClockHub> _hubContext;
-        public DashboardJob(IHubContext<ClockHub> hubContext)
+        private readonly IHubContext<DashboardHub> _hubContext;
+        public DashboardJob(IHubContext<DashboardHub> hubContext)
         {
             _hubContext = hubContext;
             _materialTypeRepository = EnginContext.Current.Resolve<IAsyncRepository<MaterialType>>();
@@ -26,11 +27,4 @@ namespace Web.Jobs
         }
     }
     
-    public class ClockHub : Hub
-    {
-        public async Task SendTimeToClients()
-        {
-            await Clients.All.SendAsync("ShowTime",DateTime.Now.ToString());
-        }
-    }
 }

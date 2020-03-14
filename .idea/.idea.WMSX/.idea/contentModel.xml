@@ -226,6 +226,9 @@
         </e>
         <e p="EnginContext.cs" t="Include" />
         <e p="GeneralEngine.cs" t="Include" />
+        <e p="Hubs" t="Include">
+          <e p="DashboardHub.cs" t="Include" />
+        </e>
         <e p="IEngine.cs" t="Include" />
         <e p="Interfaces" t="Include">
           <e p="IEBSProjectViewModelService.cs" t="Include" />
@@ -3195,7 +3198,6 @@
               <e p="fonts" t="Include">
                 <e p="data_number.ttf" t="Include" />
               </e>
-              <e p="hub-test.html" t="Include" />
               <e p="img" t="Include">
                 <e p="1_03.png" t="Include" />
                 <e p="bg.png" t="Include" />

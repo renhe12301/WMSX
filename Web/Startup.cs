@@ -26,6 +26,7 @@ using log4net.Config;
 using Quartz.Impl;
 using Quartz;
 using Web;
+using Web.Hubs;
 
 namespace Web
 {
@@ -216,7 +217,7 @@ namespace Web
             
             app.UseSignalR((routes) =>
             {
-                routes.MapHub<ClockHub>("/hubs/dashboard");
+                routes.MapHub<DashboardHub>("/hubs/dashboard");
             });
           
             var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
