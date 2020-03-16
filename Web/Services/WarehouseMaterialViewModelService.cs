@@ -43,13 +43,13 @@ namespace Web.Services
                 {
                     baseSpecification = new WarehouseMaterialPaginatedSpecification(pageIndex.Value, itemsPage.Value,
                         id,materialCode,materialDicId,materialName,materialSpec,trayCode,trayDicId,orderId,orderRowId,
-                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId,supplierId,supplierSiteId,pyId);
+                        carrier, trayStatus, locationId,ouId,wareHouseId,areaId,supplierId,supplierSiteId,pyId,null,null);
                 }
                 else
                 {
                     baseSpecification = new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId);
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId,null,null);
                 }
 
                 var materials = await this._warehouseMaterialRepository.ListAsync(baseSpecification);
@@ -83,7 +83,7 @@ namespace Web.Services
                 {
                     var count = await this._warehouseMaterialRepository.CountAsync(new WarehouseMaterialSpecification(id, materialCode, materialDicId,
                         materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId, carrier, trayStatus,
-                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId));
+                        locationId,ouId, wareHouseId, areaId,supplierId,supplierSiteId,pyId,null,null));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = warehouseMaterialViewModels;
                     dyn.total = count;

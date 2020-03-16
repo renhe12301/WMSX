@@ -80,7 +80,7 @@ namespace ApplicationCore.Services
                         null,
                         null, null, null, null, null, null, null,
                         null, new List<int>() {Convert.ToInt32(TRAY_STEP.入库完成), Convert.ToInt32(TRAY_STEP.初始化)},
-                        null, order.OUId, order.WarehouseId, null, null, null,null);
+                        null, order.OUId, order.WarehouseId, null, null, null,null,null,null);
                     List<WarehouseMaterial> allWarehouseMaterials =
                         await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
@@ -313,7 +313,7 @@ namespace ApplicationCore.Services
                     WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
                         null, null, null, null, trayCode, null, null,
                         null, null, null, null, null, null, null, 
-                        null, null,null);
+                        null, null,null,null,null);
 
                     List<WarehouseMaterial> oldMaterials =
                         await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);

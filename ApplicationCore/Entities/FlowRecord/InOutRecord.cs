@@ -14,7 +14,7 @@ namespace ApplicationCore.Entities.FlowRecord
         public string TrayCode { get; set; }
         public int MaterialDicId { get; set; }
 
-        public int OrderRowBatchId { get; set; }
+        public int? OrderRowBatchId { get; set; }
 
         public int? PhyWarehouseId { get; set; }
 

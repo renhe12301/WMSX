@@ -39,19 +39,5 @@ namespace Web
             await _scheduler.ScheduleJob(jobDetail, trigger);
             _logger.LogInformation("Quarzt.net 启动成功...");
         }
-        public void Stop()
-        {
-            if (_scheduler == null)
-            {
-                return;
-            }
-
-            if (_scheduler.Shutdown(waitForJobsToComplete: true).Wait(30000))
-                _scheduler = null;
-            else
-            {
-            }
-            _logger.LogCritical("Schedule job upload as application stopped");
-        }
     }
 }

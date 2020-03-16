@@ -11,7 +11,7 @@ namespace ApplicationCore.Specifications
         public WarehouseMaterialPaginatedSpecification(int skip,int take,int? id, string materialCode, int? materialDicId,
             string materialName,string materialSpec,string trayCode, int? trayDicId,int? orderId,int? orderRowId, 
             int? carrier, List<int> traySteps, int? locationId, int? ouId, int? wareHouseId, int? areaId,int? supplierId,
-            int? supplierSiteId,int? pyId)
+            int? supplierSiteId,int? pyId,string sCreateTime,string eCreateTime)
             : base(b =>(!id.HasValue || b.Id == id) &&
                        (materialCode == null || b.MaterialDic.MaterialCode == materialCode) &&
                        (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
@@ -29,7 +29,9 @@ namespace ApplicationCore.Specifications
                        (!areaId.HasValue || b.ReservoirAreaId == areaId)&&
                        (!supplierId.HasValue||b.SupplierId==supplierId)&&
                        (!supplierSiteId.HasValue||b.SupplierSiteId==supplierSiteId)&&
-                       (!pyId.HasValue||b.PhyWarehouseId==pyId))
+                       (!pyId.HasValue||b.PhyWarehouseId==pyId)&&
+                       (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
+                       (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
             ApplyPaging(skip, take);
             AddInclude(b => b.MaterialDic);

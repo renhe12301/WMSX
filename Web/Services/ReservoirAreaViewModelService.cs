@@ -108,7 +108,7 @@ namespace Web.Services
                 WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
                     null,null,null,null,null,null,null,
                     null,null,null,null,ouId,null,null,null,
-                    null,null);
+                    null,null,null,null);
                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
                 List<string> lables = new List<string>();
                 List<double> datas = new List<double>();
@@ -148,7 +148,7 @@ namespace Web.Services
                 WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
                     null,null,null,null,null,null,null,
                     null,null,null,null,ouId,null,null,null,
-                    null,null);
+                    null,null,null,null);
                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
                 List<string> lables = new List<string>();
                 List<double> datas = new List<double>();

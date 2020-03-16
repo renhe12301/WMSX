@@ -819,7 +819,43 @@
         </member>
         <member name="M:Web.Jobs.DashboardJob.GetInOutRecordAnalysis">
             <summary>
-            出入库记录分析数据看板
+            每月出入库记录分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetInBadAnalysis">
+            <summary>
+            每月入库不合格分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetInOrderAnalysis">
+            <summary>
+            每月入库单分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetOutOrderAnalysis">
+            <summary>
+            每月出库单分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetOrderTypeAnalysis">
+            <summary>
+            订单类型分析
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetStockCountAnalysis">
+            <summary>
+            每月库存量分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetWeekOrderAnalysis">
+            <summary>
+            每周订单分析数据看板
             </summary>
             <returns></returns>
         </member>

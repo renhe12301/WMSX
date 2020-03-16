@@ -114,7 +114,7 @@ namespace Web.Jobs
                                     WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null, materialId.ToString(),
                                                                                                                               null, null, null, null, null, null, null, null,
                                                                                                                               new List<int>() { Convert.ToInt32(TRAY_STEP.初始化)}, null, null, null,
-                                                                                                                              areaId,null,null,null);
+                                                                                                                              areaId,null,null,null,null,null);
                                     //查找符合条件的分区下的库存物料
                                     List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
@@ -206,7 +206,7 @@ namespace Web.Jobs
                                     WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null, materialId.ToString(),
                                                                                                                               null, null, null, null, null, null, null, null,
                                                                                                                               new List<int>() { Convert.ToInt32(TRAY_STEP.入库完成)}, null, null, null,
-                                                                                                                              areaId,null,null,null);
+                                                                                                                              areaId,null,null,null,null,null);
                                     //查找符合条件的分区下的库存物料
                                     List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
 
