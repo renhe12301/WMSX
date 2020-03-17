@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
@@ -9,10 +8,8 @@ using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
-using log4net;
 using Microsoft.AspNetCore.SignalR;
 using Quartz;
-using Web;
 using ApplicationCore.Specifications;
 using Web.Hubs;
 
@@ -25,6 +22,8 @@ namespace Web.Jobs
         private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
         private readonly IHubContext<DashboardHub> _hubContext;
         private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IAsyncRepository<Location> _locationRepository;
+        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
 
         public DashboardJob(IHubContext<DashboardHub> hubContext)
         {
@@ -32,6 +31,8 @@ namespace Web.Jobs
             _materialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
             _inOutRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutRecord>>();
             _orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();
+            _locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
+            _warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -53,6 +54,10 @@ namespace Web.Jobs
                 await _hubContext.Clients.All.SendAsync("ShowStockCountAnalysis", stockCountChart);
                 var weekOrderChart = await GetWeekOrderAnalysis();
                 await _hubContext.Clients.All.SendAsync("ShowWeekOrderAnalysis", weekOrderChart);
+                var stockAssestChart = await GetStockAssestAnalysis();
+                await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
+                var stockUtilizationChart = await GetStockUtilizationAnalysis();
+                await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
             }
             catch (Exception ex)
             {
@@ -304,34 +309,28 @@ namespace Web.Jobs
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 7; i++)
             {
-                // var sCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "00:00:00";
-                // var eCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "23:59:59";
-                // List<Order> orders2 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                // List<Order> orders3 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                // List<Order> orders4 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                // List<Order> orders5= orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                // List<Order> orders6 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                // data1.Add(orders2.Count);
-                // data2.Add(orders3.Count);
-                // data3.Add(orders4.Count);
-                // data4.Add(orders5.Count);
-                // data5.Add(orders6.Count);
-                
-                 data1.Add(random.Next(10,100));
-                 data2.Add(random.Next(10,100));
-                 data3.Add(random.Next(10,100));
-                 data4.Add(random.Next(10,100));
-                 data5.Add(random.Next(10,100));
+                var sCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "00:00:00";
+                var eCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "23:59:59";
+                List<Order> orders2 = orders.Where(r =>
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                List<Order> orders3 = orders.Where(r =>
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                List<Order> orders4 = orders.Where(r =>
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                List<Order> orders5= orders.Where(r =>
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                List<Order> orders6 = orders.Where(r =>
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                data1.Add(orders2.Count);
+                data2.Add(orders3.Count);
+                data3.Add(orders4.Count);
+                data4.Add(orders5.Count);
+                data5.Add(orders6.Count);
             }
 
             result.Add(data1);
@@ -342,8 +341,50 @@ namespace Web.Jobs
             return result;
         }
         
-        
+        /// <summary>
+        /// 每月库存资产分析数据看板
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<double>> GetStockAssestAnalysis()
+        {
+            List<double> result = new List<double>();
+            Random random = new Random();
+            string ytime = DateTime.Now.Year.ToString();
+            WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null, null, null,
+                null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, ytime + "-01-01", ytime + "-12-31");
+            List<WarehouseMaterial> materials = await this._materialRepository.ListAsync(warehouseMaterialSpec);
+            for (int i = 1; i <= 12; i++)
+            {
+                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                DateTime now = DateTime.Parse(time);
+                var sCreateTime = now;
+                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                
+                List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
+                result.Add(ms.Sum(r => r.Price));
+            }
 
+            return result;
+        }
+        
+        /// <summary>
+        /// 库存利用率分析
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<int>> GetStockUtilizationAnalysis()
+        {
+            List<int> result = new List<int>();
+            Random random = new Random();
+            List<Location> all = await this._locationRepository.ListAllAsync();
+            int emptyCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.无货)).Count();
+            int emptyTrayCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.空托盘)).Count();
+            int materialCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.有货)).Count();
+            result.Add(all.Count>0?emptyCount/all.Count:0);
+            result.Add(all.Count>0?emptyTrayCount/all.Count:0);
+            result.Add(all.Count>0?materialCount/all.Count:0);
+            return result;
+        }
     }
 
 }

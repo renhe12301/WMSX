@@ -74,6 +74,28 @@ $(function(){
         option.series[4].data = datas[4];
         inWeekOrderChart.setOption(option);
     });
+
+    var stockAssestChart = echarts.init($("#seaAbook01")[0]);
+    initStockAssestAnalysis(stockAssestChart);
+    connection.on("ShowStockAssestAnalysis", (data) => {
+
+        var option = stockAssestChart.getOption();
+        option.series[0].data = data;
+        stockAssestChart.setOption(option);
+    });
+
+    var stockUtilizationChart = echarts.init($("#actionBook")[0]);
+    initStockUtilization(stockUtilizationChart)
+    connection.on("ShowStockUtilizationAnalysis", (datas) => {
+        var option = stockUtilizationChart.getOption();
+        option.series[0].data[0].value = datas[0];
+        option.series[0].data[1].value = datas[1];
+        option.series[0].data[2].value = datas[2];
+        stockUtilizationChart.setOption(option);
+    });
+
+    var mapChart = echarts.init($("#main")[0]);
+    initMap(mapChart);
     
     connection.start().catch(err => console.error(err));
     
@@ -686,228 +708,229 @@ function initWeekOrderAnalysis(chart) {
     chart.setOption(option);
 }
 
-function yingXiao(){
-    
-// 季节与订单分析
-    $(function(){
-        var myChart = echarts.init($("#seaAbook01")[0]);
-        option = {
+// 库存资产分析
+function initStockAssestAnalysis(chart) {
+    var option = {
+        tooltip: {
+            show: true,
+            trigger: 'axis'
+        },
+        grid: {
+            x: 46,
+            y:30,
+            x2:30,
+            y2:40,
+            borderWidth: 0
+        },
+        legend: {
+            data: [],
+            orient: 'vertical',
+            textStyle: { fontWeight: 'bold', color: '#a4a7ab' }
+        },
 
-
-            legend: {
-                orient : 'vertical',
-                x : 'left',
-                data:['春季','夏季','秋季','冬季'], textStyle:{
-                    color:"#e9ebee"
-
-                }
-            },
-
-            calculable : false,
-            series : [
-
-                {
-                    name:'季节与订单关系',
-                    type:'pie',
-                    radius : '70%',
-                    center: ['50%', '60%'],
-                    splitLine:{show: false},
-                    roseType : 'area',
-                    x: '50%',               // for funnel
-                    max: 40,                // for funnel
-                    sort : 'ascending',     // for funnel
-                    data:[
-                        {value:2560, name:'春季',
-                            itemStyle: {
-                                normal: {
-                                    color:"#2e7cff"
-                                }
-                            }},
-                        {value:3690, name:'夏季',
-                            itemStyle: {
-                                normal: {
-                                    color:"#ffcb89"
-                                }
-                            }},
-                        {value:5690, name:'秋季',
-                            itemStyle: {
-                                normal: {
-                                    color:"#005ea1"
-                                }
-                            }},
-                        {value:6312, name:'冬季',
-                            itemStyle: {
-                                normal: {
-                                    color:"#0ad5ff"
-                                }
-                            }}
-                    ]
-                }
-            ]
-        };
-
-
-        myChart.setOption(option);
-    });
-// 活动与订单分析
-    $(function(){
-        var myChart = echarts.init($("#actionBook")[0]);
-        option = {
-            tooltip : {
-                trigger: 'axis'
-            },
-            grid: {
-                x: 46,
-                y:30,
-                x2:30,
-                y2:20,
-                borderWidth: 0
-            },
-
-            calculable : false,
-            legend: {
-                data:['降价活动','买一送一活动','送积分活动','送礼品活动'],
-                textStyle:{
-                    color:"#e9ebee"
-
-                }
-            },
-            xAxis : [
-                {
-                    type : 'category',
-                    splitLine : {show : false},
-                    data : ['周一','周二','周三','周四','周五','周六','周日'],
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#fff',
-                            align: 'center'
-                        }
+        calculable: false,
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#a4a7ab',
+                        align: 'center'
                     }
                 }
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                    position: 'right',
-                    splitLine : {show : false},
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#fff',
-                            align: 'center'
-                        }
+            }
+
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#a4a7ab',
+                        align: 'right'
                     }
                 }
-            ],
-            series : [
-                {
-                    name:'降价活动',
-                    type:'bar',
-                    data:[320, 332, 301, 334, 390, 330, 320],
-                    itemStyle: {
-                        normal: {
-                            color:"#2e7cff"
-                        }
+            }
+        ],
+        series: [
+            {
+                name: '',
+                type: 'line',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                itemStyle: {
+                    normal: {
+                        color: '#02bcbc'
                     }
-                },
-                {
-                    name:'买一送一活动',
-                    type:'bar',
-                    tooltip : {trigger: 'item'},
-                    stack: '广告',
-                    data:[120, 132, 101, 134, 90, 230, 210],
-                    itemStyle: {
-                        normal: {
-                            color:"#feb602"
-                        }
-                    }
-                },
-                {
-                    name:'送积分活动',
-                    type:'bar',
-                    tooltip : {trigger: 'item'},
-                    stack: '广告',
-                    data:[220, 182, 191, 234, 290, 330, 310],
-                    itemStyle: {
-                        normal: {
-                            color:"#ffcb89"
-                        }
-                    }
-                },
-                {
-                    name:'送礼品活动',
-                    type:'bar',
-                    tooltip : {trigger: 'item'},
-                    stack: '广告',
-                    data:[150, 232, 201, 154, 190, 330, 410],
-                    itemStyle: {
-                        normal: {
-                            color:"#005ea1"
-                        }
-                    }
-                },
+                }
+            }
+        ]
+    };
 
-                {
-                    name:'订单趋势',
-                    type:'line',
-                    data:[862, 1018, 964, 1026, 1679, 1600, 1570],
-                    itemStyle: {
-                        normal: {
-                            color:"#0ad5ff"
-                        }
-                    }
-                },
+    chart.setOption(option);
+}
 
-                {
-                    name:'订单细分',
-                    type:'pie',
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
-                    },
-                    center: [100,80],
-                    radius : [0, 30],
-                    itemStyle :　{
-                        normal : {
-                            labelLine : {
-                                length : 20
+// 库存利用率
+function initStockUtilization(chart) {
+    option = {
+        legend: {
+            orient : 'vertical',
+            x : 'left',
+            data:['空货位','空托盘','物料'], textStyle:{
+                color:"#e9ebee"
+
+            }
+        },
+
+        calculable : false,
+        series : [
+
+            {
+                type:'pie',
+                radius : '70%',
+                center: ['50%', '60%'],
+                splitLine:{show: false},
+                roseType : 'area',
+                x: '50%',               // for funnel
+                max: 40,                // for funnel
+                sort : 'ascending',     // for funnel
+                data:[
+                    {
+                        value:0,
+                        name:'空货位',
+                        itemStyle: {
+                            normal: {
+                                color:"#2e7cff"
+                            }
+                        }},
+                    {
+                        value:0,
+                        name:'空托盘',
+                        itemStyle: {
+                            normal: {
+                                color:"#ffcb89"
+                            }
+                        }},
+                    {
+                        value:0,
+                        name:'物料',
+                        itemStyle: {
+                            normal: {
+                                color:"#005ea1"
                             }
                         }
-                    },
-                    data:[
-                        {value:1048, name:'订单一',
-                            itemStyle: {
-                                normal: {
-                                    color:"#1afffd"
-                                }
-                            }},
-                        {value:251, name:'订单二',
-                            itemStyle: {
-                                normal: {
-                                    color:"#2e7cff"
-                                }
-                            }},
-                        {value:147, name:'订单三',
-                            itemStyle: {
-                                normal: {
-                                    color:"#ffcb89"
-                                }
-                            }},
-                        {value:102, name:'订单四',
-                            itemStyle: {
-                                normal: {
-                                    color:"#005ea1"
-                                }
-                            }}
-                    ]
+                    }
+                ]
+            }
+        ]
+    };
+    chart.setOption(option);
+}
+
+function initMap(chart) {
+    var dataList=[
+        {name:"南海诸岛",value:0},
+        {name: '北京', value: 0},
+        {name: '天津', value: 0},
+        {name: '上海', value: 0},
+        {name: '重庆', value: 0},
+        {name: '河北', value: 0},
+        {name: '河南', value: 0},
+        {name: '云南', value: 0},
+        {name: '辽宁', value: 0},
+        {name: '黑龙江', value: 0},
+        {name: '湖南', value: 0},
+        {name: '安徽', value: 0},
+        {name: '山东', value: 0},
+        {name: '新疆', value: 0},
+        {name: '江苏', value: 0},
+        {name: '浙江', value: 0},
+        {name: '江西', value: 0},
+        {name: '湖北', value: 0},
+        {name: '广西', value: 0},
+        {name: '甘肃', value: 0},
+        {name: '山西', value: 0},
+        {name: '内蒙古', value: 0},
+        {name: '陕西', value: 0},
+        {name: '吉林', value: 0},
+        {name: '福建', value: 0},
+        {name: '贵州', value: 0},
+        {name: '广东', value: 0},
+        {name: '青海', value: 2},
+        {name: '西藏', value: 0},
+        {name: '四川', value: 0},
+        {name: '宁夏', value: 0},
+        {name: '海南', value: 0},
+        {name: '台湾', value: 0},
+        {name: '香港', value: 0},
+        {name: '澳门', value: 0}
+    ];
+    
+    option = {
+        tooltip: {
+            formatter:function(params,ticket, callback){
+                return params.seriesName+'<br />'+params.name+'：'+params.value
+            }//数据格式化
+        },
+        visualMap: {
+            min: 0,
+            max: 20,
+            left: 'left',
+            top: 'bottom',
+            text: ['高','低'],//取值范围的文字
+            inRange: {
+                color: ['#eab44a', '#ff0000']//取值范围的颜色
+            },
+            show:true//图注
+        },
+        geo: {
+            map: 'china',
+            roam: true,//不开启缩放和平移
+            zoom: 1.23,//视角缩放比例
+            label: {
+                normal: {
+                    show: true,
+                    fontSize:'10',
+                    color: 'rgba(0,0,0,0.7)'
                 }
-            ]
-        };
+            },
+            itemStyle: {
+                normal:{
+                    borderColor: 'rgba(0, 0, 0, 0.2)'
+                },
+                emphasis:{
+                    areaColor: '#68bff9',
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    shadowBlur: 20,
+                    borderWidth: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        },
+        series : [
+            {
+                name: '实体仓库',
+                type: 'map',
+                geoIndex: 0,
+                data:dataList
+            }
+        ]
+    };
+    chart.setOption(option);
+}
 
-
-        myChart.setOption(option);
-    });
+function yingXiao(){
+    
 // 特殊时间点与订单分析
     $(function(){
         var myChart = echarts.init($("#sperceBook01")[0]);

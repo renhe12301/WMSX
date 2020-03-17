@@ -859,6 +859,18 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Web.Jobs.DashboardJob.GetStockAssestAnalysis">
+            <summary>
+            每月库存资产分析数据看板
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Jobs.DashboardJob.GetStockUtilizationAnalysis">
+            <summary>
+            库存利用率分析
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Web.Jobs.OrderStatusSyncJob">
             <summary>
             订单,订单行数据同步定时任务

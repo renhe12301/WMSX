@@ -2777,7 +2777,10 @@
               </e>
             </e>
             <e p="echarts" t="Include">
+              <e p="china.js" t="Include" />
               <e p="echarts-all.js" t="Include" />
+              <e p="echarts.js" t="Include" />
+              <e p="echarts.js.map" t="Include" />
             </e>
             <e p="jquery-cookie" t="Include">
               <e p="jquery.cookie.js" t="Include" />
