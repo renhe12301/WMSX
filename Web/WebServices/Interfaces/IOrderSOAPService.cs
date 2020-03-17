@@ -1,5 +1,6 @@
 
 
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Web.WebServices.Models;
@@ -12,17 +13,17 @@ namespace Web.WebServices.Interfaces
         /// <summary>
         /// 创建入库订单[入库接收]
         /// </summary>
-        /// <param name="requestEnterOrder"></param>
+        /// <param name="RequestRKJSOrders"></param>
         /// <returns></returns>
         [OperationContract]
-        Task<ResponseResult> CreateEnterOrder(RequestEnterOrder requestEnterOrder);
+        Task<ResponseResult> CreateRKJSOrder(List<RequestRKJSOrder> RequestRKJSOrders,bool bulkTransaction);
         
         /// <summary>
         /// 创建出库订单[出库领料、出库退料]
         /// </summary>
-        /// <param name="requestOutOrder"></param>
+        /// <param name="RequestCKLLOrders"></param>
         /// <returns></returns>
         [OperationContract]
-        Task<ResponseResult> CreateOutOrder(RequestOutOrder requestOutOrder);
+        Task<ResponseResult> CreateCKLLOrder(List<RequestCKLLOrder> RequestCKLLOrders,bool bulkTransaction);
     }
 }

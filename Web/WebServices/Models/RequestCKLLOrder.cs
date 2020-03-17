@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Web.WebServices.Models
 {
     [DataContract]
-    public class RequestOutOrder
+    public class RequestCKLLOrder
     {
         [DataMember]
         public string HeaderId { get; set; }
@@ -38,10 +38,16 @@ namespace Web.WebServices.Models
         public string Remark { get; set; }
         
         [DataMember]
-        public string AddUpdateFlag { get; set; }
+        public string AddFlag { get; set; }
+        
+        [DataMember]
+        public string Result { get; set; }
+        
+        [DataMember]
+        public string ErrMsg { get; set; }
 
         [DataMember]
-        public List<RequestOutOrderRow> RequestOutOrderRows { get; set; }
+        public List<RequestCKLLRow> RequestCKLLRows { get; set; }
 
     }
 }

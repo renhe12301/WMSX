@@ -353,10 +353,10 @@
             <e p="IOrderSOAPService.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
-            <e p="RequestEnterOrder.cs" t="Include" />
-            <e p="RequestEnterOrderRow.cs" t="Include" />
-            <e p="RequestOutOrder.cs" t="Include" />
-            <e p="RequestOutOrderRow.cs" t="Include" />
+            <e p="RequestCKLLOrder.cs" t="Include" />
+            <e p="RequestCKLLRow.cs" t="Include" />
+            <e p="RequestRKJSOrder.cs" t="Include" />
+            <e p="RequestRKJSRow.cs" t="Include" />
             <e p="ResponseResult.cs" t="Include" />
           </e>
           <e p="Services" t="Include">
