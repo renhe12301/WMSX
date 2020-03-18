@@ -274,7 +274,7 @@ namespace ApplicationCore.Services
                         null,null, null, null, null, null, null, null,
                         null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
-                    if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
+                    if (orders.Count == 0) throw new Exception(string.Format("订单[{0}],不存在！", orderId));
                     Order order = orders[0];
                     var orderRowSpec = new OrderRowSpecification(orderRowId, null, null,null,
                         null, null, null, null, null, null);
@@ -291,16 +291,22 @@ namespace ApplicationCore.Services
                         throw new Exception(string.Format("物料字典[{0}]),不存在！", orderRow.MaterialDicId));
 
                     if (area.WarehouseId != order.WarehouseId)
-                        throw new Exception(string.Format("当前订单的库存组织和分拣托盘的库组织不一致,无法分拣！"));
+                        throw new Exception(string.Format("当前订单[{0}]的库存组织和分拣托盘的库组织不一致,无法分拣！",orderId));
 
                     MaterialDic materialDic = materialDics[0];
-
-                    if (sortingCount > (orderRow.PreCount - orderRow.BadCount)) throw new Exception("分拣数量不能大于申请数量！");
+                    
+                    var releaOrderRowSpec = new OrderRowSpecification(null, null, Convert.ToInt32(ORDER_TYPE.接收退料),orderRowId,
+                        null, null, null, null, null, null);
+                    var releaOrderRows = await this._orderRowRepository.ListAsync(releaOrderRowSpec);
+                    int sumRelea = releaOrderRows.Sum(or => or.PreCount);
+                    
                     int surplusCount = orderRow.PreCount -
-                                       (orderRow.Sorting.GetValueOrDefault() + orderRow.BadCount.GetValueOrDefault());
+                                       (orderRow.Sorting.GetValueOrDefault() + orderRow.BadCount.GetValueOrDefault()+
+                                        sumRelea);
                     if (sortingCount > surplusCount)
-                        throw new Exception(string.Format("已经分拣了{0}个,最多还能分拣{1}个", orderRow.Sorting, surplusCount));
-
+                        throw new Exception(string.Format("已经分拣了{0}个,最多还能分拣{1}个,不合格[{2}]个,关联接收退料[{3}]个",
+                            orderRow.Sorting, surplusCount,orderRow.BadCount.GetValueOrDefault(),sumRelea));
+                    
                     var warehouseTraySpec = new WarehouseTraySpecification(null, trayCode,
                         null, null, null, null,
                         null, null, null, null, null,null);
