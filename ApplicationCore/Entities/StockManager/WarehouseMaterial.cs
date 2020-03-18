@@ -18,8 +18,8 @@ namespace ApplicationCore.Entities.StockManager
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
         
-        public double Price { get; set; }
-        public double Amount { get; set; }
+        public double? Price { get; set; }
+        public double? Amount { get; set; }
         
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }

@@ -5,12 +5,14 @@ namespace ApplicationCore.Specifications
 {
     public class OrderRowSpecification: BaseSpecification<OrderRow>
     {
-        public OrderRowSpecification(int? id,int? orderId,string orderNumber,
+        public OrderRowSpecification(int? id,int? orderId,int? orderType,int? relatedId,string orderNumber,
               List<int> status,string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
                   (!orderId.HasValue||b.OrderId==orderId)&&
-                  (status == null || status.Contains(b.Status)) &&
+                  (!orderType.HasValue||b.Order.OrderTypeId==orderType)&&
+                  (!relatedId.HasValue||b.RelatedId==relatedId)&&
+                  (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                   (orderNumber == null || b.Order.OrderNumber==orderNumber) &&
                   (sCreateTime == null || b.CreateTime >= DateTime.Parse(sCreateTime)) &&
                   (eCreateTime == null || b.CreateTime <= DateTime.Parse(eCreateTime)) &&

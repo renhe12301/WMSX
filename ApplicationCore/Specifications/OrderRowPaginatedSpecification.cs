@@ -6,11 +6,13 @@ namespace ApplicationCore.Specifications
     public class OrderRowPaginatedSpecification: BaseSpecification<OrderRow>
     {
         public OrderRowPaginatedSpecification(int skip,int take,int? id,int? orderId,
-             List<int> status,string sCreateTime, string eCreateTime,
+            int? orderType,int? relatedId,List<int> status,string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
                   (!orderId.HasValue||b.OrderId==orderId)&&
-                  (status == null || status.Contains(b.Status)) &&
+                  (!orderType.HasValue||b.Order.OrderTypeId==orderType)&&
+                  (!relatedId.HasValue||b.RelatedId==relatedId)&&
+                  (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                   (sCreateTime == null || b.CreateTime >= DateTime.Parse(sCreateTime)) &&
                   (eCreateTime == null || b.CreateTime <= DateTime.Parse(eCreateTime)) &&
                   (sFinishTime == null || b.FinishTime >= DateTime.Parse(sFinishTime)) &&

@@ -81,7 +81,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 订单行状态
         /// </summary>
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         /// <summary>
         /// 任务编号
@@ -100,17 +100,22 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 不含税单价
         /// </summary>
-        public double Price { get; set; }
+        public double? Price { get; set; }
         
         /// <summary>
         /// 不含税金额
         /// </summary>
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
 
         /// <summary>
         /// 用途
         /// </summary>
         public string UseFor { get; set; }
+
+        /// <summary>
+        /// 关联订单行编号
+        /// </summary>
+        public int? RelatedId { get; set; }
 
 
     }

@@ -15,7 +15,7 @@ namespace ApplicationCore.Specifications
             : base(b => (!id.HasValue || b.Id == id) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                        (!orderTypeId.HasValue || b.OrderTypeId == orderTypeId) &&
-                       (status == null || status.Contains(b.Status)) &&
+                       (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
                        (!warehouseId.HasValue || b.WarehouseId == warehouseId) &&
                        (!pyId.HasValue || b.PhyWarehouseId == pyId) &&

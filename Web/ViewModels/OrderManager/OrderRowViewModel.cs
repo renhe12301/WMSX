@@ -26,13 +26,13 @@ namespace Web.ViewModels.OrderManager
       
         public string Memo { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
         public string StatusStr { get; set; }
 
-        public double Price { get; set; }
+        public double? Price { get; set; }
 
-        public double Amount { get; set; }
+        public double? Amount { get; set; }
 
         public int EBSTaskId { get; set; }
 
@@ -41,5 +41,7 @@ namespace Web.ViewModels.OrderManager
         public string TrayCode { get; set; }
 
         public string Tag { get; set; }
+        
+        public int? RelatedId { get; set; }
     }
 }

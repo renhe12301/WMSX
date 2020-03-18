@@ -63,12 +63,12 @@ namespace ApplicationCore.Services
                         null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
-                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, order.Id,
+                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, order.Id,null,null,
                         null, null, null, null, null, null);
                     List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
 
                     //对占用订单行里面物料数量进行校验
-                    OrderRowSpecification checkOrderRowSpec = new OrderRowSpecification(null, null, null,
+                    OrderRowSpecification checkOrderRowSpec = new OrderRowSpecification(null, null,null,null, null,
                         new List<int> {Convert.ToInt32(ORDER_STATUS.待处理), Convert.ToInt32(ORDER_STATUS.执行中)}, null,
                         null, null, null);
                     List<OrderRow> checkOrderRows = await this._orderRowRepository.ListAsync(checkOrderRowSpec);
@@ -276,7 +276,8 @@ namespace ApplicationCore.Services
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
                     Order order = orders[0];
-                    var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null, null);
+                    var orderRowSpec = new OrderRowSpecification(orderRowId, null, null,null,
+                        null, null, null, null, null, null);
                     var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                     if (orderRows.Count == 0) throw new Exception(string.Format("订单行编号[{0}],不存在！", orderRowId));
                     OrderRow orderRow = orderRows[0];
@@ -489,7 +490,8 @@ namespace ApplicationCore.Services
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
                     Order order = orders[0];
-                    var orderRowSpec = new OrderRowSpecification(orderRowId, null, null, null, null, null, null, null);
+                    var orderRowSpec = new OrderRowSpecification(orderRowId, null,null,null,
+                        null, null, null, null, null, null);
                     var orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                     if (orderRows.Count == 0) throw new Exception(string.Format("订单行编号[{0}],不存在！", orderRowId));
                     OrderRow orderRow = orderRows[0];
@@ -584,7 +586,7 @@ namespace ApplicationCore.Services
                         throw new Exception(string.Format("订单Id[{0}],正在执行中,无法关闭！", orderId));
 
 
-                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, orderId,
+                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, orderId,null,null,
                         null, null, null, null, null, null);
                     List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
 
@@ -634,7 +636,7 @@ namespace ApplicationCore.Services
             {
                 try
                 {
-                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(orderRowId, null,
+                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(orderRowId, null,null,null,
                         null, null, null, null, null, null);
                     List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
                     if (orderRows.Count == 0)

@@ -26,8 +26,8 @@ namespace ApplicationCore.Entities.StockManager
         public DateTime CreateTime { get; set; }
         public int? Carrier { get; set; }
 
-        public double Price { get; set; }
-        public double Amount { get; set; }
+        public double? Price { get; set; }
+        public double? Amount { get; set; }
 
         public string Memo { get; set; }
 

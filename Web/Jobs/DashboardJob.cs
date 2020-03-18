@@ -362,7 +362,7 @@ namespace Web.Jobs
                 var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
                 
                 List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
-                result.Add(ms.Sum(r => r.Price));
+                result.Add(ms.Sum(r => r.Price.GetValueOrDefault()));
             }
 
             return result;

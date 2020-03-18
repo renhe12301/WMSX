@@ -34,7 +34,7 @@ namespace Web.ViewModels.OrderManager
         public string SupplierSiteName { get; set; }
         public string Currency { get; set; }
         public double TotalAmount { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
         public string StatusStr { get; set; }
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }

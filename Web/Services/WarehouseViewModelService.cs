@@ -111,7 +111,7 @@ namespace Web.Services
                 }
                 foreach (var wg in warehouseGroup)
                 {
-                    double sumPrice = wg.Sum(w => w.Price);
+                    double sumPrice = wg.Sum(w => w.Price.GetValueOrDefault());
                     datas.Add(sumPrice);
                 }
                

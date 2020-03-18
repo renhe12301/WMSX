@@ -79,7 +79,7 @@ namespace Web.WebServices.Services
                             null, null, null, null, null);
                         List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
-                        OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
+                        OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,null,
                             RequestRKJSOrder.DocumentNumber, null, null, null, null, null);
                         List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
 
@@ -471,12 +471,11 @@ namespace Web.WebServices.Services
                     foreach (var RequestCKLLOrder in RequestCKLLOrders)
                     {
                         OrderSpecification orderSpec = new OrderSpecification(null, RequestCKLLOrder.AlyNumber, null,
-                            null,
-                            null, null, null, null, null, null, null, null, null, null,
+                            null,null, null, null, null, null, null, null, null, null, null,
                             null, null, null, null, null);
                         List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
-                        OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,
+                        OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,null,
                             RequestCKLLOrder.AlyNumber, null, null, null, null, null);
                         List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
 

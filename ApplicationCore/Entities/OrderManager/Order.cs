@@ -130,7 +130,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 订单状态
         /// </summary>
-        public int Status { get; set; }
+        public int? Status { get; set; }
         
         /// <summary>
         /// 经办人编号

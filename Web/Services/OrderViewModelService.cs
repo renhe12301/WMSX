@@ -141,7 +141,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,
+                OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
@@ -167,7 +167,7 @@ namespace Web.Services
                          dyn.MaterialId = mg.First().MaterialDic.Id;
                          dyn.MaterialName = mg.First().MaterialDic.MaterialName;
                          int materialCount = mg.Sum(m => m.MaterialCount);
-                         double totalAmount = mg.Sum(m => m.Amount);
+                         double totalAmount = mg.Sum(m => m.Amount.GetValueOrDefault());
                          dyn.MaterialCount = materialCount;
                          int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
                              .Sum(or => or.PreCount);

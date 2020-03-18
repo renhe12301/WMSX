@@ -39,12 +39,12 @@ namespace Web.Services
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,orderStatuss,
+                    spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,null,null,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
-                    spec = new OrderRowSpecification(id,orderId,null,orderStatuss,
+                    spec = new OrderRowSpecification(id,orderId,null,null,null,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orderRows = await this._orderRowRepository.ListAsync(spec);
@@ -71,14 +71,15 @@ namespace Web.Services
                         EBSTaskName = e.EBSTask?.TaskName,
                         Price = e.Price,
                         Amount = e.Amount,
-                        OrderId = e.OrderId
+                        OrderId = e.OrderId,
+                        RelatedId = e.RelatedId
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,null
+                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,null,null,null
                         ,orderStatuss,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
