@@ -328,6 +328,12 @@ namespace Web.WebServices.Services
                         }
                         else
                         {
+                            int? status = null;
+                            if (RequestRKJSOrder.DocumentType != "JSTL")
+                            {
+                                status = Convert.ToInt32(ORDER_STATUS.待处理);
+                            }
+                            
                             Order addOrder = new Order
                             {
                                 SourceId = Convert.ToInt32(RequestRKJSOrder.HeaderId),
@@ -344,8 +350,11 @@ namespace Web.WebServices.Services
                                 ApplyTime = DateTime.Parse(RequestRKJSOrder.ExitEntryDate),
                                 CreateTime = DateTime.Parse(RequestRKJSOrder.CreationDate),
                                 EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId),
-                                Memo = RequestRKJSOrder.Remark
+                                Memo = RequestRKJSOrder.Remark,
+                                Status = status
                             };
+                            
+                         
                             List<OrderRow> addOrderRows = new List<OrderRow>();
                             foreach (var eor in RequestRKJSOrder.RequestRKJSRows)
                             {
@@ -402,7 +411,8 @@ namespace Web.WebServices.Services
                                     Price = Convert.ToInt32(eor.Price),
                                     Amount = Convert.ToInt32(eor.Amount),
                                     EBSTaskId = ebsTask.Id,
-                                    Memo = eor.Remark
+                                    Memo = eor.Remark,
+                                    Status = status
                                 };
                                 addOrderRows.Add(addOrderRow);
                             }
