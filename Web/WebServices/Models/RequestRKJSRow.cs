@@ -29,6 +29,11 @@ namespace Web.WebServices.Models
         public string AddFlag { get; set; }
         [DataMember]
         public string RelatedId { get; set; }
+        [DataMember]
+        public string Result { get; set; }
+
+        [DataMember]
+        public string ErrMsg { get; set; }
         
         
     }
