@@ -29,12 +29,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Login(EmployeeViewModel employViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employViewModel.Tag = cookie.loginName;
-            }
             var response = await this._employeeViewModelService.Login(employViewModel);
             return Content(JsonConvert.SerializeObject(response));;
         }
@@ -96,12 +90,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> Logout(EmployeeViewModel employViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employViewModel.Tag = cookie.loginName;
-            }
             var response = await this._employeeViewModelService.Logout(employViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -114,12 +102,6 @@ namespace Web.Controllers.Api
         [HttpPost]
         public async Task<IActionResult> AssignRole(EmployeeViewModel employeeViewModel)
         {
-            HttpContext.Request.Cookies.TryGetValue("wms-user", out string value);
-            if (!string.IsNullOrEmpty(value))
-            {
-                dynamic cookie = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
-                employeeViewModel.Tag = cookie.loginName;
-            }
             var response = await this._employeeViewModelService.AssignRole(employeeViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
