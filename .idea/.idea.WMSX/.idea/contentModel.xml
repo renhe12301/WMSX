@@ -3274,9 +3274,11 @@
                 <e p="in-recv-order.js" t="Include" />
                 <e p="out-picking-order.js" t="Include" />
                 <e p="out-return-order.js" t="Include" />
+                <e p="recv-out-order.js" t="Include" />
               </e>
               <e p="out-picking-order.html" t="Include" />
               <e p="out-return-order.html" t="Include" />
+              <e p="recv-out-order.html" t="Include" />
             </e>
             <e p="statistical-manager" t="Include">
               <e p="asset-statistical.html" t="Include" />

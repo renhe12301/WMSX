@@ -82,36 +82,40 @@ namespace Web.Jobs
                 null, ytime + "-01-01", ytime + "-12-31");
             List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
             // 接收
-
+            Random random = new Random();
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-
-                List<InOutRecord> recvs = inOutRecords
-                    .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
-                                r.CreateTime <= eCreateTime).ToList();
-                data1.Add(recvs.Sum(r => r.InOutCount));
-
-                // 退料
-                List<InOutRecord> tls = inOutRecords
-                    .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
-                                r.CreateTime <= eCreateTime).ToList();
-                data2.Add(tls.Sum(r => r.InOutCount));
-
-                // 领料
-                List<InOutRecord> lls = inOutRecords
-                    .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
-                                r.CreateTime <= eCreateTime).ToList();
-                data3.Add(lls.Sum(r => r.InOutCount));
-
-                // 退库
-                List<InOutRecord> tks = inOutRecords
-                    .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
-                                r.CreateTime <= eCreateTime).ToList();
-                data4.Add(tks.Sum(r => r.InOutCount));
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<InOutRecord> recvs = inOutRecords
+                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(recvs.Sum(r => r.InOutCount));
+                //
+                // // 退料
+                // List<InOutRecord> tls = inOutRecords
+                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data2.Add(tls.Sum(r => r.InOutCount));
+                //
+                // // 领料
+                // List<InOutRecord> lls = inOutRecords
+                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data3.Add(lls.Sum(r => r.InOutCount));
+                //
+                // // 退库
+                // List<InOutRecord> tks = inOutRecords
+                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data4.Add(tks.Sum(r => r.InOutCount));
+                data1.Add(random.Next(10,100));
+                data2.Add(random.Next(10,100));
+                data3.Add(random.Next(10,100));
+                data4.Add(random.Next(10,100));
             }
 
             result.Add(data1);
@@ -136,15 +140,16 @@ namespace Web.Jobs
             List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-              
-                List<InOutRecord> bads = inOutRecords
-                    .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收)&&r.CreateTime >= now &&
-                                r.CreateTime <= eCreateTime).ToList();
-                result.Add(bads.Sum(r => r.BadCount.GetValueOrDefault()));
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<InOutRecord> bads = inOutRecords
+                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收)&&r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // result.Add(bads.Sum(r => r.BadCount.GetValueOrDefault()));
+                result.Add(random.Next(10,100));
             }
 
             return result;
@@ -168,22 +173,25 @@ namespace Web.Jobs
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                List<Order> orders2 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
-                    r.CreateTime <= eCreateTime).ToList();
-                List<Order> orders3 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= now &&
-                    r.CreateTime <= eCreateTime).ToList();
-                List<Order> orders4 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
-                    r.CreateTime <= eCreateTime).ToList();
-                data1.Add(orders2.Count);
-                data2.Add(orders3.Count);
-                data3.Add(orders4.Count);
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                // List<Order> orders2 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // List<Order> orders3 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // List<Order> orders4 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(orders2.Count);
+                // data2.Add(orders3.Count);
+                // data3.Add(orders4.Count);
+                data1.Add(random.Next(10,100));
+                data2.Add(random.Next(10,100));
+                data3.Add(random.Next(10,100));
             }
 
             result.Add(data1);
@@ -210,18 +218,20 @@ namespace Web.Jobs
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                List<Order> orders2 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= now &&
-                    r.CreateTime <= eCreateTime).ToList();
-                List<Order> orders3 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
-                    r.CreateTime <= eCreateTime).ToList();
-                data1.Add(orders2.Count);
-                data2.Add(orders3.Count);
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                // List<Order> orders2 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // List<Order> orders3 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(orders2.Count);
+                // data2.Add(orders3.Count);
+                data1.Add(random.Next(10,100));
+                data2.Add(random.Next(10,100));
             }
 
             result.Add(data1);
@@ -276,13 +286,14 @@ namespace Web.Jobs
             List<WarehouseMaterial> materials = await this._materialRepository.ListAsync(warehouseMaterialSpec);
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                
-                List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
-                result.Add(ms.Sum(r => r.MaterialCount));
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
+                // result.Add(ms.Sum(r => r.MaterialCount));
+                result.Add(random.Next(10,100));
             }
 
             return result;
@@ -309,28 +320,33 @@ namespace Web.Jobs
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 7; i++)
             {
-                var sCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "00:00:00";
-                var eCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "23:59:59";
-                List<Order> orders2 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                List<Order> orders3 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                List<Order> orders4 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                List<Order> orders5= orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                List<Order> orders6 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
-                    r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
-                data1.Add(orders2.Count);
-                data2.Add(orders3.Count);
-                data3.Add(orders4.Count);
-                data4.Add(orders5.Count);
-                data5.Add(orders6.Count);
+                // var sCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "00:00:00";
+                // var eCreateTime = now.AddDays(-(int) now.DayOfWeek + i).ToString() + "23:59:59";
+                // List<Order> orders2 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                // List<Order> orders3 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                // List<Order> orders4 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                // List<Order> orders5= orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                // List<Order> orders6 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                //     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
+                // data1.Add(orders2.Count);
+                // data2.Add(orders3.Count);
+                // data3.Add(orders4.Count);
+                // data4.Add(orders5.Count);
+                // data5.Add(orders6.Count);
+                data1.Add(random.Next(10,100));
+                data2.Add(random.Next(10,100));
+                data3.Add(random.Next(10,100));
+                data4.Add(random.Next(10,100));
+                data5.Add(random.Next(10,100));
             }
 
             result.Add(data1);
@@ -356,13 +372,14 @@ namespace Web.Jobs
             List<WarehouseMaterial> materials = await this._materialRepository.ListAsync(warehouseMaterialSpec);
             for (int i = 1; i <= 12; i++)
             {
-                string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                DateTime now = DateTime.Parse(time);
-                var sCreateTime = now;
-                var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                
-                List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
-                result.Add(ms.Sum(r => r.Price.GetValueOrDefault()));
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
+                // result.Add(ms.Sum(r => r.Price.GetValueOrDefault()));
+                result.Add(random.Next(10,100));
             }
 
             return result;

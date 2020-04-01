@@ -916,14 +916,14 @@
             转换url地址
             </summary>
         </member>
-        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateRKJSOrder(System.Collections.Generic.List{Web.WebServices.Models.RequestRKJSOrder},System.Boolean)">
+        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateRKJSOrder(Web.WebServices.Models.RequestRKJSOrder[],System.Boolean)">
             <summary>
             创建入库订单[入库接收]
             </summary>
             <param name="RequestRKJSOrders"></param>
             <returns></returns>
         </member>
-        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateCKLLOrder(System.Collections.Generic.List{Web.WebServices.Models.RequestCKLLOrder},System.Boolean)">
+        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateCKLLOrder(Web.WebServices.Models.RequestCKLLOrder[],System.Boolean)">
             <summary>
             创建出库订单[出库领料、出库退料]
             </summary>

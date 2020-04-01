@@ -176,7 +176,14 @@ $(function () {
                                 '</a>  ';
                             return e;
                         }
-                        else return value;
+                        else if(value=="待处理")
+                        {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if(value=="完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if(value=="关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
                     }
                 },
                 {
@@ -310,7 +317,14 @@ $(function () {
                                         '</a>  ';
                                     return e;
                                 }
-                                else return value;
+                                else if(value=="待处理")
+                                {
+                                    return '<span class="badge bg-yellow">待处理</span>';
+                                }
+                                else if(value=="完成")
+                                    return '<span class="badge bg-gray">完成</span>';
+                                else if(value=="关闭")
+                                    return '<span class="badge bg-gray-dark">关闭</span>';
                             }
                         }
                     ]
@@ -379,7 +393,14 @@ $(function () {
                                 '</a>  ';
                             return e;
                         }
-                        else return value;
+                        else if(value=="待处理")
+                        {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if(value=="完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if(value=="关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
                     }
                 }
             ]

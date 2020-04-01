@@ -1,4 +1,4 @@
-const baseUrl = 'https://localhost:5001/api';
+const baseUrl = 'https://192.168.0.108:5001/api';
 const controllers =
     {
             'organization':

@@ -46,6 +46,6 @@ namespace Web.WebServices.Models
         public string ErrMsg { get; set; }
 
         [DataMember]
-        public List<RequestRKJSRow> RequestRKJSRows { get; set; }
+        public RequestRKJSRow[] RequestRKJSRows { get; set; }
     }
 }

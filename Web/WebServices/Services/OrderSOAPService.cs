@@ -61,7 +61,7 @@ namespace Web.WebServices.Services
             this._orderRowRepository = orderRowRepository;
         }
 
-        public async Task<ResponseResult> CreateRKJSOrder(List<RequestRKJSOrder> RequestRKJSOrders,bool bulkTransaction)
+        public async Task<ResponseResult> CreateRKJSOrder(RequestRKJSOrder[] RequestRKJSOrders,bool bulkTransaction)
         {
             Guard.Against.Null(RequestRKJSOrders, nameof(RequestRKJSOrders));
 
@@ -469,7 +469,7 @@ namespace Web.WebServices.Services
             }
         }
 
-        public async Task<ResponseResult> CreateCKLLOrder(List<RequestCKLLOrder> RequestCKLLOrders,bool bulkTransaction)
+        public async Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction)
         {
             Guard.Against.Null(RequestCKLLOrders, nameof(RequestCKLLOrders));
             using (ModuleLock.GetAsyncLock().LockAsync())

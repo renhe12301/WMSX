@@ -187,7 +187,14 @@ $(function () {
                                 '</a>  ';
                             return e;
                         }
-                        else return value;
+                        else if(value=="待处理")
+                        {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if(value=="完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if(value=="关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
                     }
                 },
                 {
@@ -322,7 +329,14 @@ $(function () {
                                                     '</a>  ';
                                                 return e;
                                             }
-                                            else return value;
+                                            else if(value=="待处理")
+                                            {
+                                                return '<span class="badge bg-yellow">待处理</span>';
+                                            }
+                                            else if(value=="完成")
+                                                return '<span class="badge bg-gray">完成</span>';
+                                            else if(value=="关闭")
+                                                return '<span class="badge bg-gray-dark">关闭</span>';
                                         }
                                     }
                                    ]
@@ -379,7 +393,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '任务名称',
+                    title: 'EBS任务',
                     field: 'EBSTaskName',
                     valign: 'middle',
                     align: 'center'
@@ -397,7 +411,14 @@ $(function () {
                                 '</a>  ';
                             return e;
                         }
-                        else return value;
+                        else if(value=="待处理")
+                        {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if(value=="完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if(value=="关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
                     }
                 }
             ]

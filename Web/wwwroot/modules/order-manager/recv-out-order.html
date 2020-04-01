@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="../../lib/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../common/css/grid.css">
+    <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../../lib/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="../../lib/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../config.js"></script>
+    <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/render-tree.js"></script>
+    <script src="../common/js/range-time-ymdhhssmm.js"></script>
+    <script src="js/recv-out-order.js"></script>
+</head>
+<body>
+<div class="container-fluid themed-container">
+    <div class="row mb-5">
+        <div class="col-md-2">
+            <div id="sidebar" style="height: 600px;">
+                <div id="jsTree">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="container-fluid">
+                <div class="row mb-md-2">
+                    <div class="col-md-12">
+                        <div id="toolbar" class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-clock"></i></span>
+                            </div>
+                            <input type="text"  class="form-control float-right" style="width: 300px;height: 38px;" placeholder="请选择创建时间..." id="reservationtime">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-clock"></i></span>
+                            </div>
+                            <input type="text"  class="form-control float-right" style="width: 300px;height: 38px;" placeholder="请选择完成时间..." id="reservationtime2">
+                            <span class="input-group-append">
+                            <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
+                            <button type="button" id="more-query-btn" class="btn btn-secondary btn-flat">更多查询...</button>
+                            </span>
+                        </div>
+                        <div class="bootstrap-table bootstrap4">
+                            <table id="order-table"
+                                   class="table table-condensed" style="width: 100%">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-md-2">
+                    <div class="col-md-12">
+                        <div class="bootstrap-table bootstrap4">
+                            <table id="order-row-table"
+                                   class="table table-condensed" style="width: 100%">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="more-query-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">更多订单筛选条件</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <form id="more-query-form" class="form-horizontal" method="post" novalidate="novalidate">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>订单状态</label>
+                                <select class="select2" multiple="multiple" id="status-select" data-placeholder="订单状态..." style="width: 100%;">
+                                    <option value="0">待处理</option>
+                                    <option value="1">执行中</option>
+                                    <option value="2">已完成</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>经办人</label>
+                                <input type="text" class="form-control" id="user-name">
+                            </div>
+                            <div class="form-group">
+                                <label>订单编码</label>
+                                <input type="text" class="form-control" id="order-code">
+                            </div>
+
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="save-btn" data-dismiss="modal">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+</body>
+</html>
