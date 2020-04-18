@@ -36,3 +36,4 @@ D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.A
 D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.AssemblyInfo.cs
 D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.dll
 D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.pdb
+D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.csprojAssemblyReference.cache

@@ -2,6 +2,10 @@ $(function(){
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/hubs/dashboard")
         .build();
+    setInterval(function () {
+        connection.invoke("SendHeart").catch(function (err) {
+        });
+    }, 1000);
     
     var inOutRecordChart = echarts.init($("#buyTime")[0]);
     initInOutRecordAnalysis(inOutRecordChart);

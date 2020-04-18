@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     {
         public SysConfigSpecification(int? id,string key)
             :base(b=>(!id.HasValue||b.Id==id)&&
-                     (key==null&&b.KName==key))
+                     (key==null || b.KName==key))
         {
         }
     }

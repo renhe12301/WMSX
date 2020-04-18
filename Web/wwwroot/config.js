@@ -116,6 +116,20 @@ const controllers =
                   'log-record':
                       {
                           'get-log-records':baseUrl+"/log-record/get-log-records"
+                      },
+                    'sys-config':
+                      {
+                          'update-config': baseUrl + "/sys-config/update-config"
+                      },
+                    'ebsproject':
+                      {
+                          'get-projects': baseUrl + "/ebsproject/get-projects"
+                      },
+                    'ebstask':
+                      {
+                          'get-tasks': baseUrl + "/ebstask/get-tasks"
                       }
+
+
 
     };

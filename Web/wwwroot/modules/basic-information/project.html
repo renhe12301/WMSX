@@ -26,7 +26,7 @@
     <script src="../../config.js"></script>
     <script src="../common/js/asyn-task.js"></script>
     <script src="../common/js/render-tree.js"></script>
-    <script src="js/supplier.js"></script>
+    <script src="js/project.js"></script>
 </head>
 <body>
 <div class="container-fluid themed-container">
@@ -36,14 +36,14 @@
                 <div class="row mb-md-2">
                     <div class="col-md-12">
                         <div id="toolbar" class="input-group input-group-sm">
-                            <input type="text" class="form-control" id="supplier-name" style="height: 38px;"  placeholder="供应商...">
+                            <input type="text" class="form-control" id="project-name" style="height: 38px;"  placeholder="项目名称...">
                             <span class="input-group-append">
                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
                                 <button type="button" id="sync-btn" class="btn btn-primary btn-flat">手动同步</button>
                             </span>
                         </div>
                         <div class="bootstrap-table bootstrap4">
-                            <table id="supplier-table"
+                            <table id="project-table"
                                    class="table table-condensed" style="width: 100%">
                                 <thead>
                                 </thead>
@@ -54,7 +54,7 @@
                 <div class="row mb-md-2">
                     <div class="col-md-12">
                         <div class="bootstrap-table bootstrap4">
-                            <table id="site-table"
+                            <table id="task-table"
                                    class="table table-condensed" style="width: 100%">
                                 <thead>
                                 </thead>

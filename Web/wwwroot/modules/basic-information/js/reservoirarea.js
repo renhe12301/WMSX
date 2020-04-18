@@ -232,7 +232,7 @@ $(function () {
         var dicIds=[]; 
         $.each(dicSelects, function(key, val) { 
             dicIds.push(parseInt(val));
-         });
+                 });
         if(dicIds.length==0)
         {
             toastr.error("请选择左边需要划分的货位！", '错误信息', {timeOut: 3000});
@@ -245,6 +245,21 @@ $(function () {
             successCallback:function(response)
             {
                 $('#assign-loc-dlg').modal('hide');
+            }
+        });
+    });
+
+
+    $("#sync-btn").click(function () {
+        asynTask({
+            type: 'post',
+            url: controllers["sys-config"]["update-config"],
+            jsonData: { KName: "子库存同步", KVal: "1" },
+            successCallback: function (response) {
+                if (response.Code == 200)
+                    toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
+                else
+                    toastr.success(response.Data, '系统信息', { timeOut: 3000 });
             }
         });
     });

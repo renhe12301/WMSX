@@ -79,4 +79,18 @@ $(function () {
     $("#query-btn").click(function () {
         $('#ou-table').bootstrapTable('refresh');
     });
+
+    $("#sync-btn").click(function () {
+        asynTask({
+            type: 'post',
+            url: controllers["sys-config"]["update-config"],
+            jsonData: { KName: "业务实体同步", KVal: "1" },
+            successCallback: function (response) {
+                if (response.Code == 200)
+                    toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
+                else
+                    toastr.success(response.Data, '系统信息', { timeOut: 3000 });
+            }
+        });
+    });
 });

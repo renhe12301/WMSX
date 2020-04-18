@@ -8,6 +8,7 @@ using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Entities.TaskManager;
 using LogRecord = ApplicationCore.Entities.FlowRecord.LogRecord;
+using ApplicationCore.Entities.SysManager;
 
 namespace Infrastructure.Data
 {
@@ -39,6 +40,7 @@ namespace Infrastructure.Data
         public DbSet<InOutRecord> InOutRecord { get; set; }
         public DbSet<LogRecord> LogRecord { get; set; }
         public DbSet<OrderRowBatch> OrderRowBatch { get; set; }
+        public DbSet<SysConfig> SysConfig { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {
