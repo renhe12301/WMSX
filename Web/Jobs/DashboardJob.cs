@@ -169,7 +169,7 @@ namespace Web.Jobs
             string ytime = DateTime.Now.Year.ToString();
             OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
                 null, null, null, null, null, null, null,
-                null, null, null, ytime + "-01-01", ytime + "-12-31", null, null);
+                null, null, null,null, null, ytime + "-01-01", ytime + "-12-31", null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 12; i++)
             {
@@ -213,7 +213,7 @@ namespace Web.Jobs
             string ytime = DateTime.Now.Year.ToString();
             OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
                 null, null, null, null, null, null, null,
-                null, null, null, ytime + "-01-01", ytime + "-12-31",
+                null, null, null,null ,null , ytime + "-01-01", ytime + "-12-31",
                 null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 12; i++)
@@ -250,7 +250,7 @@ namespace Web.Jobs
             string ytime = DateTime.Now.Year.ToString();
             OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
                 null, null, null, null, null, null, null,
-                null, null, null, ytime + "-01-01", ytime + "-12-31",
+                null, null, null,null ,null , ytime + "-01-01", ytime + "-12-31",
                 null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             List<Order> orders2 = orders.Where(r =>
@@ -314,7 +314,7 @@ namespace Web.Jobs
             Random random = new Random();
             DateTime now  = DateTime.Now;
             OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
-                null, null, null, null, null, null, null,
+                null, null, null,null,null, null, null, null, null,
                 null, null, null, now.AddDays(-(int)now.DayOfWeek + 1).ToString(), 
                 now.AddDays(7 - (int)now.DayOfWeek).ToString(), null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);

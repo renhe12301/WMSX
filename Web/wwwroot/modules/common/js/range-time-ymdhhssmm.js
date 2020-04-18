@@ -25,4 +25,7 @@ var rangeTime=function (id,pickEvent) {
             pickEvent(picker.startDate.format('YYYY-MM-DD HH:mm:ss'),picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
         $('#'+id).val(picker.startDate.format('YYYY-MM-DD HH:mm:ss')+"至"+picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
     });
+    $('#'+id).on('cancel.daterangepicker', function (ev, picker) {
+        $('#'+id).val('');
+    });
 };

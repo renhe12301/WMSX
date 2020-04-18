@@ -50,4 +50,5 @@
     <_ContentIncludedByDefault Remove="wwwroot\js\.DS_Store" />
     <_ContentIncludedByDefault Remove="wwwroot\js\site.js" />
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

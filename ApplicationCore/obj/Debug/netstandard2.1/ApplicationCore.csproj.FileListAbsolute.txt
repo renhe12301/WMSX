@@ -29,3 +29,10 @@ D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfoInp
 D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.AssemblyInfo.cs
 D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.dll
 D:/WMSX/ApplicationCore/obj/Debug/netstandard2.1/ApplicationCore.pdb
+D:\WorkSpace\Git\WMSX\ApplicationCore\bin\Debug\netstandard2.1\ApplicationCore.deps.json
+D:\WorkSpace\Git\WMSX\ApplicationCore\bin\Debug\netstandard2.1\ApplicationCore.dll
+D:\WorkSpace\Git\WMSX\ApplicationCore\bin\Debug\netstandard2.1\ApplicationCore.pdb
+D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.AssemblyInfoInputs.cache
+D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.AssemblyInfo.cs
+D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.dll
+D:\WorkSpace\Git\WMSX\ApplicationCore\obj\Debug\netstandard2.1\ApplicationCore.pdb

@@ -76,7 +76,7 @@ namespace Web.WebServices.Services
                         OrderSpecification orderSpec = new OrderSpecification(null, RequestRKJSOrder.DocumentNumber,
                             null, null, null, null, null, null, null,
                             null, null, null, null, null,
-                            null, null, null, null, null);
+                            null, null, null, null, null,null, null);
                         List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
                         OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,null,
@@ -482,7 +482,7 @@ namespace Web.WebServices.Services
                     {
                         OrderSpecification orderSpec = new OrderSpecification(null, RequestCKLLOrder.AlyNumber, null,
                             null,null, null, null, null, null, null, null, null, null, null,
-                            null, null, null, null, null);
+                            null, null, null, null, null, null, null);
                         List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
 
                         OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,null,

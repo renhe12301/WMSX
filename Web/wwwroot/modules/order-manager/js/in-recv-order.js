@@ -90,8 +90,10 @@ $(function () {
             if(whId)rd.wareHouseId=parseInt(whId);
             userName=$("#user-name").val();
             orderCode=$("#order-code").val();
+            supplierName=$("#supplier-name").val();
             if(userName!="")rd.employeeName=userName;
             if(orderCode!="")rd.orderNumber=orderCode;
+            if(supplierName!="")rd.supplierName=supplierName;
             if(tstatus)rd.status=tstatus;
             if(type)rd.orderTypeId=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;

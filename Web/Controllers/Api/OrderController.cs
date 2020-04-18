@@ -42,6 +42,8 @@ namespace Web.Controllers.Api
         /// <param name="approveUserCode">审批人编码</param>
         /// <param name="employeeId">经办人编号</param>
         /// <param name="employeeName">经办人名称</param>
+        /// <param name="supplierId">供应商编号</param>
+        /// <param name="supplierName">供应商名称</param>
         /// <param name="sApplyTime">申请开始时间</param>
         /// <param name="eApplyTime">申请结束时间</param>
         /// <param name="sApproveTime">审批开始时间</param>
@@ -56,13 +58,16 @@ namespace Web.Controllers.Api
                      int?id,string orderNumber, int? orderTypeId,
                      string status,int? ouId,int? warehouseId,int? pyId,
                      string applyUserCode, string approveUserCode,
-                     int?employeeId,string employeeName,string sApplyTime, string eApplyTime,
+                     int?employeeId,string employeeName,
+                     int? supplierId, string supplierName,
+                     string sApplyTime, string eApplyTime,
                      string sApproveTime, string eApproveTime,
                      string sCreateTime, string eCreateTime,
                      string sFinishTime, string eFinishTime)
         {
             var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
-                orderTypeId, status,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime,
+                orderTypeId, status,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, 
+                supplierId, supplierName, sApplyTime,
                 eApplyTime, sApproveTime, eApproveTime,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }

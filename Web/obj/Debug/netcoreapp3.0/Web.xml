@@ -323,7 +323,7 @@
             订单操作API
             </summary>
         </member>
-        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Web.Controllers.Api.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.Int32},System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             查询订单信息
             </summary>
@@ -340,6 +340,8 @@
             <param name="approveUserCode">审批人编码</param>
             <param name="employeeId">经办人编号</param>
             <param name="employeeName">经办人名称</param>
+            <param name="supplierId">供应商编号</param>
+            <param name="supplierName">供应商名称</param>
             <param name="sApplyTime">申请开始时间</param>
             <param name="eApplyTime">申请结束时间</param>
             <param name="sApproveTime">审批开始时间</param>

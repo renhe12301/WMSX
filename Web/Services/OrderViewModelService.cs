@@ -47,7 +47,7 @@ namespace Web.Services
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
             int?id,string orderNumber, int? orderTypeId,string status,int? ouId,int? warehouseId,int? pyId,string applyUserCode, 
-            string approveUserCode,int? employeeId,string employeeName,string sApplyTime, string eApplyTime, string sApproveTime,
+            string approveUserCode,int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
             string eApproveTime,string sCreateTime,string eCreateTime,string sFinishTime,string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -64,13 +64,14 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber, orderTypeId,
-                        orderStatuss,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, sApplyTime, eApplyTime, sApproveTime, eApproveTime,
+                        orderStatuss,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, supplierId, supplierName, 
+                        sApplyTime, eApplyTime, sApproveTime, eApproveTime,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
                     spec = new OrderSpecification(id, orderNumber, orderTypeId,
-                        orderStatuss,ouId,warehouseId,pyId,applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
+                        orderStatuss,ouId,warehouseId,pyId,applyUserCode, approveUserCode, employeeId,employeeName, supplierId, supplierName,sApplyTime, eApplyTime, 
                         sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orders = await this._orderRepository.ListAsync(spec);
@@ -115,8 +116,8 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber, orderTypeId,
-                        orderStatuss,ouId,warehouseId, pyId,applyUserCode, approveUserCode, employeeId,employeeName,sApplyTime, eApplyTime, 
-                        sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
+                        orderStatuss,ouId,warehouseId, pyId,applyUserCode, approveUserCode, employeeId,employeeName,supplierId, supplierName,
+                        sApplyTime, eApplyTime, sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderViewModels;
                     dyn.total = count;

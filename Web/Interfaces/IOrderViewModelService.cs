@@ -11,7 +11,7 @@ namespace Web.Interfaces
 
         Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage,
              int?id,string orderNumber, int? orderTypeId, string status,int? ouId,int? warehouseId,int? pyId, string applyUserCode, string approveUserCode,
-             int? employeeId,string employeeName,string sApplyTime, string eApplyTime, string sApproveTime,
+             int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
              string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
         Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int? areaId);

@@ -57,7 +57,7 @@ namespace ApplicationCore.Services
             {
                 try
                 {
-                    OrderSpecification orderSpec = new OrderSpecification(order.Id, null, null,
+                    OrderSpecification orderSpec = new OrderSpecification(order.Id,null,null, null, null,
                         null,null,null,null,null, null, null,
                         null, null, null, null,
                         null, null, null, null, null);
@@ -272,7 +272,7 @@ namespace ApplicationCore.Services
                 {
                     var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
                         null,null, null, null, null, null, null, null,
-                        null, null, null, null);
+                        null, null, null, null,null,null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单[{0}],不存在！", orderId));
                     Order order = orders[0];
@@ -492,7 +492,7 @@ namespace ApplicationCore.Services
                 {
                     var orderSpec = new OrderSpecification(orderId, null, null, null,null,null, null,
                         null,null, null, null, null, null, null, null,
-                        null, null, null, null);
+                        null, null, null, null, null, null);
                     var orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0) throw new Exception(string.Format("订单编号[{0}],不存在！", orderId));
                     Order order = orders[0];
@@ -582,7 +582,7 @@ namespace ApplicationCore.Services
                 {
                     OrderSpecification orderSpec = new OrderSpecification(orderId, null, null, null,
                         null,null,null,null, null, null, null, null, null,
-                        null, null, null, null, null, null);
+                        null, null, null, null, null, null, null, null);
                     List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
                     if (orders.Count == 0)
                         throw new Exception(string.Format("订单Id[{0}],不存在！", orderId));
