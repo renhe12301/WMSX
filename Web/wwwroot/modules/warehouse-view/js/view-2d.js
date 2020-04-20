@@ -29,10 +29,10 @@ var showLocationCargo=function (id) {
 };
 
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
-    $('#sidebar2').overlayScrollbars({ });
-    $('#sidebar3').overlayScrollbars({ });
-    $('.card-body box-profile').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 100;
+    $("#sidebar").css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
+    $('.card card-primary card-outline card-tabs').css("height", parentHeight);
     asynTask({
         type:'get',
         url:controllers["phy-warehouse"]["get-phy-warehouses"],

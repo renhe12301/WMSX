@@ -27,7 +27,7 @@ $(function () {
                 }
             });
         },
-        height:600,
+        height: parent.document.getElementById("contentFrame").height - 10,
         queryParams:'typeQueryParams',
         pagination: true,
         pageNumber:1,

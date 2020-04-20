@@ -3,8 +3,17 @@ var ouId=null;
 var treeNode=null;
 var queryType = 0;
 $(function () {
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    parentWidth = parent.document.getElementById("contentFrame").clientWidth;
+    $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
+    $('#sidebar2').css("height", parentHeight);
     $('#sidebar2').overlayScrollbars({});
+
+    $('#donutChart').css("height", parentHeight / 2 - 125);
+    $('#donutChart').css("width", parentWidth - 200);
+    $('#barChart').css("height", parentHeight / 2 - 125);
+    $('#barChart').css("width", parentWidth - 200);
 
     renderTree({
         rootId: 0, renderTarget: 'jsTree', depthTag: 'ou', url: controllers.ou["get-ou-trees"],

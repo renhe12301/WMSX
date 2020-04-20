@@ -39,6 +39,8 @@ var whId=null;
 var areaId=null;
 var areaNameClick;
 $(function () {
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
     $('#sidebar2').overlayScrollbars({});
 
@@ -101,7 +103,7 @@ $(function () {
                 }
             });
         },
-        height: 600,
+        height: parent.document.getElementById("contentFrame").height - 30,
         queryParams: 'areaQueryParams',
         pagination: true,
         pageNumber: 1,

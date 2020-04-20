@@ -364,7 +364,9 @@ var whId2=0;
 var areaId2=0;
 var materialName=null;
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
     $('#sidebar2').overlayScrollbars({ });
     $(".select2").select2({
         theme: 'bootstrap4'
@@ -513,7 +515,7 @@ $(function () {
                 }
             });
         },
-        height:300,
+        height: (parent.document.getElementById("contentFrame").height - 10) / 2,
         queryParams:'orderQueryParams',
         pagination: true,
         pageNumber:1,
@@ -628,7 +630,7 @@ $(function () {
                 }
             });
         },
-        height:300,
+        height: (parent.document.getElementById("contentFrame").height - 20) / 2,
         queryParams:'orderRowQueryParams',
         pagination: true,
         pageNumber:1,

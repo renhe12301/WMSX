@@ -2,8 +2,19 @@
 var ouId=null;
 var treeNode=null;
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
-    $('#sidebar2').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    parentWidth = parent.document.getElementById("contentFrame").clientWidth;
+    $('#sidebar').css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
+    $('#sidebar2').css("height", parentHeight);
+    $('#sidebar2').overlayScrollbars({});
+
+    $('#donutChart').css("height", parentHeight / 2 - 105);
+    $('#donutChart').css("width", parentWidth - 200);
+    $('#barChart').css("height", parentHeight / 2 - 105);
+    $('#barChart').css("width", parentWidth - 200);
+    $('#barChart2').css("height", parentHeight / 2 - 105);
+    $('#barChart2').css("width", parentWidth - 200);
 
     renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'ou',url:controllers.ou["get-ou-trees"],
         successCallback:function(rdata)

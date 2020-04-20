@@ -21,7 +21,8 @@ $(function () {
         sCreateTime=s;
         eCreateTime=e;
     });
-
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({ });
     $('body').loading({
         loadingWidth: 240,
@@ -89,7 +90,7 @@ $(function () {
                 }
             });
         },
-        height:600,
+        height: parent.document.getElementById("contentFrame").height - 10,
         queryParams:'entryRecordQueryParams',
         pagination: true,
         pageNumber:1,

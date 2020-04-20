@@ -40,7 +40,7 @@ $(function () {
                 }
             });
         },
-        height:300,
+        height: (parent.document.getElementById("contentFrame").height - 10) / 2,
         queryParams:'supplierQueryParams',
         pagination: true,
         pageNumber:1,
@@ -106,7 +106,7 @@ $(function () {
                 }
             });
         },
-        height:300,
+        height: (parent.document.getElementById("contentFrame").height - 20) / 2,
         queryParams:'siteQueryParams',
         pagination: true,
         pageNumber:1,

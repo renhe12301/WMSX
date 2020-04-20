@@ -2,6 +2,9 @@ var phyId=null;
 var types=null;
 
 $(function () {
+    parentHeight = parent.document.getElementById("contentFrame").height - 60;
+    $(".card card-primary").css("height", parentHeight);
+    $("#contentFrame").attr("height", parentHeight);
     asynTask({
         type:'get',
         url:controllers["phy-warehouse"]["get-phy-warehouses"],

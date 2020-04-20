@@ -20,9 +20,9 @@
     <script>
         $(function () {
             loginCheck();
-            var content_h = $('.content-wrapper').height();
-            var foot_h = $('.main-footer').height();
-            $('iframe').attr("height",(content_h-foot_h)+15);
+            //var content_h = document.height;
+            //var foot_h = $('.main-footer').height();
+            //$('iframe').attr("height",(content_h-foot_h)-50);
             var cookieObj = $.parseJSON($.cookie('wms-user'));
             $("#userInfo").text("欢迎您！"+cookieObj.userName);
             var roleId = cookieObj.roleId;
@@ -148,12 +148,6 @@
                                 <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/asset-statistical.html')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>资产总额统计</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/material-statistical.html')" class="nav-link">
-                                    <i class="fa fa-arrow-right nav-icon"></i>
-                                    <p>物料数量统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -434,7 +428,7 @@
     </aside>
 
     <div class="content-wrapper">
-        <iframe id="contentFrame" src=""  frameborder="no" width="100%"  style="overflow: hidden" scrolling="no" >
+        <iframe id="contentFrame" src=""  frameborder="no" width="100%" onload="this.height=document.body.scrollHeight-63"  style="overflow: hidden" scrolling="no" >
         </iframe>
     </div>
     <!-- Main Footer -->

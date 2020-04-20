@@ -42,7 +42,7 @@ $(function () {
                                    }
                        });
          },
-         height:600,
+         height: parent.document.getElementById("contentFrame").height - 10,
          queryParams:'orgQueryParams',
          pagination: true,
          pageNumber:1,

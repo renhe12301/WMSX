@@ -18,7 +18,9 @@ var tstatus=null;
 var steps=null;
 var trayCode=null;
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
     $(".select2").select2({
         theme: 'bootstrap4'
     });
@@ -109,7 +111,7 @@ $(function () {
                 }
             });
         },
-        height:600,
+        height: parent.document.getElementById("contentFrame").height - 10,
         queryParams:'taskQueryParams',
         pagination: true,
         pageNumber:1,

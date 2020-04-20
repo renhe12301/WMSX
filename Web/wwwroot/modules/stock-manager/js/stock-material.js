@@ -13,7 +13,9 @@ var whId=null;
 var areaId=null;
 var treeNode=null;
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
     $('body').loading({
         loadingWidth: 240,
         title: '请稍等!',
@@ -85,7 +87,7 @@ $(function () {
                 }
             });
         },
-        height:600,
+        height: parent.document.getElementById("contentFrame").height - 10,
         queryParams:'whMaterialQueryParams',
         pagination: true,
         pageNumber:1,

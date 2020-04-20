@@ -43,7 +43,9 @@ function locationQueryParams(params) {
     }
 }
 $(function () {
-    $('#sidebar').overlayScrollbars({ });
+    parentHeight = parent.document.getElementById("contentFrame").height - 30;
+    $('#sidebar').css("height", parentHeight);
+    $('#sidebar').overlayScrollbars({});
     $('#sidebar2').overlayScrollbars({ });
     $('#sidebar3').overlayScrollbars({ });
     $('.card-body box-profile').overlayScrollbars({ });
@@ -128,7 +130,7 @@ $(function () {
                 }
             });
         },
-        height:600,
+        height: parent.document.getElementById("contentFrame").height - 10,
         queryParams:'locationQueryParams',
         pagination: true,
         pageNumber:1,
