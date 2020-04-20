@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
                                       (sCreateTime==null||b.CreateTime>=DateTime.Parse(sCreateTime))&&
                                       (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
-            
+            ApplyOrderByDescending(b => b.CreateTime);
         }
     }
 }

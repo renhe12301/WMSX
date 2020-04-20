@@ -180,7 +180,7 @@ namespace Web.Services
                     if (rootId > 0)
                     {
                         var childWarehouses = warehouses.FindAll(w=>w.OUId==current.Id);
-                        childWarehouses.ForEach(async (cw) =>
+                        childWarehouses.ForEach(cw =>
                         {
                             var wareHouseChild = new TreeViewModel
                             {
@@ -190,7 +190,7 @@ namespace Web.Services
                                 Type = "warehouse"
                             };
                             var childAreas = areas.FindAll(a=>a.WarehouseId==cw.Id);
-                            childAreas.ForEach(async (ca) =>
+                            childAreas.ForEach(ca =>
                             {
                                 var areaChild = new TreeViewModel
                                 {
@@ -216,7 +216,7 @@ namespace Web.Services
                                 Type = "ou"
                             };
                             var childWarehouses = warehouses.FindAll(w=>w.OUId==ou.Id);
-                            childWarehouses.ForEach(async (cw) =>
+                            childWarehouses.ForEach(cw =>
                             {
                                 var wareHouseChild = new TreeViewModel
                                 {
@@ -226,7 +226,7 @@ namespace Web.Services
                                     Type = "warehouse"
                                 };
                                 var childAreas = areas.FindAll(a=>a.WarehouseId==cw.Id);
-                                childAreas.ForEach(async (ca) =>
+                                childAreas.ForEach(ca =>
                                 {
                                     var areaChild = new TreeViewModel
                                     {

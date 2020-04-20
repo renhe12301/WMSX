@@ -28,7 +28,7 @@ $(function () {
         pagination: true,
         pageNumber:1,
         sidePagination: "server",
-        pageSize: 10,
+        pageSize: parseInt((parent.document.getElementById("contentFrame").height - 10) / 55),
         pageList: [10, 25, 50, 100],
         smartDisplay:false,
         toolbar: '#toolbar',

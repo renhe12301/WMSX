@@ -15,6 +15,7 @@ namespace ApplicationCore.Specifications
                                       (eCreateTime==null||b.CreateTime<=DateTime.Parse(eCreateTime)))
         {
             ApplyPaging(skip,take);
+            ApplyOrderByDescending(b => b.CreateTime);
         }
     }
 }

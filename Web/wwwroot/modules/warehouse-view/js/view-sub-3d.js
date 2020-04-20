@@ -376,6 +376,37 @@ $(function () {
             });
             if (selectV) {
                 $('#location-detail-dlg').modal('show');
+                $("#location-code").text(selectV.UserCode);
+                $("#tray-code").text("");
+                $("#material-code").val("");
+                $("#material-name").val("");
+                $("#material-count").val("");
+                $("#area-name").val("");
+                $("#warehouse-name").val("");
+                $("#ou-name").val("");
+                $("#material-spec").val("");
+                asynTask({
+                    type: 'get',
+                    url: controllers["warehouse-material"]["get-materials"],
+                    jsonData: { locationId: selectV.Id },
+                    successCallback: function (response) {
+                        if (response.Code == 200) {
+                            if (response.Data.length > 0) {
+                                var data = response.Data[0];
+                                $("#location-code").text(data.LocationCode);
+                                $("#tray-code").text(data.TrayCode);
+                                $("#material-code").val(data.Code);
+                                $("#material-name").val(data.MaterialName);
+                                $("#material-count").val(data.MaterialCount);
+                                $("#area-name").val(data.ReservoirAreaName);
+                                $("#warehouse-name").val(data.WarehouseName);
+                                $("#ou-name").val(data.OUName);
+                                $("#material-spec").val(data.Spec);
+                            }
+
+                        }
+                    }
+                });
             }
         }, false);
 

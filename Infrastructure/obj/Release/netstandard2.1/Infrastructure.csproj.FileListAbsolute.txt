@@ -1,0 +1,11 @@
+D:\WorkSpace\Git\WMSX\Infrastructure\bin\Release\netstandard2.1\Infrastructure.deps.json
+D:\WorkSpace\Git\WMSX\Infrastructure\bin\Release\netstandard2.1\Infrastructure.dll
+D:\WorkSpace\Git\WMSX\Infrastructure\bin\Release\netstandard2.1\Infrastructure.pdb
+D:\WorkSpace\Git\WMSX\Infrastructure\bin\Release\netstandard2.1\ApplicationCore.dll
+D:\WorkSpace\Git\WMSX\Infrastructure\bin\Release\netstandard2.1\ApplicationCore.pdb
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csprojAssemblyReference.cache
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.AssemblyInfo.cs
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CopyComplete
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.dll
+D:\WorkSpace\Git\WMSX\Infrastructure\obj\Release\netstandard2.1\Infrastructure.pdb

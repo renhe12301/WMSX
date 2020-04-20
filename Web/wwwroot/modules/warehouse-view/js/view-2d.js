@@ -1,37 +1,64 @@
 var phyId=null;
 var types=null;
-var showLocationCargo=function (id) {
+var showLocationCargo=function (id,sysCode,cargoType) {
     $('#location-detail-dlg').modal('show');
-    asynTask({
-        type:'get',
-        url:controllers["warehouse-material"]["get-materials"],
-        jsonData: {locationId:id},
-        successCallback:function(response)
-        {
-            if(response.Code==200)
-            {
-                if(response.Data.length>0)
-                {
-                    var data = response.Data[0];
-                    $("#location-code").text(data.LocationCode);
-                    $("#tray-code").text(data.TrayCode);
-                    $("#material-code").text(data.Code);
-                    $("#material-name").text(data.MaterialName);
-                    $("#material-count").text(data.MaterialCount);
-                    $("#area-name").text(data.ReservoirAreaName);
-                    $("#warehouse-name").text(data.WarehouseName);
-                    $("#ou-name").text(data.OUName);
-                }
+    $("#location-code").text(sysCode);
+    $("#tray-code").text("");
+    $("#material-code").val("");
+    $("#material-name").val("");
+    $("#material-count").val("");
+    $("#area-name").val("");
+    $("#warehouse-name").val("");
+    $("#ou-name").val("");
+    $("#material-spec").val("");
+    if (cargoType == "有货") {
+        asynTask({
+            type: 'get',
+            url: controllers["warehouse-material"]["get-materials"],
+            jsonData: { locationId: id },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    if (response.Data.length > 0) {
+                        var data = response.Data[0];
+                        $("#location-code").text(data.LocationCode);
+                        $("#tray-code").text(data.TrayCode);
+                        $("#material-code").val(data.Code);
+                        $("#material-name").val(data.MaterialName);
+                        $("#material-count").val(data.MaterialCount);
+                        $("#area-name").val(data.ReservoirAreaName);
+                        $("#warehouse-name").val(data.WarehouseName);
+                        $("#ou-name").val(data.OUName);
+                        $("#material-spec").val(data.Spec);
+                    }
 
+                }
             }
-        }
-    });
+        });
+    }
+    else if (cargoType == "空托盘") {
+        asynTask({
+            type: 'get',
+            url: controllers["warehouse-tray"]["get-trays"],
+            jsonData: { locationId: id },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    if (response.Data.length > 0) {
+                        var data = response.Data[0];
+                        $("#location-code").text(data.LocationCode);
+                        $("#tray-code").text(data.TrayCode);
+                    }
+
+                }
+            }
+        });
+    }
 };
 
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 100;
     $("#sidebar").css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
+    $('#sidebar3').overlayScrollbars({});
     $('.card card-primary card-outline card-tabs').css("height", parentHeight);
     asynTask({
         type:'get',
@@ -123,7 +150,19 @@ $(function () {
                                             title += "业务实体：" + sl[i].OUName + "\n";
 
                                         content += "<td>";
-                                        content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].SysCode + "</a>";
+                                        
+                                        if ((sl[i].InStock == "有货") && sl[i].Status != "禁用") {
+                                            content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ",\"有货\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
+                                        }
+                                        else if ((sl[i].InStock == "空托盘") && sl[i].Status != "禁用") {
+                                            content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ",\"空托盘\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
+                                        }
+                                        else if (l.InStock == "无货" && l.Status != "禁用") {
+                                            content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ")'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
+                                        }
+                                        else {
+                                            content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
+                                        }
                                         content += "</td>";
                                     }
 
@@ -177,17 +216,20 @@ $(function () {
                                                 title+="业务实体："+l.OUName+"\n";
 
                                             content+="<td>";
-                                            var codes=[];
-                                            var scodes=l.UserCode.split('-');
-                                            for (var i=1;i<scodes.length;i++) codes.push(parseInt(scodes[i]));
-                                            if(l.InStock=="有货"||l.InStock=="空托盘")
+                                           
+                                            if ((l.InStock == "有货") && l.Status!="禁用")
                                             {
-                                                content+="<a class='btn btn-app' onclick='showLocationCargo("+l.Id+")' title='"+title+"' style='background-color:"+btnSty+";font-size: 2px;'><i class='"+icon+"'></i>"+codes.join('')+"</a>";
+                                                content += "<a class='btn btn-app' onclick='showLocationCargo(" + l.Id + "," + JSON.stringify(l.UserCode).replace(/"/g, '&quot;') + ",\"有货\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.UserCode + "</a>";
+                                            }
+                                            else if (( l.InStock == "空托盘") && l.Status != "禁用") {
+                                                content += "<a class='btn btn-app' onclick='showLocationCargo(" + l.Id + "," + JSON.stringify(l.UserCode).replace(/"/g, '&quot;') + ",\"空托盘\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.UserCode + "</a>";
+                                            }
+                                            else if (l.InStock == "无货" && l.Status != "禁用"){
+                                                content += "<a class='btn btn-app' onclick='showLocationCargo(" + l.Id + "," + JSON.stringify(l.UserCode).replace(/"/g, '&quot;') + ")'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.UserCode+"</a>";
                                             }
                                             else {
-                                                content+="<a class='btn btn-app'  title='"+title+"' style='cursor: default;background-color:"+btnSty+";font-size: 2px;'><i class='"+icon+"'></i>"+codes.join('')+"</a>";
+                                                content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.UserCode + "</a>";
                                             }
-
                                             content+="</td>";
                                         }
                                         content+="</tr>";

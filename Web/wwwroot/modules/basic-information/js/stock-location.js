@@ -8,33 +8,60 @@ var lstatus=null;
 var inStocks=null;
 var isTasks=null;
 var treeNode=null;
-var showLocationCargo=function (id) {
+var showLocationCargo=function (id,sysCode,cargoType) {
     $('#location-detail-dlg').modal('show');
-    asynTask({
-        type:'get',
-        url:controllers["warehouse-material"]["get-materials"],
-        jsonData: {locationId:id},
-        successCallback:function(response)
-        {
-            if(response.Code==200)
-            {
-                if(response.Data.length>0)
-                {
-                    var data = response.Data[0];
-                    $("#location-code").text(data.LocationCode);
-                    $("#tray-code").text(data.TrayCode);
-                    $("#material-code").text(data.Code);
-                    $("#material-name").text(data.MaterialName);
-                    $("#material-count").text(data.MaterialCount);
-                    $("#area-name").text(data.ReservoirAreaName);
-                    $("#warehouse-name").text(data.WarehouseName);
-                    $("#ou-name").text(data.OUName);
-                    $("#org-name").text(data.OrgName);
-                }
+    $("#location-code").text(sysCode);
+    $("#tray-code").text("");
+    $("#material-code").val("");
+    $("#material-name").val("");
+    $("#material-count").val("");
+    $("#area-name").val("");
+    $("#warehouse-name").val("");
+    $("#ou-name").val("");
+    $("#material-spec").val("");
+    if (cargoType == "有货") {
+        asynTask({
+            type: 'get',
+            url: controllers["warehouse-material"]["get-materials"],
+            jsonData: { locationId: id },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    if (response.Data.length > 0) {
+                        var data = response.Data[0];
+                        $("#location-code").text(data.LocationCode);
+                        $("#tray-code").text(data.TrayCode);
+                        $("#material-code").val(data.Code);
+                        $("#material-name").val(data.MaterialName);
+                        $("#material-count").val(data.MaterialCount);
+                        $("#area-name").val(data.ReservoirAreaName);
+                        $("#warehouse-name").val(data.WarehouseName);
+                        $("#ou-name").val(data.OUName);
+                        $("#material-spec").val(data.Spec);
+                    }
 
+                }
             }
-        }
-    });
+        });
+    }
+    else if (cargoType == "空托盘") {
+        asynTask({
+            type: 'get',
+            url: controllers["warehouse-tray"]["get-trays"],
+            jsonData: { locationId: id },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    if (response.Data.length > 0) {
+                        var data = response.Data[0];
+                        $("#location-code").text(data.LocationCode);
+                        $("#tray-code").text(data.TrayCode);
+                    }
+
+                }
+            }
+        });
+
+    }
+   
 };
 function locationQueryParams(params) {
     return {
@@ -135,7 +162,7 @@ $(function () {
         pagination: true,
         pageNumber:1,
         sidePagination: "server",
-        pageSize: 10,
+        pageSize: parseInt((parent.document.getElementById("contentFrame").height - 10) / 55),
         pageList: [10, 25, 50, 100],
         smartDisplay:false,
         showColumns: true,
@@ -202,7 +229,7 @@ $(function () {
                     formatter : function(value, row, index) {
                         if(row.InStock=="空托盘")
                         {
-                            e='<a  href="javascript:void(0)" onclick=\'showLocationCargo("'+row.Id+'")\' title="'+row.InStock+'">'+
+                            e = '<a  href="javascript:void(0)" onclick=\'showLocationCargo("' + row.Id + '",' + JSON.stringify(row.UserCode).replace(/"/g, '&quot;')+',\"空托盘\")\' title="'+row.InStock+'">'+
                                 '<i class="fa fa-dice-four"></i>'+
                                 '</a>  ';
                             return e;
@@ -213,7 +240,7 @@ $(function () {
                         }
                         else if(row.InStock=="有货")
                         {
-                            e='<a  href="javascript:void(0)" onclick=\'showLocationCargo("'+row.Id+'")\' title="'+row.InStock+'">'+
+                            e = '<a  href="javascript:void(0)" onclick=\'showLocationCargo("' + row.Id + '",' + JSON.stringify(row.UserCode).replace(/"/g, '&quot;') +',\"有货\")\' title="'+row.InStock+'">'+
                                 '<i class="fa fa-gift"></i>'+
                                 '</a>  ';
                             return e;
@@ -250,13 +277,13 @@ $(function () {
                     }
                 },
                 {
-                    title: '库区',
+                    title: '子库区',
                     field: 'ReservoirAreaName',
                     valign: 'middle',
                     align: 'center'
                 },
                 {
-                    title: '仓库',
+                    title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'
