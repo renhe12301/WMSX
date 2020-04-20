@@ -34,7 +34,8 @@ $(function () {
     // 初始化场景
     function initScene() {
         scene = new THREE.Scene();
-        scene.fog = new THREE.Fog( scene.background, 3000, 5000 );
+        scene.fog = new THREE.Fog(scene.background, 3000, 5000);
+        
         raycaster = new THREE.Raycaster();
         raycaster.linePrecision = 30 / 2;
     }
@@ -280,10 +281,25 @@ $(function () {
             scene.add(rack2);
         }
         var cargoMesh = new THREE.Mesh(cargo, cargoMat);
+        cargoMesh.visible = false;
         cargoMesh.position.set(offset_x, y + 17, z);
-        if(tag.InStock=="无货")
-            cargoMesh.visible=false;
         scene.add(cargoMesh);
+
+        var geometryCube = cube(30);
+        var lineSegments = new THREE.LineSegments(geometryCube, new THREE.LineDashedMaterial({ color: '#FCFCFC', dashSize: 3, gapSize: 1 }));
+        lineSegments.computeLineDistances();
+        lineSegments.translateOnAxis(new THREE.Vector3(0, 0, 1), z);
+        lineSegments.translateOnAxis(new THREE.Vector3(1, 0, 0), offset_x);
+        lineSegments.translateOnAxis(new THREE.Vector3(0, 1, 0), y + 17);
+        lineSegments.visible = false;
+        scene.add(lineSegments);
+
+
+        if (tag.InStock == "有货")
+            cargoMesh.visible = true;
+        if (tag.InStock == "无货")
+            lineSegments.visible = true;
+       
     }
      
     function buildRacks() {
@@ -442,4 +458,57 @@ $(function () {
 
     init();
     animate();
+
+
+
+    function cube(size) {
+
+        var h = size * 0.5;
+
+        var geometry = new THREE.BufferGeometry();
+        var position = [];
+
+        position.push(
+            - h, - h, - h,
+            - h, h, - h,
+
+            - h, h, - h,
+            h, h, - h,
+
+            h, h, - h,
+            h, - h, - h,
+
+            h, - h, - h,
+            - h, - h, - h,
+
+            - h, - h, h,
+            - h, h, h,
+
+            - h, h, h,
+            h, h, h,
+
+            h, h, h,
+            h, - h, h,
+
+            h, - h, h,
+            - h, - h, h,
+
+            - h, - h, - h,
+            - h, - h, h,
+
+            - h, h, - h,
+            - h, h, h,
+
+            h, h, - h,
+            h, h, h,
+
+            h, - h, - h,
+            h, - h, h
+        );
+
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
+
+        return geometry;
+
+    }
 });
