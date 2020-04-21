@@ -37,6 +37,15 @@ namespace Web
                             .WithIdentity("job", "group")
                             .Build();
             await _scheduler.ScheduleJob(jobDetail, trigger);
+
+            //var trigger2 = TriggerBuilder.Create()
+            //               .WithCronSchedule("0/5 * * * * ?")
+            //               .Build();
+            //var jobDetail2 = JobBuilder.Create<Web.Jobs.RKJob>()
+            //                .WithIdentity("job2", "group2")
+            //                .Build();
+            //await _scheduler.ScheduleJob(jobDetail2, trigger2);
+
             _logger.LogInformation("Quarzt.net 启动成功...");
         }
     }
