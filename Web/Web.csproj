@@ -11,7 +11,6 @@
     <Folder Include="ViewModels\OrderManager\" />
     <Folder Include="ViewModels\AuthorityManager\" />
     <Folder Include="ViewModels\BasicInformation\" />
-    <Folder Include="Views\" />
     <Folder Include="WebServices\ClientProxys" />
     <Folder Include="ViewModels\StockManager\" />
     <Folder Include="ViewModels\TaskManager\" />

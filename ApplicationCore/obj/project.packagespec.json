@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/ApplicationCore.csproj",
+    "projectUniqueName": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
     "projectName": "ApplicationCore",
-    "projectPath": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/ApplicationCore.csproj",
-    "outputPath": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/obj/",
+    "projectPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
+    "outputPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netstandard2.1"
@@ -54,7 +54,7 @@
           "privateAssets": "all"
         }
       },
-      "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.201/RuntimeIdentifierGraph.json"
     }
   }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$PROJECT_DIR$/../../../../../Caches/Rider2019.3/extResources" t="IncludeRecursive" />
-    <e p="$PROJECT_DIR$/../../../../../Caches/Rider2019.3/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_WMSX.-1514424248.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.1/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.1/resharper-host/local/Transient/ReSharperHost/v201/SolutionCaches/_WMSX.-606623728.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="ApplicationCore" t="IncludeRecursive">
         <e p="ApplicationCore.csproj" t="IncludeRecursive" />
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Entities" t="Include">
           <e p="AuthorityManager" t="Include">
             <e p="EmployeeRole.cs" t="Include" />
@@ -22,8 +21,8 @@
             <e p="Location.cs" t="Include" />
             <e p="MaterialDic.cs" t="Include" />
             <e p="MaterialType.cs" t="Include" />
-            <e p="Organization.cs" t="Include" />
             <e p="OU.cs" t="Include" />
+            <e p="Organization.cs" t="Include" />
             <e p="PhyWarehouse.cs" t="Include" />
             <e p="ReservoirArea.cs" t="Include" />
             <e p="Supplier.cs" t="Include" />
@@ -82,13 +81,6 @@
           <e p="ModuleLock.cs" t="Include" />
           <e p="StatusConstant.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netstandard2.1" t="Include">
-              <e p="ApplicationCore.AssemblyInfo.cs" t="Include" />
-            </e>
-          </e>
-        </e>
         <e p="Services" t="Include">
           <e p="EBSProjectServicecs.cs" t="Include" />
           <e p="EBSTaskServicecs.cs" t="Include" />
@@ -135,6 +127,9 @@
           <e p="MaterialDicSpecification.cs" t="Include" />
           <e p="MaterialTypePaginatedSpecification.cs" t="Include" />
           <e p="MaterialTypeSpecification.cs" t="Include" />
+          <e p="OUIdSetSpecification.cs" t="Include" />
+          <e p="OUPaginatedSpecification.cs" t="Include" />
+          <e p="OUSpecification.cs" t="Include" />
           <e p="OrderPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowBatchPaginatedSpecification.cs" t="Include" />
           <e p="OrderRowBatchSpecification.cs" t="Include" />
@@ -144,9 +139,6 @@
           <e p="OrganizationIdSetSpecification.cs" t="Include" />
           <e p="OrganizationPaginatedSpecification.cs" t="Include" />
           <e p="OrganizationSpecification.cs" t="Include" />
-          <e p="OUIdSetSpecification.cs" t="Include" />
-          <e p="OUPaginatedSpecification.cs" t="Include" />
-          <e p="OUSpecification.cs" t="Include" />
           <e p="PhyWarehousePaginatedSpecification.cs" t="Include" />
           <e p="PhyWarehouseSpecification.cs" t="Include" />
           <e p="ReservoirAreaIdSetSpecification.cs" t="Include" />
@@ -157,7 +149,7 @@
           <e p="SupplierPaginatedSpecification.cs" t="Include" />
           <e p="SupplierSiteIdSetSpecification.cs" t="Include" />
           <e p="SupplierSitePaginatedSpecification.cs" t="Include" />
-          <e p="SupplierSIteSpecification.cs" t="Include" />
+          <e p="SupplierSiteSpecification.cs" t="Include" />
           <e p="SupplierSpecification.cs" t="Include" />
           <e p="SysConfigSpecification.cs" t="Include" />
           <e p="SysMenuSpecification.cs" t="Include" />
@@ -171,9 +163,16 @@
           <e p="WarehouseTrayPaginatedSpecification.cs" t="Include" />
           <e p="WarehouseTraySpecification.cs" t="Include" />
         </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="ApplicationCore.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
       </e>
       <e p="Infrastructure" t="IncludeRecursive">
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Data" t="Include">
           <e p="BaseContext.cs" t="Include" />
           <e p="EfRepository.cs" t="Include" />
@@ -183,6 +182,7 @@
         <e p="Logging" t="Include">
           <e p="LoggerAdapter.cs" t="Include" />
         </e>
+        <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netstandard2.1" t="Include">
@@ -191,12 +191,8 @@
           </e>
         </e>
       </e>
-      <e p="packages" t="ExcludeRecursive" />
-      <e p="src" t="Include" />
+      <e p="WMSX.sln" t="IncludeFlat" />
       <e p="Web" t="IncludeRecursive">
-        <e p="appsettings.Development.json" t="Include" />
-        <e p="appsettings.json" t="Include" />
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Controllers" t="Include">
           <e p="Api" t="Include">
             <e p="BaseApiController.cs" t="Include" />
@@ -209,14 +205,15 @@
             <e p="LogRecordController.cs" t="Include" />
             <e p="MaterialDicController.cs" t="Include" />
             <e p="MaterialTypeController.cs" t="Include" />
+            <e p="OUController.cs" t="Include" />
             <e p="OrderController.cs" t="Include" />
             <e p="OrderRowBatchController.cs" t="Include" />
             <e p="OrderRowController.cs" t="Include" />
             <e p="OrganizationController.cs" t="Include" />
-            <e p="OUController.cs" t="Include" />
             <e p="PhyWarehouseController.cs" t="Include" />
             <e p="ReservoirAreaController.cs" t="Include" />
             <e p="SupplierController.cs" t="Include" />
+            <e p="SysConfigController.cs" t="Include" />
             <e p="SysMenuController.cs" t="Include" />
             <e p="SysRoleController.cs" t="Include" />
             <e p="WarehouseController.cs" t="Include" />
@@ -230,6 +227,7 @@
           <e p="DashboardHub.cs" t="Include" />
         </e>
         <e p="IEngine.cs" t="Include" />
+        <e p="IOCJobFactory.cs" t="Include" />
         <e p="Interfaces" t="Include">
           <e p="IEBSProjectViewModelService.cs" t="Include" />
           <e p="IEBSTaskViewModelService.cs" t="Include" />
@@ -240,21 +238,21 @@
           <e p="ILogRecordViewModelService.cs" t="Include" />
           <e p="IMaterialDicViewModelService.cs" t="Include" />
           <e p="IMaterialTypeViewModelService.cs" t="Include" />
+          <e p="IOUViewModelService.cs" t="Include" />
           <e p="IOrderRowBatchViewModelService.cs" t="Include" />
           <e p="IOrderRowViewModelService.cs" t="Include" />
           <e p="IOrderViewModelService.cs" t="Include" />
           <e p="IOrganizationViewModelService.cs" t="Include" />
-          <e p="IOUViewModelService.cs" t="Include" />
           <e p="IPhyWarehouseViewModelService.cs" t="Include" />
           <e p="IReservoirAreaViewModelService.cs" t="Include" />
           <e p="ISupplierViewModelService.cs" t="Include" />
+          <e p="ISysConfigViewModelService.cs" t="Include" />
           <e p="ISysMenuViewModelService.cs" t="Include" />
           <e p="ISysRoleViewModelService.cs" t="Include" />
           <e p="IWarehouseMaterialViewModelService.cs" t="Include" />
           <e p="IWarehouseTrayViewModelService.cs" t="Include" />
           <e p="IWarehouseViewModelService.cs" t="Include" />
         </e>
-        <e p="IOCJobFactory.cs" t="Include" />
         <e p="Jobs" t="Include">
           <e p="BasicDataSyncJob.cs" t="Include" />
           <e p="CKJob.cs" t="Include" />
@@ -265,21 +263,13 @@
           <e p="StockSyncJob.cs" t="Include" />
           <e p="WCSTaskJob.cs" t="Include" />
         </e>
-        <e p="log4net.config" t="Include" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="netcoreapp3.0" t="Include">
-              <e p="Web.AssemblyInfo.cs" t="Include" />
-            </e>
-          </e>
-        </e>
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
         </e>
         <e p="QuartzStartup.cs" t="Include" />
         <e p="Services" t="Include">
-          <e p="EBSProjectViewModelservice.cs" t="Include" />
+          <e p="EBSProjectViewModelService.cs" t="Include" />
           <e p="EBSTaskViewModelService.cs" t="Include" />
           <e p="EmployeeViewModelService.cs" t="Include" />
           <e p="InOutRecordViewModelService.cs" t="Include" />
@@ -288,14 +278,15 @@
           <e p="LogRecordViewModelService.cs" t="Include" />
           <e p="MaterialDicViewModelService.cs" t="Include" />
           <e p="MaterialTypeViewModelService.cs" t="Include" />
+          <e p="OUViewModelService.cs" t="Include" />
           <e p="OrderRowBatchViewModelService.cs" t="Include" />
           <e p="OrderRowViewModelService.cs" t="Include" />
           <e p="OrderViewModelService.cs" t="Include" />
           <e p="OrganizationViewModelService.cs" t="Include" />
-          <e p="OUViewModelService.cs" t="Include" />
           <e p="PhyWarehouseViewModelService.cs" t="Include" />
           <e p="ReservoirAreaViewModelService.cs" t="Include" />
           <e p="SupplierViewModelService.cs" t="Include" />
+          <e p="SysConfigViewModelService.cs" t="Include" />
           <e p="SysMenuViewModelService.cs" t="Include" />
           <e p="SysRoleViewModelService.cs" t="Include" />
           <e p="WarehouseMaterialViewModelService.cs" t="Include" />
@@ -317,8 +308,8 @@
             <e p="LocationViewModel.cs" t="Include" />
             <e p="MaterialDicViewModel.cs" t="Include" />
             <e p="MaterialTypeViewModel.cs" t="Include" />
-            <e p="OrganizationViewModel.cs" t="Include" />
             <e p="OUViewModel.cs" t="Include" />
+            <e p="OrganizationViewModel.cs" t="Include" />
             <e p="PhyWarehouseViewModel.cs" t="Include" />
             <e p="ReservoirAreaViewModel.cs" t="Include" />
             <e p="SupplierSiteViewModel.cs" t="Include" />
@@ -340,12 +331,14 @@
             <e p="WarehouseMaterialViewModel.cs" t="Include" />
             <e p="WarehouseTrayViewModel.cs" t="Include" />
           </e>
+          <e p="SysManager" t="Include">
+            <e p="SysConfigViewModel.cs" t="Include" />
+          </e>
           <e p="TaskManager" t="Include">
             <e p="InOutTaskViewModel.cs" t="Include" />
           </e>
           <e p="TreeViewModel.cs" t="Include" />
         </e>
-        <e p="Views" t="Include" />
         <e p="Web.csproj" t="IncludeRecursive" />
         <e p="WebServices" t="Include">
           <e p="ClientProxys" t="Include" />
@@ -361,6 +354,17 @@
           </e>
           <e p="Services" t="Include">
             <e p="OrderSOAPService.cs" t="Include" />
+          </e>
+        </e>
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="log4net.config" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Web.AssemblyInfo.cs" t="Include" />
+            </e>
           </e>
         </e>
         <e p="wwwroot" t="Include">
@@ -401,6 +405,7 @@
                 </e>
                 <e p="img" t="Include">
                   <e p="AdminLTELogo.png" t="Include" />
+                  <e p="Smiley128x128.png" t="Include" />
                   <e p="avatar.png" t="Include" />
                   <e p="avatar04.png" t="Include" />
                   <e p="avatar2.png" t="Include" />
@@ -429,7 +434,6 @@
                   <e p="prod-4.jpg" t="Include" />
                   <e p="prod-5.jpg" t="Include" />
                   <e p="smiley.png" t="Include" />
-                  <e p="Smiley128x128.png" t="Include" />
                   <e p="user1-128x128.jpg" t="Include" />
                   <e p="user2-160x160.jpg" t="Include" />
                   <e p="user3-128x128.jpg" t="Include" />
@@ -534,7 +538,7 @@
                   <e p="Chart.bundle.js" t="Include" />
                   <e p="Chart.bundle.min.js" t="Include" />
                   <e p="Chart.css" t="Include" />
-                  <e p="chart.js" t="Include" />
+                  <e p="Chart.js" t="Include" />
                   <e p="Chart.min.css" t="Include" />
                   <e p="Chart.min.js" t="Include" />
                 </e>
@@ -704,10 +708,10 @@
                       <e p="require.js" t="Include" />
                     </e>
                     <e p="browserify" t="Include">
+                      <e p="README.md" t="Include" />
                       <e p="bundle.js" t="Include" />
                       <e p="index.html" t="Include" />
                       <e p="main.js" t="Include" />
-                      <e p="README.md" t="Include" />
                     </e>
                   </e>
                   <e p="moment.min.js" t="Include" />
@@ -732,64 +736,73 @@
                 </e>
                 <e p="filterizr" t="Include">
                   <e p="ActiveFilter.d.ts" t="Include" />
-                  <e p="animate.d.ts" t="Include" />
                   <e p="BrowserWindow.d.ts" t="Include" />
-                  <e p="config" t="Include">
-                    <e p="cssEasingValuesRegexp.d.ts" t="Include" />
-                    <e p="filterizrState.d.ts" t="Include" />
-                    <e p="index.d.ts" t="Include" />
-                    <e p="layout.d.ts" t="Include" />
-                  </e>
                   <e p="EventReceiver.d.ts" t="Include" />
                   <e p="FilterContainer" t="Include">
                     <e p="FilterContainer.d.ts" t="Include" />
-                    <e p="index.d.ts" t="Include" />
                     <e p="StyledFilterContainer.d.ts" t="Include" />
+                    <e p="index.d.ts" t="Include" />
                     <e p="styles.d.ts" t="Include" />
                   </e>
                   <e p="FilterContainer.d.ts" t="Include" />
                   <e p="FilterControls.d.ts" t="Include" />
                   <e p="FilterItem" t="Include">
                     <e p="FilterItem.d.ts" t="Include" />
-                    <e p="index.d.ts" t="Include" />
                     <e p="StyledFilterItem.d.ts" t="Include" />
+                    <e p="index.d.ts" t="Include" />
                     <e p="styles.d.ts" t="Include" />
                   </e>
                   <e p="FilterItem.d.ts" t="Include" />
                   <e p="FilterItems" t="Include">
                     <e p="FilterItems.d.ts" t="Include" />
-                    <e p="index.d.ts" t="Include" />
                     <e p="StyledFilterItems.d.ts" t="Include" />
+                    <e p="index.d.ts" t="Include" />
                   </e>
                   <e p="FilterItems.d.ts" t="Include" />
-                  <e p="filterizr" t="Include">
+                  <e p="Filterizr" t="Include">
                     <e p="Filterizr.d.ts" t="Include" />
                     <e p="index.d.ts" t="Include" />
                     <e p="installAsJQueryPlugin.d.ts" t="Include" />
                   </e>
                   <e p="Filterizr.d.ts" t="Include" />
-                  <e p="filterizr.min.js" t="Include" />
                   <e p="FilterizrElement.d.ts" t="Include" />
                   <e p="FilterizrOptions" t="Include">
-                    <e p="defaultOptions.d.ts" t="Include" />
                     <e p="FilterizrOptions.d.ts" t="Include" />
+                    <e p="defaultOptions.d.ts" t="Include" />
                     <e p="index.d.ts" t="Include" />
                   </e>
+                  <e p="Spinner" t="Include">
+                    <e p="Spinner.d.ts" t="Include" />
+                    <e p="StyledSpinner.d.ts" t="Include" />
+                    <e p="index.d.ts" t="Include" />
+                    <e p="makeSpinner.d.ts" t="Include" />
+                  </e>
+                  <e p="StyledFilterizrElement.d.ts" t="Include" />
+                  <e p="StyledFilterizrElements.d.ts" t="Include" />
+                  <e p="animate.d.ts" t="Include" />
+                  <e p="config" t="Include">
+                    <e p="cssEasingValuesRegexp.d.ts" t="Include" />
+                    <e p="filterizrState.d.ts" t="Include" />
+                    <e p="index.d.ts" t="Include" />
+                    <e p="layout.d.ts" t="Include" />
+                  </e>
+                  <e p="filterizr.min.js" t="Include" />
                   <e p="getLayoutPositions.d.ts" t="Include" />
                   <e p="index.d.ts" t="Include" />
                   <e p="index.jquery.d.ts" t="Include" />
                   <e p="installAsJQueryPlugin.d.ts" t="Include" />
                   <e p="jquery.filterizr.min.js" t="Include" />
                   <e p="layouts" t="Include">
+                    <e p="Packer.d.ts" t="Include" />
                     <e p="getHorizontalLayoutPositions.d.ts" t="Include" />
                     <e p="getPackedLayoutPositions.d.ts" t="Include" />
                     <e p="getSameHeightLayoutPositions.d.ts" t="Include" />
                     <e p="getSameSizeLayoutPosition.d.ts" t="Include" />
                     <e p="getSameWidthLayoutPositions.d.ts" t="Include" />
                     <e p="getVerticalLayoutPositions.d.ts" t="Include" />
-                    <e p="Packer.d.ts" t="Include" />
                   </e>
                   <e p="makeLayoutPositions" t="Include">
+                    <e p="Packer.d.ts" t="Include" />
                     <e p="index.d.ts" t="Include" />
                     <e p="makeHorizontalLayoutPositions.d.ts" t="Include" />
                     <e p="makeLayoutPositions.d.ts" t="Include" />
@@ -798,25 +811,15 @@
                     <e p="makeSameSizeLayoutPosition.d.ts" t="Include" />
                     <e p="makeSameWidthLayoutPositions.d.ts" t="Include" />
                     <e p="makeVerticalLayoutPositions.d.ts" t="Include" />
-                    <e p="Packer.d.ts" t="Include" />
                   </e>
-                  <e p="Spinner" t="Include">
-                    <e p="index.d.ts" t="Include" />
-                    <e p="makeSpinner.d.ts" t="Include" />
-                    <e p="Spinner.d.ts" t="Include" />
-                    <e p="StyledSpinner.d.ts" t="Include" />
-                  </e>
-                  <e p="StyledFilterizrElement.d.ts" t="Include" />
-                  <e p="StyledFilterizrElements.d.ts" t="Include" />
                   <e p="types" t="Include">
                     <e p="index.d.ts" t="Include" />
-                    <e p="Interfaces" t="Include">
+                    <e p="interfaces" t="Include">
                       <e p="BaseOptions.d.ts" t="Include" />
                       <e p="ContainerLayout.d.ts" t="Include" />
                       <e p="Destructible.d.ts" t="Include" />
                       <e p="Dictionary.d.ts" t="Include" />
                       <e p="Dimensions.d.ts" t="Include" />
-                      <e p="index.d.ts" t="Include" />
                       <e p="Options.d.ts" t="Include" />
                       <e p="Position.d.ts" t="Include" />
                       <e p="RawOptions.d.ts" t="Include" />
@@ -824,6 +827,7 @@
                       <e p="Resizable.d.ts" t="Include" />
                       <e p="SpinnerOptions.d.ts" t="Include" />
                       <e p="Styleable.d.ts" t="Include" />
+                      <e p="index.d.ts" t="Include" />
                     </e>
                   </e>
                   <e p="utils" t="Include">
@@ -1445,7 +1449,7 @@
                   </e>
                 </e>
                 <e p="fullcalendar" t="Include">
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="locales" t="Include">
                     <e p="af.js" t="Include" />
                     <e p="ar-dz.js" t="Include" />
@@ -1522,7 +1526,7 @@
                   <e p="main.min.js" t="Include" />
                 </e>
                 <e p="fullcalendar-bootstrap" t="Include">
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="main.css" t="Include" />
                   <e p="main.d.ts" t="Include" />
                   <e p="main.esm.js" t="Include" />
@@ -1531,7 +1535,7 @@
                   <e p="main.min.js" t="Include" />
                 </e>
                 <e p="fullcalendar-daygrid" t="Include">
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="main.css" t="Include" />
                   <e p="main.d.ts" t="Include" />
                   <e p="main.esm.js" t="Include" />
@@ -1540,14 +1544,14 @@
                   <e p="main.min.js" t="Include" />
                 </e>
                 <e p="fullcalendar-interaction" t="Include">
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="main.d.ts" t="Include" />
                   <e p="main.esm.js" t="Include" />
                   <e p="main.js" t="Include" />
                   <e p="main.min.js" t="Include" />
                 </e>
                 <e p="fullcalendar-timegrid" t="Include">
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="main.css" t="Include" />
                   <e p="main.d.ts" t="Include" />
                   <e p="main.esm.js" t="Include" />
@@ -1556,9 +1560,9 @@
                   <e p="main.min.js" t="Include" />
                 </e>
                 <e p="icheck-bootstrap" t="Include">
+                  <e p="LICENSE" t="Include" />
                   <e p="icheck-bootstrap.css" t="Include" />
                   <e p="icheck-bootstrap.min.css" t="Include" />
-                  <e p="LICENSE" t="Include" />
                 </e>
                 <e p="inputmask" t="Include">
                   <e p="inputmask" t="Include">
@@ -1642,9 +1646,9 @@
                   <e p="jquery.mapael.js" t="Include" />
                   <e p="jquery.mapael.min.js" t="Include" />
                   <e p="maps" t="Include">
+                    <e p="README.txt" t="Include" />
                     <e p="france_departments.js" t="Include" />
                     <e p="france_departments.min.js" t="Include" />
-                    <e p="README.txt" t="Include" />
                     <e p="usa_states.js" t="Include" />
                     <e p="usa_states.min.js" t="Include" />
                     <e p="world_countries.js" t="Include" />
@@ -1656,11 +1660,12 @@
                   </e>
                 </e>
                 <e p="jquery-mousewheel" t="Include">
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="jquery.mousewheel.js" t="Include" />
-                  <e p="LICENSE.TXT" t="Include" />
                 </e>
                 <e p="jquery-ui" t="Include">
                   <e p="AUTHORS.txt" t="Include" />
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="external" t="Include">
                     <e p="jquery" t="Include">
                       <e p="jquery.js" t="Include" />
@@ -1682,7 +1687,6 @@
                   <e p="jquery-ui.structure.min.css" t="Include" />
                   <e p="jquery-ui.theme.css" t="Include" />
                   <e p="jquery-ui.theme.min.css" t="Include" />
-                  <e p="LICENSE.TXT" t="Include" />
                 </e>
                 <e p="jquery-validation" t="Include">
                   <e p="additional-methods.js" t="Include" />
@@ -1929,13 +1933,13 @@
                     <e p="de.js" t="Include" />
                     <e p="dv.js" t="Include" />
                     <e p="el.js" t="Include" />
+                    <e p="en-SG.js" t="Include" />
                     <e p="en-au.js" t="Include" />
                     <e p="en-ca.js" t="Include" />
                     <e p="en-gb.js" t="Include" />
                     <e p="en-ie.js" t="Include" />
                     <e p="en-il.js" t="Include" />
                     <e p="en-nz.js" t="Include" />
-                    <e p="en-SG.js" t="Include" />
                     <e p="eo.js" t="Include" />
                     <e p="es-do.js" t="Include" />
                     <e p="es-us.js" t="Include" />
@@ -2043,10 +2047,10 @@
                     <e p="OverlayScrollbars.min.css" t="Include" />
                   </e>
                   <e p="js" t="Include">
-                    <e p="jquery.overlayScrollbars.js" t="Include" />
-                    <e p="jquery.overlayScrollbars.min.js" t="Include" />
                     <e p="OverlayScrollbars.js" t="Include" />
                     <e p="OverlayScrollbars.min.js" t="Include" />
+                    <e p="jquery.overlayScrollbars.js" t="Include" />
+                    <e p="jquery.overlayScrollbars.min.js" t="Include" />
                   </e>
                 </e>
                 <e p="pace-progress" t="Include">
@@ -2265,6 +2269,7 @@
                 </e>
                 <e p="raphael" t="Include">
                   <e p=".eslintrc.js" t="Include" />
+                  <e p="Gruntfile.js" t="Include" />
                   <e p="bower.json" t="Include" />
                   <e p="dev" t="Include">
                     <e p="banner.txt" t="Include" />
@@ -2283,8 +2288,7 @@
                       </e>
                     </e>
                   </e>
-                  <e p="Gruntfile.js" t="Include" />
-                  <e p="LICENSE.TXT" t="Include" />
+                  <e p="license.txt" t="Include" />
                   <e p="raphael.js" t="Include" />
                   <e p="raphael.min.js" t="Include" />
                   <e p="raphael.no-deps.js" t="Include" />
@@ -2341,14 +2345,14 @@
                       <e p="nl.js" t="Include" />
                       <e p="pl.js" t="Include" />
                       <e p="ps.js" t="Include" />
-                      <e p="pt-br.js" t="Include" />
+                      <e p="pt-BR.js" t="Include" />
                       <e p="pt.js" t="Include" />
                       <e p="ro.js" t="Include" />
                       <e p="ru.js" t="Include" />
                       <e p="sk.js" t="Include" />
                       <e p="sl.js" t="Include" />
                       <e p="sq.js" t="Include" />
-                      <e p="sr-cyrl.js" t="Include" />
+                      <e p="sr-Cyrl.js" t="Include" />
                       <e p="sr.js" t="Include" />
                       <e p="sv.js" t="Include" />
                       <e p="th.js" t="Include" />
@@ -2356,8 +2360,8 @@
                       <e p="tr.js" t="Include" />
                       <e p="uk.js" t="Include" />
                       <e p="vi.js" t="Include" />
-                      <e p="zh-cn.js" t="Include" />
-                      <e p="zh-tw.js" t="Include" />
+                      <e p="zh-CN.js" t="Include" />
+                      <e p="zh-TW.js" t="Include" />
                     </e>
                     <e p="select2.full.js" t="Include" />
                     <e p="select2.full.min.js" t="Include" />
@@ -2845,29 +2849,28 @@
             </e>
             <e p="treejs" t="Include">
               <e p="fonts" t="Include">
+                <e p="LICENSE" t="Include" />
+                <e p="README" t="Include" />
                 <e p="droid" t="Include">
+                  <e p="NOTICE" t="Include" />
+                  <e p="README.txt" t="Include" />
                   <e p="droid_sans_bold.typeface.json" t="Include" />
                   <e p="droid_sans_mono_regular.typeface.json" t="Include" />
                   <e p="droid_sans_regular.typeface.json" t="Include" />
                   <e p="droid_serif_bold.typeface.json" t="Include" />
                   <e p="droid_serif_regular.typeface.json" t="Include" />
-                  <e p="NOTICE" t="Include" />
-                  <e p="README.txt" t="Include" />
                 </e>
                 <e p="gentilis_bold.typeface.json" t="Include" />
                 <e p="gentilis_regular.typeface.json" t="Include" />
                 <e p="helvetiker_bold.typeface.json" t="Include" />
                 <e p="helvetiker_regular.typeface.json" t="Include" />
-                <e p="LICENSE" t="Include" />
                 <e p="optimer_bold.typeface.json" t="Include" />
                 <e p="optimer_regular.typeface.json" t="Include" />
-                <e p="README" t="Include" />
                 <e p="ttf" t="Include">
                   <e p="kenpixel.ttf" t="Include" />
                 </e>
               </e>
               <e p="libs" t="Include">
-                <e p="dat.gui.min.js" t="Include" />
                 <e p="FZYaoTi_Regular.json" t="Include" />
                 <e p="Line2.js" t="Include" />
                 <e p="LineGeometry.js" t="Include" />
@@ -2877,9 +2880,10 @@
                 <e p="MTLLoader.js" t="Include" />
                 <e p="OBJLoader.js" t="Include" />
                 <e p="OrbitControls.js" t="Include" />
-                <e p="stats.min.js" t="Include" />
                 <e p="TDSLoader.js" t="Include" />
                 <e p="ThreeBSP.js" t="Include" />
+                <e p="dat.gui.min.js" t="Include" />
+                <e p="stats.min.js" t="Include" />
               </e>
               <e p="my" t="Include">
                 <e p="door_left.png" t="Include" />
@@ -2896,10 +2900,15 @@
               <e p="textures" t="Include">
                 <e p="2294472375_24a3b8ef46_o.jpg" t="Include" />
                 <e p="3d" t="Include">
+                  <e p="Readme.txt" t="Include" />
                   <e p="head256x256x109.zip" t="Include" />
-                  <e p="README.txt" t="Include" />
                 </e>
                 <e p="758px-Canestra_di_frutta_(Caravaggio).jpg" t="Include" />
+                <e p="MaryOculus.webm" t="Include" />
+                <e p="MaryOculus.webm.nfo" t="Include" />
+                <e p="UV_Grid_Sm.jpg" t="Include" />
+                <e p="UV_Grid_Sm.txt" t="Include" />
+                <e p="WalkingManSpriteSheet.png" t="Include" />
                 <e p="brick_bump.jpg" t="Include" />
                 <e p="brick_diffuse.jpg" t="Include" />
                 <e p="brick_roughness.jpg" t="Include" />
@@ -2907,18 +2916,21 @@
                 <e p="cm_viridis.png" t="Include" />
                 <e p="colors.png" t="Include" />
                 <e p="compressed" t="Include">
+                  <e p="Mountains.dds" t="Include" />
+                  <e p="Mountains_argb_mip.dds" t="Include" />
+                  <e p="Mountains_argb_nomip.dds" t="Include" />
                   <e p="disturb_2bpp_rgb.pvr" t="Include" />
                   <e p="disturb_4bpp_rgb.pvr" t="Include" />
                   <e p="disturb_4bpp_rgb_mips.pvr" t="Include" />
                   <e p="disturb_4bpp_rgb_v3.pvr" t="Include" />
-                  <e p="disturb_argb_mip.dds" t="Include" />
-                  <e p="disturb_argb_nomip.dds" t="Include" />
                   <e p="disturb_ASTC4x4.ktx" t="Include" />
                   <e p="disturb_BC1.ktx" t="Include" />
-                  <e p="disturb_dxt1_mip.dds" t="Include" />
-                  <e p="disturb_dxt1_nomip.dds" t="Include" />
                   <e p="disturb_ETC1.ktx" t="Include" />
                   <e p="disturb_PVR2bpp.ktx" t="Include" />
+                  <e p="disturb_argb_mip.dds" t="Include" />
+                  <e p="disturb_argb_nomip.dds" t="Include" />
+                  <e p="disturb_dxt1_mip.dds" t="Include" />
+                  <e p="disturb_dxt1_nomip.dds" t="Include" />
                   <e p="explosion_dxt5_mip.dds" t="Include" />
                   <e p="flare_2bpp_rgba.pvr" t="Include" />
                   <e p="flare_4bpp_rgba.pvr" t="Include" />
@@ -2927,9 +2939,6 @@
                   <e p="lensflare_BC3.ktx" t="Include" />
                   <e p="lensflare_PVR4bpp 2.ktx" t="Include" />
                   <e p="lensflare_PVR4bpp.ktx" t="Include" />
-                  <e p="Mountains.dds" t="Include" />
-                  <e p="Mountains_argb_mip.dds" t="Include" />
-                  <e p="Mountains_argb_nomip.dds" t="Include" />
                   <e p="park3_cube_mip_2bpp_rgb_v3.pvr" t="Include" />
                   <e p="park3_cube_nomip_4bpp_rgb.pvr" t="Include" />
                 </e>
@@ -2944,7 +2953,7 @@
                     <e p="posx.jpg" t="Include" />
                     <e p="posy.jpg" t="Include" />
                     <e p="posz.jpg" t="Include" />
-                    <e p="README.txt" t="Include" />
+                    <e p="readme.txt" t="Include" />
                   </e>
                   <e p="MilkyWay" t="Include">
                     <e p="dark-s_nx.jpg" t="Include" />
@@ -2961,7 +2970,7 @@
                     <e p="posx.jpg" t="Include" />
                     <e p="posy.jpg" t="Include" />
                     <e p="posz.jpg" t="Include" />
-                    <e p="README.txt" t="Include" />
+                    <e p="readme.txt" t="Include" />
                   </e>
                   <e p="Park3Med" t="Include">
                     <e p="nx.jpg" t="Include" />
@@ -2970,7 +2979,16 @@
                     <e p="px.jpg" t="Include" />
                     <e p="py.jpg" t="Include" />
                     <e p="pz.jpg" t="Include" />
-                    <e p="README.txt" t="Include" />
+                    <e p="readme.txt" t="Include" />
+                  </e>
+                  <e p="SwedishRoyalCastle" t="Include">
+                    <e p="nx.jpg" t="Include" />
+                    <e p="ny.jpg" t="Include" />
+                    <e p="nz.jpg" t="Include" />
+                    <e p="px.jpg" t="Include" />
+                    <e p="py.jpg" t="Include" />
+                    <e p="pz.jpg" t="Include" />
+                    <e p="readme.txt" t="Include" />
                   </e>
                   <e p="pisa" t="Include">
                     <e p="nx.png" t="Include" />
@@ -3015,20 +3033,11 @@
                   </e>
                   <e p="sun_temple_stripe.jpg" t="Include" />
                   <e p="sun_temple_stripe_stereo.jpg" t="Include" />
-                  <e p="SwedishRoyalCastle" t="Include">
-                    <e p="nx.jpg" t="Include" />
-                    <e p="ny.jpg" t="Include" />
-                    <e p="nz.jpg" t="Include" />
-                    <e p="px.jpg" t="Include" />
-                    <e p="py.jpg" t="Include" />
-                    <e p="pz.jpg" t="Include" />
-                    <e p="README.txt" t="Include" />
-                  </e>
                 </e>
                 <e p="decal" t="Include">
+                  <e p="LICENSE.TXT" t="Include" />
                   <e p="decal-diffuse.png" t="Include" />
                   <e p="decal-normal.jpg" t="Include" />
-                  <e p="LICENSE.TXT" t="Include" />
                 </e>
                 <e p="disturb.jpg" t="Include" />
                 <e p="envmap.png" t="Include" />
@@ -3049,19 +3058,17 @@
                   <e p="lavatile.jpg" t="Include" />
                 </e>
                 <e p="lensflare" t="Include">
+                  <e p="LICENSE.txt" t="Include" />
                   <e p="hexangle.png" t="Include" />
                   <e p="lensflare0.png" t="Include" />
                   <e p="lensflare0_alpha.png" t="Include" />
                   <e p="lensflare1.png" t="Include" />
                   <e p="lensflare2.png" t="Include" />
                   <e p="lensflare3.png" t="Include" />
-                  <e p="LICENSE.TXT" t="Include" />
                 </e>
-                <e p="MaryOculus.webm" t="Include" />
-                <e p="MaryOculus.webm.nfo" t="Include" />
                 <e p="matcaps" t="Include">
                   <e p="matcap-porcelain-white.jpg" t="Include" />
-                  <e p="README.txt" t="Include" />
+                  <e p="readme.txt" t="Include" />
                 </e>
                 <e p="memorial.png" t="Include" />
                 <e p="metal.jpg" t="Include" />
@@ -3078,7 +3085,7 @@
                 <e p="patterns" t="Include">
                   <e p="bright_squares256.png" t="Include" />
                   <e p="circuit_pattern.png" t="Include" />
-                  <e p="README.txt" t="Include" />
+                  <e p="readme.txt" t="Include" />
                 </e>
                 <e p="perlin-512.png" t="Include" />
                 <e p="piz_compressed.exr" t="Include" />
@@ -3121,7 +3128,7 @@
                   <e p="grasslight-big-nm.jpg" t="Include" />
                   <e p="grasslight-big.jpg" t="Include" />
                   <e p="grasslight-thin.jpg" t="Include" />
-                  <e p="README.txt" t="Include" />
+                  <e p="readme.txt" t="Include" />
                 </e>
                 <e p="transition" t="Include">
                   <e p="transition1.png" t="Include" />
@@ -3133,9 +3140,6 @@
                 </e>
                 <e p="tri_pattern.jpg" t="Include" />
                 <e p="uncompressed.exr" t="Include" />
-                <e p="UV_Grid_Sm.jpg" t="Include" />
-                <e p="UV_Grid_Sm.txt" t="Include" />
-                <e p="WalkingManSpriteSheet.png" t="Include" />
                 <e p="water" t="Include">
                   <e p="Water_1_M_Flow.jpg" t="Include" />
                   <e p="Water_1_M_Normal.jpg" t="Include" />
@@ -3162,6 +3166,7 @@
                 <e p="organization.js" t="Include" />
                 <e p="ou.js" t="Include" />
                 <e p="phy-warehouse.js" t="Include" />
+                <e p="project.js" t="Include" />
                 <e p="reservoirarea.js" t="Include" />
                 <e p="stock-location.js" t="Include" />
                 <e p="supplier.js" t="Include" />
@@ -3171,6 +3176,7 @@
               <e p="organization.html" t="Include" />
               <e p="ou.html" t="Include" />
               <e p="phy-warehouse.html" t="Include" />
+              <e p="project.html" t="Include" />
               <e p="reservoirarea.html" t="Include" />
               <e p="stock-location.html" t="Include" />
               <e p="supplier.html" t="Include" />
@@ -3321,9 +3327,8 @@
           </e>
         </e>
       </e>
-      <e p="WMSX.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="src" t="Include" />
     </e>
-    <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
-    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
   </component>
 </project>

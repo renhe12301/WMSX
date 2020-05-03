@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/Infrastructure.csproj",
+    "projectUniqueName": "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj",
     "projectName": "Infrastructure",
-    "projectPath": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/Infrastructure.csproj",
-    "outputPath": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/Infrastructure/obj/",
+    "projectPath": "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj",
+    "outputPath": "/home/renhe/RiderProjects/WMSX/Infrastructure/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netstandard2.1"
@@ -15,8 +15,8 @@
     "frameworks": {
       "netstandard2.1": {
         "projectReferences": {
-          "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/ApplicationCore.csproj": {
-            "projectPath": "/Users/renhe/Library/Mobile Documents/com~apple~CloudDocs/WorkSpace/c#/WMSX/ApplicationCore/ApplicationCore.csproj"
+          "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj": {
+            "projectPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj"
           }
         }
       }
@@ -60,7 +60,7 @@
           "privateAssets": "all"
         }
       },
-      "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.201/RuntimeIdentifierGraph.json"
     }
   }
 }
