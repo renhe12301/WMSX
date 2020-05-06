@@ -35,8 +35,8 @@ namespace Infrastructure.Data
         public DbSet<PhyWarehouse> PhyWarehouse { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderRow> OrderRow { get; set; }
-        public DbSet<EBSProject> EbsProject { get; set; }
-        public DbSet<EBSTask> EbsTask { get; set; }
+        public DbSet<EBSProject> EBSProject { get; set; }
+        public DbSet<EBSTask> EBSTask { get; set; }
         public DbSet<InOutRecord> InOutRecord { get; set; }
         public DbSet<LogRecord> LogRecord { get; set; }
         public DbSet<OrderRowBatch> OrderRowBatch { get; set; }
