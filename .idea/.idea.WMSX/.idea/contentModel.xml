@@ -343,7 +343,6 @@
         </e>
         <e p="Web.csproj" t="IncludeRecursive" />
         <e p="WebServices" t="Include">
-          <e p="ClientProxys" t="Include" />
           <e p="Interfaces" t="Include">
             <e p="IOrderSOAPService.cs" t="Include" />
           </e>
