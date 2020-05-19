@@ -938,11 +938,11 @@
             <param name="RequestRKJSOrders"></param>
             <returns></returns>
         </member>
-        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.CreateCKLLOrder(Web.WebServices.Models.RequestCKLLOrder[],System.Boolean)">
+        <member name="M:Web.WebServices.Interfaces.IOrderSOAPService.Hello(System.String)">
             <summary>
-            创建出库订单[出库领料、出库退料]
+            测试使用
             </summary>
-            <param name="RequestCKLLOrders"></param>
+            <param name="name"></param>
             <returns></returns>
         </member>
     </members>

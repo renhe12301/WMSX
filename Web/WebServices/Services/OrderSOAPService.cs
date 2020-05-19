@@ -31,38 +31,22 @@ namespace Web.WebServices.Services
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly ILogRecordService _logRecordService;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
-
+        
         public OrderSOAPService()
         {
-        }
-
-        public OrderSOAPService(IAsyncRepository<OU> ouRepository,
-                                IAsyncRepository<Order> orderRepository,
-                                IAsyncRepository<Warehouse> warehouseRepository,
-                                IAsyncRepository<Supplier> supplierRepository,
-                                IAsyncRepository<SupplierSite> supplierSiteRepository,
-                                IAsyncRepository<MaterialDic> materialDicRepository,
-                                IAsyncRepository<EBSProject> ebsProjectRepository,
-                                IAsyncRepository<EBSTask> ebsTaskRepository,
-                                IAsyncRepository<Employee> employeeRepository,
-                                IAsyncRepository<Organization> organizationRepository,
-                                IAsyncRepository<ReservoirArea> areaRepository,
-                                ILogRecordService logRecordService,
-                                IAsyncRepository<OrderRow> orderRowRepository)
-        {
-            this._ouRepository = ouRepository;
-            this._orderRepository = orderRepository;
-            this._warehouseRepository = warehouseRepository;
-            this._supplierRepository = supplierRepository;
-            this._supplierSiteRepository = supplierSiteRepository;
-            this._materialDicRepository = materialDicRepository;
-            this._ebsProjectRepository = ebsProjectRepository;
-            this._ebsTaskRepository = ebsTaskRepository;
-            this._employeeRepository = employeeRepository;
-            this._organizationRepository = organizationRepository;
-            this._areaRepository = areaRepository;
-            this._logRecordService = logRecordService;
-            this._orderRowRepository = orderRowRepository;
+            this._ouRepository = EnginContext.Current.Resolve<IAsyncRepository<OU>>();
+            this._orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();;
+            this._warehouseRepository = EnginContext.Current.Resolve<IAsyncRepository<Warehouse>>();;
+            this._supplierRepository = EnginContext.Current.Resolve<IAsyncRepository<Supplier>>();;
+            this._supplierSiteRepository = EnginContext.Current.Resolve<IAsyncRepository<SupplierSite>>();;
+            this._materialDicRepository = EnginContext.Current.Resolve<IAsyncRepository<MaterialDic>>();;
+            this._ebsProjectRepository = EnginContext.Current.Resolve<IAsyncRepository<EBSProject>>();;
+            this._ebsTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<EBSTask>>();;
+            this._employeeRepository = EnginContext.Current.Resolve<IAsyncRepository<Employee>>();;
+            this._organizationRepository = EnginContext.Current.Resolve<IAsyncRepository<Organization>>();;
+            this._areaRepository = EnginContext.Current.Resolve<IAsyncRepository<ReservoirArea>>();;
+            this._logRecordService = EnginContext.Current.Resolve<ILogRecordService>();;
+            this._orderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<OrderRow>>();;
         }
 
         public async Task<ResponseResult> CreateRKJSOrder(RequestRKJSOrder[] RequestRKJSOrders,bool bulkTransaction)
@@ -991,7 +975,7 @@ namespace Web.WebServices.Services
 
         public string Hello(string name)
         {
-            throw new NotImplementedException();
+            return "服务器响应：" + name;
         }
     }
 }

@@ -17,15 +17,20 @@ namespace Web.WebServices.Interfaces
         /// <returns></returns>
         [OperationContract]
         Task<ResponseResult> CreateRKJSOrder(RequestRKJSOrder[] RequestRKJSOrders,bool bulkTransaction = false);
-        
-        /// <summary>
-        /// 创建出库订单[出库领料、出库退料]
-        /// </summary>
-        /// <param name="RequestCKLLOrders"></param>
-        /// <returns></returns>
+        //
+        // /// <summary>
+        // /// 创建出库订单[出库领料、出库退料]
+        // /// </summary>
+        // /// <param name="RequestCKLLOrders"></param>
+        // /// <returns></returns>
         [OperationContract]
         Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction = false);
 
+        /// <summary>
+        /// 测试使用
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [OperationContract]
         string Hello(string name);
     }

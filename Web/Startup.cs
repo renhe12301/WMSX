@@ -28,6 +28,8 @@ using Quartz.Impl;
 using Quartz;
 using Web;
 using Web.Hubs;
+using Web.WebServices.Interfaces;
+using Web.WebServices.Services;
 
 namespace Web
 {
@@ -121,7 +123,7 @@ namespace Web
             services.AddSingleton<IJobFactory, IOCJobFactory>();
 
             //soap 服务
-            services.TryAddScoped<WebServices.Interfaces.IOrderSOAPService, WebServices.Services.OrderSOAPService>();
+            //services.TryAddScoped<WebServices.Interfaces.IOrderSOAPService, WebServices.Services.OrderSOAPService>();
             //services.AddScoped(typeof(WebServices.Interfaces.IOrderSOAPService), typeof(WebServices.Services.OrderSOAPService));
          
             EnginContext.initialize(new GeneralEngine(services.BuildServiceProvider()));
@@ -133,6 +135,9 @@ namespace Web
             {
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
+            
+            services.AddSoapCore();
+            services.TryAddSingleton<OrderSOAPService>();
 
             services.AddMvc(options =>
             {
@@ -141,8 +146,6 @@ namespace Web
 
             });
 
-            services.AddSoapCore();
-            
             //开始试图到控制器映射功能
             services.AddControllersWithViews();
             services.AddControllers();
@@ -200,11 +203,23 @@ namespace Web
             //app.UseAuthorization();
 
             app.UseCors();
-           
+            
+            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None)
+            {
+                MaxBufferPoolSize = 2147483647,
+                MaxBufferSize = 2147483647,
+                MaxReceivedMessageSize = 2147483647,
+                OpenTimeout = new TimeSpan(0, 10, 0),
+                CloseTimeout = new TimeSpan(0, 10, 0),
+                SendTimeout = new TimeSpan(0, 10, 0),
+                ReceiveTimeout = new TimeSpan(0, 10, 0)
+            };
+            
             // WSDL 服务类
-            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.wsdl", new BasicHttpBinding(),SoapSerializer.XmlSerializer);
-
-           
+            app.UseEndpoints(endpoints => {
+                endpoints.UseSoapEndpoint<OrderSOAPService>("/WebService/OrderService.wsdl", new BasicHttpBinding());
+            });
+            
             //路由url格式转换，统一转换成小写
             app.UseEndpoints(endpoints =>
             {
