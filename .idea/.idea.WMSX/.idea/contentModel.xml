@@ -3273,6 +3273,7 @@
               <e p="out-record.html" t="Include" />
               <e p="sys-record.html" t="Include" />
             </e>
+            <e p="mobile" t="Include" />
             <e p="order-manager" t="Include">
               <e p="in-out-order.html" t="Include" />
               <e p="in-recv-order.html" t="Include" />
