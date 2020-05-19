@@ -23,6 +23,7 @@ using Quartz.Spi;
 using SoapCore;
 using Web.Jobs;
 using log4net.Config;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
 using Web;
@@ -120,7 +121,8 @@ namespace Web
             services.AddSingleton<IJobFactory, IOCJobFactory>();
 
             //soap 服务
-            services.AddScoped(typeof(WebServices.Interfaces.IOrderSOAPService), typeof(WebServices.Services.OrderSOAPService));
+            services.TryAddScoped<WebServices.Interfaces.IOrderSOAPService, WebServices.Services.OrderSOAPService>();
+            //services.AddScoped(typeof(WebServices.Interfaces.IOrderSOAPService), typeof(WebServices.Services.OrderSOAPService));
          
             EnginContext.initialize(new GeneralEngine(services.BuildServiceProvider()));
 
@@ -138,8 +140,9 @@ namespace Web
                          new SlugifyParameterTransformer()));
 
             });
-            
 
+            services.AddSoapCore();
+            
             //开始试图到控制器映射功能
             services.AddControllersWithViews();
             services.AddControllers();
@@ -199,7 +202,7 @@ namespace Web
             app.UseCors();
            
             // WSDL 服务类
-            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.wsdl", new BasicHttpBinding());
+            app.UseSoapEndpoint<WebServices.Services.OrderSOAPService>("/WebService/OrderService.wsdl", new BasicHttpBinding(),SoapSerializer.XmlSerializer);
 
            
             //路由url格式转换，统一转换成小写

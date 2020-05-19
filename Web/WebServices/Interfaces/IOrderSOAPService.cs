@@ -25,5 +25,8 @@ namespace Web.WebServices.Interfaces
         /// <returns></returns>
         [OperationContract]
         Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction = false);
+
+        [OperationContract]
+        string Hello(string name);
     }
 }

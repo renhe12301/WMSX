@@ -32,6 +32,10 @@ namespace Web.WebServices.Services
         private readonly ILogRecordService _logRecordService;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
 
+        public OrderSOAPService()
+        {
+        }
+
         public OrderSOAPService(IAsyncRepository<OU> ouRepository,
                                 IAsyncRepository<Order> orderRepository,
                                 IAsyncRepository<Warehouse> warehouseRepository,
@@ -983,6 +987,11 @@ namespace Web.WebServices.Services
                 return responseResult;
             }
 
+        }
+
+        public string Hello(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }
