@@ -457,7 +457,7 @@ namespace Web.WebServices.Services
             }
         }
 
-        public async Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction)
+        public  async Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction)
         {
             Guard.Against.Null(RequestCKLLOrders, nameof(RequestCKLLOrders));
             using (ModuleLock.GetAsyncLock().LockAsync())
@@ -977,5 +977,6 @@ namespace Web.WebServices.Services
         {
             return "服务器响应：" + name;
         }
+        
     }
 }
