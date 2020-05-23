@@ -5,19 +5,25 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderRowSpecification: BaseSpecification<SubOrderRow>
     {
-        public SubOrderRowSpecification(int? id,int? orderId,int? orderType,int? orderRowId,string orderNumber,
-              List<int> status,string sCreateTime, string eCreateTime,
-             string sFinishTime, string eFinishTime)
+        public SubOrderRowSpecification(int? id, int? subOrderId,int? orderRowId,
+            int? orderTypeId,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
+            string supplierSiteName,List<int> status,string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
-                  (!orderId.HasValue||b.SubOrderId==orderId)&&
-                  (!orderType.HasValue||b.SubOrder.OrderTypeId==orderType)&&
-                  (!orderRowId.HasValue||b.OrderRowId==orderRowId)&&
-                  (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
-                  (orderNumber == null || b.SubOrder.OrderNumber==orderNumber) &&
-                  (sCreateTime == null || b.CreateTime >= DateTime.Parse(sCreateTime)) &&
-                  (eCreateTime == null || b.CreateTime <= DateTime.Parse(eCreateTime)) &&
-                  (sFinishTime == null || b.FinishTime >= DateTime.Parse(sFinishTime)) &&
-                  (eFinishTime == null || b.FinishTime <= DateTime.Parse(eFinishTime)))
+                       (!subOrderId.HasValue||b.SubOrderId==subOrderId)&&
+                       (!orderRowId.HasValue||b.OrderRowId==orderRowId)&&
+                       (!orderTypeId.HasValue||b.SubOrder.OrderTypeId==orderTypeId)&&
+                       (!ouId.HasValue||b.SubOrder.OUId==ouId)&&
+                       (!warehouseId.HasValue||b.SubOrder.WarehouseId==warehouseId)&&
+                       (!pyId.HasValue||b.SubOrder.PhyWarehouseId==pyId)&&
+                       (!supplierId.HasValue||b.SubOrder.SupplierId==supplierId)&&
+                       (supplierName == null || b.SubOrder.Supplier.SupplierName.Contains(supplierName)) &&
+                       (!supplierSiteId.HasValue||b.SubOrder.SupplierSiteId==supplierSiteId)&&
+                       (supplierSiteName == null || b.SubOrder.SupplierSite.SiteName.Contains(supplierSiteName)) &&
+                       (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
+                       (sCreateTime == null || b.CreateTime >= DateTime.Parse(sCreateTime)) &&
+                       (eCreateTime == null || b.CreateTime <= DateTime.Parse(eCreateTime)) &&
+                       (sFinishTime == null || b.FinishTime >= DateTime.Parse(sFinishTime)) &&
+                       (eFinishTime == null || b.FinishTime <= DateTime.Parse(eFinishTime)))
         {
             AddInclude(b => b.SubOrder);
             AddInclude(b=>b.MaterialDic);

@@ -22,6 +22,77 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
+        ///  获得拆分订单数据
+        /// </summary>
+        /// <param name="pageIndex">分页索引</param>
+        /// <param name="itemsPage">当前页</param>
+        /// <param name="id">编号</param>
+        /// <param name="orderNumber">订单号</param>
+        /// <param name="orderTypeId">订单类型</param>
+        /// <param name="status">状态</param>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="warehouseId">库存组织编号</param>
+        /// <param name="pyId">物理仓库编号</param>
+        /// <param name="supplierId">供应商编号</param>
+        /// <param name="supplierName">供应商名称</param>
+        /// <param name="supplierSiteId">供应商站编号</param>
+        /// <param name="supplierSiteName">供应商站名称</param>
+        /// <param name="sCreateTime">创建开始时间</param>
+        /// <param name="eCreateTime">创建结束时间</param>
+        /// <param name="sFinishTime">完成开始时间</param>
+        /// <param name="eFinishTime">完成结束时间</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
+            int?id,string orderNumber, int? orderTypeId,
+            string status,int? ouId,int? warehouseId,int? pyId,
+            int? supplierId, string supplierName,
+            int? supplierSiteId,string supplierSiteName,
+            string sCreateTime, string eCreateTime,
+            string sFinishTime, string eFinishTime)
+        {
+            var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
+                orderTypeId, status,ouId,warehouseId,pyId, supplierSiteId,supplierSiteName,
+                supplierId, supplierName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
+        /// <summary>
+        /// 获得拆分订单行数据
+        /// </summary>
+        /// <param name="pageIndex">分页索引</param>
+        /// <param name="itemsPage">当前页</param>
+        /// <param name="id">订单行编号</param>
+        /// <param name="subOrderId">订单头编号</param>
+        /// <param name="orderRowId">关联订单行编号</param>
+        /// <param name="orderTypeId">关联订单类型编号</param>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="warehouseId">库存组织编号</param>
+        /// <param name="pyId">物理仓库编号</param>
+        /// <param name="supplierId">供应商编号</param>
+        /// <param name="supplierName">供应商名称</param>
+        /// <param name="supplierSiteId">供应商站点编号</param>
+        /// <param name="supplierSiteName">供应商站点名称</param>
+        /// <param name="status">状态</param>
+        /// <param name="sCreateTime">创建开始时间</param>
+        /// <param name="eCreateTime">创建结束时间</param>
+        /// <param name="sFinishTime">完成开始时间</param>
+        /// <param name="eFinishTime">完成结束时间</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId,
+            int? orderRowId,int? orderTypeId, int? ouId, int? warehouseId, int? pyId, int? supplierId, string supplierName,
+            int? supplierSiteId, string supplierSiteName, string status, string sCreateTime, string eCreateTime,
+            string sFinishTime,string eFinishTime)
+        {
+            var response = await this._subOrderViewModelService.GetOrderRows(pageIndex, itemsPage, id, subOrderId,
+                orderRowId,orderTypeId, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
+                status,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
+
+        /// <summary>
         /// 拆分前置订单
         /// </summary>
         /// <param name="orderViewModel"></param>

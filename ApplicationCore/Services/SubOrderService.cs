@@ -100,7 +100,7 @@ namespace ApplicationCore.Services
                             
                             SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id,null,
                                 null,null,null,null,null,null,null,null,
-                                null,null,null);
+                                null,null,null,null,null);
                             List<SubOrder> subOrders = await this._subOrderRepository.ListAsync(subOrderSpecification);
                             Guard.Against.Zero(subOrders.Count,nameof(subOrders));
                             SubOrder subOrder = subOrders.First();
@@ -110,8 +110,8 @@ namespace ApplicationCore.Services
                             subOrder.Status = Convert.ToInt32(ORDER_STATUS.关闭);
                             
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                subOrder.Id,null,null,null,null,null,
-                                null,null,null);
+                                subOrder.Id,null,null,null,null,null,null,null
+                                ,null,null,null,null,null,null,null);
                             List<SubOrderRow> subOrderRows = await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
                             List<OrderRow> updOrderRows = new List<OrderRow>();
                             foreach (var subOrderRow in subOrderRows)
@@ -167,16 +167,17 @@ namespace ApplicationCore.Services
                             List<OrderRow> updOrderRows = new List<OrderRow>();
                             foreach (var sr in subOrderRows)
                             {
-                                SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,
-                                    null,null,null,null,null,null,
-                                    null,null,null);
+                                SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,null
+                                    ,null,null,null,null,null,null,null
+                                    ,null,null,null,null,null,null,null);
                                 List<SubOrderRow> findSubOrderRows = await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
                                 SubOrderRow subOrderRow = findSubOrderRows.First();
                                 if (subOrderRow.Status!=Convert.ToInt32(ORDER_STATUS.待处理))
                                     throw new Exception(string.Format("订单行[{0}]状态必须为待处理才能作废!",subOrderRow.Id));
                                 sr.Status = Convert.ToInt32(ORDER_STATUS.关闭);
                                 OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
-                                    null,null,null,null,null,null,null,null,null);
+                                    null,null,null,null,null,null,null,
+                                    null,null);
                                 List<OrderRow> orderRows =
                                     await this._orderRowRepository.ListAsync(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count,nameof(orderRows));

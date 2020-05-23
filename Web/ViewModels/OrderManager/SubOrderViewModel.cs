@@ -73,7 +73,7 @@ namespace Web.ViewModels.OrderManager
         /// <summary>
         /// 关联供应商头
         /// </summary>
-        public string SpplierName { get; set; }
+        public string SupplierName { get; set; }
 
         /// <summary>
         /// 供应商站点编号
