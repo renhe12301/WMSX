@@ -41,6 +41,8 @@ namespace Infrastructure.Data
         public DbSet<LogRecord> LogRecord { get; set; }
         public DbSet<OrderRowBatch> OrderRowBatch { get; set; }
         public DbSet<SysConfig> SysConfig { get; set; }
+        public DbSet<SubOrder> SubOrder { get; set; }
+        public DbSet<SubOrderRow> SubOrderRow { get; set; }
 
         public BaseContext(DbContextOptions<BaseContext> options) : base(options)
         {
