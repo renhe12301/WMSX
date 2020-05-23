@@ -1,14 +1,19 @@
 ﻿using System;
 using ApplicationCore.Entities.BasicInformation;
 
-namespace ApplicationCore.Entities.OrderManager
+namespace Web.ViewModels.OrderManager
 {
-    public class OrderRow:BaseEntity
+    /// <summary>
+    /// 出入库拆分订单行
+    /// </summary>
+    public class SubOrderRowViewModel
     {
+        public int Id { get; set; }
+
         /// <summary>
         /// 关联订单Id
         /// </summary>
-        public int OrderId { get; set; }
+        public int SubOrderId { get; set; }
 
         /// <summary>
         /// 订单行编号
@@ -20,19 +25,23 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public int? ReservoirAreaId { get; set; }
 
+        public string ReservoirAreaName { get; set; }
+
         /// <summary>
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
-        
+
+        public string MaterialDicName { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime? CreateTime { get; set; }
+        public string CreateTime { get; set; }
         /// <summary>
         /// 订单完成时间
         /// </summary>
-        public DateTime? FinishTime { get; set; }
+        public string FinishTime { get; set; }
         /// <summary>
         /// 订单物料数量
         /// </summary>
@@ -50,12 +59,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// 不合格数量
         /// </summary>
         public int? BadCount { get; set; }
-
-        /// <summary>
-        /// 取消数量
-        /// </summary>
-        public int? CancelCount { get; set; }
-
+        
         /// <summary>
         /// 完成进度
         /// </summary>
@@ -64,38 +68,18 @@ namespace ApplicationCore.Entities.OrderManager
         /// 备注
         /// </summary>
         public string Memo { get; set; }
-        /// <summary>
-        /// 关联订单
-        /// </summary>
-        public Order Order { get; set; }
-        /// <summary>
-        /// 关联分区
-        /// </summary>
-        public ReservoirArea ReservoirArea { get; set; }
-
-        /// <summary>
-        /// 关联物料字典
-        /// </summary>
-        public MaterialDic MaterialDic { get; set; }
 
         /// <summary>
         /// 订单行状态
         /// </summary>
         public int? Status { get; set; }
 
+        public string StatusStr { get; set; }
+
         /// <summary>
-        /// 任务编号
+        /// 关联前置订单行编号
         /// </summary>
-        public int? EBSTaskId { get; set; }
-        /// <summary>
-        /// 关联任务实体
-        /// </summary>
-        public EBSTask EBSTask { get; set; }
-        
-        /// <summary>
-        /// 第三方系统编号
-        /// </summary>
-        public int? SourceId { get; set; }
+        public int? OrderRowId { get; set; }
         
         /// <summary>
         /// 不含税单价
@@ -111,17 +95,13 @@ namespace ApplicationCore.Entities.OrderManager
         /// 用途
         /// </summary>
         public string UseFor { get; set; }
-
+        
         /// <summary>
-        /// 关联订单行编号
+        /// 订单是否作废
         /// </summary>
-        public int? RelatedId { get; set; }
+        public int IsScrap { get; set; }
 
-        /// <summary>
-        /// 消耗数量
-        /// </summary>
-        public int? Expend { get; set; }
-
+        public string IsScrapStr { get; set; }
 
     }
 }

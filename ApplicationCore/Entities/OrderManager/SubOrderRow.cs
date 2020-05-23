@@ -3,12 +3,15 @@ using ApplicationCore.Entities.BasicInformation;
 
 namespace ApplicationCore.Entities.OrderManager
 {
-    public class OrderRow:BaseEntity
+    /// <summary>
+    /// 出入库拆分订单行
+    /// </summary>
+    public class SubOrderRow:BaseEntity
     {
         /// <summary>
         /// 关联订单Id
         /// </summary>
-        public int OrderId { get; set; }
+        public int SubOrderId { get; set; }
 
         /// <summary>
         /// 订单行编号
@@ -50,12 +53,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// 不合格数量
         /// </summary>
         public int? BadCount { get; set; }
-
-        /// <summary>
-        /// 取消数量
-        /// </summary>
-        public int? CancelCount { get; set; }
-
+        
         /// <summary>
         /// 完成进度
         /// </summary>
@@ -67,7 +65,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 关联订单
         /// </summary>
-        public Order Order { get; set; }
+        public SubOrder SubOrder { get; set; }
         /// <summary>
         /// 关联分区
         /// </summary>
@@ -82,21 +80,14 @@ namespace ApplicationCore.Entities.OrderManager
         /// 订单行状态
         /// </summary>
         public int? Status { get; set; }
+        
+        /// <summary>
+        /// 关联前置订单行编号
+        /// </summary>
+        public int? OrderRowId { get; set; }
 
-        /// <summary>
-        /// 任务编号
-        /// </summary>
-        public int? EBSTaskId { get; set; }
-        /// <summary>
-        /// 关联任务实体
-        /// </summary>
-        public EBSTask EBSTask { get; set; }
-        
-        /// <summary>
-        /// 第三方系统编号
-        /// </summary>
-        public int? SourceId { get; set; }
-        
+        public OrderRow OrderRow { get; set; }
+
         /// <summary>
         /// 不含税单价
         /// </summary>
@@ -111,16 +102,12 @@ namespace ApplicationCore.Entities.OrderManager
         /// 用途
         /// </summary>
         public string UseFor { get; set; }
-
+        
         /// <summary>
-        /// 关联订单行编号
+        /// 订单是否作废
         /// </summary>
-        public int? RelatedId { get; set; }
-
-        /// <summary>
-        /// 消耗数量
-        /// </summary>
-        public int? Expend { get; set; }
+        public int IsScrap { get; set; }
+        
 
 
     }
