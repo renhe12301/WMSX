@@ -38,8 +38,8 @@ namespace ApplicationCore.Entities.StockManager
         public Location Location { get; set; }
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
-        public Order Order { get; set; }
-        public OrderRow OrderRow { get; set; }
+        public SubOrder SubOrder { get; set; }
+        public SubOrderRow SubOrderRow { get; set; }
         
         /// <summary>
         /// 物理仓库编号

@@ -10,6 +10,9 @@ namespace ApplicationCore.Interfaces
     {
         Task<T> GetByIdAsync(int id);
         Task<List<T>> ListAllAsync();
+        List<T> ListAll();
+        List<T> List(ISpecification<T> spec);
+        
         Task<List<T>> ListAsync(ISpecification<T> spec);
         Task<T> AddAsync(T entity);
         T Add(T entity);

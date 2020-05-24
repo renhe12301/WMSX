@@ -27,6 +27,16 @@ namespace Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public List<T> ListAll()
+        {
+            return _dbContext.Set<T>().ToList();
+        }
+
+        public List<T> List(ISpecification<T> spec)
+        {
+            return ApplySpecification(spec).ToList();
+        }
+
         public async Task<List<T>> ListAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();

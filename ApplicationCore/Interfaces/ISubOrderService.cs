@@ -6,9 +6,12 @@ namespace ApplicationCore.Interfaces
 {
     public interface ISubOrderService
     {
-        Task CreateOrder(SubOrder order);
+        
+        Task SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode,int areaId, string tag);
+        
+        Task CreateOrder(SubOrder subOrder);
 
-        Task ScrapOrder(SubOrder order);
+        Task ScrapOrder(SubOrder subOrder);
 
         Task ScrapOrderRow(List<SubOrderRow> subOrderRows);
     }

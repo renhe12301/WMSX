@@ -16,7 +16,7 @@ namespace Web.WebServices.Interfaces
         /// <param name="RequestRKJSOrders"></param>
         /// <returns></returns>
         [OperationContract]
-        Task<ResponseResult> CreateRKJSOrder(RequestRKJSOrder[] RequestRKJSOrders,bool bulkTransaction = true);
+        Task<ResponseResult> CreateRKJSOrder(RequestRKJSOrder[] RequestRKJSOrders);
         //
         // /// <summary>
         // /// 创建出库订单[出库领料、出库退料]
@@ -24,7 +24,7 @@ namespace Web.WebServices.Interfaces
         // /// <param name="RequestCKLLOrders"></param>
         // /// <returns></returns>
         [OperationContract]
-        Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders,bool bulkTransaction = true);
+        Task<ResponseResult> CreateCKLLOrder(RequestCKLLOrder[] RequestCKLLOrders);
 
         /// <summary>
         /// 测试使用

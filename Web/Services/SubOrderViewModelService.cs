@@ -115,6 +115,22 @@ namespace Web.Services
             throw new NotImplementedException();
         }
 
+        public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode, int areaId, string tag)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                this._subOrderService.SortingOrder(subOrderId, subOrderRowId, sortingCount, trayCode, areaId, tag);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+
         public async Task<ResponseResultViewModel> CreateOrder(SubOrderViewModel subOrderViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };

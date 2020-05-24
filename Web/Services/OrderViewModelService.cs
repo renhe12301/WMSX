@@ -275,24 +275,6 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> SortingOrder(OrderRowViewModel orderRow)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._orderService.SortingOrder(orderRow.OrderId,
-                    orderRow.Id.GetValueOrDefault(), orderRow.Sorting, orderRow.BadCount,
-                    orderRow.TrayCode, orderRow.ReservoirAreaId.GetValueOrDefault(),
-                    orderRow.Tag);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
         public async Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };

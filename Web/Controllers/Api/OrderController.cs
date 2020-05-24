@@ -72,19 +72,6 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
-
-        /// <summary>
-        /// 订单入库分拣
-        /// </summary>
-        /// <param name="orderRowViewModel">入库订单行JSON对象</param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> SortingOrder([FromBody]OrderRowViewModel orderRowViewModel)
-        {
-            var response = await this._orderViewModelService.SortingOrder(orderRowViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-        
         /// <summary>
         /// 创建退库订单
         /// </summary>

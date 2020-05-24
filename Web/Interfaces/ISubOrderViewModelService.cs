@@ -18,6 +18,8 @@ namespace Web.Interfaces
             int? orderTypeId,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
             string supplierSiteName,string status,string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
+        Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode,int areaId, string tag);
+        
         Task<ResponseResultViewModel> CreateOrder(SubOrderViewModel subOrderViewModel);
 
         Task<ResponseResultViewModel> ScrapOrder(SubOrderViewModel subOrderViewModel);
