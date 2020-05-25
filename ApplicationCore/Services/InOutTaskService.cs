@@ -131,6 +131,11 @@ namespace ApplicationCore.Services
         {
             Guard.Against.NullOrEmpty(fromPort, nameof(fromPort));
             Guard.Against.NullOrEmpty(barCode, nameof(barCode));
+            LocationSpecification locationSpecification = new LocationSpecification(null, fromPort, null, null,
+                null, null, null, null, null, null, null, null, null, null);
+            List<Location> locations = await this._locationRepository.ListAsync(locationSpecification);
+            if(locations.Count==0)
+                throw new Exception(string.Format("货位[{0}]不存在!",fromPort));
             WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode, null, null,
                 null, null, null, null, null, null, null,null);
             List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
@@ -142,15 +147,16 @@ namespace ApplicationCore.Services
             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
             warehouseTray.CargoHeight = cargoHeight;
             warehouseTray.CargoWeight = cargoWeight;
+            warehouseTray.LocationId = locations.First().Id;
             await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
         }
 
-        public async Task TaskReport(int taskId,long reportTime, int taskStatus,string error)
+        public async Task TaskReport(int taskId,long reportTime, int taskStatus, string error)
         {
             InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,
                                               null,null,null,null,null, 
                                               null,null, null, null, null);
-            var tasks = await this._inOutTaskRepository.ListAsync(taskSpec);
+            var tasks =  this._inOutTaskRepository.List(taskSpec);
             if (tasks.Count==0)
                 throw  new Exception(string.Format("任务编号[{0}],不存在！",taskId));
             var task = tasks[0];
@@ -158,100 +164,83 @@ namespace ApplicationCore.Services
             WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
                                        task.TrayCode, null, null, null,null,null, 
                                        null, null, null, null,null);
-            var warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+            var warehouseTrays =  this._warehouseTrayRepository.List(warehouseTraySpec);
             var warehouseTray = warehouseTrays[0];
-            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(task.TrayCode,null,null,null,
-                null,null,null,null,null,null,
-                     new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
-                    null,null,null,null );
-            List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-            task.Step = taskStatus;
-            if (taskStatus == Convert.ToInt32(TASK_STEP.任务开始))
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                task.Status = Convert.ToInt32(TASK_STATUS.执行中);
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中未执行))
+                try
                 {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已执行);
-                }
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中未执行))
-                {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中已执行);
-                }
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                {
-                    
-                    if (inOutRecords.Count > 0)
+                    task.Step = taskStatus;
+                    if (taskStatus == Convert.ToInt32(TASK_STEP.任务开始))
                     {
-                        InOutRecord inOutRecord = inOutRecords[0];
-                        inOutRecord.Status = Convert.ToInt32(ORDER_STATUS.执行中);
-                        this._inOutRecordRepository.Update(inOutRecord);
-                    }
-                     this._warehouseTrayRepository.Update(warehouseTray);
-                     this._inOutTaskRepository.Update(task);
-                     scope.Complete();
-                }
-            }
-            else if (taskStatus == Convert.ToInt32(TASK_STEP.取货完成))
-            {
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已执行))
-                {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已下架);
-                }
-               
-                LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId,null,
-                    null, null,null, null, null,  null, null,null,
-                    null,null,null);
-                var locations = await this._locationRepository.ListAsync(locationSpec);
-                var location = locations[0];
-                location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-                warehouseTray.LocationId = null;
-                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                {
-                     this._warehouseTrayRepository.Update(warehouseTray);
-                     this._locationRepository.Update(location);
-                     this._inOutTaskRepository.Update(task);
-                     scope.Complete();
-                }
-            }
-            else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
-            {
-                task.Status = Convert.ToInt32(TASK_STATUS.完成);
-                if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
-                {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
-                }
-                else
-                {
-                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
-                }
+                        task.Status = Convert.ToInt32(TASK_STATUS.执行中);
+                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中未执行))
+                        {
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已执行);
+                        }
 
-                LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId,null,
-                    null, null,null, null, null,  null, null,null,
-                    null,null,null);
-                var locations = await this._locationRepository.ListAsync(locationSpec);
-                var location = locations[0];
-                location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
-                warehouseTray.LocationId = location.Id;
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                {
-                    if (inOutRecords.Count > 0&&(warehouseTray.TrayStep==Convert.ToInt32(TRAY_STEP.入库完成)))
-                    {
-                        InOutRecord inOutRecord = inOutRecords[0];
-                        inOutRecord.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                        this._inOutRecordRepository.Update(inOutRecord);
+                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中未执行))
+                        {
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中已执行);
+                        }
+
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        this._inOutTaskRepository.Update(task);
                     }
-                    this._warehouseTrayRepository.Update(warehouseTray);
-                    this._inOutTaskRepository.Update(task);
-                    this._locationRepository.Update(location);
+                    else if (taskStatus == Convert.ToInt32(TASK_STEP.取货完成))
+                    {
+                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已执行))
+                        {
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已下架);
+                        }
+
+                        LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId, null,
+                            null, null, null, null, null, null, null, null,
+                            null, null, null);
+                        var locations = await this._locationRepository.ListAsync(locationSpec);
+                        var location = locations[0];
+                        location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                        warehouseTray.LocationId = null;
+                        warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        this._locationRepository.Update(location);
+                        this._inOutTaskRepository.Update(task);
+                    }
+                    else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
+                    {
+                        task.Status = Convert.ToInt32(TASK_STATUS.完成);
+                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
+                        {
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
+                        }
+                        else
+                        {
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
+                        }
+
+                        LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
+                            null, null, null, null, null, null, null, null,
+                            null, null, null);
+                        var locations = await this._locationRepository.ListAsync(locationSpec);
+                        var location = locations[0];
+                        location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                        warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                        warehouseTray.LocationId = location.Id;
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        this._inOutTaskRepository.Update(task);
+                        this._locationRepository.Update(location);
+                    }
+                    else
+                    {
+                        this._inOutTaskRepository.Update(task);
+                    }
+
                     scope.Complete();
                 }
-                
-            }
-            else
-            {
-                this._inOutTaskRepository.Update(task);
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -260,7 +249,7 @@ namespace ApplicationCore.Services
            Guard.Against.NullOrEmpty(trayCode,nameof(trayCode));
            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
                null, null, null, null, null, null, null, null,null);
-           List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+           List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
            if(warehouseTrays.Count==0)
                throw new Exception(string.Format("托盘[{0}],不存在！",trayCode));
            WarehouseTray warehouseTray = warehouseTrays[0];
@@ -269,23 +258,7 @@ namespace ApplicationCore.Services
                    trayCode));
            warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
-           InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(trayCode,null,null,null,
-               null,null,null,null,null,null,
-               new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},
-               null,null,null,null );
-           List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-           using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-           {
-               if (inOutRecords.Count > 0)
-               {
-                   InOutRecord inOutRecord = inOutRecords[0];
-                   inOutRecord.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                   this._inOutRecordRepository.Update(inOutRecord);
-               }
-               this._warehouseTrayRepository.Update(warehouseTray);
-               await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
-               scope.Complete();
-           }
+           this._warehouseTrayRepository.Update(warehouseTray);
         }
     }
 }

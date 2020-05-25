@@ -21,9 +21,7 @@ using System.Transactions;
 /// </summary>
 namespace Web.Jobs
 {
-
-
-
+    
     public class TaskClass
     {
         public string taskId { set; get; }//任务流水ID
@@ -53,8 +51,6 @@ namespace Web.Jobs
         public long msgTime { set; get; }//下发时间
         public long returnStatus { set; get; }//请求结果
         public long returnInfo { set; get; }//结果描述
-
-
 
     }
 

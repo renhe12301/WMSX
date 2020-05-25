@@ -163,8 +163,8 @@ namespace ApplicationCore.Services
                                     {
                                         TrayCode = trayCode,
                                         CreateTime = now,
-                                        OrderId = subOrderId,
-                                        OrderRowId = subOrderRowId,
+                                        SubOrderId = subOrderId,
+                                        SubOrderRowId = subOrderRowId,
                                         MaterialCount = sortingCount,
                                         Price = subOrderRow.Price,
                                         Amount = subOrderRow.Price * sortingCount,
@@ -221,8 +221,8 @@ namespace ApplicationCore.Services
                                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
                                     warehouseTray.CreateTime = DateTime.Now;
 
-                                    warehouseTray.OrderId = subOrderId;
-                                    warehouseTray.OrderRowId = subOrderRowId;
+                                    warehouseTray.SubOrderId = subOrderId;
+                                    warehouseTray.SubOrderRowId = subOrderRowId;
                                     warehouseTray.OutCount = oldCount > 0 ? -1 * oldCount : 0;
                                     this._warehouseTrayRepository.Update(warehouseTray);
                                     WarehouseMaterial warehouseMaterial = null;
@@ -267,22 +267,6 @@ namespace ApplicationCore.Services
                                     subOrderRow.Sorting += sortingCount;
                                     this._subOrderRowRepository.Update(subOrderRow);
                                     this._orderRowRepository.Update(pOrderRow);
-                                    InOutRecord inOutRecord = new InOutRecord
-                                    {
-                                        TrayCode = trayCode,
-                                        OrderId = subOrderId,
-                                        OrderRowId = subOrderRowId,
-                                        OUId = area.OUId,
-                                        WarehouseId = area.WarehouseId,
-                                        ReservoirAreaId = areaId,
-                                        MaterialDicId = materialDic.Id,
-                                        InOutCount = sortingCount,
-                                        IsRead = 0,
-                                        CreateTime = DateTime.Now,
-                                        Type = 0,
-                                        Status = Convert.ToInt32(TASK_STATUS.待处理)
-                                    };
-                                    this._inOutRecordRepository.Add(inOutRecord);
                                     this._logRecordRepository.Add(new LogRecord
                                     {
                                         LogType = Convert.ToInt32(LOG_TYPE.操作日志),

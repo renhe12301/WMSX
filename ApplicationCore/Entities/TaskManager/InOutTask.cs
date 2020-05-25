@@ -6,8 +6,8 @@ namespace ApplicationCore.Entities.TaskManager
 {
     public class InOutTask : BaseEntity
     {
-        public int? OrderId{ get; set; }
-        public int? OrderRowId { get; set; }
+        public int? SubOrderId{ get; set; }
+        public int? SubOrderRowId { get; set; }
         public string TrayCode { get; set; }
         public string SrcId { get; set; }
         public string TargetId { get; set; }
@@ -19,7 +19,6 @@ namespace ApplicationCore.Entities.TaskManager
         public DateTime? FinishTime { get; set; }
         public int IsRead { get; set; }
         public string Memo { get; set; }
-        public int? VehicleId { get; set; }
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }
@@ -32,7 +31,7 @@ namespace ApplicationCore.Entities.TaskManager
 
         public Warehouse Warehouse { get; set; }
         public ReservoirArea ReservoirArea { get; set; }
-        public Order Order { get; set; }
-        public OrderRow OrderRow { get; set; }
+        public SubOrder SubOrder { get; set; }
+        public SubOrderRow SubOrderRow { get; set; }
     }
 }

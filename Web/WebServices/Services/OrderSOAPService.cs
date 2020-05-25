@@ -335,7 +335,7 @@ namespace Web.WebServices.Services
                     {
                         responseResult.Code = 500;
                         responseResult.Data = ex.Message;
-                        await this._logRecordService.AddLog(new LogRecord
+                        this._logRepository.Add(new LogRecord
                         {
                             LogType = Convert.ToInt32(LOG_TYPE.异常日志),
                             LogDesc = ex.Message,
@@ -358,8 +358,6 @@ namespace Web.WebServices.Services
                 responseResult.Code = 200;
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-
-
                     try
                     {
                         foreach (var RequestCKLLOrder in RequestCKLLOrders)
@@ -693,7 +691,7 @@ namespace Web.WebServices.Services
                     {
                         responseResult.Code = 500;
                         responseResult.Data = ex.Message;
-                        await this._logRecordService.AddLog(new LogRecord
+                        this._logRepository.Add(new LogRecord
                         {
                             LogType = Convert.ToInt32(LOG_TYPE.异常日志),
                             LogDesc = ex.Message,

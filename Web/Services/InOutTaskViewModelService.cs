@@ -92,8 +92,8 @@ namespace Web.Services
                         OUName = e.OU?.OUName,
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
                         WarehouseName = e.Warehouse?.WhName,
-                        OrderId = e.OrderId,
-                        OrderRowId = e.OrderRowId,
+                        OrderId = e.SubOrderId,
+                        OrderRowId = e.SubOrderRowId,
                         Progress=e.Progress,
                         FinishTime=e.FinishTime?.ToString()
                     };

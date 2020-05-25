@@ -11,8 +11,8 @@ namespace ApplicationCore.Entities.StockManager
     /// </summary>
     public class WarehouseTray : BaseEntity
     {
-        public int? OrderId { get; set; }
-        public int? OrderRowId { get; set; }
+        public int? SubOrderId { get; set; }
+        public int? SubOrderRowId { get; set; }
         public string TrayCode { get; set; }
         public int? LocationId { get; set; }
         public int MaterialCount { get; set; }
