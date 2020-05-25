@@ -40,6 +40,8 @@
             <e p="OrderRow.cs" t="Include" />
             <e p="OrderRowBatch.cs" t="Include" />
             <e p="OrderType.cs" t="Include" />
+            <e p="SubOrder.cs" t="Include" />
+            <e p="SubOrderRow.cs" t="Include" />
           </e>
           <e p="StockManager" t="Include">
             <e p="WarehouseMaterial.cs" t="Include" />
@@ -69,6 +71,7 @@
           <e p="IReservoirAreaService.cs" t="Include" />
           <e p="IRoleService.cs" t="Include" />
           <e p="ISpecification.cs" t="Include" />
+          <e p="ISubOrderService.cs" t="Include" />
           <e p="ISupplierService.cs" t="Include" />
           <e p="ISysConfigService.cs" t="Include" />
           <e p="ISysMenuService.cs" t="Include" />
@@ -97,6 +100,7 @@
           <e p="OrganizationService.cs" t="Include" />
           <e p="ReservoirAreaService.cs" t="Include" />
           <e p="RoleService.cs" t="Include" />
+          <e p="SubOrderService.cs" t="Include" />
           <e p="SupplierService.cs" t="Include" />
           <e p="SysConfigService.cs" t="Include" />
           <e p="SysMenuService.cs" t="Include" />
@@ -147,6 +151,10 @@
           <e p="ReservoirAreaPaginatedSpecification.cs" t="Include" />
           <e p="ReservoirAreaSpecification.cs" t="Include" />
           <e p="RoleMenuSpecification.cs" t="Include" />
+          <e p="SubOrderPaginatedSpecification.cs" t="Include" />
+          <e p="SubOrderRowPaginatedSpecification.cs" t="Include" />
+          <e p="SubOrderRowSpecification.cs" t="Include" />
+          <e p="SubOrderSpecification.cs" t="Include" />
           <e p="SupplierIdSetSpecification.cs" t="Include" />
           <e p="SupplierPaginatedSpecification.cs" t="Include" />
           <e p="SupplierSiteIdSetSpecification.cs" t="Include" />
@@ -214,6 +222,7 @@
             <e p="OrganizationController.cs" t="Include" />
             <e p="PhyWarehouseController.cs" t="Include" />
             <e p="ReservoirAreaController.cs" t="Include" />
+            <e p="SubOrderController.cs" t="Include" />
             <e p="SupplierController.cs" t="Include" />
             <e p="SysConfigController.cs" t="Include" />
             <e p="SysMenuController.cs" t="Include" />
@@ -247,6 +256,7 @@
           <e p="IOrganizationViewModelService.cs" t="Include" />
           <e p="IPhyWarehouseViewModelService.cs" t="Include" />
           <e p="IReservoirAreaViewModelService.cs" t="Include" />
+          <e p="ISubOrderViewModelService.cs" t="Include" />
           <e p="ISupplierViewModelService.cs" t="Include" />
           <e p="ISysConfigViewModelService.cs" t="Include" />
           <e p="ISysMenuViewModelService.cs" t="Include" />
@@ -261,7 +271,7 @@
           <e p="ClearJob.cs" t="Include" />
           <e p="DashboardJob.cs" t="Include" />
           <e p="OrderSyncJob.cs" t="Include" />
-          <e p="RKJob.cs" t="Include" />
+          <e p="RuKuJob.cs" t="Include" />
           <e p="StockSyncJob.cs" t="Include" />
           <e p="WCSTaskJob.cs" t="Include" />
         </e>
@@ -287,6 +297,7 @@
           <e p="OrganizationViewModelService.cs" t="Include" />
           <e p="PhyWarehouseViewModelService.cs" t="Include" />
           <e p="ReservoirAreaViewModelService.cs" t="Include" />
+          <e p="SubOrderViewModelService.cs" t="Include" />
           <e p="SupplierViewModelService.cs" t="Include" />
           <e p="SysConfigViewModelService.cs" t="Include" />
           <e p="SysMenuViewModelService.cs" t="Include" />
@@ -327,6 +338,8 @@
             <e p="OrderRowViewModel.cs" t="Include" />
             <e p="OrderTypeViewModel.cs" t="Include" />
             <e p="OrderViewModel.cs" t="Include" />
+            <e p="SubOrderRowViewModel.cs" t="Include" />
+            <e p="SubOrderViewModel.cs" t="Include" />
           </e>
           <e p="ResponseResultViewModel.cs" t="Include" />
           <e p="StockManager" t="Include">

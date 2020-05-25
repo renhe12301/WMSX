@@ -122,7 +122,7 @@
           "privateAssets": "all"
         }
       },
-      "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.201/RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.300/RuntimeIdentifierGraph.json"
     }
   }
 }
