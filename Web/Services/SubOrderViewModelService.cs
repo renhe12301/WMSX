@@ -9,7 +9,6 @@ using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
 using Web.ViewModels;
-using Web.ViewModels.BasicInformation;
 using Web.ViewModels.OrderManager;
 
 namespace Web.Services
@@ -18,13 +17,17 @@ namespace Web.Services
     {
 
         private IAsyncRepository<SubOrder> _subOrderRepository;
+        private IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         private ISubOrderService _subOrderService;
         
         public SubOrderViewModelService(IAsyncRepository<SubOrder> subOrderRepository,
-            ISubOrderService subOrderService)
+            ISubOrderService subOrderService,
+            IAsyncRepository<SubOrderRow> subOrderRowRepository
+            )
         {
             this._subOrderRepository = subOrderRepository;
             this._subOrderService = subOrderService;
+            this._subOrderRowRepository = subOrderRowRepository;
         }
 
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage, int? id, string orderNumber, 
@@ -107,12 +110,84 @@ namespace Web.Services
             return response;
         }
 
-        public Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId, int? orderRowId, int? orderTypeId,
+        public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId, int? orderRowId, int? orderTypeId,
             int? ouId, int? warehouseId, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, string status, string sCreateTime, string eCreateTime, string sFinishTime,
             string eFinishTime)
         {
-            throw new NotImplementedException();
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                BaseSpecification<SubOrderRow> baseSpecification = null;
+                List<int> orderStatuss = null;
+                if (!string.IsNullOrEmpty(status))
+                {
+                    orderStatuss = status.Split(new char[]{','}, 
+                        StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
+                {
+                    baseSpecification = new SubOrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,subOrderId,orderRowId,
+                        orderTypeId,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        eCreateTime,sFinishTime,eFinishTime);
+                }
+                else
+                {
+                    baseSpecification = new SubOrderRowSpecification(id,subOrderId,orderRowId,
+                        orderTypeId,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        eCreateTime,sFinishTime,eFinishTime);
+                }
+                var orderRows = await this._subOrderRowRepository.ListAsync(baseSpecification);
+                List<SubOrderRowViewModel> orderRowViewModels = new List<SubOrderRowViewModel>();
+                orderRows.ForEach(e =>
+                {
+                    SubOrderRowViewModel subOrderRowViewModel = new SubOrderRowViewModel
+                    {
+                        Id = e.Id,
+                        SubOrderId = e.SubOrderId,
+                        RowNumber = e.RowNumber,
+                        ReservoirAreaId = e.ReservoirAreaId,
+                        ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        MaterialDicId = e.MaterialDicId,
+                        MaterialDicName = e.MaterialDic?.MaterialName,
+                        CreateTime = e.CreateTime.ToString(),
+                        FinishTime = e.FinishTime.ToString(),
+                        PreCount = e.PreCount,
+                        Sorting = e.Sorting,
+                        RealityCount = e.RealityCount,
+                        Progress = e.Progress,
+                        Status = e.Status,
+                        StatusStr = Enum.GetName(typeof(ORDER_STATUS),e.Status),
+                        OrderRowId = e.OrderRowId,
+                        Price = e.Price,
+                        Amount = e.Amount,
+                        UseFor = e.UseFor,
+                        IsScrap = e.IsScrap
+                    };
+                    orderRowViewModels.Add(subOrderRowViewModel);
+                });
+                if (pageIndex > -1 && itemsPage > 0)
+                {
+                    var count = await this._subOrderRowRepository.CountAsync(new SubOrderRowSpecification(id,subOrderId,orderRowId,
+                        orderTypeId,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        eCreateTime,sFinishTime,eFinishTime));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = orderRowViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = orderRowViewModels;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
         }
 
         public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode, int areaId, string tag)
@@ -209,6 +284,21 @@ namespace Web.Services
                     orderRows.Add(orderRow);
                 });
                 await  this._subOrderService.ScrapOrderRow(orderRows);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> OutConfirm(int subOrderId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await  this._subOrderService.OutConfirm(subOrderId);
             }
             catch (Exception ex)
             {

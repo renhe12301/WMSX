@@ -25,5 +25,8 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> ScrapOrder(SubOrderViewModel subOrderViewModel);
 
         Task<ResponseResultViewModel> ScrapOrderRow(List<SubOrderRowViewModel> subOrderRowViewModels);
+        
+        Task<ResponseResultViewModel> OutConfirm(int subOrderId);
+
     }
 }

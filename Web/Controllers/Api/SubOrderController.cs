@@ -105,6 +105,23 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
+        /// 分拣订单行
+        /// </summary>
+        /// <param name="subOrderId">拆分订单编号</param>
+        /// <param name="subOrderRowId">拆分订单行编号</param>
+        /// <param name="sortingCount">分拣数量</param>
+        /// <param name="trayCode">托盘码</param>
+        /// <param name="areaId">分区编号</param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode,int areaId, string tag)
+        {
+            var response = await this._subOrderViewModelService.SortingOrder(subOrderId,subOrderRowId,sortingCount,trayCode,areaId,tag);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
         /// 拆分订单作废
         /// </summary>
         /// <param name="orderViewModel"></param>
@@ -129,5 +146,16 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
         
+        /// <summary>
+        /// 确认出库单
+        /// </summary>
+        /// <param name="subOrderId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> OutConfirm(int subOrderId)
+        {
+            var response = await this._subOrderViewModelService.OutConfirm(subOrderId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
     }
 }

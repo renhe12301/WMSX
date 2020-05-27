@@ -88,6 +88,7 @@ namespace Web
             services.AddScoped(typeof(IEBSTaskService), typeof(EBSTaskServicecs));
             services.AddScoped(typeof(ILogRecordService), typeof(LogRecordService));
             services.AddScoped(typeof(ISysConfigService), typeof(SysConfigService));
+            services.AddScoped(typeof(ISubOrderService), typeof(SubOrderService));
 
             services.AddScoped(typeof(IOrderViewModelService), typeof(OrderViewModelService));
             services.AddScoped(typeof(IOrderRowViewModelService), typeof(OrderRowViewModelService));
@@ -110,6 +111,7 @@ namespace Web
             services.AddScoped(typeof(IEBSTaskViewModelService), typeof(EBSTaskViewModelService));
             services.AddScoped(typeof(ILogRecordViewModelService), typeof(LogRecordViewModelService));
             services.AddScoped(typeof(ISysConfigViewModelService), typeof(SysConfigViewModelService));
+            services.AddScoped(typeof(ISubOrderViewModelService), typeof(SubOrderViewModelService));
 
             //定时器工厂
             services.AddSingleton<QuartzStartup>();
