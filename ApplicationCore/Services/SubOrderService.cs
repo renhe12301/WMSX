@@ -75,7 +75,7 @@ namespace ApplicationCore.Services
                     try
                     {
                         var subOrderSpec = new SubOrderSpecification(subOrderId, null, null, null,
-                            null, null, null, null, null, null, null, null,
+                            null, null, null,null, null, null, null, null, null,
                             null, null, null);
                         var subOrders = this._subOrderRepository.List(subOrderSpec);
                         if (subOrders.Count == 0) throw new Exception(string.Format("订单[{0}],不存在！", subOrderId));
@@ -354,7 +354,7 @@ namespace ApplicationCore.Services
                     {
 
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id, null,
-                            null, null, null, null, null, null, null, null,
+                            null, null, null,null, null, null, null, null, null,
                             null, null, null, null, null);
                         List<SubOrder> subOrders =  this._subOrderRepository.List(subOrderSpecification);
                         Guard.Against.Zero(subOrders.Count, nameof(subOrders));
@@ -474,7 +474,7 @@ namespace ApplicationCore.Services
                     try
                     {
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(subOrderId, null, null,
-                            null, null, null, null, null, null, null, null, null,
+                            null, null,null, null, null, null, null, null, null, null,
                             null, null, null);
                         List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                         Guard.Against.Zero(subOrders.Count, nameof(subOrders));

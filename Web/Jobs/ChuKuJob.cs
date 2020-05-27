@@ -28,13 +28,17 @@ namespace Web.Jobs
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
+        private readonly IAsyncRepository<SubOrder> _subOrderRepository;
+        private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
 
         public ChuKuKJob(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
             IAsyncRepository<Warehouse> warehouseRepository,
             IAsyncRepository<ReservoirArea> reservoirAreaRepository,
             IAsyncRepository<Location> locationRepository,
             IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-             IAsyncRepository<InOutTask> inOutTaskRepository
+            IAsyncRepository<InOutTask> inOutTaskRepository,
+            IAsyncRepository<SubOrder> subOrderRepository,
+            IAsyncRepository<SubOrderRow> subOrderRowRepository
         )
         {
             this._warehouseTrayRepository = warehouseTrayRepository;
@@ -43,12 +47,13 @@ namespace Web.Jobs
             this._locationRepository = locationRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._inOutTaskRepository = inOutTaskRepository;
+            this._subOrderRepository = subOrderRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
         }
 
          public async Task Execute(IJobExecutionContext context)
          {
-
-
+             
              using (ModuleLock.GetAsyncLock().LockAsync())
              {
                  try
