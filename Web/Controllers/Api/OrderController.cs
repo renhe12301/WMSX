@@ -71,54 +71,7 @@ namespace Web.Controllers.Api
                 eApplyTime, sApproveTime, eApproveTime,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
-
-        /// <summary>
-        /// 创建退库订单
-        /// </summary>
-        /// <param name="orderViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> CreateOutOrder([FromBody]OrderViewModel orderViewModel)
-        {
-            var response = await this._orderViewModelService.CreateOutOrder(orderViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-        /// <summary>
-        /// 订单出库
-        /// </summary>
-        /// <param name="orderRowBatchViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> OrderOut([FromBody]OrderRowBatchViewModel orderRowBatchViewModel)
-        {
-            var response = await this._orderViewModelService.OrderOut(orderRowBatchViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
-        /// <summary>
-        /// 关闭订单
-        /// </summary>
-        /// <param name="orderViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> CloseOrder([FromBody]OrderViewModel orderViewModel)
-        {
-            var response = await this._orderViewModelService.CloseOrder(orderViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
         
-        /// <summary>
-        /// 关闭订单行
-        /// </summary>
-        /// <param name="orderRowViewModel"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> CloseOrderRow([FromBody]OrderRowViewModel orderRowViewModel)
-        {
-            var response = await this._orderViewModelService.CloseOrderRow(orderRowViewModel);
-            return Content(JsonConvert.SerializeObject(response));
-        }
-
         /// <summary>
         /// 获取退库物料信息
         /// </summary>

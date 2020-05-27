@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications
     public class InOutTaskPaginatedSpecification:BaseSpecification<InOutTask>
     {
         public InOutTaskPaginatedSpecification(int skip,int take,int? id,string trayCode,
-            List<int> status,List<int> steps,List<int> types, int? ouId, int? wareHouseId, int? areaId,int? pyId,
+            List<int> status,List<int> steps,List<int> types, int? isRead,int? ouId, int? wareHouseId, int? areaId,int? pyId,
             string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
             :base(b=>(!id.HasValue||b.Id==id)&&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                      (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
                      (!areaId.HasValue || b.ReservoirAreaId == areaId) &&
                      (!pyId.HasValue || b.PhyWarehouseId == pyId) &&
+                     (!isRead.HasValue || b.IsRead == isRead) &&
                      (status==null||status.Contains(b.Status))&&
                      (steps == null || steps.Contains(b.Step)) &&
                      (types == null || types.Contains(b.Type)) &&

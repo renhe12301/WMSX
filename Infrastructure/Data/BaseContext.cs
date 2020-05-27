@@ -37,9 +37,7 @@ namespace Infrastructure.Data
         public DbSet<OrderRow> OrderRow { get; set; }
         public DbSet<EBSProject> EBSProject { get; set; }
         public DbSet<EBSTask> EBSTask { get; set; }
-        public DbSet<InOutRecord> InOutRecord { get; set; }
         public DbSet<LogRecord> LogRecord { get; set; }
-        public DbSet<OrderRowBatch> OrderRowBatch { get; set; }
         public DbSet<SysConfig> SysConfig { get; set; }
         public DbSet<SubOrder> SubOrder { get; set; }
         public DbSet<SubOrderRow> SubOrderRow { get; set; }

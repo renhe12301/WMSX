@@ -117,6 +117,11 @@ namespace ApplicationCore.Entities.OrderManager
         public int IsScrap { get; set; }
 
         /// <summary>
+        /// 是否只读
+        /// </summary>
+        public int IsRead { get; set; }
+
+        /// <summary>
         /// 关联拆分订单行
         /// </summary>
         [NotMapped]

@@ -15,15 +15,6 @@ namespace Web.Interfaces
              string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
         Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int? areaId);
-        
-        Task<ResponseResultViewModel> CreateOutOrder(OrderViewModel orderViewModel);
-
-        Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel);
-        
-        Task<ResponseResultViewModel> CloseOrder(OrderViewModel orderViewModel);
-        
-        Task<ResponseResultViewModel> CloseOrderRow(OrderRowViewModel orderRowViewModel);
-        
 
     }
 

@@ -14,8 +14,8 @@ namespace ApplicationCore.Specifications
             :base(b =>(!id.HasValue || b.Id == id) &&
                       (trayCode == null || b.TrayCode == trayCode) &&
                       (rangeMaterialCount==null|| (b.MaterialCount >= rangeMaterialCount[0]&& b.MaterialCount <= rangeMaterialCount[1])) &&
-                      (!orderId.HasValue || b.OrderId == orderId) &&
-                      (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
+                      (!orderId.HasValue || b.SubOrderId == orderId) &&
+                      (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
                       (carrier == null || b.Carrier == carrier)&&
                       (trayStatus == null || trayStatus.Contains(b.TrayStep.Value)) &&
                       (!locationId.HasValue||b.LocationId==locationId)&&

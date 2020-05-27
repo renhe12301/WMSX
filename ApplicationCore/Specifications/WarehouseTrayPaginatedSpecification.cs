@@ -16,8 +16,8 @@ namespace ApplicationCore.Specifications
                         (trayCode == null || b.TrayCode == trayCode) &&
                         (rangeMaterialCount == null || (b.MaterialCount >= rangeMaterialCount[0] &&
                                                         b.MaterialCount <= rangeMaterialCount[1])) &&
-                        (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
-                        (!orderId.HasValue || b.OrderId == orderId) &&
+                        (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
+                        (!orderId.HasValue || b.SubOrderId == orderId) &&
                         (carrier == null || b.Carrier == carrier) &&
                         (traySteps == null || traySteps.Contains(b.TrayStep.Value)) &&
                         (!locationId.HasValue || b.LocationId == locationId) &&

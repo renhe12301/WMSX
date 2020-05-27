@@ -173,5 +173,10 @@ namespace ApplicationCore.Misc
         已读 = 1
     }
 
+    public enum TASK_READ
+    {
+        未读 = 0,
+        已读 = 1
+    }
 
 }

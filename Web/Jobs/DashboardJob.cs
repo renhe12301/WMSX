@@ -19,7 +19,6 @@ namespace Web.Jobs
     public class DashboardJob : IJob
     {
         private readonly IAsyncRepository<WarehouseMaterial> _materialRepository;
-        private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
         private readonly IHubContext<DashboardHub> _hubContext;
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
@@ -29,7 +28,6 @@ namespace Web.Jobs
         {
             _hubContext = hubContext;
             _materialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
-            _inOutRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutRecord>>();
             _orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();
             _locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
             _warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
@@ -85,10 +83,10 @@ namespace Web.Jobs
             List<int> data3 = new List<int>();
             List<int> data4 = new List<int>();
             string ytime = DateTime.Now.Year.ToString();
-            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, ytime + "-01-01", ytime + "-12-31");
-            List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
+            // InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
+            //     null, null, null, null, null, null, null, null, null,
+            //     null, ytime + "-01-01", ytime + "-12-31");
+            // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
             // 接收
             Random random = new Random();
             for (int i = 1; i <= 12; i++)
@@ -142,10 +140,10 @@ namespace Web.Jobs
             List<int> result = new List<int>();
             Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
-            InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
-                null, null, null, null, null, null, null, null, null,
-                null, ytime + "-01-01", ytime + "-12-31");
-            List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
+            // InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
+            //     null, null, null, null, null, null, null, null, null,
+            //     null, ytime + "-01-01", ytime + "-12-31");
+            // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
             for (int i = 1; i <= 12; i++)
             {
                 // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";

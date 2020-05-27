@@ -21,8 +21,8 @@ namespace ApplicationCore.Specifications
                       (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!carrier.HasValue || b.Carrier == carrier)&&
-                      (!orderId.HasValue || b.OrderId == orderId) &&
-                      (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
+                      (!orderId.HasValue || b.SubOrderId == orderId) &&
+                      (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
                       (traySteps == null || traySteps.Contains(b.WarehouseTray.TrayStep.Value)) &&
                       (!locationId.HasValue||b.LocationId== locationId) &&
                       (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&
@@ -38,8 +38,8 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.WarehouseTray);
             AddInclude(b => b.ReservoirArea);
             AddInclude(b => b.Warehouse);
-            AddInclude(b => b.Order);
-            AddInclude(b => b.OrderRow);
+            AddInclude(b => b.SubOrder);
+            AddInclude(b => b.SubOrderRow);
             AddInclude(b=>b.OU);
             AddInclude(b=>b.Supplier);
             AddInclude(b=>b.SupplierSite);

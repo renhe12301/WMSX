@@ -7,8 +7,8 @@ namespace ApplicationCore.Entities.StockManager
   
     public class WarehouseMaterial:BaseEntity
     {
-        public int? OrderId { get; set; }
-        public int? OrderRowId { get; set; }
+        public int? SubOrderId { get; set; }
+        public int? SubOrderRowId { get; set; }
         public int MaterialDicId { get; set; }
         public int WarehouseTrayId { get; set; }
         public int MaterialCount { get; set; }
@@ -30,8 +30,8 @@ namespace ApplicationCore.Entities.StockManager
         public WarehouseTray WarehouseTray { get; set; }
         public MaterialDic MaterialDic { get; set; }
         public Location Location { get; set; }
-        public Order Order { get; set; }
-        public OrderRow OrderRow { get; set; }
+        public SubOrder SubOrder { get; set; }
+        public SubOrderRow SubOrderRow { get; set; }
         
         /// <summary>
         /// 供应商编号

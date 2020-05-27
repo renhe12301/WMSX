@@ -63,13 +63,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutTaskPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,trayCode,taskStatus, taskSteps,taskTypes,ouId, wareHouseId,areaId,pyId,
+                        id,trayCode,taskStatus, taskSteps,taskTypes,null,ouId, wareHouseId,areaId,pyId,
                         sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
                 }
                 else
                 {
                     baseSpecification = new InOutTaskSpecification(id, trayCode,
-                        taskStatus,taskSteps,taskTypes, ouId, wareHouseId, areaId,pyId,
+                        taskStatus,taskSteps,taskTypes,null, ouId, wareHouseId, areaId,pyId,
                         sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
                 }
 
@@ -102,7 +102,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._inOutTaskRepository.CountAsync(new InOutTaskSpecification(id, trayCode,
-                                           taskStatus,taskSteps,taskTypes, ouId, wareHouseId, areaId,pyId,
+                                           taskStatus,taskSteps,taskTypes,null, ouId, wareHouseId, areaId,pyId,
                                            sCreateTime, eCreateTIme, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = inOutTaskViewModels;

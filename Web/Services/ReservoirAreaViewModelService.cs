@@ -23,20 +23,17 @@ namespace Web.Services
         private readonly ILogRecordService _logRecordService;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
-        private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
         public ReservoirAreaViewModelService(IReservoirAreaService reservoirAreaService,
                                              IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                              ILogRecordService logRecordService,
                                              IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                                             IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-                                             IAsyncRepository<InOutRecord> inOutRecordRepository)
+                                             IAsyncRepository<WarehouseTray> warehouseTrayRepository)
         {
             this._reservoirAreaService = reservoirAreaService;
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._logRecordService = logRecordService;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
-            this._inOutRecordRepository = inOutRecordRepository;
         }
 
 
@@ -232,58 +229,58 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                 
-                InOutRecordSpecification inOutRecordSpec = null;
-                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
-                string eCreateTime = DateTime.Now.ToString();
-                //本周
-                if (queryType == 1)
-                {
-                    sCreateTime = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
-                }
-                //本月
-                else if (queryType == 2)
-                {
-                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
-                }
-                //本季度
-                else if(queryType == 3)
-                {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
-                }
-                //本年
-                else if(queryType == 4)
-                {
-                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
-                }
-                
-                inOutRecordSpec = new InOutRecordSpecification(null, null,
-                    inOutType, ouId, null, null, null, null,null,null,
-                    new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, sCreateTime, eCreateTime);
-                
-                List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-                List<string> lables = new List<string>();
-                List<double> datas = new List<double>();
-                var inOutGroup = inOutRecords.GroupBy(w => w.ReservoirAreaId);
-                foreach (var w in areas)
-                {
-                    lables.Add(w.AreaName);
-                }
-                foreach (var wg in inOutGroup)
-                {
-                    double sumCount = wg.Count();
-                    datas.Add(sumCount);
-                }
-                dynamic result = new ExpandoObject();
-                result.labels = lables;
-                result.datas = datas;
-                response.Data = result;
+                // ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                // List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                //  
+                // InOutRecordSpecification inOutRecordSpec = null;
+                // string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                // string eCreateTime = DateTime.Now.ToString();
+                // //本周
+                // if (queryType == 1)
+                // {
+                //     sCreateTime = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToShortDateString() + " 00:00:00";
+                //     eCreateTime = DateTime.Now.ToString();
+                // }
+                // //本月
+                // else if (queryType == 2)
+                // {
+                //     sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                //     eCreateTime = DateTime.Now.ToString();
+                // }
+                // //本季度
+                // else if(queryType == 3)
+                // {
+                //     sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                //     eCreateTime = DateTime.Now.ToString();
+                // }
+                // //本年
+                // else if(queryType == 4)
+                // {
+                //     sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                //     eCreateTime = DateTime.Now.ToString();
+                // }
+                //
+                // inOutRecordSpec = new InOutRecordSpecification(null, null,
+                //     inOutType, ouId, null, null, null, null,null,null,
+                //     new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, sCreateTime, eCreateTime);
+                //
+                // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
+                // List<string> lables = new List<string>();
+                // List<double> datas = new List<double>();
+                // var inOutGroup = inOutRecords.GroupBy(w => w.ReservoirAreaId);
+                // foreach (var w in areas)
+                // {
+                //     lables.Add(w.AreaName);
+                // }
+                // foreach (var wg in inOutGroup)
+                // {
+                //     double sumCount = wg.Count();
+                //     datas.Add(sumCount);
+                // }
+                // dynamic result = new ExpandoObject();
+                // result.labels = lables;
+                // result.datas = datas;
+                // response.Data = result;
             }
             catch (Exception ex)
             {

@@ -19,8 +19,7 @@ namespace Web.Services
 {
     public class OrderViewModelService:IOrderViewModelService
     {
-
-        private readonly IOrderService _orderService;
+        
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly IAsyncRepository<Warehouse> _warehouseRepository;
@@ -28,15 +27,13 @@ namespace Web.Services
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
-        public OrderViewModelService(IOrderService orderService,
-                                       IAsyncRepository<Order> orderRepository,
+        public OrderViewModelService(  IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
                                        IAsyncRepository<Warehouse> warehouseRepository,
                                        ILogRecordService logRecordService,
                                        IAsyncRepository<OrderRow> orderRowRepository,
                                        IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
-            this._orderService = orderService;
             this._orderRepository = orderRepository;
             this._areaRepository = areaRepository;
             this._warehouseRepository = warehouseRepository;
@@ -204,123 +201,6 @@ namespace Web.Services
 
             return response;
         }
-
-        public async Task<ResponseResultViewModel> CreateOutOrder(OrderViewModel orderViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                DateTime now = DateTime.Now;
-                Order order = new Order
-                {
-                    Id = orderViewModel.Id.GetValueOrDefault(),
-                    OUId = orderViewModel.OUId,
-                    WarehouseId = orderViewModel.WarehouseId,
-                    OrderNumber = orderViewModel.OrderNumber??"TK_Order_"+now.Ticks,
-                    CreateTime = now,
-                    ApplyTime = now,
-                    ApplyUserCode = orderViewModel.ApplyUserCode,
-                    ApproveTime = now,
-                    ApproveUserCode = orderViewModel.ApproveUserCode,
-                    CallingParty = orderViewModel.CallingParty,
-                    OrderTypeId = orderViewModel.OrderTypeId,
-                    Status = 0,
-                    EmployeeId = orderViewModel.EmployeeId,
-                    Tag = orderViewModel.Tag
-                    
-                };
-                List<OrderRow> orderRows = new List<OrderRow>();
-                var oldRows =  orderViewModel.OrderRows.Where(or=>or.RowNumber!=null).ToList();
-                var newRows = orderViewModel.OrderRows.Where(or=>or.RowNumber==null).ToList();
-                oldRows.ForEach(async(or) =>
-                {
-                    OrderRow orderRow = new OrderRow
-                    {
-                        Id = or.Id.GetValueOrDefault(),
-                        CreateTime=now,
-                        PreCount=or.PreCount+newRows.Where(eor=>eor.MaterialDicId==or.MaterialDicId)
-                                                    .Sum(eor=>eor.PreCount),
-                        ReservoirAreaId = or.ReservoirAreaId,
-                        MaterialDicId = or.MaterialDicId,
-                        Price = or.Price,
-                        RowNumber = or.RowNumber??"TK_Order_Row_"+now.Ticks,
-                    };
-                    orderRows.Add(orderRow);
-                });
-                newRows.RemoveAll(nr =>
-                    nr.RowNumber == null && oldRows.Find(or => or.MaterialDicId == nr.MaterialDicId)!=null);
-                
-                newRows.ForEach(async(or) =>
-                {
-                    OrderRow orderRow = new OrderRow
-                    {
-                        Id = or.Id.GetValueOrDefault(),
-                        CreateTime=now,
-                        PreCount=or.PreCount,
-                        ReservoirAreaId = or.ReservoirAreaId,
-                        MaterialDicId = or.MaterialDicId,
-                        Price = or.Price,
-                        RowNumber = "TK_Order_Row_" + now.Ticks
-                    };
-                    orderRows.Add(orderRow);
-                });
-                order.OrderRow = orderRows;
-                await this._orderService.CreateOutOrder(order);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        public async Task<ResponseResultViewModel> OrderOut(OrderRowBatchViewModel orderRowBatchViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._orderService.OrderOut(orderRowBatchViewModel.OrderId.GetValueOrDefault(),
-                    orderRowBatchViewModel.OrderRowId.GetValueOrDefault(),
-                    orderRowBatchViewModel.ReservoirAreaId,orderRowBatchViewModel.BatchCount,orderRowBatchViewModel.Type,
-                    orderRowBatchViewModel.Tag);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        public async Task<ResponseResultViewModel> CloseOrder(OrderViewModel orderViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._orderService.CloseOrder(orderViewModel.Id.GetValueOrDefault(),orderViewModel.Tag);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
-
-        public async Task<ResponseResultViewModel> CloseOrderRow(OrderRowViewModel orderRowViewModel)
-        {
-            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
-            try
-            {
-                await this._orderService.CloseOrderRow(orderRowViewModel.Id.GetValueOrDefault(),orderRowViewModel.Tag);
-            }
-            catch (Exception ex)
-            {
-                response.Code = 500;
-                response.Data = ex.Message;
-            }
-            return response;
-        }
+        
     }
 }

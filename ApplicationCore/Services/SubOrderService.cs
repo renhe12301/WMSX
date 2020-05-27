@@ -25,7 +25,6 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
-        private readonly IAsyncRepository<InOutRecord> _inOutRecordRepository;
 
         public SubOrderService(IAsyncRepository<SubOrder> subOrderRepository,
                                IAsyncRepository<SubOrderRow> subOrderRowRepository,
@@ -34,9 +33,8 @@ namespace ApplicationCore.Services
                                IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                               IAsyncRepository<InOutRecord> inOutRecordRepository
-                               )
+                               IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository
+        )
         {
             this._subOrderRepository = subOrderRepository;
             this._subOrderRowRepository = subOrderRowRepository;
@@ -46,7 +44,6 @@ namespace ApplicationCore.Services
             this._materialDicRepository = materialDicRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
-            this._inOutRecordRepository = inOutRecordRepository;
         }
         
         public async Task SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode, int areaId, string tag)
@@ -94,21 +91,7 @@ namespace ApplicationCore.Services
                         throw new Exception(string.Format("当前订单[{0}]的库存组织和分拣托盘的库组织不一致,无法分拣！",subOrderId));
 
                     MaterialDic materialDic = materialDics[0];
-                    
-                    // var srcOrderRowSpec = new OrderRowSpecification(subOrderRow.OrderRowId, null, null,null,
-                    //                                                null, null, null, null, null, null);
-                    //
-                    // var srcOrderRows = await this._orderRowRepository.ListAsync(srcOrderRowSpec);
-                    // var srcOrderRow = srcOrderRows.First();
-                    //
-                    // var releaOrderRowSpec = new OrderRowSpecification(null, null, Convert.ToInt32(ORDER_TYPE.接收退料),srcOrderRow.Id,
-                    //     null, null, null, null, null, null);
-                    // var releaOrderRows = await this._orderRowRepository.ListAsync(releaOrderRowSpec);
-                    //
-                    // int sumRelea = releaOrderRows.Sum(or => or.PreCount);
-                    //
-                    // int surplusCount = srcOrderRow.PreCount - sumRelea;
-                    
+
                     var warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null, null, null, null,
                         null, null, null, null, null,null);
                     
@@ -176,8 +159,8 @@ namespace ApplicationCore.Services
                                     var addTray = this._warehouseTrayRepository.Add(warehouseTray);
                                     WarehouseMaterial warehouseMaterial = new WarehouseMaterial
                                     {
-                                        OrderId = subOrderId,
-                                        OrderRowId = subOrderRowId,
+                                        SubOrderId = subOrderId,
+                                        SubOrderRowId = subOrderRowId,
                                         CreateTime = now,
                                         WarehouseTrayId = addTray.Id,
                                         MaterialCount = sortingCount,
@@ -231,8 +214,8 @@ namespace ApplicationCore.Services
                                         warehouseMaterial = oldMaterials[0];
                                     else warehouseMaterial = new WarehouseMaterial();
 
-                                    warehouseMaterial.OrderId = subOrderId;
-                                    warehouseMaterial.OrderRowId = subOrderRowId;
+                                    warehouseMaterial.SubOrderId = subOrderId;
+                                    warehouseMaterial.SubOrderRowId = subOrderRowId;
                                     warehouseMaterial.CreateTime = now;
                                     warehouseMaterial.WarehouseTrayId = warehouseTray.Id;
                                     warehouseMaterial.MaterialCount = oldCount + sortingCount;
@@ -368,38 +351,45 @@ namespace ApplicationCore.Services
                     {
                         try
                         {
-                            
-                            SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id,null,
-                                null,null,null,null,null,null,null,null,
-                                null,null,null,null,null);
+
+                            SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id, null,
+                                null, null, null, null, null, null, null, null,
+                                null, null, null, null, null);
                             List<SubOrder> subOrders = await this._subOrderRepository.ListAsync(subOrderSpecification);
-                            Guard.Against.Zero(subOrders.Count,nameof(subOrders));
+                            Guard.Against.Zero(subOrders.Count, nameof(subOrders));
                             SubOrder subOrder = subOrders.First();
-                            
-                            if(subOrder.Status!=Convert.ToInt32(ORDER_STATUS.待处理))
-                                throw new Exception(string.Format("订单[{0}]状态必须为待处理才能作废!",subOrder.Id));
+
+                            if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理))
+                                throw new Exception(string.Format("订单[{0}]状态必须为待处理才能作废!", subOrder.Id));
                             subOrder.Status = Convert.ToInt32(ORDER_STATUS.关闭);
-                            
+
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                subOrder.Id,null,null,null,null,null,null,null
-                                ,null,null,null,null,null,null,null);
-                            List<SubOrderRow> subOrderRows = await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
+                                subOrder.Id, null, null, null, null, null, null, null
+                                , null, null, null, null, null, null, null);
+                            List<SubOrderRow> subOrderRows =
+                                await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
                             List<OrderRow> updOrderRows = new List<OrderRow>();
                             foreach (var subOrderRow in subOrderRows)
                             {
-                                if (subOrderRow.Status!=Convert.ToInt32(ORDER_STATUS.待处理))
-                                    throw new Exception(string.Format("订单行[{0}]状态必须为待处理才能作废!",subOrderRow.Id));
+                                if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.待处理))
+                                    throw new Exception(string.Format("订单行[{0}]状态必须为待处理才能作废!", subOrderRow.Id));
                                 subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.关闭);
-                                OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
-                                    null,null,null,null,null,null,null,null,null);
-                                List<OrderRow> orderRows =
-                                    await this._orderRowRepository.ListAsync(orderRowSpecification);
-                                Guard.Against.Zero(orderRows.Count,nameof(orderRows));
-                                OrderRow orderRow = orderRows.First();
-                                orderRow.Expend -= subOrderRow.PreCount;
-                                updOrderRows.Add(orderRow);
+                                if (subOrderRow.OrderRowId.HasValue)
+                                {
+                                    OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                        subOrderRow.OrderRowId,
+                                        null, null, null, null, null, null, null, null, null);
+                                    List<OrderRow> orderRows =
+                                        await this._orderRowRepository.ListAsync(orderRowSpecification);
+                                    Guard.Against.Zero(orderRows.Count, nameof(orderRows));
+                                    OrderRow orderRow = orderRows.First();
+                                    orderRow.Expend -= subOrderRow.PreCount;
+                                    updOrderRows.Add(orderRow);
+                                }
                             }
-                            this._orderRowRepository.Update(updOrderRows);
+
+                            if (updOrderRows.Count > 0)
+                                this._orderRowRepository.Update(updOrderRows);
                             this._subOrderRowRepository.Update(subOrderRows);
                             this._subOrderRepository.Update(subOrder);
                             scope.Complete();
@@ -438,25 +428,33 @@ namespace ApplicationCore.Services
                             List<OrderRow> updOrderRows = new List<OrderRow>();
                             foreach (var sr in subOrderRows)
                             {
-                                SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,null
-                                    ,null,null,null,null,null,null,null
-                                    ,null,null,null,null,null,null,null);
-                                List<SubOrderRow> findSubOrderRows = await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
+                                SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,
+                                    null
+                                    , null, null, null, null, null, null, null
+                                    , null, null, null, null, null, null, null);
+                                List<SubOrderRow> findSubOrderRows =
+                                    await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
                                 SubOrderRow subOrderRow = findSubOrderRows.First();
-                                if (subOrderRow.Status!=Convert.ToInt32(ORDER_STATUS.待处理))
-                                    throw new Exception(string.Format("订单行[{0}]状态必须为待处理才能作废!",subOrderRow.Id));
+                                if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.待处理))
+                                    throw new Exception(string.Format("订单行[{0}]状态必须为待处理才能作废!", subOrderRow.Id));
                                 sr.Status = Convert.ToInt32(ORDER_STATUS.关闭);
-                                OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
-                                    null,null,null,null,null,null,null,
-                                    null,null);
-                                List<OrderRow> orderRows =
-                                    await this._orderRowRepository.ListAsync(orderRowSpecification);
-                                Guard.Against.Zero(orderRows.Count,nameof(orderRows));
-                                OrderRow orderRow = orderRows.First();
-                                orderRow.Expend -= subOrderRow.PreCount;
-                                updOrderRows.Add(orderRow);
+                                if (subOrderRow.OrderRowId.HasValue)
+                                {
+                                    OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                        subOrderRow.OrderRowId,
+                                        null, null, null, null, null, null, null,
+                                        null, null);
+                                    List<OrderRow> orderRows =
+                                        await this._orderRowRepository.ListAsync(orderRowSpecification);
+                                    Guard.Against.Zero(orderRows.Count, nameof(orderRows));
+                                    OrderRow orderRow = orderRows.First();
+                                    orderRow.Expend -= subOrderRow.PreCount;
+                                    updOrderRows.Add(orderRow);
+                                }
                             }
-                            this._orderRowRepository.Update(updOrderRows);
+
+                            if (updOrderRows.Count > 0)
+                                this._orderRowRepository.Update(updOrderRows);
                             this._subOrderRowRepository.Update(subOrderRows);
                             scope.Complete();
                         }
@@ -478,6 +476,11 @@ namespace ApplicationCore.Services
                     throw ex;
                 }
             }
+        }
+
+        public Task OutConfirm(int subOrderId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

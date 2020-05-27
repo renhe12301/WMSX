@@ -14,5 +14,7 @@ namespace ApplicationCore.Interfaces
         Task ScrapOrder(SubOrder subOrder);
 
         Task ScrapOrderRow(List<SubOrderRow> subOrderRows);
+        
+        Task OutConfirm(int subOrderId);
     }
 }

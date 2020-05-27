@@ -71,7 +71,6 @@ namespace Web
             //DI 注入
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IOrderService), typeof(OrderService));
             services.AddScoped(typeof(IEmployeeService), typeof(EmployeeService));
             services.AddScoped(typeof(IInOutTaskService), typeof(InOutTaskService));
             services.AddScoped(typeof(ILocationService), typeof(LocationService));
@@ -84,7 +83,6 @@ namespace Web
             services.AddScoped(typeof(IMaterialTypeService), typeof(MaterialTypeService));
             services.AddScoped(typeof(IWarehouseService), typeof(WarehouseService));
             services.AddScoped(typeof(IMaterialTypeService), typeof(MaterialTypeService));
-            services.AddScoped(typeof(IInOutRecordService), typeof(InOutRecordService));
             services.AddScoped(typeof(ISysMenuService), typeof(SysMenuService));
             services.AddScoped(typeof(IEBSProjectService), typeof(EBSProjectServicecs));
             services.AddScoped(typeof(IEBSTaskService), typeof(EBSTaskServicecs));
@@ -105,14 +103,12 @@ namespace Web
             services.AddScoped(typeof(IWarehouseMaterialViewModelService), typeof(WarehouseMaterialViewModelService));
             services.AddScoped(typeof(IWarehouseTrayViewModelService), typeof(WarehouseTrayViewModelService));
             services.AddScoped(typeof(IWarehouseViewModelService), typeof(WarehouseViewModelService));
-            services.AddScoped(typeof(IInOutRecordViewModelService), typeof(InOutRecordViewModelService));
             services.AddScoped(typeof(IOUViewModelService), typeof(OUViewModelService));
             services.AddScoped(typeof(ISysMenuViewModelService), typeof(SysMenuViewModelService));
             services.AddScoped(typeof(IPhyWarehouseViewModelService), typeof(PhyWarehouseViewModelService));
             services.AddScoped(typeof(IEBSProjectViewModelService), typeof(EBSProjectViewModelService));
             services.AddScoped(typeof(IEBSTaskViewModelService), typeof(EBSTaskViewModelService));
             services.AddScoped(typeof(ILogRecordViewModelService), typeof(LogRecordViewModelService));
-            services.AddScoped(typeof(IOrderRowBatchViewModelService), typeof(OrderRowBatchViewModelService));
             services.AddScoped(typeof(ISysConfigViewModelService), typeof(SysConfigViewModelService));
 
             //定时器工厂

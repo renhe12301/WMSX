@@ -1,0 +1,93 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Threading.Tasks;
+using ApplicationCore.Entities.TaskManager;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Misc;
+using Quartz;
+using ApplicationCore.Specifications;
+using System.Net.Http;
+using ApplicationCore.Entities.FlowRecord;
+
+namespace Web.Jobs
+{
+    [DisallowConcurrentExecution]
+    public class SendWCSTaskJob:IJob
+    {
+        private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
+        private readonly ILogRecordService _logRecordService;
+        private readonly string WCS_TASK_RECEIVE_URL = "fromWms/taskReceive";
+        private static readonly HttpClient client = new HttpClient();
+        public SendWCSTaskJob()
+        {
+            _inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
+            _logRecordService = EnginContext.Current.Resolve<ILogRecordService>();
+        }
+
+        public async Task Execute(IJobExecutionContext context)
+        {
+            try
+            {
+                InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null, null, null, null,
+                    (int)TASK_READ.未读, null, null, null, null, null, null, null, null);
+                List<InOutTask> inOutTasks = await this._inOutTaskRepository.ListAsync(inOutTaskSpecification);
+                List<InOutTask> orderTasks = inOutTasks.OrderBy(t => t.CreateTime).ToList();
+                foreach (var ot in orderTasks)
+                {
+                    try
+                    {
+                        string wcsUrl = ot.PhyWarehouse.Memo + WCS_TASK_RECEIVE_URL;
+                        dynamic taskGroup = new ExpandoObject();
+                        taskGroup.groupId = Guid.NewGuid().ToString();
+                        taskGroup.msgTime = DateTime.Now.Ticks.ToString();
+                        List<dynamic> tasks = new List<dynamic>();
+                        taskGroup.tasks = tasks;
+                        dynamic pickTask = new ExpandoObject();
+                        pickTask.taskId = ot.Id.ToString();
+                        pickTask.taskType = ot.Type == Convert.ToInt32(TASK_TYPE.物料入库) ||
+                                            ot.Type == Convert.ToInt32(TASK_TYPE.空托盘入库)
+                            ? 0
+                            : 1;
+                        pickTask.district = ot.ReservoirArea.Id.ToString();
+                        pickTask.startNode = ot.SrcId.ToString();
+                        pickTask.endNode = ot.TargetId.ToString();
+                        pickTask.barCode = ot.TrayCode;
+                        dynamic dropTask = new ExpandoObject();
+                        string sendJsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(taskGroup);
+                        var response = await client.PostAsync(wcsUrl, new StringContent(sendJsonObj));
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var result = await response.Content.ReadAsStringAsync();
+                            dynamic resultObj = Newtonsoft.Json.JsonConvert.DeserializeObject(result);
+                            if (resultObj.returnStatus == 1)
+                                throw new Exception(result);
+                            ot.IsRead = Convert.ToInt32(TASK_READ.已读);
+                            await this._inOutTaskRepository.UpdateAsync(ot);
+                        }
+                        else
+                        {
+                            throw new Exception(await response.Content.ReadAsStringAsync());
+                        }
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logRecordService.AddLog(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
+                            LogDesc = "事件源[发送WCS任务Job]:"+ex.Message,
+                            CreateTime = DateTime.Now
+                        });
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
+    }
+}

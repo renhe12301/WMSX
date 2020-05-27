@@ -19,9 +19,9 @@ namespace ApplicationCore.Specifications
                        (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&
                        (trayCode == null || b.WarehouseTray.TrayCode == trayCode) &&
                        (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
-                       (!orderId.HasValue || b.OrderId == orderId) &&
+                       (!orderId.HasValue || b.SubOrderId == orderId) &&
                        (!carrier.HasValue || b.Carrier == carrier) &&
-                       (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
+                       (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
                        (traySteps == null || traySteps.Contains(b.WarehouseTray.TrayStep.Value)) &&
                        (!locationId.HasValue || b.LocationId == locationId) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
@@ -39,8 +39,8 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.WarehouseTray);
             AddInclude(b => b.ReservoirArea);
             AddInclude(b => b.Warehouse);
-            AddInclude(b => b.Order);
-            AddInclude(b => b.OrderRow);
+            AddInclude(b => b.SubOrder);
+            AddInclude(b => b.SubOrderRow);
             AddInclude(b=>b.OU);
             AddInclude(b=>b.Supplier);
             AddInclude(b=>b.SupplierSite);
