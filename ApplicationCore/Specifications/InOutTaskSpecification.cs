@@ -32,6 +32,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.SubOrder);
             AddInclude(b => b.SubOrderRow);
             AddInclude(b => b.PhyWarehouse);
+            AddInclude(b=>b.WarehouseTray);
         }
     }
 }

@@ -6,6 +6,7 @@ using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
+using ApplicationCore.Entities.TaskManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
 using Microsoft.AspNetCore.SignalR;
@@ -23,6 +24,7 @@ namespace Web.Jobs
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
+        private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
 
         public DashboardJob(IHubContext<DashboardHub> hubContext)
         {
@@ -31,6 +33,7 @@ namespace Web.Jobs
             _orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();
             _locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
             _warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
+            _inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -40,10 +43,10 @@ namespace Web.Jobs
                 if ((DateTime.Now - DashboardHub.now).TotalSeconds < 3)
                 {
                     await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
-                    var inOutRecordChart = await GetInOutRecordAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowInOutRecordAnalysis", inOutRecordChart);
-                    var inBadChart = await GetInBadAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowInBadAnalysis", inBadChart);
+                    var inRecordChart = await GetInRecordAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowInRecordAnalysis", inRecordChart);
+                    var outRecordChart = await GetOutRecordAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOutRecordAnalysis", outRecordChart);
                     var inOrderChart = await GetInOrderAnalysis();
                     await _hubContext.Clients.All.SendAsync("ShowInOrderAnalysis", inOrderChart);
                     var outOrderChart = await GetOutOrderAnalysis();
@@ -58,6 +61,10 @@ namespace Web.Jobs
                     await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
                     var stockUtilizationChart = await GetStockUtilizationAnalysis();
                     await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
+                    
+                    var orderChronergyChart = await GetOrderChronergyAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOrderChronergyChartAnalysis", orderChronergyChart);
+                   
                 }
                 else 
                 {
@@ -72,95 +79,115 @@ namespace Web.Jobs
         }
 
         /// <summary>
-        /// 每月出入库记录分析数据看板
+        /// 每月入库记录分析数据看板
         /// </summary>
         /// <returns></returns>
-        async Task<List<List<int>>> GetInOutRecordAnalysis()
+        async Task<List<List<int>>> GetInRecordAnalysis()
+        {
+            List<List<int>> result = new List<List<int>>();
+            List<int> data1 = new List<int>();
+            string ytime = DateTime.Now.Year.ToString();
+            // 接收
+            // InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null,null,null,null,
+            //     null,null,null,null,null,null,null,null,
+            //     ytime + "-01-01", ytime + "-12-31");
+            // List<InOutTask> inOutTasks = await this._inOutTaskRepository.ListAsync(inOutTaskSpecification);
+            Random random = new Random();
+            for (int i = 1; i <= 12; i++)
+            {
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<InOutTask> recvs = inOutTasks
+                //     .Where(r => r.Type == Convert.ToInt32(TASK_TYPE.物料入库) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(recvs.Sum(r => r.WarehouseTray.MaterialCount));
+                data1.Add(random.Next(10,100));
+            }
+            result.Add(data1);
+            return result;
+        }
+
+        /// <summary>
+        /// 每月出库记录分析数据看板
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<List<int>>> GetOutRecordAnalysis()
+        {
+            List<List<int>> result = new List<List<int>>();
+            List<int> data1 = new List<int>();
+            string ytime = DateTime.Now.Year.ToString();
+           
+            // InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null,null,null,null,
+            //     null,null,null,null,null,null,null,null,
+            //     ytime + "-01-01", ytime + "-12-31");
+            // List<InOutTask> inOutTasks = await this._inOutTaskRepository.ListAsync(inOutTaskSpecification);
+            Random random = new Random();
+            for (int i = 1; i <= 12; i++)
+            {
+                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
+                // DateTime now = DateTime.Parse(time);
+                // var sCreateTime = now;
+                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
+                //
+                // List<InOutTask> recvs = inOutTasks
+                //     .Where(r => r.Type == Convert.ToInt32(TASK_TYPE.物料出库) && r.CreateTime >= now &&
+                //                 r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(recvs.Sum(r => r.WarehouseTray.MaterialCount));
+                data1.Add(random.Next(10,100));
+            }
+            result.Add(data1);
+            return result;
+        }
+
+        /// <summary>
+        /// 每月订单完成时效分析数据看板
+        /// </summary>
+        /// <returns></returns>
+        async Task<List<List<int>>> GetOrderChronergyAnalysis()
         {
             List<List<int>> result = new List<List<int>>();
             List<int> data1 = new List<int>();
             List<int> data2 = new List<int>();
             List<int> data3 = new List<int>();
-            List<int> data4 = new List<int>();
-            string ytime = DateTime.Now.Year.ToString();
-            // InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
-            //     null, null, null, null, null, null, null, null, null,
-            //     null, ytime + "-01-01", ytime + "-12-31");
-            // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-            // 接收
             Random random = new Random();
+            string ytime = DateTime.Now.Year.ToString();
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+                null, null, null, null, null, null, null,
+                null, null, null,null, null, ytime + "-01-01", ytime + "-12-31", null, null);
+            List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
             for (int i = 1; i <= 12; i++)
             {
                 // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
                 // DateTime now = DateTime.Parse(time);
                 // var sCreateTime = now;
                 // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                //
-                // List<InOutRecord> recvs = inOutRecords
-                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
-                //                 r.CreateTime <= eCreateTime).ToList();
-                // data1.Add(recvs.Sum(r => r.InOutCount));
-                //
-                // // 退料
-                // List<InOutRecord> tls = inOutRecords
-                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
-                //                 r.CreateTime <= eCreateTime).ToList();
-                // data2.Add(tls.Sum(r => r.InOutCount));
-                //
-                // // 领料
-                // List<InOutRecord> lls = inOutRecords
-                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
-                //                 r.CreateTime <= eCreateTime).ToList();
-                // data3.Add(lls.Sum(r => r.InOutCount));
-                //
-                // // 退库
-                // List<InOutRecord> tks = inOutRecords
-                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
-                //                 r.CreateTime <= eCreateTime).ToList();
-                // data4.Add(tks.Sum(r => r.InOutCount));
+                // List<Order> orders2 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // List<Order> orders3 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // List<Order> orders4 = orders.Where(r =>
+                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
+                //     r.CreateTime <= eCreateTime).ToList();
+                // data1.Add(orders2.Count);
+                // data2.Add(orders3.Count);
+                // data3.Add(orders4.Count);
                 data1.Add(random.Next(10,100));
                 data2.Add(random.Next(10,100));
                 data3.Add(random.Next(10,100));
-                data4.Add(random.Next(10,100));
             }
 
             result.Add(data1);
             result.Add(data2);
             result.Add(data3);
-            result.Add(data4);
             return result;
         }
-
-        /// <summary>
-        /// 每月入库不合格分析数据看板
-        /// </summary>
-        /// <returns></returns>
-        async Task<List<int>> GetInBadAnalysis()
-        {
-            List<int> result = new List<int>();
-            Random random = new Random();
-            string ytime = DateTime.Now.Year.ToString();
-            // InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, null,
-            //     null, null, null, null, null, null, null, null, null,
-            //     null, ytime + "-01-01", ytime + "-12-31");
-            // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-            for (int i = 1; i <= 12; i++)
-            {
-                // string time = DateTime.Now.Year + "-" + i.ToString().PadLeft(2, '0') + "-01";
-                // DateTime now = DateTime.Parse(time);
-                // var sCreateTime = now;
-                // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
-                //
-                // List<InOutRecord> bads = inOutRecords
-                //     .Where(r => r.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收)&&r.CreateTime >= now &&
-                //                 r.CreateTime <= eCreateTime).ToList();
-                // result.Add(bads.Sum(r => r.BadCount.GetValueOrDefault()));
-                result.Add(random.Next(10,100));
-            }
-
-            return result;
-        }
-
+        
+        
         /// <summary>
         /// 每月入库单分析数据看板
         /// </summary>
@@ -205,6 +232,7 @@ namespace Web.Jobs
             result.Add(data3);
             return result;
         }
+
 
         /// <summary>
         /// 每月出库单分析数据看板

@@ -14,7 +14,6 @@
     <Folder Include="ViewModels\StockManager\" />
     <Folder Include="ViewModels\TaskManager\" />
     <Folder Include="ViewModels\FlowRecord\" />
-    <Folder Include="wwwroot\modules\mobile" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">

@@ -1,6 +1,7 @@
 ﻿using System;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
+using ApplicationCore.Entities.StockManager;
 
 namespace ApplicationCore.Entities.TaskManager
 {
@@ -33,5 +34,8 @@ namespace ApplicationCore.Entities.TaskManager
         public ReservoirArea ReservoirArea { get; set; }
         public SubOrder SubOrder { get; set; }
         public SubOrderRow SubOrderRow { get; set; }
+
+        public int WarehouseTrayId { get; set; }
+        public WarehouseTray WarehouseTray { get; set; }
     }
 }
