@@ -6,144 +6,139 @@ using System.Threading.Tasks;
 using System.Transactions;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
+using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
 using Microsoft.EntityFrameworkCore;
 using Web.Interfaces;
+using Web.Services;
 
 namespace Web.Jobs
 {
     /// <summary>
     /// 订单,订单行数据同步定时任务
     /// </summary>
+    [DisallowConcurrentExecution]
     public class OrderStatusSyncJob:IJob
     {
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
-        private readonly ILogRecordService _logRecordService;
+        private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<SubOrder> _subOrderRepository;
+        private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
+        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         public OrderStatusSyncJob(IAsyncRepository<Order> orderRepository,
             IAsyncRepository<OrderRow> orderRowRepository,
-            ILogRecordService logRecordService
+            IAsyncRepository<LogRecord> logRecordRepository,
+            IAsyncRepository<SubOrderRow> subOrderRowRepository,
+            IAsyncRepository<WarehouseTray> warehouseTrayRepository,
+            IAsyncRepository<SubOrder> subOrderRepository
         )
         {
             this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
-            this._logRecordService = logRecordService;
+            this._logRecordRepository = logRecordRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
+            this._warehouseTrayRepository = warehouseTrayRepository;
+            this._subOrderRepository = subOrderRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            try
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                // OrderSpecification orderSpec = new OrderSpecification(null, null, null,
-                //     new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null,null, null, null, null,
-                //     null, null, null, null, null, null, null,
-                //     null, null);
-                // List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
-                // OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null,null,null,null,
-                //     new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
-                // List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-                // InOutRecordSpecification inOutRecordSpec = new InOutRecordSpecification(null, null, 
-                //     null, null, null,null, null, null, null,
-                //     null,new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0, null, null);
-                // List<InOutRecord> inOutRecords = await this._inOutRecordRepository.ListAsync(inOutRecordSpec);
-                // List<Order> updOrders = new List<Order>();
-                // List<OrderRow> updOrderRows = new List<OrderRow>();
-                // List<InOutRecord> updInOutRecords = new List<InOutRecord>();
-                // orders.ForEach(async (order) =>
-                // {
-                //     if (order.OrderTypeId != Convert.ToInt32(ORDER_TYPE.接收退料))
-                //     {
-                //         List<OrderRow> ors = orderRows.Where(or => or.OrderId == order.Id).ToList();
-                //         ors.ForEach(or =>
-                //         {
-                //             List<InOutRecord> rowRecords = inOutRecords.Where(r => r.OrderRowId == or.Id).ToList();
-                //             if (rowRecords.Count > 0)
-                //             {
-                //                 or.RealityCount += rowRecords.Sum(r => r.InOutCount);
-                //                 rowRecords.ForEach(r => r.IsSync = 1);
-                //                 updInOutRecords.AddRange(rowRecords);
-                //                 if ((or.RealityCount) >= (or.PreCount - or.BadCount - or.CancelCount))
-                //                     or.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                //                 updOrderRows.Add(or);
-                //             }
-                //         });
-                //         OrderRowSpecification allOrderRowSpec = new OrderRowSpecification(null, order.Id, null, null,
-                //             null,
-                //             null, null, null, null, null);
-                //         List<OrderRow> allOrderRows = await this._orderRowRepository.ListAsync(allOrderRowSpec);
-                //         int finishCount = allOrderRows.Count(or => or.Status == Convert.ToInt32(ORDER_STATUS.完成));
-                //         if (finishCount == allOrderRows.Count)
-                //         {
-                //             order.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                //             updOrders.Add(order);
-                //         }
-                //     }
-                // });
-                //
-                // OrderRowBatchSpecification orderRowBatchSpec = new OrderRowBatchSpecification(null,null,
-                //     null,null,1,null,0,null);
-                // List<OrderRowBatch> orderRowBatchs = await this._orderRowBatchRepository.ListAsync(orderRowBatchSpec);
-                // List<OrderRowBatch> updOrderRowBatchs = new List<OrderRowBatch>();
-                // orderRowBatchs.ForEach(async (orb) =>
-                // {
-                //     InOutRecordSpecification childSpec = new InOutRecordSpecification(null,null,null,
-                //         null,null,null,null,null,orb.Id,
-                //         null,null,null,null,null,null );
-                //     List<InOutRecord> childInOutRecords = await this._inOutRecordRepository.ListAsync(childSpec);
-                //     List<InOutRecord> finishInOutRecords = childInOutRecords.Where(r => r.Status == Convert.ToInt32(ORDER_STATUS.完成)).ToList();
-                //     if (finishInOutRecords.Count() == childInOutRecords.Count())
-                //     {
-                //         orb.IsSync = 1;
-                //         orb.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                //         updOrderRowBatchs.Add(orb);
-                //     }
-                // });
-                //
-                // using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
-                // {
-                //     this._orderRepository.Update(updOrders);
-                //     this._orderRowRepository.Update(updOrderRows);
-                //     this._inOutRecordRepository.Update(updInOutRecords);
-                //     this._orderRowBatchRepository.Update(updOrderRowBatchs);
-                //     scope.Complete();
-                // }
-                //
-                // StringBuilder logBuilder = new StringBuilder();
-                // if (updOrders.Count > 0)
-                //     logBuilder.Append(
-                //         string.Format("同步订单Id[{0}]状态！\n", string.Join(',', updOrders.ConvertAll(o => o.Id))));
-                // if (updOrderRows.Count > 0)
-                //     logBuilder.Append(string.Format("同步订单行Id[{0}]状态！\n",
-                //         string.Join(',', updOrderRows.ConvertAll(or => or.Id))));
-                // if (updOrderRowBatchs.Count > 0)
-                //     logBuilder.Append(string.Format("同步订单出库批次Id[{0}]状态！\n",
-                //         string.Join(',', updOrderRowBatchs.ConvertAll(orb => orb.Id))));
-                // if (inOutRecords.Count > 0)
-                //     logBuilder.Append(string.Format("同步订单行子行Id[{0}]状态！",
-                //         string.Join(',', inOutRecords.ConvertAll(ior => ior.Id))));
-                //
-                // string record = logBuilder.ToString();
-                // if (!string.IsNullOrEmpty(record))
-                // {
-                //     await this._logRecordService.AddLog(new LogRecord
-                //     {
-                //         LogType = Convert.ToInt32(LOG_TYPE.定时任务日志),
-                //         LogDesc = record,
-                //         CreateTime = DateTime.Now
-                //     });
-                // }
-            }
-            catch (Exception ex)
-            {
-                await this._logRecordService.AddLog(new LogRecord
+                try
                 {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
+                    DateTime now = DateTime.Now;
+                    DateTime pre = DateTime.Now.AddMonths(-now.Month + 1).AddDays(-now.Day + 1);
+
+                    //更新时间期限为一年以内的行处理的数量
+                    OrderRowSpecification orderRowSpecification = new OrderRowSpecification(null, null,
+                        null, null, null, null, pre.ToString(),
+                        now.ToString(), null, null);
+
+                    List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+                    List<OrderRow> updOrderRows = new List<OrderRow>();
+                    foreach (var orderRow in orderRows)
+                    {
+                        SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null, null,
+                            orderRow.Id, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null);
+                        List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
+                        orderRow.Sorting = subOrderRows.Sum(r => r.Sorting);
+                        orderRow.RealityCount = subOrderRows.Sum(r => r.RealityCount);
+                        updOrderRows.Add(orderRow);
+                    }
+
+                    if (updOrderRows.Count > 0)
+                        this._orderRowRepository.Update(updOrderRows);
+
+                    SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
+                        null, null, null, null, null, null, null, null,
+                        null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
+                    List<SubOrderRow> subRows = this._subOrderRowRepository.List(subOrderRowSpec);
+                    List<SubOrderRow> updSubRows = new List<SubOrderRow>();
+                    foreach (var subRow in subRows)
+                    {
+                        WarehouseTraySpecification warehouseTraySpecification = new WarehouseTraySpecification(null,
+                            null,
+                            null, null, subRow.Id, null, null, null, null, null, null, null);
+                        List<WarehouseTray> warehouseTrays =
+                            this._warehouseTrayRepository.List(warehouseTraySpecification);
+                        List<WarehouseTray> rukuTray =
+                            warehouseTrays.Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
+                        List<WarehouseTray> chukuTray = warehouseTrays
+                            .Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.出库完成等待确认)).ToList();
+                        var taotalRukuTrayCnt = rukuTray.Sum(t => t.MaterialCount);
+                        var totalChukuTrayCnt = chukuTray.Sum(t => t.OutCount);
+                        subRow.RealityCount = taotalRukuTrayCnt > 0 ? taotalRukuTrayCnt : totalChukuTrayCnt;
+                        if (subRow.RealityCount >= subRow.PreCount)
+                            subRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                        updSubRows.Add(subRow);
+                    }
+
+                    if (updOrderRows.Count > 0)
+                        this._subOrderRowRepository.Update(updSubRows);
+
+                    
+                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null,null,null,
+                        new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null,null,
+                        null,null,null,null,null,null,null);
+                    List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
+                    List<SubOrder> updSubOrders = new List<SubOrder>();
+                    foreach (var subOrder in subOrders)
+                    {
+                        SubOrderRowSpecification allSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
+                            null, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null);
+                        List<SubOrderRow> allRows = this._subOrderRowRepository.List(allSubRowSpec);
+                        
+                        SubOrderRowSpecification endSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
+                            null, null, null, null, null, null, null, null,
+                            null, new List<int>{Convert.ToInt32(ORDER_STATUS.完成)}, null, null, null, null);
+                        List<SubOrderRow> endRows = this._subOrderRowRepository.List(endSubRowSpec);
+                        if (allRows.Count == endRows.Count)
+                            subOrder.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                        updSubOrders.Add(subOrder);
+                    }
+                    if(updSubOrders.Count>0)
+                        this._subOrderRepository.Update(updSubOrders);
+                    
+                    scope.Complete();
+
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.Message,
+                        CreateTime = DateTime.Now
+                    });
+                }
+
             }
         }
     }

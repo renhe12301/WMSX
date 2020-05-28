@@ -156,6 +156,7 @@ namespace Web.Jobs
                                      this._subOrderRowRepository.List(subOrderRowSpecification);
 
                                  List<InOutTask> sendTasks = new List<InOutTask>();
+                                 List<WarehouseTray> warehouseTrays = new List<WarehouseTray>();
                                  foreach (var subOrderRow in subOrderRows)
                                  {
                                      ReservoirArea area = subOrderRow.ReservoirArea;
@@ -187,12 +188,20 @@ namespace Web.Jobs
                                          throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
                                      var sortMaterials = warehouseMaterials.OrderBy(m => m.CreateTime);
                                      int totalCount = 0;
+                                     int syCount = subOrderRow.PreCount;
                                      Random random = new Random();
                                      foreach (var sortMaterial in sortMaterials)
                                      {
                                          if (totalCount > subOrderRow.PreCount)
                                              break;
+                                         syCount -= sortMaterial.MaterialCount;
                                          totalCount += sortMaterial.MaterialCount;
+                                         WarehouseTray warehouseTray = sortMaterial.WarehouseTray;
+                                         warehouseTray.OutCount = sortMaterial.MaterialCount > syCount
+                                             ? syCount
+                                             : sortMaterial.MaterialCount;
+                                         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
+                                         warehouseTrays.Add(warehouseTray);
                                          InOutTask inOutTask = new InOutTask();
                                          inOutTask.SubOrderId = subOrder.Id;
                                          inOutTask.SubOrderRowId = subOrderRow.Id;
@@ -215,6 +224,7 @@ namespace Web.Jobs
                                  subOrder.IsRead = Convert.ToInt32(ORDER_READ.已读);
                                  this._subOrderRepository.Update(subOrder);
                                  this._inOutTaskRepository.Add(sendTasks);
+                                 this._warehouseTrayRepository.Update(warehouseTrays);
                                  
                                  scope.Complete();
                              }

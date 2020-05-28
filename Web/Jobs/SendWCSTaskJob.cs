@@ -18,7 +18,7 @@ namespace Web.Jobs
     {
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly ILogRecordService _logRecordService;
-        private readonly string WCS_TASK_RECEIVE_URL = "fromWms/taskReceive";
+        private readonly string WCS_TASK_RECEIVE_URL = "/fromWms/taskReceive";
         private static readonly HttpClient client = new HttpClient();
         public SendWCSTaskJob()
         {
@@ -43,18 +43,18 @@ namespace Web.Jobs
                         taskGroup.groupId = Guid.NewGuid().ToString();
                         taskGroup.msgTime = DateTime.Now.Ticks.ToString();
                         List<dynamic> tasks = new List<dynamic>();
-                        taskGroup.tasks = tasks;
-                        dynamic pickTask = new ExpandoObject();
-                        pickTask.taskId = ot.Id.ToString();
-                        pickTask.taskType = ot.Type == Convert.ToInt32(TASK_TYPE.物料入库) ||
-                                            ot.Type == Convert.ToInt32(TASK_TYPE.空托盘入库)
+                        dynamic task = new ExpandoObject();
+                        task.taskId = ot.Id.ToString();
+                        task.taskType = ot.Type == Convert.ToInt32(TASK_TYPE.物料入库) ||
+                                        ot.Type == Convert.ToInt32(TASK_TYPE.空托盘入库)
                             ? 0
                             : 1;
-                        pickTask.district = ot.ReservoirArea.Id.ToString();
-                        pickTask.startNode = ot.SrcId.ToString();
-                        pickTask.endNode = ot.TargetId.ToString();
-                        pickTask.barCode = ot.TrayCode;
-                        dynamic dropTask = new ExpandoObject();
+                        task.district = ot.ReservoirArea.Id.ToString();
+                        task.startNode = ot.SrcId.ToString();
+                        task.endNode = ot.TargetId.ToString();
+                        task.barCode = ot.TrayCode;
+                        tasks.Add(task);
+                        taskGroup.tasks = tasks;
                         string sendJsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(taskGroup);
                         var response = await client.PostAsync(wcsUrl, new StringContent(sendJsonObj));
                         if (response.IsSuccessStatusCode)
