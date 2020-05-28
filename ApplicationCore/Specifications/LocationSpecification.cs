@@ -6,13 +6,13 @@ namespace ApplicationCore.Specifications
 {
     public class LocationSpecification:BaseSpecification<Location>
     {
-        public LocationSpecification(int? id, string sysCode,string userCode,int? type,int? phyId,int? ouId,
+        public LocationSpecification(int? id, string sysCode,string userCode,List<int> types,int? phyId,int? ouId,
             int? wareHouseId,int? areaId,List<int> status,List<int> inStocks,List<int> isTasks,
             List<int> floors,List<int> items,List<int> cols)
             : base(b => (!id.HasValue || b.Id == id) &&
                         (sysCode==null || b.SysCode.Contains(sysCode))&&
                         (userCode==null || b.UserCode.Contains(userCode))&&
-                        (!type.HasValue || b.Type==type) &&
+                        (types==null || types.Contains(b.Type.GetValueOrDefault())) &&
                         (!phyId.HasValue || b.PhyWarehouseId == phyId) &&
                         (!ouId.HasValue || b.OUId == ouId) &&
                         (!wareHouseId.HasValue || b.WarehouseId == wareHouseId)&&

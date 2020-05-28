@@ -31,7 +31,7 @@ namespace Web.Services
         
         
         public async Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage,int? id, 
-            string sysCode,string userCode,int? type,int? phyId,int? ouId, int? wareHouseId,int? areaId,string status,
+            string sysCode,string userCode,string types,int? phyId,int? ouId, int? wareHouseId,int? areaId,string status,
             string inStocks,string isTasks,string floors,string items,string cols)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -43,6 +43,13 @@ namespace Web.Services
                 if (!string.IsNullOrEmpty(status))
                 {
                     lStatuss = status.Split(new char[]{
+                        ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                List<int> ltypes = null;
+                if (!string.IsNullOrEmpty(types))
+                {
+                    ltypes = types.Split(new char[]{
                         ','}, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
@@ -84,11 +91,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new LocationPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,sysCode,userCode,
-                        type,phyId,ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
+                        ltypes,phyId,ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
                 else
                 {
-                    baseSpecification = new LocationSpecification(id,sysCode,userCode,type,phyId,
+                    baseSpecification = new LocationSpecification(id,sysCode,userCode,ltypes,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols);
                 }
 
@@ -123,7 +130,7 @@ namespace Web.Services
               
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,type,phyId,
+                    var count = await this._locationRepository.CountAsync(new LocationSpecification(id,sysCode,userCode,ltypes,phyId,
                         ouId,wareHouseId,areaId,lStatuss,lInStocks,lIsTasks,lFloors,lItems,lCols));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = locationViewModels;

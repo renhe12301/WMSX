@@ -17,7 +17,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> UpdateLocation(LocationViewModel locationViewModel);
 
         Task<ResponseResultViewModel> GetLocations(int? pageIndex, int? itemsPage, int? id,
-            string sysCode,string userCode,int? type,int? phyId,int? ouId, int? wareHouseId, int? areaId, string status,
+            string sysCode,string userCode,string types,int? phyId,int? ouId, int? wareHouseId, int? areaId, string status,
             string inStocks,string isTasks,string floors,string items,string cols);
 
         Task<ResponseResultViewModel> GetMaxFloorItemCol(int phyId);

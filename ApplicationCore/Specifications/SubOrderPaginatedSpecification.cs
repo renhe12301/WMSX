@@ -6,13 +6,13 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderPaginatedSpecification:BaseSpecification<SubOrder>
     {
-        public SubOrderPaginatedSpecification(int skip,int take,int? id, string orderNumber, int? orderTypeId,
+        public SubOrderPaginatedSpecification(int skip,int take,int? id, string orderNumber, List<int> orderTypeIds,
              List<int> status,int? isRead,  int? ouId, int? warehouseId, int? pyId,int? supplierId, string supplierName,
              int? supplierSiteId,string supplierSiteName,
              string sCreateTime, string eCreateTime,string sFinishTime,string eFinishTime)
             : base(b => (!id.HasValue || b.Id == id) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
-                       (!orderTypeId.HasValue || b.OrderTypeId == orderTypeId) &&
+                       (orderTypeIds==null || orderTypeIds.Contains(b.OrderTypeId)) &&
                        (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                        (!isRead.HasValue || b.IsRead == isRead) &&
                        (!ouId.HasValue || b.OUId == ouId) &&

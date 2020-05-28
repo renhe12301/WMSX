@@ -6,12 +6,12 @@ namespace ApplicationCore.Specifications
     public class SubOrderRowSpecification: BaseSpecification<SubOrderRow>
     {
         public SubOrderRowSpecification(int? id, int? subOrderId,int? orderRowId,
-            int? orderTypeId,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
+            List<int> orderTypeIds,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
             string supplierSiteName,List<int> status,string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
                        (!subOrderId.HasValue||b.SubOrderId==subOrderId)&&
                        (!orderRowId.HasValue||b.OrderRowId==orderRowId)&&
-                       (!orderTypeId.HasValue||b.SubOrder.OrderTypeId==orderTypeId)&&
+                       (orderTypeIds == null || orderTypeIds.Contains(b.SubOrder.OrderTypeId)) &&
                        (!ouId.HasValue||b.SubOrder.OUId==ouId)&&
                        (!warehouseId.HasValue||b.SubOrder.WarehouseId==warehouseId)&&
                        (!pyId.HasValue||b.SubOrder.PhyWarehouseId==pyId)&&

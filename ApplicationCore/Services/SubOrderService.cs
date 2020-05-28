@@ -482,18 +482,18 @@ namespace ApplicationCore.Services
                         if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理))
                             throw new Exception(string.Format("只能处理状态为[待处理]的订单,当前的订单状态为[{0}]",
                                 Enum.GetName(typeof(ORDER_STATUS), subOrder.Status)));
-
+                        SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
+                            subOrderId,
+                            null, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null);
+                        List<SubOrderRow> subOrderRows =
+                            this._subOrderRowRepository.List(subOrderRowSpecification);
+                        Guard.Against.Zero(subOrderRows.Count, nameof(subOrderRows));
                         List<SysConfig> sysConfigs = this._sysConfigRepository.ListAll();
                         SysConfig config = sysConfigs.Find(s => s.KName == "出入库唯一校验");
                         if (config.KVal == "1")
                         {
-                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                subOrderId,
-                                null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null);
-                            List<SubOrderRow> subOrderRows =
-                                 this._subOrderRowRepository.List(subOrderRowSpecification);
-                            Guard.Against.Zero(subOrderRows.Count, nameof(subOrderRows));
+                           
                             SubOrderRow subOrderRow = subOrderRows.First();
                             ReservoirArea area = subOrderRow.ReservoirArea;
                             LocationSpecification locationSpecification = new LocationSpecification(null, null,
@@ -520,7 +520,8 @@ namespace ApplicationCore.Services
                         subOrder.Status = Convert.ToInt32(ORDER_STATUS.执行中);
                         subOrder.IsRead = Convert.ToInt32(ORDER_READ.未读);
                         this._subOrderRepository.Update(subOrder);
-                        
+                        subOrderRows.ForEach(r=>r.Status = Convert.ToInt32(ORDER_STATUS.执行中));
+                        this._subOrderRowRepository.Update(subOrderRows);
                         scope.Complete();
 
                     }

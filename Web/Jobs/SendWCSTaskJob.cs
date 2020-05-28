@@ -64,6 +64,7 @@ namespace Web.Jobs
                             if (resultObj.returnStatus == 1)
                                 throw new Exception(result);
                             ot.IsRead = Convert.ToInt32(TASK_READ.已读);
+                            ot.Step = Convert.ToInt32(TASK_STEP.已接收);
                             await this._inOutTaskRepository.UpdateAsync(ot);
                         }
                         else
