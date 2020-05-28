@@ -165,13 +165,13 @@ namespace Web.Jobs
                 // var sCreateTime = now;
                 // var eCreateTime = now.AddMonths(1).AddDays(-now.AddMonths(1).Day + 1).AddDays(-1);
                 // List<Order> orders2 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= now &&
+                //     r.Status == Convert.ToInt32(ORDER_STATUS.待处理) && r.CreateTime >= now &&
                 //     r.CreateTime <= eCreateTime).ToList();
                 // List<Order> orders3 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.接收退料) && r.CreateTime >= now &&
+                //     r.Status == Convert.ToInt32(ORDER_STATUS.执行中) && r.CreateTime >= now &&
                 //     r.CreateTime <= eCreateTime).ToList();
                 // List<Order> orders4 = orders.Where(r =>
-                //     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料) && r.CreateTime >= now &&
+                //     r.Status == Convert.ToInt32(ORDER_STATUS.完成) && r.CreateTime >= now &&
                 //     r.CreateTime <= eCreateTime).ToList();
                 // data1.Add(orders2.Count);
                 // data2.Add(orders3.Count);
