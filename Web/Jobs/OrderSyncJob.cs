@@ -104,7 +104,7 @@ namespace Web.Jobs
 
                     
                     SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null,null,null,
-                        new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null,null,
+                        new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null,null,null,
                         null,null,null,null,null,null,null);
                     List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                     List<SubOrder> updSubOrders = new List<SubOrder>();

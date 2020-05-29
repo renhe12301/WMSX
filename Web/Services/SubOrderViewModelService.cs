@@ -55,14 +55,17 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SubOrderPaginatedSpecification(pageIndex.Value, itemsPage.Value,id,orderNumber,
-                        orderTypes,orderStatuss,null,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,
+                        orderTypes,orderStatuss,null,null,ouId,warehouseId,pyId,
+                        supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 else
                 {
-                    baseSpecification = new SubOrderSpecification(id,orderNumber,orderTypes,null,null,ouId,warehouseId,pyId,
-                        supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
+                    baseSpecification = new SubOrderSpecification(id, orderNumber, orderTypes, null, null,
+                        null, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
+                        sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
+
                 var orders = await this._subOrderRepository.ListAsync(baseSpecification);
                 List<SubOrderViewModel> orderViewModels = new List<SubOrderViewModel>();
                 orders.ForEach(e =>
@@ -97,7 +100,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._subOrderRepository.CountAsync(new SubOrderSpecification(id,orderNumber,orderTypes,orderStatuss,null,
+                    var count = await this._subOrderRepository.CountAsync(new SubOrderSpecification(id,orderNumber,orderTypes,orderStatuss,null,null,
                         ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,eCreateTime,sFinishTime,eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderViewModels;

@@ -107,7 +107,12 @@ namespace ApplicationCore.Entities.OrderManager
         /// 订单是否作废
         /// </summary>
         public int IsScrap { get; set; }
-        
+
+        /// <summary>
+        /// 集约化物资系统订单行编号
+        /// </summary>
+        public int SourceId { get; set; }
+
 
 
     }

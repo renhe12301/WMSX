@@ -140,7 +140,7 @@ namespace Web.Jobs
                      SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null,null,
                           new List<int>{Convert.ToInt32(ORDER_TYPE.出库领料),Convert.ToInt32(ORDER_TYPE.入库退库)}, 
                          new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},Convert.ToInt32(ORDER_READ.未读),
-                          null,null,null,null,null,null,null,null,
+                          null,null,null,null,null,null,null,null,null,
                           null,null,null);
                      List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                      foreach (var subOrder in subOrders)

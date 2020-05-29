@@ -122,6 +122,11 @@ namespace ApplicationCore.Entities.OrderManager
         public int IsRead { get; set; }
 
         /// <summary>
+        /// 是否已经同步
+        /// </summary>
+        public int IsSync { get; set; }
+
+        /// <summary>
         /// 关联拆分订单行
         /// </summary>
         [NotMapped]
