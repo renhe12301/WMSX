@@ -6,7 +6,7 @@ namespace ApplicationCore.Specifications
     {
         public ReservoirAreaSpecification(int? id,string areaCode, int? ouId,int? whId,int? type,string areaName)
             :base(b=>(!id.HasValue||b.Id==id)&&
-                     (areaCode==null||b.AreaCode==areaName)&&
+                     (areaCode==null||b.AreaCode==areaCode)&&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!whId.HasValue||b.WarehouseId==whId)&&
                       (!type.HasValue || b.Type == type) &&

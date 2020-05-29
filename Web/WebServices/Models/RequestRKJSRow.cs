@@ -1,7 +1,9 @@
+using System;
 using System.Runtime.Serialization;
 
 namespace Web.WebServices.Models
 {
+    [Serializable]
     [DataContract]
     public class RequestRKJSRow
     {
@@ -34,7 +36,6 @@ namespace Web.WebServices.Models
 
         [DataMember]
         public string ErrMsg { get; set; }
-        
         
     }
 }

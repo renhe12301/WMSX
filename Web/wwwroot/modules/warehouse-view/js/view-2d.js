@@ -151,13 +151,13 @@ $(function () {
 
                                         content += "<td>";
                                         
-                                        if ((sl[i].InStock == "有货") && sl[i].Status != "禁用") {
+                                        if (sl[i].InStock == "有货" && sl[i].Status != "禁用") {
                                             content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ",\"有货\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
                                         }
-                                        else if ((sl[i].InStock == "空托盘") && sl[i].Status != "禁用") {
+                                        else if (sl[i].InStock == "空托盘" && sl[i].Status != "禁用") {
                                             content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ",\"空托盘\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
                                         }
-                                        else if (l.InStock == "无货" && l.Status != "禁用") {
+                                        else if (sl[i].InStock == "无货" && sl[i].InStock != "禁用") {
                                             content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ")'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].UserCode + "</a>";
                                         }
                                         else {

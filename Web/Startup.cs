@@ -201,16 +201,16 @@ namespace Web
 
             app.UseCors();
             
-            BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None)
-            {
-                MaxBufferPoolSize = 2147483647,
-                MaxBufferSize = 2147483647,
-                MaxReceivedMessageSize = 2147483647,
-                OpenTimeout = new TimeSpan(0, 10, 0),
-                CloseTimeout = new TimeSpan(0, 10, 0),
-                SendTimeout = new TimeSpan(0, 10, 0),
-                ReceiveTimeout = new TimeSpan(0, 10, 0)
-            };
+            // BasicHttpBinding binding = new BasicHttpBinding(BasicHttpSecurityMode.None)
+            // {
+            //     MaxBufferPoolSize = 2147483647,
+            //     MaxBufferSize = 2147483647,
+            //     MaxReceivedMessageSize = 2147483647,
+            //     OpenTimeout = new TimeSpan(0, 10, 0),
+            //     CloseTimeout = new TimeSpan(0, 10, 0),
+            //     SendTimeout = new TimeSpan(0, 10, 0),
+            //     ReceiveTimeout = new TimeSpan(0, 10, 0)
+            // };
             
             // WSDL 服务类
             app.UseEndpoints(endpoints => {

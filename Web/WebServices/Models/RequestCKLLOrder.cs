@@ -47,7 +47,6 @@ namespace Web.WebServices.Models
         public string ErrMsg { get; set; }
 
         [DataMember]
-        public RequestCKLLRow[] RequestCKLLRows { get; set; }
-
+        public List<RequestCKLLRow> RequestCKLLRows = new List<RequestCKLLRow>();
     }
 }

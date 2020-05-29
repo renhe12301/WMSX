@@ -1,8 +1,11 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Web.WebServices.Models
 {
+    [Serializable]
     [DataContract]
     public class RequestRKJSOrder
     {
@@ -46,6 +49,8 @@ namespace Web.WebServices.Models
         public string ErrMsg { get; set; }
 
         [DataMember]
-        public RequestRKJSRow[] RequestRKJSRows { get; set; }
+        public List<RequestRKJSRow> RequestRKJSRows = new List<RequestRKJSRow>();
+
+
     }
 }
