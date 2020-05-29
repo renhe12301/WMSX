@@ -44,14 +44,14 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
-            int?id,string orderNumber, string orderTypeIds,
+            int?id,string orderNumber,int? sourceId, string orderTypeIds,
             string status,int? ouId,int? warehouseId,int? pyId,
             int? supplierId, string supplierName,
             int? supplierSiteId,string supplierSiteName,
             string sCreateTime, string eCreateTime,
             string sFinishTime, string eFinishTime)
         {
-            var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
+            var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,sourceId,
                 orderTypeIds, status,ouId,warehouseId,pyId, supplierSiteId,supplierSiteName,
                 supplierId, supplierName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
@@ -81,12 +81,12 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId,
-            int? orderRowId,string orderTypeIds, int? ouId, int? warehouseId, int? pyId, int? supplierId, string supplierName,
+            int? orderRowId,int? sourceId,string orderTypeIds, int? ouId, int? warehouseId, int? pyId, int? supplierId, string supplierName,
             int? supplierSiteId, string supplierSiteName, string status, string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
         {
             var response = await this._subOrderViewModelService.GetOrderRows(pageIndex, itemsPage, id, subOrderId,
-                orderRowId,orderTypeIds, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
+                orderRowId,sourceId,orderTypeIds, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
                 status,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }

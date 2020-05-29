@@ -43,7 +43,7 @@ namespace Web.Services
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
-            int?id,string orderNumber, int? orderTypeId,string status,int? ouId,int? warehouseId,int? pyId,string applyUserCode, 
+            int?id,string orderNumber,int? sourceId, int? orderTypeId,string status,int? ouId,int? warehouseId,int? pyId,string applyUserCode, 
             string approveUserCode,int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
             string eApproveTime,string sCreateTime,string eCreateTime,string sFinishTime,string eFinishTime)
         {
@@ -60,14 +60,14 @@ namespace Web.Services
                 }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber, orderTypeId,
+                    spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber,sourceId, orderTypeId,
                         orderStatuss,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, supplierId, supplierName, 
                         sApplyTime, eApplyTime, sApproveTime, eApproveTime,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
-                    spec = new OrderSpecification(id, orderNumber, orderTypeId,
+                    spec = new OrderSpecification(id, orderNumber,sourceId, orderTypeId,
                         orderStatuss,ouId,warehouseId,pyId,applyUserCode, approveUserCode, employeeId,employeeName, supplierId, supplierName,sApplyTime, eApplyTime, 
                         sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
@@ -112,7 +112,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber, orderTypeId,
+                    var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber,sourceId, orderTypeId,
                         orderStatuss,ouId,warehouseId, pyId,applyUserCode, approveUserCode, employeeId,employeeName,supplierId, supplierName,
                         sApplyTime, eApplyTime, sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
@@ -131,6 +131,84 @@ namespace Web.Services
                 response.Code = 500;
                 response.Data = ex.Message;
             }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,int? sourceId, string status, string sCreateTime,
+            string eCreateTime, string sFinishTime, string eFinishTime)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                BaseSpecification<OrderRow> spec = null;
+                List<int> orderStatuss = null;
+                if (!string.IsNullOrEmpty(status))
+                {
+                    orderStatuss = status.Split(new char[]{','}, 
+                        StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
+                if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
+                {
+                    spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,null,sourceId,orderStatuss,
+                        sCreateTime, eCreateTime, sFinishTime, eFinishTime);
+                }
+                else
+                {
+                    spec = new OrderRowSpecification(id,orderId,null,sourceId,null,orderStatuss,
+                        sCreateTime, eCreateTime, sFinishTime, eFinishTime);
+                }
+                var orderRows = await this._orderRowRepository.ListAsync(spec);
+                List<OrderRowViewModel> orderRowViewModels = new List<OrderRowViewModel>();
+                
+                orderRows.ForEach(e =>
+                {
+                    OrderRowViewModel orderRowViewModel = new OrderRowViewModel
+                    {
+                        Id = e.Id,
+                        RowNumber = e.RowNumber,
+                        ReservoirAreaId = e.ReservoirAreaId,
+                        ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        MaterialDicId = e.MaterialDicId,
+                        MaterialDicName = e.MaterialDic?.MaterialName,
+                        CreateTime = e.CreateTime.ToString(),
+                        FinishTime = e.FinishTime?.ToString(),
+                        PreCount = e.PreCount,
+                        RealityCount = e.RealityCount.GetValueOrDefault(),
+                        Sorting = e.Sorting.GetValueOrDefault(),
+                        Status = e.Status,
+                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
+                        Progress = e.Progress.GetValueOrDefault(),
+                        EBSTaskName = e.EBSTask?.TaskName,
+                        Price = e.Price,
+                        Amount = e.Amount,
+                        OrderId = e.OrderId,
+                        RelatedId = e.RelatedId
+
+                    };
+                    orderRowViewModels.Add(orderRowViewModel);
+                });
+                if (pageIndex > -1&&itemsPage>0)
+                {
+                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,null,sourceId,null
+                        ,orderStatuss,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
+                    dynamic dyn = new ExpandoObject();
+                    dyn.rows = orderRowViewModels;
+                    dyn.total = count;
+                    response.Data = dyn;
+                }
+                else
+                {
+                    response.Data = orderRowViewModels;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
             return response;
         }
 

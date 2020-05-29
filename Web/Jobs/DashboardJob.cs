@@ -154,7 +154,7 @@ namespace Web.Jobs
             List<int> data3 = new List<int>();
             Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
-            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null,null, null, null,
                 null, null, null, null, null, null, null,
                 null, null, null,null, null, ytime + "-01-01", ytime + "-12-31", null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
@@ -200,7 +200,7 @@ namespace Web.Jobs
             List<int> data3 = new List<int>();
             Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
-            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null,null, null, null,
                 null, null, null, null, null, null, null,
                 null, null, null,null, null, ytime + "-01-01", ytime + "-12-31", null, null);
             List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
@@ -245,7 +245,7 @@ namespace Web.Jobs
             List<int> data2 = new List<int>();
             Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
-            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null,null, null, null,
                 null, null, null, null, null, null, null,
                 null, null, null,null ,null , ytime + "-01-01", ytime + "-12-31",
                 null, null);
@@ -282,7 +282,7 @@ namespace Web.Jobs
             List<int> result = new List<int>();
             Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
-            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null,null, null, null,
                 null, null, null, null, null, null, null,
                 null, null, null,null ,null , ytime + "-01-01", ytime + "-12-31",
                 null, null);
@@ -347,7 +347,7 @@ namespace Web.Jobs
             List<int> data5 = new List<int>();
             Random random = new Random();
             DateTime now  = DateTime.Now;
-            OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, null,
+            OrderSpecification orderSpec = new OrderSpecification(null, null, null,null, null, null,
                 null, null, null,null,null, null, null, null, null,
                 null, null, null, now.AddDays(-(int)now.DayOfWeek + 1).ToString(), 
                 now.AddDays(7 - (int)now.DayOfWeek).ToString(), null, null);

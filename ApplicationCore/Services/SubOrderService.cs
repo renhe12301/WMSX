@@ -74,7 +74,7 @@ namespace ApplicationCore.Services
                 {
                     try
                     {
-                        var subOrderSpec = new SubOrderSpecification(subOrderId, null, null, null,
+                        var subOrderSpec = new SubOrderSpecification(subOrderId, null, null,null, null,
                             null, null,null, null,null, null, null, null, null, null,
                             null, null, null);
                         var subOrders = this._subOrderRepository.List(subOrderSpec);
@@ -83,7 +83,7 @@ namespace ApplicationCore.Services
                         if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理) ||
                             subOrder.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单[{0}]状态必须为待处理或执行中！", subOrderId));
-                        var subOrderRowSpec = new SubOrderRowSpecification(subOrderRowId, null, null, null, null,
+                        var subOrderRowSpec = new SubOrderRowSpecification(subOrderRowId, null, null, null,null, null,
                             null, null, null, null, null, null, null, null, null,
                             null, null);
                         var subOrderRows = this._subOrderRowRepository.List(subOrderRowSpec);
@@ -354,7 +354,7 @@ namespace ApplicationCore.Services
                     {
 
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id, null,
-                            null, null, null,null,null, null, null, null, null, null,
+                            null,null, null, null,null,null, null, null, null, null, null,
                             null, null, null, null, null);
                         List<SubOrder> subOrders =  this._subOrderRepository.List(subOrderSpecification);
                         Guard.Against.Zero(subOrders.Count, nameof(subOrders));
@@ -365,7 +365,7 @@ namespace ApplicationCore.Services
                         subOrder.Status = Convert.ToInt32(ORDER_STATUS.关闭);
 
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                            subOrder.Id, null, null, null, null, null, null, null
+                            subOrder.Id, null, null,null, null, null, null, null, null
                             , null, null, null, null, null, null, null);
                         List<SubOrderRow> subOrderRows =
                              this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -423,7 +423,7 @@ namespace ApplicationCore.Services
                         {
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,
                                 null
-                                , null, null, null, null, null, null, null
+                                , null, null,null, null, null, null, null, null
                                 , null, null, null, null, null, null, null);
                             List<SubOrderRow> findSubOrderRows =
                                 this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -473,7 +473,7 @@ namespace ApplicationCore.Services
                 {
                     try
                     {
-                        SubOrderSpecification subOrderSpecification = new SubOrderSpecification(subOrderId, null, null,
+                        SubOrderSpecification subOrderSpecification = new SubOrderSpecification(subOrderId, null, null,null,
                             null, null,null,null, null, null, null, null, null, null, null,
                             null, null, null);
                         List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
@@ -484,7 +484,7 @@ namespace ApplicationCore.Services
                                 Enum.GetName(typeof(ORDER_STATUS), subOrder.Status)));
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
                             subOrderId,
-                            null, null, null, null, null, null, null,
+                            null, null,null, null, null, null, null, null,
                             null, null, null, null, null, null, null);
                         List<SubOrderRow> subOrderRows =
                             this._subOrderRowRepository.List(subOrderRowSpecification);

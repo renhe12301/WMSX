@@ -91,7 +91,6 @@ namespace Web
             services.AddScoped(typeof(ISubOrderService), typeof(SubOrderService));
 
             services.AddScoped(typeof(IOrderViewModelService), typeof(OrderViewModelService));
-            services.AddScoped(typeof(IOrderRowViewModelService), typeof(OrderRowViewModelService));
             services.AddScoped(typeof(IEmployeeViewModelService), typeof(EmployeeViewModelService));
             services.AddScoped(typeof(IInOutTaskViewModelService), typeof(InOutTaskViewModelService));
             services.AddScoped(typeof(ILocationViewModelService), typeof(LocationViewModelService));

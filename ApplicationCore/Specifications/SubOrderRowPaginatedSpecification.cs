@@ -5,12 +5,13 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderRowPaginatedSpecification: BaseSpecification<SubOrderRow>
     {
-        public SubOrderRowPaginatedSpecification(int skip, int take, int? id, int? subOrderId,int? orderRowId,
+        public SubOrderRowPaginatedSpecification(int skip, int take, int? id, int? subOrderId,int? orderRowId,int? sourceId,
             List<int> orderTypeIds,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
             string supplierSiteName,List<int> status,string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
                   (!subOrderId.HasValue||b.SubOrderId==subOrderId)&&
                   (!orderRowId.HasValue||b.OrderRowId==orderRowId)&&
+                  (!sourceId.HasValue||b.SourceId==sourceId)&&
                   (orderTypeIds == null || orderTypeIds.Contains(b.SubOrder.OrderTypeId)) &&
                   (!ouId.HasValue||b.SubOrder.OUId==ouId)&&
                   (!warehouseId.HasValue||b.SubOrder.WarehouseId==warehouseId)&&

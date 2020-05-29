@@ -55,7 +55,7 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
-                     int?id,string orderNumber, int? orderTypeId,
+                     int?id,string orderNumber,int? sourceId, int? orderTypeId,
                      string status,int? ouId,int? warehouseId,int? pyId,
                      string applyUserCode, string approveUserCode,
                      int?employeeId,string employeeName,
@@ -65,12 +65,37 @@ namespace Web.Controllers.Api
                      string sCreateTime, string eCreateTime,
                      string sFinishTime, string eFinishTime)
         {
-            var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,
+            var response = await this._orderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,sourceId,
                 orderTypeId, status,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, 
                 supplierId, supplierName, sApplyTime,
                 eApplyTime, sApproveTime, eApproveTime,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        
+        
+        /// <summary>
+        /// 获取订单行信息
+        /// </summary>
+        /// <param name="pageIndex">当前页索引</param>
+        /// <param name="itemsPage">一页显示条数</param>
+        /// <param name="id">行编号</param>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="status">订单行状态</param>
+        /// <param name="sCreateTime">订单行创建时间范围</param>
+        /// <param name="eCreateTime">订单行创建时间范围</param>
+        /// <param name="sFinishTime">订单行结束开始时间范围</param>
+        /// <param name="eFinishTime">订单行结束时间范围</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,int? sourceId, string status,
+            string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
+        {
+            var response = await this._orderViewModelService.GetOrderRows(pageIndex, itemsPage, id, orderId,sourceId, status,
+                sCreateTime, eCreateTime, sFinishTime, eFinishTime);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
         
         /// <summary>
         /// 获取退库物料信息

@@ -35,7 +35,7 @@ namespace Web.Jobs
         {
             try
             {
-                SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null,
+                SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null,null,
                     new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0, null, null, null, null,
                     null, null, null, null, null, null, null);
                 List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
@@ -48,7 +48,7 @@ namespace Web.Jobs
                         {
 
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,subOrder.Id,
-                                null,null,null,null,null,null,null,null,
+                                null,null,null,null,null,null,null,null,null,
                                 null,null,null,null,null,null);
                             List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
                             

@@ -69,7 +69,7 @@ namespace Web.WebServices.Services
                         foreach (var RequestRKJSOrder in RequestRKJSOrders)
                         {
                             OrderSpecification orderSpec = new OrderSpecification(null, RequestRKJSOrder.DocumentNumber,
-                                null, null, null, null, null, null, null,
+                                null,null, null, null, null, null, null, null,
                                 null, null, null, null, null,
                                 null, null, null, null, null, null, null);
                             List<Order> orders = this._orderRepository.List(orderSpec);
@@ -127,17 +127,17 @@ namespace Web.WebServices.Services
 
                             SupplierSite supplierSite = supplierSites[0];
 
-                            EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
-                                Convert.ToInt32(RequestRKJSOrder.ItemId), null,
-                                null, null, null, null, null);
-                            List<EBSProject> ebsProjects = this._ebsProjectRepository.List(ebsProjectSpec);
-                            if (ebsProjects.Count == 0)
-                            {
-                                string err = string.Format("入库订单[{0}],关联项目Id[{0}]不存在!",
-                                    RequestRKJSOrder.DocumentNumber,
-                                    RequestRKJSOrder.ItemId);
-                                throw new Exception(err);
-                            }
+                            // EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
+                            //     Convert.ToInt32(RequestRKJSOrder.ItemId), null,
+                            //     null, null, null, null, null);
+                            // List<EBSProject> ebsProjects = this._ebsProjectRepository.List(ebsProjectSpec);
+                            // if (ebsProjects.Count == 0)
+                            // {
+                            //     string err = string.Format("入库订单[{0}],关联项目Id[{0}]不存在!",
+                            //         RequestRKJSOrder.DocumentNumber,
+                            //         RequestRKJSOrder.ItemId);
+                            //     throw new Exception(err);
+                            // }
 
                             EmployeeSpecification employeeSpec =
                                 new EmployeeSpecification(Convert.ToInt32(RequestRKJSOrder.ManagerId), null, null,
@@ -237,14 +237,15 @@ namespace Web.WebServices.Services
                             }
                             else
                             {
+                                // 入库接收单，接收退料
                                 if (RequestRKJSOrder.DocumentType == "RKTL")
                                 {
                                     orderRows.ForEach(or =>
                                     {
                                         int reId = or.RelatedId.GetValueOrDefault();
                                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                            null,reId,null,null,null,null,null,null,
-                                            null,null,null,null,null,null,null);
+                                            null,null,reId,null,null,null,null,null,null,
+                                            null,null,null, null,null,null,null);
                                         List<SubOrderRow> subOrderRows =
                                             this._subOrderRowRepository.List(subOrderRowSpecification);
                                         if(subOrderRows.Count>0)
@@ -258,7 +259,7 @@ namespace Web.WebServices.Services
                                     OrderNumber = RequestRKJSOrder.DocumentNumber,
                                     EmployeeId = Convert.ToInt32(RequestRKJSOrder.ManagerId),
                                     OUId = ou.Id,
-                                    OrderTypeId = Convert.ToInt32(RequestRKJSOrder.DocumentType),
+                                    OrderTypeId = GetOrderType(RequestRKJSOrder.DocumentType),
                                     WarehouseId = warehouse.Id,
                                     SupplierId = supplier.Id,
                                     SupplierSiteId = supplierSite.Id,
@@ -286,19 +287,19 @@ namespace Web.WebServices.Services
                                     }
 
                                     MaterialDic materialDic = materialDics[0];
-                                    EBSTaskSpecification ebsTaskSpec = new EBSTaskSpecification(
-                                        Convert.ToInt32(eor.TaskId),
-                                        null, null,
-                                        null, null, null, null);
-                                    List<EBSTask> ebsTasks = this._ebsTaskRepository.List(ebsTaskSpec);
-                                    if (ebsTasks.Count == 0)
-                                    {
-                                        string err = string.Format("入库订单[{0}],订单行[{1}],关联任务Id[{2}]不存在！",
-                                            RequestRKJSOrder.DocumentNumber, eor.LineNumber, eor.TaskId);
-                                        throw new Exception(err);
-                                    }
-
-                                    EBSTask ebsTask = ebsTasks[0];
+                                    // EBSTaskSpecification ebsTaskSpec = new EBSTaskSpecification(
+                                    //     Convert.ToInt32(eor.TaskId),
+                                    //     null, null,
+                                    //     null, null, null, null);
+                                    // List<EBSTask> ebsTasks = this._ebsTaskRepository.List(ebsTaskSpec);
+                                    // if (ebsTasks.Count == 0)
+                                    // {
+                                    //     string err = string.Format("入库订单[{0}],订单行[{1}],关联任务Id[{2}]不存在！",
+                                    //         RequestRKJSOrder.DocumentNumber, eor.LineNumber, eor.TaskId);
+                                    //     throw new Exception(err);
+                                    // }
+                                    //
+                                    // EBSTask ebsTask = ebsTasks[0];
                                     OrderRow addOrderRow = new OrderRow
                                     {
                                         SourceId = Convert.ToInt32(eor.LineId),
@@ -307,12 +308,15 @@ namespace Web.WebServices.Services
                                         PreCount = Convert.ToInt32(eor.ProcessingQuantity),
                                         Price = Convert.ToInt32(eor.Price),
                                         Amount = Convert.ToInt32(eor.Amount),
-                                        EBSTaskId = ebsTask.Id,
-                                        Memo = eor.Remark,
-                                        RelatedId = string.IsNullOrEmpty(eor.RelatedId)
-                                            ? 0
-                                            : Convert.ToInt32(eor.RelatedId)
+                                        //EBSTaskId = ebsTask.Id,
+                                        Memo = eor.Remark
+                                       
                                     };
+                                    if (!string.IsNullOrEmpty(eor.RelatedId))
+                                    {
+                                        addOrderRow.RelatedId = Convert.ToInt32(eor.RelatedId);
+                                    }
+
                                     addOrderRows.Add(addOrderRow);
                                 }
 
@@ -363,7 +367,7 @@ namespace Web.WebServices.Services
                         foreach (var RequestCKLLOrder in RequestCKLLOrders)
                         {
                             OrderSpecification orderSpec = new OrderSpecification(null, RequestCKLLOrder.AlyNumber,
-                                null,
+                                null,null,
                                 null, null, null, null, null, null, null, null, null, null, null,
                                 null, null, null, null, null, null, null);
                             List<Order> orders = this._orderRepository.List(orderSpec);
@@ -397,16 +401,16 @@ namespace Web.WebServices.Services
 
                             Warehouse warehouse = warehouses[0];
 
-                            EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
-                                Convert.ToInt32(RequestCKLLOrder.ItemId), null,
-                                null, null, null, null, null);
-                            List<EBSProject> ebsProjects = this._ebsProjectRepository.List(ebsProjectSpec);
-                            if (ebsProjects.Count == 0)
-                            {
-                                string err = string.Format("出库订单[{0}],关联项目Id[{1}]不存在!", RequestCKLLOrder.AlyNumber,
-                                    RequestCKLLOrder.ItemId);
-                                throw new Exception(err);
-                            }
+                            // EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
+                            //     Convert.ToInt32(RequestCKLLOrder.ItemId), null,
+                            //     null, null, null, null, null);
+                            // List<EBSProject> ebsProjects = this._ebsProjectRepository.List(ebsProjectSpec);
+                            // if (ebsProjects.Count == 0)
+                            // {
+                            //     string err = string.Format("出库订单[{0}],关联项目Id[{1}]不存在!", RequestCKLLOrder.AlyNumber,
+                            //         RequestCKLLOrder.ItemId);
+                            //     throw new Exception(err);
+                            // }
 
                             EmployeeSpecification employeeSpec =
                                 new EmployeeSpecification(Convert.ToInt32(RequestCKLLOrder.CreationBy), null, null,
@@ -475,7 +479,7 @@ namespace Web.WebServices.Services
                                         int reId = or.RelatedId.GetValueOrDefault();
                                         SubOrderRowSpecification subOrderRowSpecification =
                                             new SubOrderRowSpecification(null,
-                                                null, reId, null, null, null, null, null, null,
+                                                null, null, reId,null, null, null, null, null, null,
                                                 null, null, null, null, null, null, null);
                                         List<SubOrderRow> subOrderRows =
                                             this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -564,7 +568,7 @@ namespace Web.WebServices.Services
                                                 int reId = existRow.RelatedId.GetValueOrDefault();
                                                 SubOrderRowSpecification subOrderRowSpecification =
                                                     new SubOrderRowSpecification(null,
-                                                        null, reId, null, null, null, null, null, null,
+                                                        null, null, reId,null, null, null, null, null, null,
                                                         null, null, null, null, null, null, null);
                                                 List<SubOrderRow> subOrderRows =
                                                     this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -608,7 +612,7 @@ namespace Web.WebServices.Services
                                     ApplyUserCode = RequestCKLLOrder.AlyDepCode,
                                     ApproveUserCode = RequestCKLLOrder.TransDepCode,
                                     OUId = ou.Id,
-                                    OrderTypeId = Convert.ToInt32(ORDER_TYPE.出库领料),
+                                    OrderTypeId = GetOrderType(RequestCKLLOrder.DocumentType),
                                     WarehouseId = warehouse.Id,
                                     CallingParty = RequestCKLLOrder.AplSourceCode,
                                     BusinessTypeCode = RequestCKLLOrder.BusinessTypeCode,
@@ -711,6 +715,16 @@ namespace Web.WebServices.Services
         {
             return "服务器响应：" + name;
         }
-        
+
+        int GetOrderType(string documentType)
+        {
+            int orderType = 0;
+            if (documentType.Equals("RECEIPT"))
+                orderType = Convert.ToInt32(ORDER_TYPE.入库接收);
+            else if(documentType.Equals("PICK"))
+                orderType = Convert.ToInt32(ORDER_TYPE.出库领料);
+            return orderType;
+        }
+
     }
 }
