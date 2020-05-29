@@ -41,7 +41,9 @@ namespace Web.ViewModels.OrderManager
         public string TrayCode { get; set; }
 
         public string Tag { get; set; }
-        
+
+        public string UseFor { get; set; }
+
         public int? RelatedId { get; set; }
     }
 }

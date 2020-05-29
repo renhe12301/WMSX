@@ -33,6 +33,7 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">一页显示条数</param>
         /// <param name="id">订单id</param>
         /// <param name="orderNumber">订单编号</param>
+        /// <param name="sourceId">集约化物资系统订单编号</param>
         /// <param name="orderTypeId">订单类型id</param>
         /// <param name="status">订单状态</param>
         /// <param name="ouId">业务实体编号</param>
@@ -81,6 +82,7 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">一页显示条数</param>
         /// <param name="id">行编号</param>
         /// <param name="orderId">订单编号</param>
+        ///  <param name="sourceId">集约化物资订单编号</param>
         /// <param name="status">订单行状态</param>
         /// <param name="sCreateTime">订单行创建时间范围</param>
         /// <param name="eCreateTime">订单行创建时间范围</param>

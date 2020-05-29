@@ -45,7 +45,9 @@
                 <div class="row mb-md-2">
                     <div class="col-md-12">
                         <div id="toolbar" class="input-group input-group-sm">
-                            <input type="text" class="form-control" id="order-code" placeholder="请输入订单编码..." style="height: 38px;width: 300px;">
+                            <input type="text" class="form-control" id="order-id" placeholder="订单Id..." style="height: 38px;">
+                            <input type="text" class="form-control" id="order-code" placeholder="订单编码..." style="height: 38px;">
+                            <input type="text" class="form-control" id="source-id" placeholder="集约化物资订单Id..." style="height: 38px;">
                             <span class="input-group-append">
                                 <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
                                 <button type="button" id="more-query-btn" class="btn btn-secondary btn-flat">更多查询...</button>
@@ -99,15 +101,15 @@
                             </div>
                             <div class="form-group">
                                 <label>经办人</label>
-                                <input type="text" class="form-control" placeholder="请输入经办人..." id="user-name">
+                                <input type="text" class="form-control" placeholder="经办人..." id="user-name">
                             </div>
                             <div class="form-group">
                                 <label>创建时间</label>
-                                <input type="text" readonly class="form-control" placeholder="请选择创建时间..." id="reservationtime">
+                                <input type="text" readonly class="form-control" placeholder="创建时间..." id="reservationtime">
                             </div>
                             <div class="form-group">
                                 <label>完成时间</label>
-                                <input type="text" readonly class="form-control" placeholder="请选择完成时间..." id="reservationtime2">
+                                <input type="text" readonly class="form-control" placeholder="完成时间..." id="reservationtime2">
                             </div>
 
                         </div>

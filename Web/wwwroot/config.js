@@ -96,14 +96,11 @@ const controllers =
                 'order':
                     {
                         'get-orders':baseUrl+"/order/get-orders",
+                        'get-order-rows':baseUrl+"/order/get-order-rows",
                         'get-tkorder-materials':baseUrl+"/order/get-tkorder-materials",
                         'create-out-order':baseUrl+"/order/create-out-order",
                         'close-order':baseUrl+"/order/close-order",
                         'close-order-row':baseUrl+"/order/close-order-row"
-                    },
-                'order-row':
-                    {
-                        'get-order-rows':baseUrl+"/order-row/get-order-rows"
                     },
                 'order-row-batch':
                     {

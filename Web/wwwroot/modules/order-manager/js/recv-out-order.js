@@ -93,9 +93,13 @@ $(function () {
             userName=$("#user-name").val();
             orderCode=$("#order-code").val();
             supplierName = $("#supplier-name").val();
+            sourceId=$("#source-id").val();
+            corderId=$("#order-id").val();
             if (userName != "") rd.employeeName = userName;
             if (orderCode != "") rd.orderNumber = orderCode;
             if (supplierName != "") rd.supplierName = supplierName;
+            if(sourceId!="")rd.sourceId=sourceId;
+            if(corderId!="")rd.id=corderId;
             if(tstatus)rd.status=tstatus;
             if(type)rd.orderTypeId=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;
@@ -143,105 +147,22 @@ $(function () {
                     }
                 },
                 {
-                    title: '类型',
-                    field: 'OrderType',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '经办人',
-                    field: 'EmployeeName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '供应商名称',
-                    field: 'SupplierName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '供应商地点',
-                    field: 'SupplierSiteName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '币种',
-                    field: 'Currency',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '合计金额',
-                    field: 'TotalAmount',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '状态',
-                    field: 'StatusStr',
-                    valign: 'middle',
-                    align: 'center',
-                    formatter : function(value, row, index) {
-                        if(value=="执行中")
-                        {
-                            e='<a  href="javascript:void(0)" title="执行中...">'+
-                                '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                '</a>  ';
-                            return e;
-                        }
-                        else if(value=="待处理")
-                        {
-                            return '<span class="badge bg-yellow">待处理</span>';
-                        }
-                        else if(value=="完成")
-                            return '<span class="badge bg-gray">完成</span>';
-                        else if(value=="关闭")
-                            return '<span class="badge bg-gray-dark">关闭</span>';
-                    }
-                },
-                {
-                    title: '项目名称',
-                    field: 'ProjectName',
-                    valign: 'middle',
-                    align: 'center',
-                    visible:false
-                },
-                {
-                    title: '接收日期',
-                    field: 'ApplyTime',
-                    valign: 'middle',
-                    align: 'center',
-                    visible:false
-                },
-                {
                     title: '创建日期',
                     field: 'CreateTime',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
-                },
-                {
-                    title: '完成日期',
-                    field: 'FinishTime',
-                    valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '库组织',
                     field: 'WarehouseName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '业务实体',
                     field: 'OUName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 }
             ]
     });
@@ -253,7 +174,7 @@ $(function () {
             rd.orderId=orderId;
             asynTask({
                 type:'get',
-                url:controllers["order-row"]["get-order-rows"],
+                url:controllers["order"]["get-order-rows"],
                 jsonData: rd,
                 successCallback:function(response)
                 {
@@ -272,80 +193,6 @@ $(function () {
         smartDisplay:false,
         showColumns: true,
         showRefresh: true,
-        detailView: true,
-        onExpandRow: function (index, row, $detail) {
-            var subTable = $detail.html('<table></table>').find('table');
-            subTable.bootstrapTable({
-                            ajax:function(request)
-                            {
-                                var srd=request.data;
-                                srd.orderRowId=row.Id;
-                                asynTask({
-                                    type:'get',
-                                    url:controllers["in-out-record"]["get-in-out-records"],
-                                    jsonData: srd,
-                                    successCallback:function(response)
-                                    {
-                                        subTable.bootstrapTable('load', response.Data);
-                                        subTable.bootstrapTable('hideLoading');
-                                    }
-                                });
-                            },
-                            height:200,
-                            queryParams:'orderRowDetailQueryParams',
-                            pagination: false,
-                            columns:
-                                [
-                                    {
-                                        title: '编号',
-                                        field: 'Id',
-                                        valign: 'middle',
-                                        align: 'center'
-                                    },
-                                    {
-                                        title: '托盘',
-                                        field: 'TrayCode',
-                                        valign: 'middle',
-                                        align: 'center'
-                                    },
-                                    {
-                                        title: '物料数量',
-                                        field: 'InOutCount',
-                                        valign: 'middle',
-                                        align: 'center'
-                                    },
-                                    {
-                                        title: '创建时间',
-                                        field: 'CreateTime',
-                                        valign: 'middle',
-                                        align: 'center'
-                                    },
-                                    {
-                                        title: '状态',
-                                        field: 'StatusStr',
-                                        valign: 'middle',
-                                        align: 'center',
-                                        formatter : function(value, row, index) {
-                                            if(value=="执行中")
-                                            {
-                                                e='<a  href="javascript:void(0)" title="执行中...">'+
-                                                    '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                                    '</a>  ';
-                                                return e;
-                                            }
-                                            else if(value=="待处理")
-                                            {
-                                                return '<span class="badge bg-yellow">待处理</span>';
-                                            }
-                                            else if(value=="完成")
-                                                return '<span class="badge bg-gray">完成</span>';
-                                            else if(value=="关闭")
-                                                return '<span class="badge bg-gray-dark">关闭</span>';
-                                        }
-                                    }
-                                   ]
-                         });
-        },
         columns:
             [
                 {
@@ -367,63 +214,16 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '入库数量',
+                    title: '退料数量',
                     field: 'PreCount',
                     valign: 'middle',
                     align: 'center'
                 },
                 {
-                    title: '实际数量',
-                    field: 'RealityCount',
+                    title: '关联行Id',
+                    field: 'RelatedId',
                     valign: 'middle',
                     align: 'center'
-                },
-                {
-                    title: '分拣数量',
-                    field: 'Sorting',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '单价',
-                    field: 'Price',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '金额',
-                    field: 'Amount',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '任务名称',
-                    field: 'EBSTaskName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '状态',
-                    field: 'StatusStr',
-                    valign: 'middle',
-                    align: 'center',
-                    formatter : function(value, row, index) {
-                        if(value=="执行中")
-                        {
-                            e='<a  href="javascript:void(0)" title="执行中...">'+
-                                '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                '</a>  ';
-                            return e;
-                        }
-                        else if(value=="待处理")
-                        {
-                            return '<span class="badge bg-yellow">待处理</span>';
-                        }
-                        else if(value=="完成")
-                            return '<span class="badge bg-gray">完成</span>';
-                        else if(value=="关闭")
-                            return '<span class="badge bg-gray-dark">关闭</span>';
-                    }
                 }
             ]
     });

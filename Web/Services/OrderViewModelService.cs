@@ -76,38 +76,37 @@ namespace Web.Services
 
                 orders.ForEach(e =>
                 {
-                    OrderViewModel orderViewModel = new OrderViewModel
-                    {
-                        Id = e.Id,
-                        OrderNumber = e.OrderNumber,
-                        OrderType = e.OrderType?.TypeName,
-                        OrderTypeId = e.OrderTypeId,
-                        ApplyUserCode = e.ApplyUserCode,
-                        ApproveUserCode = e.ApproveUserCode,
-                        ApplyTime = e.ApplyTime?.ToString(),
-                        ApproveTime = e.ApproveTime?.ToString(),
-                        CallingParty = e.CallingParty,
-                        Progress = e.Progress,
-                        Memo = e.Memo,
-                        CreateTime = e.CreateTime?.ToString(),
-                        FinishTime = e.FinishTime?.ToString(),
-                        WarehouseId = e.WarehouseId,
-                        WarehouseName = e.Warehouse?.WhName,
-                        OUName = e.OU?.OUName,
-                        OUId = e.OUId,
-                        EBSProjectId = e.EBSProjectId.GetValueOrDefault(),
-                        ProjectName = e.EBSProject?.ProjectName,
-                        SupplierId = e.SupplierId.GetValueOrDefault(),
-                        SupplierName = e.Supplier?.SupplierName,
-                        SupplierSiteId = e.SupplierSiteId.GetValueOrDefault(),
-                        SupplierSiteName = e.SupplierSite?.SiteName,
-                        Currency = e.Currency,
-                        TotalAmount = e.TotalAmount,
-                        Status = e.Status,
-                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
-                        EmployeeId = e.EmployeeId,
-                        EmployeeName = e.Employee?.UserName
-                    };
+                    OrderViewModel orderViewModel = new OrderViewModel();
+                    orderViewModel.Id = e.Id;
+                    orderViewModel.OrderNumber = e.OrderNumber;
+                    orderViewModel.OrderType = e.OrderType?.TypeName;
+                    orderViewModel.OrderTypeId = e.OrderTypeId;
+                    orderViewModel.ApplyUserCode = e.ApplyUserCode;
+                    orderViewModel.ApproveUserCode = e.ApproveUserCode;
+                    orderViewModel.ApplyTime = e.ApplyTime?.ToString();
+                    orderViewModel.ApproveTime = e.ApproveTime?.ToString();
+                    orderViewModel.CallingParty = e.CallingParty;
+                    orderViewModel.Progress = e.Progress;
+                    orderViewModel.Memo = e.Memo;
+                    orderViewModel.CreateTime = e.CreateTime?.ToString();
+                    orderViewModel.FinishTime = e.FinishTime?.ToString();
+                    orderViewModel.WarehouseId = e.WarehouseId;
+                    orderViewModel.WarehouseName = e.Warehouse?.WhName;
+                    orderViewModel.OUName = e.OU?.OUName;
+                    orderViewModel.OUId = e.OUId;
+                    // EBSProjectId = e.EBSProjectId.GetValueOrDefault(),
+                    // ProjectName = e.EBSProject?.ProjectName,
+                    orderViewModel.SupplierId = e.SupplierId.GetValueOrDefault();
+                    orderViewModel.SupplierName = e.Supplier?.SupplierName;
+                    orderViewModel.SupplierSiteId = e.SupplierSiteId.GetValueOrDefault();
+                    orderViewModel.SupplierSiteName = e.SupplierSite?.SiteName;
+                    orderViewModel.Currency = e.Currency;
+                    orderViewModel.TotalAmount = e.TotalAmount;
+                    orderViewModel.Status = e.Status;
+                    //orderViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
+                    orderViewModel.EmployeeId = e.EmployeeId;
+                    orderViewModel.EmployeeName = e.Employee?.UserName;
+                    
                     orderViewModels.Add(orderViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
@@ -177,9 +176,10 @@ namespace Web.Services
                         RealityCount = e.RealityCount.GetValueOrDefault(),
                         Sorting = e.Sorting.GetValueOrDefault(),
                         Status = e.Status,
-                        StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
+                        UseFor = e.UseFor,
+                        //StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress.GetValueOrDefault(),
-                        EBSTaskName = e.EBSTask?.TaskName,
+                        //EBSTaskName = e.EBSTask?.TaskName,
                         Price = e.Price,
                         Amount = e.Amount,
                         OrderId = e.OrderId,
