@@ -9,7 +9,7 @@ namespace ApplicationCore.Specifications
     public class WarehouseMaterialSpecification: BaseSpecification<WarehouseMaterial>
     {
         public WarehouseMaterialSpecification(int? id,string materialCode, int? materialDicId,
-            string materialName,string materialSpec,string trayCode,int? trayDicId,int? orderId,int? orderRowId, int? carrier,
+            string materialName,string materialSpec,string trayCode,int? warehouseTrayId,int? orderId,int? orderRowId, int? carrier,
             List<int> traySteps, int? locationId,int? ouId,int? wareHouseId,int? areaId,int? supplierId,int? supplierSiteId,int? pyId,
             string sCreateTime,string eCreateTime)
             :base(b =>(!id.HasValue || b.Id == id) &&
@@ -18,7 +18,7 @@ namespace ApplicationCore.Specifications
                       (materialName == null || b.MaterialDic.MaterialName.Contains(materialName)) &&
                       (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&
                       (trayCode == null || b.WarehouseTray.TrayCode == trayCode) &&
-                      (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
+                      (!warehouseTrayId.HasValue || b.WarehouseTray.Id == warehouseTrayId) &&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!carrier.HasValue || b.Carrier == carrier)&&
                       (!orderId.HasValue || b.SubOrderId == orderId) &&

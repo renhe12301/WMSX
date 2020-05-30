@@ -178,6 +178,7 @@ namespace ApplicationCore.Services
                                     Amount = subOrderRow.Price * sortingCount,
                                     TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
                                     ReservoirAreaId = areaId,
+                                    Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
                                     OutCount = 0,
                                     OUId = area.OUId,
                                     WarehouseId = area.WarehouseId
@@ -196,6 +197,7 @@ namespace ApplicationCore.Services
                                     WarehouseId = area.WarehouseId,
                                     ReservoirAreaId = areaId,
                                     OUId = area.OUId,
+                                    Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
                                     SupplierId = subOrder.SupplierId,
                                     SupplierSiteId = subOrder.SupplierSiteId
                                 };

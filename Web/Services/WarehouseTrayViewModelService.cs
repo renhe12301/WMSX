@@ -71,19 +71,17 @@ namespace Web.Services
 
                 trays.ForEach(e =>
                 {
-                    WarehouseTrayViewModel warehouseTrayViewModel = new WarehouseTrayViewModel
-                    {
-                        Id = e.Id,
-                        CreateTime = e.CreateTime.ToString(),
-                        Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier),
-                        TrayCode = e.TrayCode,
-                        LocationCode = e.Location.SysCode,
-                        MaterialCount = e.MaterialCount,
-                        ReservoirAreaName = e.ReservoirArea.AreaName,
-                        WarehouseName = e.Warehouse.WhName,
-                        OUName = e.OU.OUName
+                    WarehouseTrayViewModel warehouseTrayViewModel = new WarehouseTrayViewModel();
+                    warehouseTrayViewModel.Id = e.Id;
+                    warehouseTrayViewModel.CreateTime = e.CreateTime.ToString();
+                    warehouseTrayViewModel.Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier);
+                    warehouseTrayViewModel.TrayCode = e.TrayCode;
+                    warehouseTrayViewModel.LocationCode = e.Location?.SysCode;
+                    warehouseTrayViewModel.MaterialCount = e.MaterialCount;
+                    warehouseTrayViewModel.ReservoirAreaName = e.ReservoirArea?.AreaName;
+                    warehouseTrayViewModel.WarehouseName = e.Warehouse?.WhName;
+                    warehouseTrayViewModel.OUName = e.OU?.OUName;
 
-                    };
                     warehouseTrayViewModels.Add(warehouseTrayViewModel);
                 });
 

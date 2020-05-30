@@ -145,8 +145,8 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EntryApply(warehouseTrayViewModel.LocationCode,warehouseTrayViewModel.TrayCode,
-                    warehouseTrayViewModel.CargoHeight,warehouseTrayViewModel.CargoWeight);
+                await this._inOutTaskService.EntryApply(warehouseTrayViewModel.LocationCode,
+                    warehouseTrayViewModel.TrayCode, warehouseTrayViewModel.CargoHeight,warehouseTrayViewModel.CargoWeight);
             }
             catch (Exception ex)
             {

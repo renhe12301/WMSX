@@ -22,15 +22,19 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                 IAsyncRepository<Location> locationRepository,
-                                IAsyncRepository<ReservoirArea> reservoirAreaRepository)
+                                IAsyncRepository<ReservoirArea> reservoirAreaRepository,
+                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository
+                                )
         {
             this._inOutTaskRepository = inOutTaskRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._locationRepository = locationRepository;
             this._reservoirAreaRepository = reservoirAreaRepository;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
         }
         
         public async Task EmptyOut(int areaId,int outCount)
@@ -120,12 +124,36 @@ namespace ApplicationCore.Services
             WarehouseTray warehouseTray = warehouseTrays[0];
             if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.待入库))
                 throw new Exception(string.Format("托盘[{0}]未进行待入库操作", barCode));
-            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
-            warehouseTray.CargoHeight = cargoHeight;
-            warehouseTray.CargoWeight = cargoWeight;
-            warehouseTray.LocationId = locations.First().Id;
-            warehouseTray.PhyWarehouseId = locations.First().PhyWarehouseId;
-            await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+            
+            WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,null,
+                null,null,null,null,warehouseTray.Id,null,null,null,
+                null,null,null,null,null,null,null,null,null,null);
+
+            List<WarehouseMaterial> warehouseMaterials =
+                await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpecification);
+
+            using (ModuleLock.GetAsyncLock().LockAsync())
+            {
+                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
+                warehouseTray.CargoHeight = cargoHeight;
+                warehouseTray.CargoWeight = cargoWeight;
+                warehouseTray.LocationId = locations.First().Id;
+                warehouseTray.PhyWarehouseId = locations.First().PhyWarehouseId;
+                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+                this._warehouseTrayRepository.Update(warehouseTray);
+                if (warehouseMaterials.Count > 0)
+                {
+                    warehouseMaterials.ForEach(m =>
+                    {
+                        m.LocationId = locations.First().Id;
+                        m.PhyWarehouseId = locations.First().Id;
+                        m.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+                    });
+                    this._warehouseMaterialRepository.Update(warehouseMaterials);
+                }
+            }
+
+           
         }
 
         public async Task TaskReport(int taskId,long reportTime, int taskStatus, string error)
