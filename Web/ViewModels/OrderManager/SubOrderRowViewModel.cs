@@ -103,5 +103,7 @@ namespace Web.ViewModels.OrderManager
 
         public string IsScrapStr { get; set; }
 
+        public int? SourceId { get; set; }
+
     }
 }

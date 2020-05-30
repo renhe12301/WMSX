@@ -128,5 +128,7 @@ namespace Web.ViewModels.OrderManager
         public List<SubOrderRowViewModel> SubOrderRows { get; set; }
         
         public string Tag { get; set; }
+
+        public int? SourceId { get; set; }
     }
 }

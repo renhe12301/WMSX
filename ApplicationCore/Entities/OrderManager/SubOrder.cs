@@ -126,7 +126,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public int IsSync { get; set; }
 
-        public int SourceId { get; set; }
+        public int? SourceId { get; set; }
 
         /// <summary>
         /// 关联拆分订单行

@@ -238,7 +238,12 @@ namespace Web.Services
                     OrderTypeId = subOrderViewModel.OrderTypeId,
                     Status = 0,
                     SupplierId = subOrderViewModel.SupplierId,
-                    SupplierSiteId = subOrderViewModel.SupplierSiteId
+                    SupplierSiteId = subOrderViewModel.SupplierSiteId,
+                    Currency = subOrderViewModel.Currency,
+                    BusinessTypeCode = subOrderViewModel.BusinessTypeCode,
+                    TotalAmount = subOrderViewModel.TotalAmount,
+                    SourceId = subOrderViewModel.SourceId
+                    
                 };
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();
                 subOrderViewModel.SubOrderRows.ForEach(async(or) =>
@@ -250,8 +255,13 @@ namespace Web.Services
                         ReservoirAreaId = or.ReservoirAreaId,
                         MaterialDicId = or.MaterialDicId,
                         Price = or.Price,
+                        Status = 0,
                         OrderRowId = or.OrderRowId,
                         RowNumber = or.RowNumber??"Sub_Order_Row_"+now.Ticks,
+                        UseFor = or.UseFor,
+                        Amount = or.Amount,
+                        SourceId = or.SourceId
+                        
                     };
                     subOrderRows.Add(orderRow);
                 });

@@ -28,7 +28,7 @@ var sCreateTime=null;
 var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
-var type=2;
+var type=[2];
 var tstatus=[0,1];
 var orderId=0;
 $(function () {
@@ -101,7 +101,7 @@ $(function () {
             if(sourceId!="")rd.sourceId=sourceId;
             if(corderId!="")rd.id=corderId;
             if(tstatus)rd.status=tstatus;
-            if(type)rd.orderTypeId=type;
+            if(type)rd.orderTypeIds=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;
             if(eCreateTime)rd.eCreateTime=eCreateTime;
             if(sFinishTime)rd.sFinishTime=sFinishTime;
@@ -194,7 +194,7 @@ $(function () {
         ajax:function(request)
         {
             var rd=request.data;
-            rd.orderId = orderId;
+            rd.subOrderId = orderId;
             asynTask({
                 type:'get',
                 url:controllers["sub-order"]["get-order-rows"],

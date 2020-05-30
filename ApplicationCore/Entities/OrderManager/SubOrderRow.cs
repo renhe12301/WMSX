@@ -111,7 +111,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 集约化物资系统订单行编号
         /// </summary>
-        public int SourceId { get; set; }
+        public int? SourceId { get; set; }
 
 
 

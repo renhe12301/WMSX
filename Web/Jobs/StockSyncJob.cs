@@ -75,7 +75,7 @@ namespace Web.Jobs
                                     rkOrderRequest.RKOrderRequest.requestRKRows[i] = requestRkRow;
                                     requestRkRow.lineId = subOrderRows[i].Id;
                                     requestRkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestRkRow.sourceLineId = subOrderRows[i].SourceId;
+                                    requestRkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                     requestRkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                     requestRkRow.processingQuantity = subOrderRows[i].PreCount;
                                     requestRkRow.price = subOrderRows[i].Price.Value;
@@ -107,7 +107,7 @@ namespace Web.Jobs
                                     ckOrderRequest.CKOrderRequest.requestCKRows[i] = requestCkRow;
                                     requestCkRow.lineId = subOrderRows[i].Id;
                                     requestCkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestCkRow.sourceLineId = subOrderRows[i].SourceId;
+                                    requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                     requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                     requestCkRow.processingQuantity = subOrderRows[i].PreCount;
                                     requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
@@ -136,7 +136,7 @@ namespace Web.Jobs
                                     tkOrderRequest.TKOrderRequest.requestTKRows[i] = requestTkRow;
                                     requestTkRow.lineId = subOrderRows[i].Id;
                                     requestTkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestTkRow.sourceLineId = subOrderRows[i].SourceId;
+                                    requestTkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                     requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                     requestTkRow.processingQuantity = subOrderRows[i].PreCount;
                                     requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
@@ -165,7 +165,7 @@ namespace Web.Jobs
                                     rtOrderRequest1.RTOrderRequest.requestRTRows[i] = requestRtRow;
                                     requestRtRow.lineId = subOrderRows[i].Id;
                                     requestRtRow.headId = subOrderRows[i].SubOrderId;
-                                    requestRtRow.sourceLineId = subOrderRows[i].SourceId;
+                                    requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                     requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                     requestRtRow.processingQuantity = subOrderRows[i].PreCount;
                                     requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;

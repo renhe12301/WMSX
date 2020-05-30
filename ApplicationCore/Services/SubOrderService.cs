@@ -315,7 +315,7 @@ namespace ApplicationCore.Services
                                 OrderRow orderRow = orderRows.First();
                                 if ((orderRow.PreCount - orderRow.Expend) > subOrderRow.PreCount)
                                     throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
-                                        subOrderRow.OrderRowId, orderRow.Expend));
+                                        subOrderRow.OrderRowId, orderRow.PreCount - orderRow.Expend));
                                 orderRow.Expend += subOrderRow.PreCount;
                                 updOrderRows.Add(orderRow);
                             }
