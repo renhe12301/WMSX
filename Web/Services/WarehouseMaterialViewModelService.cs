@@ -64,7 +64,7 @@ namespace Web.Services
                         Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier),
                         Code = e.MaterialDic?.MaterialCode,
                         Img = e.MaterialDic?.Img,
-                        LocationId = e.LocationId,
+                        LocationId = e.LocationId.GetValueOrDefault(),
                         LocationCode = e.Location?.SysCode,
                         MaterialCount = e.MaterialCount,
                         MaterialName = e.MaterialDic?.MaterialName,

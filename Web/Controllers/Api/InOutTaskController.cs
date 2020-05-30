@@ -25,7 +25,7 @@ namespace Web.Controllers.Api
         }
 
         /// <summary>
-        /// 空托盘入库任务申请
+        /// 空托盘入库标记
         /// </summary>
         /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
         /// <returns></returns>
@@ -33,6 +33,18 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> EmptyEntry([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
         {
             var response = await this._inOutTaskViewModelService.EmptyEntry(warehouseTrayViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 输送线入库任务申请
+        /// </summary>
+        /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> EntryApply([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
+        {
+            var response = await this._inOutTaskViewModelService.EntryApply(warehouseTrayViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
 

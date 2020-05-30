@@ -109,17 +109,13 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 分拣订单行
         /// </summary>
-        /// <param name="subOrderId">拆分订单编号</param>
-        /// <param name="subOrderRowId">拆分订单行编号</param>
-        /// <param name="sortingCount">分拣数量</param>
-        /// <param name="trayCode">托盘码</param>
-        /// <param name="areaId">分区编号</param>
-        /// <param name="tag"></param>
+        /// <param name="subOrderRowView">拆分订单实体</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode,int areaId, string tag)
+        public async Task<IActionResult> SortingOrder([FromBody]SubOrderRowViewModel subOrderRowView)
         {
-            var response = await this._subOrderViewModelService.SortingOrder(subOrderId,subOrderRowId,sortingCount,trayCode,areaId,tag);
+            var response = await this._subOrderViewModelService.SortingOrder(subOrderRowView.SubOrderId,subOrderRowView.Id,
+                subOrderRowView.Sorting.Value,subOrderRowView.TrayCode,subOrderRowView.ReservoirAreaId.Value,subOrderRowView.Tag);
             return Content(JsonConvert.SerializeObject(response));
         }
         

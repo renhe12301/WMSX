@@ -58,6 +58,18 @@ namespace ApplicationCore.Services
                 null, null, null, null);
             var ares = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
             Guard.Against.NullOrEmpty(ares,nameof(ares));
+            LocationSpecification locationSpecification = new LocationSpecification(null,null,null,null,
+                null,null,null,areaId,null,null,null,null,null,null);
+            var areaLocations = await this._locationRepository.ListAsync(locationSpecification);
+            foreach (var areaLocation in areaLocations)
+            {
+                areaLocation.ReservoirAreaId = null;
+                areaLocation.OUId = null;
+                areaLocation.WarehouseId = null;
+            }
+
+            await this._locationRepository.UpdateAsync(areaLocations);
+            
             var locations = await this._locationRepository.ListAllAsync();
             List<Location> updLocations=new List<Location>();
             locationIds.ForEach(async (id) =>

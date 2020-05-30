@@ -13,7 +13,7 @@ namespace ApplicationCore.Entities.StockManager
         public int WarehouseTrayId { get; set; }
         public int MaterialCount { get; set; }
         public string BatchNo { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }

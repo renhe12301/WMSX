@@ -247,6 +247,7 @@ $(function () {
             successCallback:function(response)
             {
                 $('#assign-loc-dlg').modal('hide');
+                toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
             }
         });
     });

@@ -80,7 +80,7 @@ namespace ApplicationCore.Services
                         var subOrders = this._subOrderRepository.List(subOrderSpec);
                         if (subOrders.Count == 0) throw new Exception(string.Format("订单[{0}],不存在！", subOrderId));
                         SubOrder subOrder = subOrders.First();
-                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理) ||
+                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理) &&
                             subOrder.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单[{0}]状态必须为待处理或执行中！", subOrderId));
                         var subOrderRowSpec = new SubOrderRowSpecification(subOrderRowId, null, null, null,null, null,
@@ -90,7 +90,7 @@ namespace ApplicationCore.Services
                         if (subOrderRows.Count == 0)
                             throw new Exception(string.Format("订单行编号[{0}],不存在！", subOrderRowId));
                         SubOrderRow subOrderRow = subOrderRows.First();
-                        if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.待处理) ||
+                        if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.待处理) &&
                             subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单行[{0}]状态必须为待处理或执行中！", subOrderRowId));
 
@@ -122,21 +122,38 @@ namespace ApplicationCore.Services
                                     whTrays[0].SubOrderRow.Id, subOrderRowId));
 
                             var srcTrayCount = whTrays[0].MaterialCount + whTrays[0].OutCount;
-                            var srcTraySubOrderRow = whTrays[0].SubOrderRow;
-                            srcTraySubOrderRow.Sorting -= srcTrayCount;
-                            var pOrderRow = srcTraySubOrderRow.OrderRow;
+                            subOrderRow.Sorting -= srcTrayCount;
+                            var pOrderRow = subOrderRow.OrderRow;
                             pOrderRow.Sorting -= srcTrayCount;
-                            if ((srcTraySubOrderRow.Sorting + sortingCount) > srcTraySubOrderRow.PreCount)
+                            if ((subOrderRow.Sorting + sortingCount) > subOrderRow.PreCount)
                             {
                                 throw new Exception(string.Format("托盘分拣的总数量[{0}]大于订单行[{1}]数量",
-                                    (srcTraySubOrderRow.Sorting + sortingCount), whTrays[0].SubOrderRow.Id,
+                                    (subOrderRow.Sorting + sortingCount), whTrays[0].SubOrderRow.Id,
                                     subOrderRowId));
                             }
 
-                            srcTraySubOrderRow.Sorting += sortingCount;
-                            pOrderRow.Sorting += sortingCount;
-                            this._subOrderRowRepository.Update(srcTraySubOrderRow);
+                            int pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
+                            pOrderRowSorting += sortingCount;
+                            
+                            int subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
+                            subOrderRowSorting += sortingCount;
+                            
+                            pOrderRow.Sorting = pOrderRowSorting;
+                            subOrderRow.Sorting = subOrderRowSorting;
+                            //订单，订单行数量更新
+                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                            {
+                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                            }
+
+                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                            {
+                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                            }
+                            this._subOrderRepository.Update(subOrder);
+                            this._subOrderRowRepository.Update(subOrderRow);
                             this._orderRowRepository.Update(pOrderRow);
+                            
                         }
                         else
                         {
@@ -144,7 +161,7 @@ namespace ApplicationCore.Services
                                 throw new Exception(string.Format("托盘状态[{0}]未初始化,无法分拣！", trayCode));
 
                             DateTime now = DateTime.Now;
-                            if (sortingCount + subOrderRow.Sorting > subOrderRow.PreCount)
+                            if ((sortingCount + subOrderRow.Sorting.GetValueOrDefault()) > subOrderRow.PreCount)
                                 throw new Exception(string.Format("已分拣数量总和大于订单行[{0}]数量", subOrderRowId));
 
                             WarehouseTray warehouseTray = null;
@@ -162,7 +179,8 @@ namespace ApplicationCore.Services
                                     TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
                                     ReservoirAreaId = areaId,
                                     OutCount = 0,
-                                    OUId = area.OUId
+                                    OUId = area.OUId,
+                                    WarehouseId = area.WarehouseId
                                 };
                                 var addTray = this._warehouseTrayRepository.Add(warehouseTray);
                                 WarehouseMaterial warehouseMaterial = new WarehouseMaterial
@@ -242,43 +260,49 @@ namespace ApplicationCore.Services
                                     this._warehouseMaterialRepository.Update(warehouseMaterial);
                                 else
                                     this._warehouseMaterialRepository.Add(warehouseMaterial);
-
-                                //订单，订单行数量更新
-                                if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.待处理))
-                                {
-                                    subOrder.Status = Convert.ToInt32(ORDER_STATUS.执行中);
-                                    this._subOrderRepository.Update(subOrder);
-                                }
-
-                                if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.待处理))
-                                {
-                                    subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
-                                }
-
-                                var pOrderRow = subOrderRow.OrderRow;
-                                pOrderRow.Sorting += sortingCount;
-                                subOrderRow.Sorting += sortingCount;
-                                this._subOrderRowRepository.Update(subOrderRow);
-                                this._orderRowRepository.Update(pOrderRow);
-                                this._logRecordRepository.Add(new LogRecord
-                                {
-                                    LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                                    LogDesc = string.Format("订单[{0}]出库,订单行[{1}],分拣数量[{2}],分拣托盘[{3}]",
-                                        subOrder.Id,
-                                        subOrderRow.Id,
-                                        subOrderRow.Sorting,
-                                        trayCode),
-                                    Founder = tag,
-                                    CreateTime = DateTime.Now
-                                });
                             }
+                            
+                            var pOrderRow = subOrderRow.OrderRow;
+                            int pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
+                            pOrderRowSorting += sortingCount;
+                            
+                            int subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
+                            subOrderRowSorting += sortingCount;
+                            
+                            pOrderRow.Sorting = pOrderRowSorting;
+                            subOrderRow.Sorting = subOrderRowSorting;
+                            //订单，订单行数量更新
+                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                            {
+                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                            }
+
+                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.待处理))
+                            {
+                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                            }
+                            this._subOrderRepository.Update(subOrder);
+                            this._subOrderRowRepository.Update(subOrderRow);
+                            this._orderRowRepository.Update(pOrderRow);
                         }
                         
+                       
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("订单[{0}]出库,订单行[{1}],分拣数量[{2}],分拣托盘[{3}]",
+                                subOrder.Id,
+                                subOrderRow.Id,
+                                subOrderRow.Sorting,
+                                trayCode),
+                            Founder = tag,
+                            CreateTime = DateTime.Now
+                        });
                         scope.Complete();
                     }
                     catch (Exception ex)
                     {
-                        await this._logRecordRepository.AddAsync(new LogRecord
+                        this._logRecordRepository.Add(new LogRecord
                         {
                             LogType = Convert.ToInt32(LOG_TYPE.异常日志),
                             LogDesc = ex.ToString(),

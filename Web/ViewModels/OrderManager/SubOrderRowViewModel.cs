@@ -105,5 +105,9 @@ namespace Web.ViewModels.OrderManager
 
         public int? SourceId { get; set; }
 
+        public string TrayCode { get; set; }
+
+        public string Tag { get; set; }
+
     }
 }

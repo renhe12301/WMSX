@@ -22,6 +22,11 @@ namespace Web.ViewModels.StockManager
         public string OUName { get; set; }
         public int WarehouseId { get; set; }
         public int ReservoirId { get; set; }
+        
+        public  int CargoHeight { get; set; }
+
+        public string CargoWeight { get; set; }
+
         public List<WarehouseMaterialViewModel> WarehouseMaterialViewModels { get; set; }
     }
 }

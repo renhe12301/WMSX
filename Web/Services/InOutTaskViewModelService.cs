@@ -139,6 +139,23 @@ namespace Web.Services
 
             return responseResultViewModel;
         }
+        
+        public async Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel)
+        {
+            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._inOutTaskService.EntryApply(warehouseTrayViewModel.LocationCode,warehouseTrayViewModel.TrayCode,
+                    warehouseTrayViewModel.CargoHeight,warehouseTrayViewModel.CargoWeight);
+            }
+            catch (Exception ex)
+            {
+                responseResultViewModel.Code = 500;
+                responseResultViewModel.Data = ex.Message;
+            }
+
+            return responseResultViewModel;
+        }
 
         public async Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)
         {

@@ -199,10 +199,7 @@ $(function () {
                     formatter : function(value, row, index) {
                         if(value=="执行中")
                         {
-                            e='<a  href="javascript:void(0)" title="执行中...">'+
-                                '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                '</a>  ';
-                            return e;
+                            return '<span class="badge bg-green">执行中</span>';
                         }
                         else if(value=="待处理")
                         {
@@ -311,10 +308,7 @@ $(function () {
                             formatter : function(value, row, index) {
                                 if(value=="执行中")
                                 {
-                                    e='<a  href="javascript:void(0)" title="执行中...">'+
-                                        '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                        '</a>  ';
-                                    return e;
+                                    return '<span class="badge bg-green">执行中</span>';
                                 }
                                 else if(value=="待处理")
                                 {
@@ -387,10 +381,7 @@ $(function () {
                     formatter : function(value, row, index) {
                         if(value=="执行中")
                         {
-                            e='<a  href="javascript:void(0)" title="执行中...">'+
-                                '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                '</a>  ';
-                            return e;
+                            return '<span class="badge bg-green">执行中</span>';
                         }
                         else if(value=="待处理")
                         {

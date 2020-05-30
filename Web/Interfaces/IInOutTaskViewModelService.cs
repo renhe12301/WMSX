@@ -12,6 +12,8 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel);
 
         Task<ResponseResultViewModel> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel);
+
+        Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel);
         
         Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel);
         Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,
@@ -22,5 +24,7 @@ namespace Web.Interfaces
                                                     string sFinishTime,string eFinishTime);
         
         Task<ResponseResultViewModel> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel);
+        
+        
     }
 }

@@ -212,7 +212,7 @@ namespace Web.Services
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                this._subOrderService.SortingOrder(subOrderId, subOrderRowId, sortingCount, trayCode, areaId, tag);
+                await this._subOrderService.SortingOrder(subOrderId, subOrderRowId, sortingCount, trayCode, areaId, tag);
             }
             catch (Exception ex)
             {
