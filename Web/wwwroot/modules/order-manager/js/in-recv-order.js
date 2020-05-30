@@ -260,13 +260,13 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '入库数量',
+                    title: '行数量',
                     field: 'PreCount',
                     valign: 'middle',
                     align: 'center'
                 },
                 {
-                    title: '实际数量',
+                    title: '上架数量',
                     field: 'RealityCount',
                     valign: 'middle',
                     align: 'center'

@@ -30,7 +30,8 @@ namespace Web.Services
 
 
         public async Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex, int? itemsPage,
-                                             int? id,string trayCode , string status,string steps,string types, int? ouId,
+                                             int? id,string trayCode ,int? subOrderId,int? subOrderRowId, 
+                                             string status,string steps,string types, int? ouId,
                                               int? wareHouseId, int? areaId,int? pyId,
                                               string sCreateTime, string eCreateTIme,
                                               string sFinishTime, string eFinishTime)
@@ -63,12 +64,12 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new InOutTaskPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,trayCode,taskStatus, taskSteps,taskTypes,null,ouId, wareHouseId,areaId,pyId,
+                        id,trayCode,subOrderId,subOrderRowId,taskStatus, taskSteps,taskTypes,null,ouId, wareHouseId,areaId,pyId,
                         sCreateTime,eCreateTIme,sFinishTime,eFinishTime);
                 }
                 else
                 {
-                    baseSpecification = new InOutTaskSpecification(id, trayCode,
+                    baseSpecification = new InOutTaskSpecification(id, trayCode,subOrderId,subOrderRowId,
                         taskStatus,taskSteps,taskTypes,null, ouId, wareHouseId, areaId,pyId,
                         sCreateTime, eCreateTIme, sFinishTime, eFinishTime);
                 }
@@ -84,6 +85,7 @@ namespace Web.Services
                         CreateTime = e.CreateTime.ToString(),
                         Memo = e.Memo,
                         TrayCode = e.TrayCode,
+                        MaterialCount = e.WarehouseTray?.MaterialCount,
                         SrcId=e.SrcId,
                         TargetId=e.TargetId,
                         StatusStr= Enum.GetName(typeof(TASK_STATUS), e.Status),
@@ -102,7 +104,7 @@ namespace Web.Services
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._inOutTaskRepository.CountAsync(new InOutTaskSpecification(id, trayCode,
-                                           taskStatus,taskSteps,taskTypes,null, ouId, wareHouseId, areaId,pyId,
+                                           subOrderId,subOrderRowId,taskStatus,taskSteps,taskTypes,null, ouId, wareHouseId, areaId,pyId,
                                            sCreateTime, eCreateTIme, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = inOutTaskViewModels;

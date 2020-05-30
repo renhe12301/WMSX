@@ -28,6 +28,7 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">当前页</param>
         /// <param name="id">编号</param>
         /// <param name="orderNumber">订单号</param>
+        /// <param name="sourceId">集约化物资系统订单号</param>
         /// <param name="orderTypeIds">订单类型</param>
         /// <param name="status">状态</param>
         /// <param name="ouId">业务实体编号</param>
@@ -63,6 +64,7 @@ namespace Web.Controllers.Api
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">当前页</param>
         /// <param name="id">订单行编号</param>
+        /// <param name="sourceId">集约化物资系统订单编号</param>
         /// <param name="subOrderId">订单头编号</param>
         /// <param name="orderRowId">关联订单行编号</param>
         /// <param name="orderTypeIds">关联订单类型编号</param>
@@ -140,7 +142,7 @@ namespace Web.Controllers.Api
         /// <param name="subOrderRowViewModels"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> ScrapOrder([FromBody]List<SubOrderRowViewModel> subOrderRowViewModels)
+        public async Task<IActionResult> ScrapOrderRow([FromBody]List<SubOrderRowViewModel> subOrderRowViewModels)
         {
             var response = await this._subOrderViewModelService.ScrapOrderRow(subOrderRowViewModels);
             return Content(JsonConvert.SerializeObject(response));

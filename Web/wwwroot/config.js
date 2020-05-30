@@ -102,13 +102,10 @@ const controllers =
                         'close-order':baseUrl+"/order/close-order",
                         'close-order-row':baseUrl+"/order/close-order-row"
                     },
-                'order-row-batch':
+                'sub-order':
                     {
-                        'get-order-row-batchs':baseUrl+"/order-row-batch/get-order-row-batchs"
-                    },
-                'in-out-record':
-                    {
-                        'get-in-out-records':baseUrl+"/in-out-record/get-in-out-records"
+                        'get-orders':baseUrl+"/sub-order/get-orders",
+                        'get-order-rows':baseUrl+"/sub-order/get-order-rows"
                     },
                   'log-record':
                       {

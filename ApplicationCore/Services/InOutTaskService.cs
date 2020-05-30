@@ -124,12 +124,13 @@ namespace ApplicationCore.Services
             warehouseTray.CargoHeight = cargoHeight;
             warehouseTray.CargoWeight = cargoWeight;
             warehouseTray.LocationId = locations.First().Id;
+            warehouseTray.PhyWarehouseId = locations.First().PhyWarehouseId;
             await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
         }
 
         public async Task TaskReport(int taskId,long reportTime, int taskStatus, string error)
         {
-            InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,
+            InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,null,null,
                                               null,null,null,null,null,null, 
                                               null,null, null, null, null);
             var tasks =  this._inOutTaskRepository.List(taskSpec);

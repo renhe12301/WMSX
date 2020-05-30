@@ -82,7 +82,7 @@ namespace Web.Jobs
                                 inOutTask.TrayCode = tray.TrayCode;
                                 inOutTask.Type = tray.MaterialCount==0?Convert.ToInt32(TASK_TYPE.空托盘入库):Convert.ToInt32(TASK_TYPE.物料入库);
                                 inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
-
+                                inOutTask.PhyWarehouseId = location.PhyWarehouseId;
                                 if (tray.SubOrderId.HasValue)
                                 {
                                     inOutTask.SubOrderId = tray.SubOrderId;

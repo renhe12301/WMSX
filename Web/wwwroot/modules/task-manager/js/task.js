@@ -155,12 +155,6 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '车辆',
-                    field: 'VehicleId',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
                     title: '步骤',
                     field: 'Step',
                     valign: 'middle',
@@ -168,9 +162,26 @@ $(function () {
                 },
                 {
                     title: '状态',
-                    field: 'Status',
+                    field: 'StatusStr',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    formatter : function(value, row, index) {
+                        if(value=="执行中")
+                        {
+                            e='<a  href="javascript:void(0)" title="执行中...">'+
+                                '<i class="fa fa-circle-notch fa-spin"></i>'+
+                                '</a>  ';
+                            return e;
+                        }
+                        else if(value=="待处理")
+                        {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if(value=="完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if(value=="关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
+                    }
                 },
                 {
                     title: '子库区',

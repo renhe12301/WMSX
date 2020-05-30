@@ -28,6 +28,7 @@ namespace Web.ViewModels.TaskManager
         public string LocationCode { get; set; }
         public int? VehicleId { get; set; }
         public int? OUId { get; set; }
+        public int? MaterialCount { get; set; }
         public string OUName { get; set; }
         public string WarehouseName { get; set; }
       

@@ -69,6 +69,7 @@ function locationQueryParams(params) {
         itemsPage: params.limit
     }
 }
+
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     $('#sidebar').css("height", parentHeight);
@@ -183,42 +184,11 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '系统编码',
+                    title: '货位编码',
                     field: 'SysCode',
                     valign: 'middle',
-                    align: 'center',
-                    formatter : function(value, row, index)
-                    {
-                        if(value.length>5)return value;
-                        return  '<a class="edit-sys-code" href="#">'+value+'</a> ';
-                    },
-                    events:
-                        {
-                            'click .edit-sys-code':function(e, value, row, index) {
-                                $("#edit-location-id").val(row.Id);
-                                $('#edit-syscode-dlg').modal('show');
-                                $("#edit-sys-code").val(row.SysCode);
-                            }
-                        }
-                },
-                {
-                    title: '用户编码',
-                    field: 'UserCode',
-                    valign: 'middle',
-                    align: 'center',
-                    formatter : function(value, row, index)
-                    {
-                        value=value==null?'-':value;
-                        return '<a class="edit-sys-code" href="#">'+value+'</a> ';
-                    },
-                    events:
-                        {
-                            'click .edit-sys-code':function(e, value, row, index) {
-                                $("#edit-location-id").val(row.Id);
-                                $('#edit-usercode-dlg').modal('show');
-                                $("#edit-user-code").val(row.UserCode);
-                            }
-                        }
+                    align: 'center'
+                    
                 },
                 {
                     title: '货载',
