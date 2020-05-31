@@ -141,7 +141,8 @@ namespace ApplicationCore.Services
                 warehouseTray.LocationId = curLocation.Id;
                 warehouseTray.PhyWarehouseId = curLocation.PhyWarehouseId;
                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
-                curLocation.InStock = Convert.ToInt32(LOCATION_INSTOCK.有货);
+                curLocation.InStock = warehouseTray.MaterialCount>0? Convert.ToInt32(LOCATION_INSTOCK.有货):
+                                                                 Convert.ToInt32(LOCATION_INSTOCK.空托盘);
                 this._warehouseTrayRepository.Update(warehouseTray);
                 this._locationRepository.Update(curLocation);
                 if (warehouseMaterials.Count > 0)
@@ -235,7 +236,8 @@ namespace ApplicationCore.Services
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
                         location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
-                        location.InStock = Convert.ToInt32(LOCATION_INSTOCK.有货);
+                        location.InStock =  warehouseTray.MaterialCount>0? Convert.ToInt32(LOCATION_INSTOCK.有货):
+                                                                           Convert.ToInt32(LOCATION_INSTOCK.空托盘);
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                         warehouseTray.LocationId = location.Id;
                         this._warehouseTrayRepository.Update(warehouseTray);
