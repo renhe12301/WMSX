@@ -33,165 +33,170 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            try
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null,null,
-                    new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0, null, null, null, null,
-                    null, null, null, null, null, null, null);
-                List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
-
-                foreach (var subOrder in subOrders)
+                try
                 {
-                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
+                        new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0, null, null, null, null,
+                        null, null, null, null, null, null, null);
+                    List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
+
+                    foreach (var subOrder in subOrders)
                     {
-                        try
+                        using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                         {
-
-                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,subOrder.Id,
-                                null,null,null,null,null,null,null,null,null,
-                                null,null,null,null,null,null);
-                            List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
-                            
-                            if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收))
+                            try
                             {
-                                WarehouseReceiptPort warehouseReceiptPort = new WarehouseReceiptPortClient();
-                                RKOrderRequest1 rkOrderRequest = new RKOrderRequest1();
-                                rkOrderRequest.RKOrderRequest = new RKOrderRequest();
-                                rkOrderRequest.RKOrderRequest.headId = subOrder.Id;
-                                rkOrderRequest.RKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
-                                rkOrderRequest.RKOrderRequest.vendorId = subOrder.SupplierId.ToString();
-                                rkOrderRequest.RKOrderRequest.vendorSiteId = subOrder.SupplierSiteId.ToString();
-                                rkOrderRequest.RKOrderRequest.currency = subOrder.Currency;
-                                rkOrderRequest.RKOrderRequest.totalAmount = subOrder.TotalAmount;
-                                rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                                rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
-                                rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrders.Count];
 
-                                for (int i = 0; i < subOrderRows.Count; i++)
+                                SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
+                                    subOrder.Id,
+                                    null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null, null, null);
+                                List<SubOrderRow> subOrderRows =
+                                    this._subOrderRowRepository.List(subOrderRowSpecification);
+
+                                if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收))
                                 {
-                                    RequestRKRow requestRkRow = new RequestRKRow();
-                                    rkOrderRequest.RKOrderRequest.requestRKRows[i] = requestRkRow;
-                                    requestRkRow.lineId = subOrderRows[i].Id;
-                                    requestRkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestRkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
-                                    requestRkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
-                                    requestRkRow.processingQuantity = subOrderRows[i].PreCount;
-                                    requestRkRow.price = subOrderRows[i].Price.Value;
-                                    requestRkRow.amount = subOrderRows[i].Amount.Value;
-                                    requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
-                                }
-                                
-                                var response = await warehouseReceiptPort.RKOrderAsync(rkOrderRequest);
-                                
-                                subOrder.IsSync = 1;
-                                this._subOrderRepository.Update(subOrder);
-                            }
-                            
-                            else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料))
-                            {
-                                StockOutOrderPort stockOutOrderPort = new StockOutOrderPortClient();
-                                CKOrderRequest1 ckOrderRequest = new CKOrderRequest1();
-                                ckOrderRequest.CKOrderRequest = new CKOrderRequest();
-                                ckOrderRequest.CKOrderRequest.headId = subOrder.Id;
-                                ckOrderRequest.CKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
-                                ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                                ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrders.Count];
+                                    WarehouseReceiptPort warehouseReceiptPort = new WarehouseReceiptPortClient();
+                                    RKOrderRequest1 rkOrderRequest = new RKOrderRequest1();
+                                    rkOrderRequest.RKOrderRequest = new RKOrderRequest();
+                                    rkOrderRequest.RKOrderRequest.headId = subOrder.Id;
+                                    rkOrderRequest.RKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.OUCode;
+                                    rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    rkOrderRequest.RKOrderRequest.vendorId = subOrder.SupplierId.ToString();
+                                    rkOrderRequest.RKOrderRequest.vendorSiteId = subOrder.SupplierSiteId.ToString();
+                                    rkOrderRequest.RKOrderRequest.currency = subOrder.Currency;
+                                    rkOrderRequest.RKOrderRequest.totalAmount = subOrder.TotalAmount;
+                                    rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
+                                    rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
+                                    rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrders.Count];
 
-                                for (int i = 0; i < subOrderRows.Count; i++)
-                                {
-                                    RequestCKRow requestCkRow = new RequestCKRow();
-                                    ckOrderRequest.CKOrderRequest.requestCKRows[i] = requestCkRow;
-                                    requestCkRow.lineId = subOrderRows[i].Id;
-                                    requestCkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
-                                    requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
-                                    requestCkRow.processingQuantity = subOrderRows[i].PreCount;
-                                    requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
-                                }
-                                
-                                var response = await stockOutOrderPort.CKOrderAsync(ckOrderRequest);
-                                
-                                subOrder.IsSync = 1;
-                                this._subOrderRepository.Update(subOrder);
-                            }
-                            else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库))
-                            {
-                                WithdrawalPort withdrawalPort = new WithdrawalPortClient();
-                                TKOrderRequest1 tkOrderRequest = new TKOrderRequest1();
-                                tkOrderRequest.TKOrderRequest = new TKOrderRequest();
-                                tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
-                                tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
-                                tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                                tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrders.Count];
+                                    for (int i = 0; i < subOrderRows.Count; i++)
+                                    {
+                                        RequestRKRow requestRkRow = new RequestRKRow();
+                                        rkOrderRequest.RKOrderRequest.requestRKRows[i] = requestRkRow;
+                                        requestRkRow.lineId = subOrderRows[i].Id;
+                                        requestRkRow.headId = subOrderRows[i].SubOrderId;
+                                        requestRkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
+                                        requestRkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
+                                        requestRkRow.processingQuantity = subOrderRows[i].PreCount;
+                                        requestRkRow.price = subOrderRows[i].Price.Value;
+                                        requestRkRow.amount = subOrderRows[i].Amount.Value;
+                                        requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                    }
 
-                                for (int i = 0; i < subOrderRows.Count; i++)
-                                {
-                                    RequestTKRow requestTkRow = new RequestTKRow();
-                                    tkOrderRequest.TKOrderRequest.requestTKRows[i] = requestTkRow;
-                                    requestTkRow.lineId = subOrderRows[i].Id;
-                                    requestTkRow.headId = subOrderRows[i].SubOrderId;
-                                    requestTkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
-                                    requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
-                                    requestTkRow.processingQuantity = subOrderRows[i].PreCount;
-                                    requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
-                                }
-                                
-                                var response = await withdrawalPort.TKOrderAsync(tkOrderRequest);
-                                
-                                subOrder.IsSync = 1;
-                                this._subOrderRepository.Update(subOrder);
-                            }
-                            else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料))
-                            {
-                                InboundReturnsPort inboundReturnsPort = new InboundReturnsPortClient();
-                                RTOrderRequest1 rtOrderRequest1 = new RTOrderRequest1();
-                                rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
-                                rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
-                                rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
-                                rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.OUCode;
-                                rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
-                                rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
-                                rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrders.Count];
+                                    var response = await warehouseReceiptPort.RKOrderAsync(rkOrderRequest);
 
-                                for (int i = 0; i < subOrderRows.Count; i++)
-                                {
-                                    RequestRTRow requestRtRow = new RequestRTRow();
-                                    rtOrderRequest1.RTOrderRequest.requestRTRows[i] = requestRtRow;
-                                    requestRtRow.lineId = subOrderRows[i].Id;
-                                    requestRtRow.headId = subOrderRows[i].SubOrderId;
-                                    requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
-                                    requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
-                                    requestRtRow.processingQuantity = subOrderRows[i].PreCount;
-                                    requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                    subOrder.IsSync = 1;
+                                    this._subOrderRepository.Update(subOrder);
                                 }
-                                
-                                var response = await inboundReturnsPort.RTOrderAsync(rtOrderRequest1);
-                                
-                                subOrder.IsSync = 1;
-                                this._subOrderRepository.Update(subOrder);
+
+                                else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料))
+                                {
+                                    StockOutOrderPort stockOutOrderPort = new StockOutOrderPortClient();
+                                    CKOrderRequest1 ckOrderRequest = new CKOrderRequest1();
+                                    ckOrderRequest.CKOrderRequest = new CKOrderRequest();
+                                    ckOrderRequest.CKOrderRequest.headId = subOrder.Id;
+                                    ckOrderRequest.CKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.OUCode;
+                                    ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
+                                    ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrders.Count];
+
+                                    for (int i = 0; i < subOrderRows.Count; i++)
+                                    {
+                                        RequestCKRow requestCkRow = new RequestCKRow();
+                                        ckOrderRequest.CKOrderRequest.requestCKRows[i] = requestCkRow;
+                                        requestCkRow.lineId = subOrderRows[i].Id;
+                                        requestCkRow.headId = subOrderRows[i].SubOrderId;
+                                        requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
+                                        requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
+                                        requestCkRow.processingQuantity = subOrderRows[i].PreCount;
+                                        requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                    }
+
+                                    var response = await stockOutOrderPort.CKOrderAsync(ckOrderRequest);
+
+                                    subOrder.IsSync = 1;
+                                    this._subOrderRepository.Update(subOrder);
+                                }
+                                else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库))
+                                {
+                                    WithdrawalPort withdrawalPort = new WithdrawalPortClient();
+                                    TKOrderRequest1 tkOrderRequest = new TKOrderRequest1();
+                                    tkOrderRequest.TKOrderRequest = new TKOrderRequest();
+                                    tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
+                                    tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.OUCode;
+                                    tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
+                                    tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrders.Count];
+
+                                    for (int i = 0; i < subOrderRows.Count; i++)
+                                    {
+                                        RequestTKRow requestTkRow = new RequestTKRow();
+                                        tkOrderRequest.TKOrderRequest.requestTKRows[i] = requestTkRow;
+                                        requestTkRow.lineId = subOrderRows[i].Id;
+                                        requestTkRow.headId = subOrderRows[i].SubOrderId;
+                                        requestTkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
+                                        requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
+                                        requestTkRow.processingQuantity = subOrderRows[i].PreCount;
+                                        requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                    }
+
+                                    var response = await withdrawalPort.TKOrderAsync(tkOrderRequest);
+
+                                    subOrder.IsSync = 1;
+                                    this._subOrderRepository.Update(subOrder);
+                                }
+                                else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料))
+                                {
+                                    InboundReturnsPort inboundReturnsPort = new InboundReturnsPortClient();
+                                    RTOrderRequest1 rtOrderRequest1 = new RTOrderRequest1();
+                                    rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
+                                    rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
+                                    rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.OUCode;
+                                    rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
+                                    rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrders.Count];
+
+                                    for (int i = 0; i < subOrderRows.Count; i++)
+                                    {
+                                        RequestRTRow requestRtRow = new RequestRTRow();
+                                        rtOrderRequest1.RTOrderRequest.requestRTRows[i] = requestRtRow;
+                                        requestRtRow.lineId = subOrderRows[i].Id;
+                                        requestRtRow.headId = subOrderRows[i].SubOrderId;
+                                        requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
+                                        requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
+                                        requestRtRow.processingQuantity = subOrderRows[i].PreCount;
+                                        requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                    }
+
+                                    var response = await inboundReturnsPort.RTOrderAsync(rtOrderRequest1);
+
+                                    subOrder.IsSync = 1;
+                                    this._subOrderRepository.Update(subOrder);
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            this._logRecordRepository.Add(new LogRecord
+                            catch (Exception ex)
                             {
-                                LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                                LogDesc = ex.StackTrace,
-                                CreateTime = DateTime.Now
-                            });
+                                this._logRecordRepository.Add(new LogRecord
+                                {
+                                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                                    LogDesc = ex.StackTrace,
+                                    CreateTime = DateTime.Now
+                                });
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
+                }
             }
         }
     }

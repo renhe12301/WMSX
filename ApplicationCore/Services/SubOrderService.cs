@@ -68,7 +68,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(areaId, nameof(areaId));
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
 
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
@@ -320,7 +320,7 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Null(order, nameof(order));
             Guard.Against.Zero(order.SubOrderRow.Count, nameof(order.SubOrderRow));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
@@ -372,7 +372,7 @@ namespace ApplicationCore.Services
         public async Task ScrapOrder(SubOrder order)
         {
             Guard.Against.Null(order, nameof(order));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
@@ -438,7 +438,7 @@ namespace ApplicationCore.Services
         public async Task ScrapOrderRow(List<SubOrderRow> subOrderRows)
         {
             Guard.Against.Zero(subOrderRows.Count, nameof(subOrderRows));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
@@ -493,7 +493,7 @@ namespace ApplicationCore.Services
         public async Task OutConfirm(int subOrderId)
         {
             Guard.Against.Zero(subOrderId, nameof(subOrderId));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {

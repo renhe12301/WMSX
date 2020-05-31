@@ -65,14 +65,15 @@ namespace Web
                 .WithIdentity("job2", "group2")
                 .Build();
             
-            Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>> triggersAndJobs = new Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>>();
-            triggersAndJobs[jobDetail] = new List<ITrigger>{trigger};
-            triggersAndJobs[jobDetail2] = new List<ITrigger>{trigger2};
+            // Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>> triggersAndJobs = new Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>>();
+            // triggersAndJobs[jobDetail] = new List<ITrigger>{trigger};
+            // triggersAndJobs[jobDetail2] = new List<ITrigger>{trigger2};
             // triggersAndJobs[jobDetail3] = new List<ITrigger>{trigger3};
             // triggersAndJobs[jobDetail4] = new List<ITrigger>{trigger4};
             // triggersAndJobs[jobDetail5] = new List<ITrigger>{trigger5};
 
-            await _scheduler.ScheduleJobs(triggersAndJobs,true);
+            await _scheduler.ScheduleJob(jobDetail,trigger);
+            await _scheduler.ScheduleJob(jobDetail2,trigger2);
 
             _logger.LogInformation("Quarzt.net 启动成功...");
         }

@@ -38,43 +38,46 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            try
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                if ((DateTime.Now - DashboardHub.now).TotalSeconds < 3)
+                try
                 {
-                    await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
-                    var inRecordChart = await GetInRecordAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowInRecordAnalysis", inRecordChart);
-                    var outRecordChart = await GetOutRecordAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowOutRecordAnalysis", outRecordChart);
-                    var inOrderChart = await GetInOrderAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowInOrderAnalysis", inOrderChart);
-                    var outOrderChart = await GetOutOrderAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowOutOrderAnalysis", outOrderChart);
-                    var orderTypeChart = await GetOrderTypeAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowOrderTypeAnalysis", orderTypeChart);
-                    var stockCountChart = await GetStockCountAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowStockCountAnalysis", stockCountChart);
-                    var weekOrderChart = await GetWeekOrderAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowWeekOrderAnalysis", weekOrderChart);
-                    var stockAssestChart = await GetStockAssestAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
-                    var stockUtilizationChart = await GetStockUtilizationAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
-                    
-                    var orderChronergyChart = await GetOrderChronergyAnalysis();
-                    await _hubContext.Clients.All.SendAsync("ShowOrderChronergyChartAnalysis", orderChronergyChart);
-                   
-                }
-                else 
-                {
-                    Console.WriteLine("等待客户端连接...");
-                }
-                
-            }
-            catch (Exception ex)
-            {
+                    if ((DateTime.Now - DashboardHub.now).TotalSeconds < 3)
+                    {
+                        await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
+                        var inRecordChart = await GetInRecordAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowInRecordAnalysis", inRecordChart);
+                        var outRecordChart = await GetOutRecordAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowOutRecordAnalysis", outRecordChart);
+                        var inOrderChart = await GetInOrderAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowInOrderAnalysis", inOrderChart);
+                        var outOrderChart = await GetOutOrderAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowOutOrderAnalysis", outOrderChart);
+                        var orderTypeChart = await GetOrderTypeAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowOrderTypeAnalysis", orderTypeChart);
+                        var stockCountChart = await GetStockCountAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowStockCountAnalysis", stockCountChart);
+                        var weekOrderChart = await GetWeekOrderAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowWeekOrderAnalysis", weekOrderChart);
+                        var stockAssestChart = await GetStockAssestAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
+                        var stockUtilizationChart = await GetStockUtilizationAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
 
+                        var orderChronergyChart = await GetOrderChronergyAnalysis();
+                        await _hubContext.Clients.All.SendAsync("ShowOrderChronergyChartAnalysis", orderChronergyChart);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("等待客户端连接...");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 

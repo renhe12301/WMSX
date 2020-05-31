@@ -47,98 +47,103 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                try
+
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    DateTime now = DateTime.Now;
-                    DateTime pre = DateTime.Now.AddMonths(-now.Month + 1).AddDays(-now.Day + 1);
-
-                    //更新时间期限为一年以内的行处理的数量
-                    OrderRowSpecification orderRowSpecification = new OrderRowSpecification(null, null,
-                        null, null, null, null, pre.ToString(),
-                        now.ToString(), null, null);
-
-                    List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-                    List<OrderRow> updOrderRows = new List<OrderRow>();
-                    foreach (var orderRow in orderRows)
+                    try
                     {
-                        SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null, null,
-                            orderRow.Id, null,null, null, null, null, null, null, null,
-                            null, null, null, null, null, null);
-                        List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
-                        orderRow.Sorting = subOrderRows.Sum(r => r.Sorting);
-                        orderRow.RealityCount = subOrderRows.Sum(r => r.RealityCount);
-                        updOrderRows.Add(orderRow);
+                        DateTime now = DateTime.Now;
+                        DateTime pre = DateTime.Now.AddMonths(-now.Month + 1).AddDays(-now.Day + 1);
+
+                        //更新时间期限为一年以内的行处理的数量
+                        OrderRowSpecification orderRowSpecification = new OrderRowSpecification(null, null,
+                            null, null, null, null, pre.ToString(),
+                            now.ToString(), null, null);
+
+                        List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+                        List<OrderRow> updOrderRows = new List<OrderRow>();
+                        foreach (var orderRow in orderRows)
+                        {
+                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null, null,
+                                orderRow.Id, null, null, null, null, null, null, null, null,
+                                null, null, null, null, null, null);
+                            List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
+                            orderRow.Sorting = subOrderRows.Sum(r => r.Sorting);
+                            orderRow.RealityCount = subOrderRows.Sum(r => r.RealityCount);
+                            updOrderRows.Add(orderRow);
+                        }
+
+                        if (updOrderRows.Count > 0)
+                            this._orderRowRepository.Update(updOrderRows);
+
+                        SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
+                            null, null, null, null, null, null, null, null, null,
+                            null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
+                        List<SubOrderRow> subRows = this._subOrderRowRepository.List(subOrderRowSpec);
+                        List<SubOrderRow> updSubRows = new List<SubOrderRow>();
+                        foreach (var subRow in subRows)
+                        {
+                            WarehouseTraySpecification warehouseTraySpecification = new WarehouseTraySpecification(null,
+                                null,
+                                null, null, subRow.Id, null, null, null, null, null, null, null);
+                            List<WarehouseTray> warehouseTrays =
+                                this._warehouseTrayRepository.List(warehouseTraySpecification);
+                            List<WarehouseTray> rukuTray =
+                                warehouseTrays.Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
+                            List<WarehouseTray> chukuTray = warehouseTrays
+                                .Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.出库完成等待确认)).ToList();
+                            var taotalRukuTrayCnt = rukuTray.Sum(t => t.MaterialCount);
+                            var totalChukuTrayCnt = chukuTray.Sum(t => t.OutCount);
+                            subRow.RealityCount = taotalRukuTrayCnt > 0 ? taotalRukuTrayCnt : totalChukuTrayCnt;
+                            if (subRow.RealityCount >= subRow.PreCount)
+                                subRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                            updSubRows.Add(subRow);
+                        }
+
+                        if (updOrderRows.Count > 0)
+                            this._subOrderRowRepository.Update(updSubRows);
+
+
+                        SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
+                            new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null);
+                        List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
+                        List<SubOrder> updSubOrders = new List<SubOrder>();
+                        foreach (var subOrder in subOrders)
+                        {
+                            SubOrderRowSpecification allSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
+                                null, null, null, null, null, null, null, null, null,
+                                null, null, null, null, null, null);
+                            List<SubOrderRow> allRows = this._subOrderRowRepository.List(allSubRowSpec);
+
+                            SubOrderRowSpecification endSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
+                                null, null, null, null, null, null, null, null, null,
+                                null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, null, null);
+                            List<SubOrderRow> endRows = this._subOrderRowRepository.List(endSubRowSpec);
+                            if (allRows.Count == endRows.Count)
+                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                            updSubOrders.Add(subOrder);
+                        }
+
+                        if (updSubOrders.Count > 0)
+                            this._subOrderRepository.Update(updSubOrders);
+
+                        scope.Complete();
+
                     }
-
-                    if (updOrderRows.Count > 0)
-                        this._orderRowRepository.Update(updOrderRows);
-
-                    SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
-                        null, null,null, null, null, null, null, null, null,
-                        null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
-                    List<SubOrderRow> subRows = this._subOrderRowRepository.List(subOrderRowSpec);
-                    List<SubOrderRow> updSubRows = new List<SubOrderRow>();
-                    foreach (var subRow in subRows)
+                    catch (Exception ex)
                     {
-                        WarehouseTraySpecification warehouseTraySpecification = new WarehouseTraySpecification(null,
-                            null,
-                            null, null, subRow.Id, null, null, null, null, null, null, null);
-                        List<WarehouseTray> warehouseTrays =
-                            this._warehouseTrayRepository.List(warehouseTraySpecification);
-                        List<WarehouseTray> rukuTray =
-                            warehouseTrays.Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
-                        List<WarehouseTray> chukuTray = warehouseTrays
-                            .Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.出库完成等待确认)).ToList();
-                        var taotalRukuTrayCnt = rukuTray.Sum(t => t.MaterialCount);
-                        var totalChukuTrayCnt = chukuTray.Sum(t => t.OutCount);
-                        subRow.RealityCount = taotalRukuTrayCnt > 0 ? taotalRukuTrayCnt : totalChukuTrayCnt;
-                        if (subRow.RealityCount >= subRow.PreCount)
-                            subRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                        updSubRows.Add(subRow);
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                            LogDesc = ex.Message,
+                            CreateTime = DateTime.Now
+                        });
                     }
-
-                    if (updOrderRows.Count > 0)
-                        this._subOrderRowRepository.Update(updSubRows);
-
-                    
-                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null,null,null,null,
-                        new List<int>{Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null,null,null,
-                        null,null,null,null,null,null,null);
-                    List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
-                    List<SubOrder> updSubOrders = new List<SubOrder>();
-                    foreach (var subOrder in subOrders)
-                    {
-                        SubOrderRowSpecification allSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
-                            null, null,null, null, null, null, null, null, null,
-                            null, null, null, null, null, null);
-                        List<SubOrderRow> allRows = this._subOrderRowRepository.List(allSubRowSpec);
-                        
-                        SubOrderRowSpecification endSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
-                            null, null,null, null, null, null, null, null, null,
-                            null, new List<int>{Convert.ToInt32(ORDER_STATUS.完成)}, null, null, null, null);
-                        List<SubOrderRow> endRows = this._subOrderRowRepository.List(endSubRowSpec);
-                        if (allRows.Count == endRows.Count)
-                            subOrder.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                        updSubOrders.Add(subOrder);
-                    }
-                    if(updSubOrders.Count>0)
-                        this._subOrderRepository.Update(updSubOrders);
-                    
-                    scope.Complete();
 
                 }
-                catch (Exception ex)
-                {
-                    this._logRecordRepository.Add(new LogRecord
-                    {
-                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                        LogDesc = ex.Message,
-                        CreateTime = DateTime.Now
-                    });
-                }
-
             }
         }
     }

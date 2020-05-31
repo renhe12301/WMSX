@@ -38,16 +38,15 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using ( await ModuleLock.GetAsyncLock().LockAsync())
             {
                 try
                 {
-                    //扫码设备中，读到当前入库申请的托盘信息。
                     WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
                         null, null, null, null,
                         new List<int> {Convert.ToInt32(TRAY_STEP.入库申请)},
                         null, null, null, null, null);
-                    //得到所有数据库中 托盘状态为入库申请的托盘信息
+
                     List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
 
                     warehouseTrays.ForEach(async tray =>

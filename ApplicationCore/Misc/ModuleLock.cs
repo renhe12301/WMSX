@@ -5,9 +5,10 @@ namespace ApplicationCore.Misc
 {
     public class ModuleLock
     {
+        private static AsyncLock _asyncLock = new AsyncLock();
         public static AsyncLock GetAsyncLock()
         {
-            return new AsyncLock();
+            return _asyncLock;
         }
     }
 

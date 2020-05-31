@@ -132,7 +132,7 @@ namespace ApplicationCore.Services
             List<WarehouseMaterial> warehouseMaterials =
                 await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpecification);
 
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 Location curLocation = locations.First();
                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
