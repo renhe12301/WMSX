@@ -146,6 +146,8 @@ namespace Web.Jobs
 
                              List<InOutTask> sendTasks = new List<InOutTask>();
                              List<WarehouseTray> warehouseTrays = new List<WarehouseTray>();
+                             List<WarehouseMaterial> updMaterials = new List<WarehouseMaterial>();
+                             List<Location> updLocations = new List<Location>();
                              foreach (var subOrderRow in subOrderRows)
                              {
                                  ReservoirArea area = subOrderRow.ReservoirArea;
@@ -162,7 +164,8 @@ namespace Web.Jobs
                                      null, null, null,
                                      null, null, null, null, null);
                                  locations = this._locationRepository.List(locationSpecification);
-
+                                 if (locations.Count == 0)
+                                     throw new Exception("没有出库区货位!");
                                  MaterialDic materialDic = subOrderRow.MaterialDic;
                                  WarehouseMaterialSpecification warehouseMaterialSpecification =
                                      new WarehouseMaterialSpecification(null, null,
@@ -180,27 +183,46 @@ namespace Web.Jobs
                                      throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
                                  var sortMaterials = warehouseMaterials.OrderBy(m => m.CreateTime);
                                  int totalCount = 0;
-                                 int syCount = subOrderRow.PreCount;
+                                 List<int> totalCnt = new List<int>();
                                  Random random = new Random();
+                                 bool end = false;
                                  foreach (var sortMaterial in sortMaterials)
                                  {
-                                     if (totalCount > subOrderRow.PreCount)
-                                         break;
-                                     syCount -= sortMaterial.MaterialCount;
-                                     totalCount += sortMaterial.MaterialCount;
                                      WarehouseTray warehouseTray = sortMaterial.WarehouseTray;
-                                     warehouseTray.OutCount = sortMaterial.MaterialCount > syCount
-                                         ? syCount
-                                         : sortMaterial.MaterialCount;
+                                     if (end) break;
+                                     totalCount += sortMaterial.MaterialCount;
+                                     if (totalCount >= subOrderRow.PreCount)
+                                     {
+                                         end=true;
+                                         warehouseTray.OutCount = subOrderRow.PreCount-totalCnt.Sum(t => t);
+                                     }
+                                     else
+                                     {
+                                         warehouseTray.OutCount = sortMaterial.MaterialCount;
+                                     }
+                                     totalCnt.Add(sortMaterial.MaterialCount);
                                      warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
+                                     warehouseTray.SubOrderId = subOrder.Id;
+                                     warehouseTray.SubOrderRowId = subOrderRow.Id;
                                      warehouseTrays.Add(warehouseTray);
+                                     sortMaterial.SubOrderId = subOrder.Id;
+                                     sortMaterial.SubOrderRowId = subOrderRow.Id;
+                                     updMaterials.Add(sortMaterial);
                                      InOutTask inOutTask = new InOutTask();
                                      inOutTask.SubOrderId = subOrder.Id;
                                      inOutTask.SubOrderRowId = subOrderRow.Id;
                                      inOutTask.TrayCode = sortMaterial.WarehouseTray.TrayCode;
-                                     inOutTask.SrcId = sortMaterial.Location.SysCode;
+                                     Location srcLoc = sortMaterial.Location;
+                                     inOutTask.SrcId = srcLoc.SysCode;
+                                     srcLoc.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+                                     srcLoc.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
+                                     updLocations.Add(srcLoc);
                                      int index = random.Next(0, locations.Count - 1);
-                                     inOutTask.TargetId = locations[index].SysCode;
+                                     Location targetLoc = locations[index];
+                                     targetLoc.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+                                     targetLoc.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
+                                     updLocations.Add(targetLoc);
+                                     inOutTask.TargetId = targetLoc.SysCode;
                                      inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
                                      inOutTask.Type = Convert.ToInt32(TASK_TYPE.物料出库);
                                      inOutTask.CreateTime = DateTime.Now;
@@ -218,7 +240,8 @@ namespace Web.Jobs
                              this._subOrderRepository.Update(subOrder);
                              this._inOutTaskRepository.Add(sendTasks);
                              this._warehouseTrayRepository.Update(warehouseTrays);
-
+                             this._warehouseMaterialRepository.Update(updMaterials);
+                             this._locationRepository.Update(updLocations);
                              scope.Complete();
                          }
                          catch (Exception ex)

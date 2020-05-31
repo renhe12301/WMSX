@@ -31,6 +31,8 @@ namespace Web.ViewModels.BasicInformation
 
         public object Tag { get; set; }
 
+        public int Type { get; set; }
+
         public List<int> LocationIds { get; set; }
     }
 

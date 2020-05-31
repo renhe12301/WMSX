@@ -342,7 +342,9 @@ namespace ApplicationCore.Services
                                 if ((orderRow.PreCount - orderRow.Expend) > subOrderRow.PreCount)
                                     throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
                                         subOrderRow.OrderRowId, orderRow.PreCount - orderRow.Expend));
-                                orderRow.Expend += subOrderRow.PreCount;
+                                int expend = orderRow.Expend.GetValueOrDefault();
+                                expend += subOrderRow.PreCount;
+                                orderRow.Expend = expend;
                                 updOrderRows.Add(orderRow);
                             }
                         }
@@ -352,6 +354,12 @@ namespace ApplicationCore.Services
                         SubOrder newSubOrder = this._subOrderRepository.Add(order);
                         order.SubOrderRow.ForEach(or => or.SubOrderId = newSubOrder.Id);
                         this._subOrderRowRepository.Add(order.SubOrderRow);
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = "创建订单!",
+                            CreateTime = DateTime.Now
+                        });
                         scope.Complete();
                     }
                     catch (Exception ex)
@@ -548,6 +556,14 @@ namespace ApplicationCore.Services
                         this._subOrderRepository.Update(subOrder);
                         subOrderRows.ForEach(r=>r.Status = Convert.ToInt32(ORDER_STATUS.执行中));
                         this._subOrderRowRepository.Update(subOrderRows);
+                        
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = "出库订单确认!",
+                            CreateTime = DateTime.Now
+                        });
+                        
                         scope.Complete();
 
                     }

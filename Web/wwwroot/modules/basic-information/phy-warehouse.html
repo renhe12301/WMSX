@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
     <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
     <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
@@ -20,6 +21,7 @@
     <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="../../lib/jstree/jstree.min.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
     <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
@@ -82,6 +84,14 @@
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="add-user-code" id="add-user-code" placeholder="用户编码...">
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="add-user-code" class="col-sm-3 col-form-label">货位类型</label>
+                            <select class="select2"  id="type-select" data-placeholder="货位类型" style="width: 320px;">
+                                <option value="0">仓库区货位</option>
+                                <option value="1">入库区货位</option>
+                                <option value="2">出库区货位</option>
+                            </select>
                             </div>
                         </div>
                         <div class="card-footer">

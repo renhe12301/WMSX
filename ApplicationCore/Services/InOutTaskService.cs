@@ -419,6 +419,7 @@ namespace ApplicationCore.Services
 
         public async Task OutConfirm(string trayCode)
         {
+            
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
@@ -435,6 +436,42 @@ namespace ApplicationCore.Services
                             trayCode));
                     warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
+                    warehouseTray.SubOrderId = null;
+                    warehouseTray.SubOrderRowId = null;
+                    warehouseTray.Amount = warehouseTray.Price * warehouseTray.MaterialCount;
+                    warehouseTray.OutCount = 0;
+                    warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                    WarehouseMaterialSpecification warehouseMaterialSpecification =
+                        new WarehouseMaterialSpecification(null, null,
+                            null, null, null, null, warehouseTray.Id, null, null, null,
+                            null, null, null, null, null, null,
+                            null, null, null, null);
+                    List<WarehouseMaterial> warehouseMaterials =
+                        this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+                    if (warehouseTray.MaterialCount == 0)
+                    {
+                        if (warehouseMaterials.Count > 0)
+                        {
+                            this._warehouseMaterialRepository.Delete(warehouseMaterials);
+                            Location location = warehouseTray.Location;
+                            location.InStock = Convert.ToInt32(LOCATION_INSTOCK.空托盘);
+                            this._locationRepository.Update(location);
+                        }
+                    }
+                    else
+                    {
+                        if (warehouseMaterials.Count > 0)
+                        {
+                            WarehouseMaterial warehouseMaterial = warehouseMaterials.First();
+                            warehouseMaterial.MaterialCount = warehouseTray.MaterialCount;
+                            warehouseMaterial.SubOrderId = null;
+                            warehouseMaterial.SubOrderRowId = null;
+                            warehouseMaterial.Amount = warehouseMaterial.Price * warehouseMaterial.MaterialCount;
+                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                            this._warehouseMaterialRepository.Update(warehouseMaterial);
+                        }
+                    }
+
                     this._warehouseTrayRepository.Update(warehouseTray);
                     
                     this._logRecordRepository.Add(new LogRecord

@@ -7,6 +7,9 @@ function whQueryParams(params) {
 }
 
 $(function () {
+    $(".select2").select2({
+        theme: 'bootstrap4'
+    });
     $('#wh-table').bootstrapTable({
         ajax:function(request)
         {
@@ -98,12 +101,19 @@ $(function () {
                 toastr.error("只能选择一个仓库！", '错误信息', {timeOut: 3000});
                 return;
             }
+            var types = $("#type-select").val();
+            if(types.length==0)
+            {
+                toastr.error("清选择货位类型！", '错误信息', {timeOut: 3000});
+                return;
+            }
             asynTask({type:'post',url:controllers["location"]["add-location"],
                 jsonData:
                     {
                         SysCode:$('#add-sys-code').val(),
                         UserCode: $("#add-user-code").val(),
-                        PhyWarehouseId:tableSelects[0].Id
+                        PhyWarehouseId:tableSelects[0].Id,
+                        Type:parseInt(types[0])
                     },
                 successCallback:function (response) {
                     if(response.Code==200)

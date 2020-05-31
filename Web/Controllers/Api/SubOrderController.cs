@@ -147,12 +147,12 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 确认出库单
         /// </summary>
-        /// <param name="subOrderId"></param>
+        /// <param name="subOrderViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> OutConfirm(int subOrderId)
+        public async Task<IActionResult> OutConfirm([FromBody] SubOrderViewModel subOrderViewModel)
         {
-            var response = await this._subOrderViewModelService.OutConfirm(subOrderId);
+            var response = await this._subOrderViewModelService.OutConfirm(subOrderViewModel.Id);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

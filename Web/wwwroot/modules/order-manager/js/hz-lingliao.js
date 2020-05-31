@@ -29,7 +29,7 @@ var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
 var type=[3];
-var tstatus=[0,1];
+var tstatus=[0,1,2,3];
 var orderId=0;
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;

@@ -241,7 +241,8 @@ namespace Web.Services
                     WarehouseId=locationViewModel.WarehouseId,
                     ReservoirAreaId=locationViewModel.ReservoirAreaId,
                     OUId = locationViewModel.OUId,
-                    PhyWarehouseId = locationViewModel.PhyWarehouseId
+                    PhyWarehouseId = locationViewModel.PhyWarehouseId,
+                    Type = locationViewModel.Type
                 };
                 await this._locationService.AddLocation(location);
                 response.Data = location.Id;
