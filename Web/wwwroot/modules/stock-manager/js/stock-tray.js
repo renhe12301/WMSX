@@ -134,6 +134,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '载体',
+                    field: 'Carrier',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '状态',
                     field: 'TrayStepStr',
                     valign: 'middle',

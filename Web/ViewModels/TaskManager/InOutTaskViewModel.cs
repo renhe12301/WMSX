@@ -23,6 +23,8 @@ namespace Web.ViewModels.TaskManager
         public string CreateTime { get; set; }
         public string FinishTime { get; set; }
         public int IsRead { get; set; }
+
+        public string IsReadStr { get; set; }
         public string Memo { get; set; }
         public int? WarehouseId { get; set; }
         public string LocationCode { get; set; }

@@ -97,7 +97,8 @@ namespace Web.Services
                         OrderId = e.SubOrderId,
                         OrderRowId = e.SubOrderRowId,
                         Progress=e.Progress,
-                        FinishTime=e.FinishTime?.ToString()
+                        FinishTime=e.FinishTime?.ToString(),
+                        IsReadStr = Enum.GetName(typeof(TASK_READ), e.IsRead)
                     };
                     inOutTaskViewModels.Add(inOutTaskViewModel);
                 });

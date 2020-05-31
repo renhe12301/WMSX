@@ -299,13 +299,25 @@ namespace ApplicationCore.Services
                         LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId, null,
                             null, null, null, null, null, null, null, null,
                             null, null, null);
-                        var locations = await this._locationRepository.ListAsync(locationSpec);
+                        var locations = this._locationRepository.List(locationSpec);
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
                         location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
                         location.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
                         warehouseTray.LocationId = null;
+                        WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,
+                            null,null,null,null,null,warehouseTray.Id,
+                            null,null,null,null,null,null,null,null,null,
+                            null,null,null,null);
+                        List<WarehouseMaterial> warehouseMaterials =
+                            this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+                        warehouseMaterials.ForEach(m =>
+                        {
+                            m.LocationId = null;
+                            m.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
+                        });
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
+                        this._warehouseMaterialRepository.Update(warehouseMaterials);
                         this._warehouseTrayRepository.Update(warehouseTray);
                         this._locationRepository.Update(location);
                         this._inOutTaskRepository.Update(task);
@@ -325,7 +337,7 @@ namespace ApplicationCore.Services
                         LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
                             null, null, null, null, null, null, null, null,
                             null, null, null);
-                        var locations = await this._locationRepository.ListAsync(locationSpec);
+                        var locations =  this._locationRepository.List(locationSpec);
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
                         location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
@@ -334,6 +346,18 @@ namespace ApplicationCore.Services
                             : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                         warehouseTray.LocationId = location.Id;
+                        WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,
+                            null,null,null,null,null,warehouseTray.Id,
+                            null,null,null,null,null,null,null,null,null,
+                            null,null,null,null);
+                        List<WarehouseMaterial> warehouseMaterials =
+                            this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+                        warehouseMaterials.ForEach(m =>
+                        {
+                            m.LocationId = location.Id;
+                            m.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                        });
+                        this._warehouseMaterialRepository.Update(warehouseMaterials);
                         this._warehouseTrayRepository.Update(warehouseTray);
                         this._inOutTaskRepository.Update(task);
                         this._locationRepository.Update(location);

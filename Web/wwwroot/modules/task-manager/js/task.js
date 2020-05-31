@@ -168,10 +168,7 @@ $(function () {
                     formatter : function(value, row, index) {
                         if(value=="执行中")
                         {
-                            e='<a  href="javascript:void(0)" title="执行中...">'+
-                                '<i class="fa fa-circle-notch fa-spin"></i>'+
-                                '</a>  ';
-                            return e;
+                            return '<span class="badge bg-green">执行中</span>';
                         }
                         else if(value=="待处理")
                         {
@@ -181,6 +178,20 @@ $(function () {
                             return '<span class="badge bg-gray">完成</span>';
                         else if(value=="关闭")
                             return '<span class="badge bg-gray-dark">关闭</span>';
+                    }
+                },
+                {
+                    title: 'WCS读取',
+                    field: 'IsReadStr',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter : function(value, row, index) {
+                         if(value=="已读")
+                        {
+                            return '<span class="badge bg-green">已读</span>';
+                        }
+                        else if(value=="未读")
+                            return '<span class="badge bg-red">未读</span>';
                     }
                 },
                 {
