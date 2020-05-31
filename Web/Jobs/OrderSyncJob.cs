@@ -29,55 +29,24 @@ namespace Web.Jobs
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
-        public OrderStatusSyncJob(IAsyncRepository<Order> orderRepository,
-            IAsyncRepository<OrderRow> orderRowRepository,
-            IAsyncRepository<LogRecord> logRecordRepository,
-            IAsyncRepository<SubOrderRow> subOrderRowRepository,
-            IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-            IAsyncRepository<SubOrder> subOrderRepository
-        )
+        public OrderStatusSyncJob()
         {
-            this._orderRepository = orderRepository;
-            this._orderRowRepository = orderRowRepository;
-            this._logRecordRepository = logRecordRepository;
-            this._subOrderRowRepository = subOrderRowRepository;
-            this._warehouseTrayRepository = warehouseTrayRepository;
-            this._subOrderRepository = subOrderRepository;
+            this._orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();;
+            this._orderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<OrderRow>>();;
+            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();;
+            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();;
+            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();;
+            this._subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try
                     {
-                        DateTime now = DateTime.Now;
-                        DateTime pre = DateTime.Now.AddMonths(-now.Month + 1).AddDays(-now.Day + 1);
-
-                        //更新时间期限为一年以内的行处理的数量
-                        OrderRowSpecification orderRowSpecification = new OrderRowSpecification(null, null,
-                            null, null, null, null, pre.ToString(),
-                            now.ToString(), null, null);
-
-                        List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-                        List<OrderRow> updOrderRows = new List<OrderRow>();
-                        foreach (var orderRow in orderRows)
-                        {
-                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null, null,
-                                orderRow.Id, null, null, null, null, null, null, null, null,
-                                null, null, null, null, null, null);
-                            List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpecification);
-                            orderRow.Sorting = subOrderRows.Sum(r => r.Sorting);
-                            orderRow.RealityCount = subOrderRows.Sum(r => r.RealityCount);
-                            updOrderRows.Add(orderRow);
-                        }
-
-                        if (updOrderRows.Count > 0)
-                            this._orderRowRepository.Update(updOrderRows);
-
                         SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
                             null, null, null, null, null, null, null, null, null,
                             null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
@@ -85,27 +54,14 @@ namespace Web.Jobs
                         List<SubOrderRow> updSubRows = new List<SubOrderRow>();
                         foreach (var subRow in subRows)
                         {
-                            WarehouseTraySpecification warehouseTraySpecification = new WarehouseTraySpecification(null,
-                                null,
-                                null, null, subRow.Id, null, null, null, null, null, null, null);
-                            List<WarehouseTray> warehouseTrays =
-                                this._warehouseTrayRepository.List(warehouseTraySpecification);
-                            List<WarehouseTray> rukuTray =
-                                warehouseTrays.Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
-                            List<WarehouseTray> chukuTray = warehouseTrays
-                                .Where(t => t.TrayStep == Convert.ToInt32(TRAY_STEP.出库完成等待确认)).ToList();
-                            var taotalRukuTrayCnt = rukuTray.Sum(t => t.MaterialCount);
-                            var totalChukuTrayCnt = chukuTray.Sum(t => t.OutCount);
-                            subRow.RealityCount = taotalRukuTrayCnt > 0 ? taotalRukuTrayCnt : totalChukuTrayCnt;
                             if (subRow.RealityCount >= subRow.PreCount)
                                 subRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
                             updSubRows.Add(subRow);
                         }
 
-                        if (updOrderRows.Count > 0)
+                        if (updSubRows.Count > 0)
                             this._subOrderRowRepository.Update(updSubRows);
-
-
+                        
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
                             new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null, null, null,
                             null, null, null, null, null, null, null);

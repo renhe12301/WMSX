@@ -25,12 +25,16 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
+        private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                 IAsyncRepository<Location> locationRepository,
                                 IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                 IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                                IAsyncRepository<LogRecord> logRecordRepository
+                                IAsyncRepository<LogRecord> logRecordRepository,
+                                IAsyncRepository<SubOrderRow> subOrderRowRepository,
+                                IAsyncRepository<OrderRow> orderRowRepository
                                 )
         {
             this._inOutTaskRepository = inOutTaskRepository;
@@ -39,6 +43,8 @@ namespace ApplicationCore.Services
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._logRecordRepository = logRecordRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
+            this._orderRowRepository = orderRowRepository;
         }
 
         public async Task EmptyOut(int areaId, int outCount)
@@ -361,6 +367,29 @@ namespace ApplicationCore.Services
                         this._warehouseTrayRepository.Update(warehouseTray);
                         this._inOutTaskRepository.Update(task);
                         this._locationRepository.Update(location);
+                        
+                        if (warehouseTray.SubOrderRowId.HasValue)
+                        {
+                            SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
+                            
+                            OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
+                                null,null,null,null,null,null,null,
+                                null,null);
+                            List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+                            
+                            OrderRow orderRow = orderRows.First();
+                            int preCount = orderRow.RealityCount.GetValueOrDefault();
+                            preCount += warehouseTray.MaterialCount;
+                            orderRow.RealityCount = preCount;
+
+                          
+                            preCount = subOrderRow.RealityCount.GetValueOrDefault();
+                            preCount += warehouseTray.MaterialCount;
+                            subOrderRow.RealityCount = preCount;
+                            
+                            this._subOrderRowRepository.Update(subOrderRow);
+                            this._orderRowRepository.Update(orderRow);
+                        }
                     }
                     else
                     {
