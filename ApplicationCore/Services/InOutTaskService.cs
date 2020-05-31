@@ -134,19 +134,22 @@ namespace ApplicationCore.Services
 
             using (ModuleLock.GetAsyncLock().LockAsync())
             {
+                Location curLocation = locations.First();
                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
                 warehouseTray.CargoHeight = cargoHeight;
                 warehouseTray.CargoWeight = cargoWeight;
-                warehouseTray.LocationId = locations.First().Id;
-                warehouseTray.PhyWarehouseId = locations.First().PhyWarehouseId;
+                warehouseTray.LocationId = curLocation.Id;
+                warehouseTray.PhyWarehouseId = curLocation.PhyWarehouseId;
                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+                curLocation.InStock = Convert.ToInt32(LOCATION_INSTOCK.有货);
                 this._warehouseTrayRepository.Update(warehouseTray);
+                this._locationRepository.Update(curLocation);
                 if (warehouseMaterials.Count > 0)
                 {
                     warehouseMaterials.ForEach(m =>
                     {
-                        m.LocationId = locations.First().Id;
-                        m.PhyWarehouseId = locations.First().Id;
+                        m.LocationId = curLocation.Id;
+                        m.PhyWarehouseId = curLocation.PhyWarehouseId;
                         m.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
                     });
                     this._warehouseMaterialRepository.Update(warehouseMaterials);
@@ -205,6 +208,8 @@ namespace ApplicationCore.Services
                         var locations = await this._locationRepository.ListAsync(locationSpec);
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                        location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
+                        location.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
                         warehouseTray.LocationId = null;
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
                         this._warehouseTrayRepository.Update(warehouseTray);
@@ -229,6 +234,8 @@ namespace ApplicationCore.Services
                         var locations = await this._locationRepository.ListAsync(locationSpec);
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                        location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
+                        location.InStock = Convert.ToInt32(LOCATION_INSTOCK.有货);
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                         warehouseTray.LocationId = location.Id;
                         this._warehouseTrayRepository.Update(warehouseTray);

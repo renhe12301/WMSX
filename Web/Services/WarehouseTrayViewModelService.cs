@@ -81,7 +81,7 @@ namespace Web.Services
                     warehouseTrayViewModel.ReservoirAreaName = e.ReservoirArea?.AreaName;
                     warehouseTrayViewModel.WarehouseName = e.Warehouse?.WhName;
                     warehouseTrayViewModel.OUName = e.OU?.OUName;
-
+                    warehouseTrayViewModel.TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.TrayStep);
                     warehouseTrayViewModels.Add(warehouseTrayViewModel);
                 });
 

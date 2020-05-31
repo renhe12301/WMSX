@@ -238,7 +238,7 @@ $(function () {
                     formatter : function(value, row, index) {
                         if(value=="有任务")
                         {
-                            e='<a  href="javascript:void(0)" title="正在任务...">'+
+                            e='<a  href="javascript:void(0)" style="cursor: pointer;" title="正在任务...">'+
                                 '<i class="fa fa-cog fa-spin"></i>'+
                                 '</a>  ';
                             return e;

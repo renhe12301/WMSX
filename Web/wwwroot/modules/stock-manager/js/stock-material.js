@@ -143,6 +143,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '状态',
+                    field: 'TrayStepStr',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '子库存',
                     field: 'ReservoirAreaName',
                     valign: 'middle',

@@ -115,14 +115,14 @@ namespace Web
             //定时器工厂
             services.AddSingleton<QuartzStartup>();
             services.AddTransient<Web.Jobs.DashboardJob>();     
+            services.AddTransient<Web.Jobs.RuKuJob>();     
+            services.AddTransient<Web.Jobs.ChuKuKJob>();     
+            services.AddTransient<Web.Jobs.SendWCSTaskJob>();    
+            services.AddTransient<Web.Jobs.OrderStatusSyncJob>();     
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
             services.AddSingleton<IJobFactory, IOCJobFactory>();
-
-            //soap 服务
-            //services.TryAddScoped<WebServices.Interfaces.IOrderSOAPService, WebServices.Services.OrderSOAPService>();
-            //services.AddScoped(typeof(WebServices.Interfaces.IOrderSOAPService), typeof(WebServices.Services.OrderSOAPService));
-         
+            
             EnginContext.initialize(new GeneralEngine(services.BuildServiceProvider()));
 
             services.Configure<AppSettings>(Configuration);

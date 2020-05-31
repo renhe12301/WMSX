@@ -134,6 +134,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '状态',
+                    field: 'TrayStepStr',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '子库区',
                     field: 'ReservoirAreaName',
                     valign: 'middle',

@@ -23,10 +23,10 @@ namespace Web.Jobs
     public class RuKuJob : IJob
     {
 
-        private IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
-        private IAsyncRepository<Location> _locationRepository;
-        private IAsyncRepository<InOutTask> _inOutTaskRepository;
-        private IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
+        private readonly IAsyncRepository<Location> _locationRepository;
+        private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
+        private readonly IAsyncRepository<LogRecord> _logRecordRepository;
 
         public RuKuJob()
         {
@@ -83,6 +83,11 @@ namespace Web.Jobs
                                 inOutTask.Type = tray.MaterialCount==0?Convert.ToInt32(TASK_TYPE.空托盘入库):Convert.ToInt32(TASK_TYPE.物料入库);
                                 inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
                                 inOutTask.PhyWarehouseId = location.PhyWarehouseId;
+                                inOutTask.WarehouseTrayId = tray.Id;
+                                inOutTask.OUId = tray.OUId;
+                                inOutTask.WarehouseId = tray.WarehouseId;
+                                inOutTask.ReservoirAreaId = tray.ReservoirAreaId;
+                                inOutTask.IsRead = Convert.ToInt32(TASK_READ.未读);
                                 if (tray.SubOrderId.HasValue)
                                 {
                                     inOutTask.SubOrderId = tray.SubOrderId;
@@ -90,10 +95,15 @@ namespace Web.Jobs
                                 }
 
                                 tray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中未执行);
+                                // 入库起点货位锁定
+                                tray.Location.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+                                tray.Location.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
+                                // 入库目标货位锁定
                                 location.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
                                 location.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
 
                                 this._locationRepository.Update(location);
+                                this._locationRepository.Update(tray.Location);
                                 this._warehouseTrayRepository.Update(tray);
                                 this._inOutTaskRepository.Add(inOutTask);
                             }
@@ -107,7 +117,7 @@ namespace Web.Jobs
                                 });
 
                             }
-
+                            scope.Complete();
                         }
                     });
                 }

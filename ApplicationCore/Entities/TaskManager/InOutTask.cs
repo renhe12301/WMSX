@@ -35,7 +35,7 @@ namespace ApplicationCore.Entities.TaskManager
         public SubOrder SubOrder { get; set; }
         public SubOrderRow SubOrderRow { get; set; }
 
-        public int WarehouseTrayId { get; set; }
+        public int? WarehouseTrayId { get; set; }
         public WarehouseTray WarehouseTray { get; set; }
     }
 }

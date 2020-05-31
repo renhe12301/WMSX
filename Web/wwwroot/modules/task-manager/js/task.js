@@ -156,7 +156,7 @@ $(function () {
                 },
                 {
                     title: '步骤',
-                    field: 'Step',
+                    field: 'StepStr',
                     valign: 'middle',
                     align: 'center'
                 },

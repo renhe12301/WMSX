@@ -22,6 +22,8 @@ namespace Web.ViewModels.StockManager
         public string SupplierName { get; set; }
         public string SupplierSiteName { get; set; }
 
+        public string TrayStepStr { get; set; }
+
         public string Spec { get; set; }
 
     }

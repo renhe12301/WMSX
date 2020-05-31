@@ -27,6 +27,8 @@ namespace Web.ViewModels.StockManager
 
         public string CargoWeight { get; set; }
 
+        public string TrayStepStr { get; set; }
+
         public List<WarehouseMaterialViewModel> WarehouseMaterialViewModels { get; set; }
     }
 }
