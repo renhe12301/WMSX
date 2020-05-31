@@ -49,7 +49,7 @@ namespace Web.Jobs
 
                     List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
 
-                    warehouseTrays.ForEach(async tray =>
+                    warehouseTrays.ForEach(tray =>
                     {
                         using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                         {

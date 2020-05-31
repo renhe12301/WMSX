@@ -117,7 +117,7 @@ namespace Web
             services.AddTransient<Web.Jobs.DashboardJob>();     
             services.AddTransient<Web.Jobs.RuKuJob>();     
             services.AddTransient<Web.Jobs.ChuKuKJob>();     
-            services.AddTransient<Web.Jobs.SendWCSTaskJob>();    
+            services.AddTransient<Web.Jobs.SendWcsTaskJob>();    
             services.AddTransient<Web.Jobs.OrderStatusSyncJob>();     
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 

@@ -14,13 +14,13 @@ using ApplicationCore.Entities.FlowRecord;
 namespace Web.Jobs
 {
     [DisallowConcurrentExecution]
-    public class SendWCSTaskJob:IJob
+    public class SendWcsTaskJob:IJob
     {
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly ILogRecordService _logRecordService;
         private readonly string WCS_TASK_RECEIVE_URL = "/fromWms/taskReceive";
         private static readonly HttpClient client = new HttpClient();
-        public SendWCSTaskJob()
+        public SendWcsTaskJob()
         {
             _inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
             _logRecordService = EnginContext.Current.Resolve<ILogRecordService>();
@@ -78,7 +78,7 @@ namespace Web.Jobs
                         }
                         catch (Exception ex)
                         {
-                            this._logRecordService.AddLog(new LogRecord
+                            await this._logRecordService.AddLog(new LogRecord
                             {
                                 LogType = Convert.ToInt32(LOG_TYPE.异常日志),
                                 LogDesc = wcsUrl+" [发送WCS任务Job]:" + ex.Message,

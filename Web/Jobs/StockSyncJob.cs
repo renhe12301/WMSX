@@ -22,13 +22,11 @@ namespace Web.Jobs
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
-        public StockSyncJob(IAsyncRepository<LogRecord> logRecordRepository,
-            IAsyncRepository<SubOrder> subOrderRepository,
-            IAsyncRepository<SubOrderRow> subOrderRowRepository)
+        public StockSyncJob()
         {
-            this._logRecordRepository = logRecordRepository;
-            this._subOrderRepository = subOrderRepository;
-            this._subOrderRowRepository = subOrderRowRepository;
+            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
+            this._subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
+            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();
         }
 
         public async Task Execute(IJobExecutionContext context)

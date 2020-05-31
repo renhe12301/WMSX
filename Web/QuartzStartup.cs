@@ -61,7 +61,7 @@ namespace Web
             var trigger5 = TriggerBuilder.Create()
                 .WithCronSchedule("0/5 * * * * ?")
                 .Build();
-            var jobDetail5 = JobBuilder.Create<Web.Jobs.SendWCSTaskJob>()
+            var jobDetail5 = JobBuilder.Create<Web.Jobs.SendWcsTaskJob>()
                 .WithIdentity("job5", "group5")
                 .Build();
             

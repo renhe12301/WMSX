@@ -33,26 +33,17 @@ namespace Web.Jobs
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
 
-        public ChuKuKJob(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-            IAsyncRepository<Warehouse> warehouseRepository,
-            IAsyncRepository<ReservoirArea> reservoirAreaRepository,
-            IAsyncRepository<Location> locationRepository,
-            IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-            IAsyncRepository<InOutTask> inOutTaskRepository,
-            IAsyncRepository<SubOrder> subOrderRepository,
-            IAsyncRepository<SubOrderRow> subOrderRowRepository,
-            IAsyncRepository<LogRecord> logRecordRepository
-        )
+        public ChuKuKJob()
         {
-            this._warehouseTrayRepository = warehouseTrayRepository;
-            this._warehouseRepository = warehouseRepository;
-            this._reservoirAreaRepository = reservoirAreaRepository;
-            this._locationRepository = locationRepository;
-            this._warehouseMaterialRepository = warehouseMaterialRepository;
-            this._inOutTaskRepository = inOutTaskRepository;
-            this._subOrderRepository = subOrderRepository;
-            this._subOrderRowRepository = subOrderRowRepository;
-            this._logRecordRepository = logRecordRepository;
+            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
+            this._warehouseRepository = EnginContext.Current.Resolve<IAsyncRepository<Warehouse>>();
+            this._reservoirAreaRepository = EnginContext.Current.Resolve<IAsyncRepository<ReservoirArea>>();
+            this._locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
+            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
+            this._inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
+            this._subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
+            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();
+            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
         }
 
          public async Task Execute(IJobExecutionContext context)
