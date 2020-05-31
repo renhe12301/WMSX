@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -23,11 +24,13 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
+        private readonly IAsyncRepository<LogRecord> _logRecordRepository;
         public InOutTaskService(IAsyncRepository<InOutTask> inOutTaskRepository,
                                 IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                 IAsyncRepository<Location> locationRepository,
                                 IAsyncRepository<ReservoirArea> reservoirAreaRepository,
-                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository
+                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
+                                IAsyncRepository<LogRecord> logRecordRepository
                                 )
         {
             this._inOutTaskRepository = inOutTaskRepository;
@@ -35,150 +38,240 @@ namespace ApplicationCore.Services
             this._locationRepository = locationRepository;
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
+            this._logRecordRepository = logRecordRepository;
         }
-        
-        public async Task EmptyOut(int areaId,int outCount)
+
+        public async Task EmptyOut(int areaId, int outCount)
         {
-            Guard.Against.Zero(areaId, nameof(areaId));
-            Guard.Against.Zero(outCount, nameof(outCount));
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
-                    null, null, null, null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
-                WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
-                    new List<int> {0, 0}, null, null, null,
-                    new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)},
-                    null, null, null, areaId,null);
-                List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
-                foreach (var tray in warehouseTrays)
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
+                    try
+                    {
+                        Guard.Against.Zero(areaId, nameof(areaId));
+                        Guard.Against.Zero(outCount, nameof(outCount));
+
+                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
+                            null, null, null, null);
+                        List<ReservoirArea> areas = this._reservoirAreaRepository.List(reservoirAreaSpec);
+                        if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
+                        WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
+                            new List<int> {0, 0}, null, null, null,
+                            new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)},
+                            null, null, null, areaId, null);
+                        
+                        List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                        if(warehouseTrays.Count<outCount) 
+                            throw new Exception(string.Format("库区[{0}]空托盘数量小于需求数量!",areaId));
+                        
+                        foreach (var tray in warehouseTrays)
+                        {
+                            tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
+                        }
+
+                        this._warehouseTrayRepository.Update(warehouseTrays);
+                        
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("库区[{0}],空托盘出库,出库数量[{1}]!",areaId,outCount),
+                            CreateTime = DateTime.Now
+                        });
+                        
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                            LogDesc = ex.ToString(),
+                            CreateTime = DateTime.Now
+                        });
+                        throw;
+                    }
                 }
-                await this._warehouseTrayRepository.UpdateAsync(warehouseTrays);
             }
 
         }
 
         public async Task EmptyEntry(string trayCode, int areaId)
         {
-            Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
-            Guard.Against.Zero(areaId, nameof(areaId));
-
-            ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null, null,
-                null, null, null);
-            List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-            if (areas.Count == 0) throw new Exception(string.Format("子库存[{0}],不存在！", areaId));
-            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
-                null, null, null, null, null, null, null, null,null);
-            List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
-            if (warehouseTrays.Count > 0)
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                WarehouseTray warehouseTray = warehouseTrays[0];
-                if (warehouseTray.MaterialCount > 0)
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    throw new Exception(string.Format("托盘[{0}]有物料,无法空盘入库！", trayCode));
-                }
+                    try
+                    {
+                        Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
+                        Guard.Against.Zero(areaId, nameof(areaId));
 
-                if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
-                {
-                    throw new Exception(string.Format("托盘[{0}]状态未初始化,当前状态为[{1}]！",
-                        trayCode, Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep)));
-                }
+                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
+                            null,
+                            null, null, null);
+                        List<ReservoirArea> areas = this._reservoirAreaRepository.List(reservoirAreaSpec);
+                        if (areas.Count == 0) throw new Exception(string.Format("子库存[{0}],不存在！", areaId));
+                        WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode,
+                            null,
+                            null, null, null, null, null, null, null, null, null);
+                        List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                        if (warehouseTrays.Count > 0)
+                        {
+                            WarehouseTray warehouseTray = warehouseTrays[0];
+                            if (warehouseTray.MaterialCount > 0)
+                            {
+                                throw new Exception(string.Format("托盘[{0}]有物料,无法空盘入库！", trayCode));
+                            }
 
-                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
-                await this._warehouseTrayRepository.UpdateAsync(warehouseTray);
+                            if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
+                            {
+                                throw new Exception(string.Format("托盘[{0}]状态未初始化,当前状态为[{1}]！",
+                                    trayCode, Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep)));
+                            }
+
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
+                            this._warehouseTrayRepository.Update(warehouseTray);
+                        }
+                        else
+                        {
+                            WarehouseTray warehouseTray = new WarehouseTray
+                            {
+                                TrayCode = trayCode,
+                                CreateTime = DateTime.Now,
+                                MaterialCount = 0,
+                                TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
+                                ReservoirAreaId = areaId,
+                                OUId = areas[0].OUId,
+                                WarehouseId = areas[0].WarehouseId
+                            };
+                            this._warehouseTrayRepository.Add(warehouseTray);
+                        }
+
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("空托盘[{0}]入库,入库库区[{1}]", trayCode, areaId),
+                            CreateTime = DateTime.Now
+                        });
+
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                            LogDesc = ex.ToString(),
+                            CreateTime = DateTime.Now
+                        });
+                        throw;
+                    }
+                }
             }
-            else
-            {
-                WarehouseTray warehouseTray = new WarehouseTray
-                {
-                    TrayCode = trayCode,
-                    CreateTime = DateTime.Now,
-                    MaterialCount = 0,
-                    TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
-                    ReservoirAreaId = areaId,
-                    OUId = areas[0].OUId,
-                    WarehouseId = areas[0].WarehouseId
-                };
-                await this._warehouseTrayRepository.AddAsync(warehouseTray);
-            }
-            
         }
 
         public async Task EntryApply(string fromPort, string barCode, int cargoHeight, string cargoWeight)
         {
-            Guard.Against.NullOrEmpty(fromPort, nameof(fromPort));
-            Guard.Against.NullOrEmpty(barCode, nameof(barCode));
-            LocationSpecification locationSpecification = new LocationSpecification(null, fromPort, null, null,
-                null, null, null, null, null, null, null, null, null, null);
-            List<Location> locations = await this._locationRepository.ListAsync(locationSpecification);
-            if(locations.Count==0)
-                throw new Exception(string.Format("货位[{0}]不存在!",fromPort));
-            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode, null, null,
-                null, null, null, null, null, null, null,null);
-            List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
-            if (warehouseTrays.Count == 0)
-                throw new Exception(string.Format("托盘码[{0}],不存在！", barCode));
-            WarehouseTray warehouseTray = warehouseTrays[0];
-            if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.待入库))
-                throw new Exception(string.Format("托盘[{0}]未进行待入库操作", barCode));
-            
-            WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,null,
-                null,null,null,null,warehouseTray.Id,null,null,null,
-                null,null,null,null,null,null,null,null,null,null);
-
-            List<WarehouseMaterial> warehouseMaterials =
-                await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpecification);
-
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                Location curLocation = locations.First();
-                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
-                warehouseTray.CargoHeight = cargoHeight;
-                warehouseTray.CargoWeight = cargoWeight;
-                warehouseTray.LocationId = curLocation.Id;
-                warehouseTray.PhyWarehouseId = curLocation.PhyWarehouseId;
-                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
-                curLocation.InStock = warehouseTray.MaterialCount>0? Convert.ToInt32(LOCATION_INSTOCK.有货):
-                                                                 Convert.ToInt32(LOCATION_INSTOCK.空托盘);
-                this._warehouseTrayRepository.Update(warehouseTray);
-                this._locationRepository.Update(curLocation);
-                if (warehouseMaterials.Count > 0)
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    warehouseMaterials.ForEach(m =>
+                    try
                     {
-                        m.LocationId = curLocation.Id;
-                        m.PhyWarehouseId = curLocation.PhyWarehouseId;
-                        m.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
-                    });
-                    this._warehouseMaterialRepository.Update(warehouseMaterials);
+                        Guard.Against.NullOrEmpty(fromPort, nameof(fromPort));
+                        Guard.Against.NullOrEmpty(barCode, nameof(barCode));
+                        LocationSpecification locationSpecification = new LocationSpecification(null, fromPort, null,
+                            null,
+                            null, null, null, null, null, null, null, null, null, null);
+                        List<Location> locations = this._locationRepository.List(locationSpecification);
+                        if (locations.Count == 0)
+                            throw new Exception(string.Format("货位[{0}]不存在!", fromPort));
+                        WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode,
+                            null, null,
+                            null, null, null, null, null, null, null, null);
+                        List<WarehouseTray> warehouseTrays =
+                            this._warehouseTrayRepository.List(warehouseTraySpec);
+                        if (warehouseTrays.Count == 0)
+                            throw new Exception(string.Format("托盘码[{0}],不存在！", barCode));
+                        WarehouseTray warehouseTray = warehouseTrays[0];
+                        if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.待入库))
+                            throw new Exception(string.Format("托盘[{0}]未进行待入库操作", barCode));
+
+                        WarehouseMaterialSpecification warehouseMaterialSpecification =
+                            new WarehouseMaterialSpecification(null, null,
+                                null, null, null, null, warehouseTray.Id, null, null, null,
+                                null, null, null, null, null, null, null, null, null, null);
+
+                        List<WarehouseMaterial> warehouseMaterials =
+                            this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+
+
+                        Location curLocation = locations.First();
+                        warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库申请);
+                        warehouseTray.CargoHeight = cargoHeight;
+                        warehouseTray.CargoWeight = cargoWeight;
+                        warehouseTray.LocationId = curLocation.Id;
+                        warehouseTray.PhyWarehouseId = curLocation.PhyWarehouseId;
+                        warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+                        curLocation.InStock = warehouseTray.MaterialCount > 0
+                            ? Convert.ToInt32(LOCATION_INSTOCK.有货)
+                            : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        this._locationRepository.Update(curLocation);
+                        if (warehouseMaterials.Count > 0)
+                        {
+                            warehouseMaterials.ForEach(m =>
+                            {
+                                m.LocationId = curLocation.Id;
+                                m.PhyWarehouseId = curLocation.PhyWarehouseId;
+                                m.Carrier = Convert.ToInt32(TRAY_CARRIER.输送线);
+                            });
+                            this._warehouseMaterialRepository.Update(warehouseMaterials);
+                        }
+
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("托盘[{0}],货位[{1}],入库申请",barCode , fromPort),
+                            CreateTime = DateTime.Now
+                        });
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                            LogDesc = ex.ToString(),
+                            CreateTime = DateTime.Now
+                        });
+                        throw;
+                    }
                 }
             }
-
-           
         }
 
-        public async Task TaskReport(int taskId,long reportTime, int taskStatus, string error)
+        public async Task TaskReport(int taskId, long reportTime, int taskStatus, string error)
         {
-            InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null,null,null,
-                                              null,null,null,null,null,null, 
-                                              null,null, null, null, null);
-            var tasks =  this._inOutTaskRepository.List(taskSpec);
-            if (tasks.Count==0)
-                throw  new Exception(string.Format("任务编号[{0}],不存在！",taskId));
-            var task = tasks[0];
-            
-            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
-                                       task.TrayCode, null, null, null,null,null, 
-                                       null, null, null, null,null);
-            var warehouseTrays =  this._warehouseTrayRepository.List(warehouseTraySpec);
-            var warehouseTray = warehouseTrays[0];
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                 try
                 {
+                    InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null, null, null, null,
+                        null, null, null, null, null, null,
+                        null, null, null, null, null);
+                    var tasks = this._inOutTaskRepository.List(taskSpec);
+                    if (tasks.Count == 0)
+                        throw new Exception(string.Format("任务编号[{0}],不存在！", taskId));
+                    var task = tasks[0];
+
+                    WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
+                        task.TrayCode, null, null, null, null, null,
+                        null, null, null, null, null);
+                    var warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                    var warehouseTray = warehouseTrays[0];
+
                     task.Step = taskStatus;
                     if (taskStatus == Convert.ToInt32(TASK_STEP.任务开始))
                     {
@@ -236,8 +329,9 @@ namespace ApplicationCore.Services
                         var location = locations[0];
                         location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
                         location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
-                        location.InStock =  warehouseTray.MaterialCount>0? Convert.ToInt32(LOCATION_INSTOCK.有货):
-                                                                           Convert.ToInt32(LOCATION_INSTOCK.空托盘);
+                        location.InStock = warehouseTray.MaterialCount > 0
+                            ? Convert.ToInt32(LOCATION_INSTOCK.有货)
+                            : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                         warehouseTray.LocationId = location.Id;
                         this._warehouseTrayRepository.Update(warehouseTray);
@@ -248,11 +342,23 @@ namespace ApplicationCore.Services
                     {
                         this._inOutTaskRepository.Update(task);
                     }
-
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("任务[{0}],上报时间[{1}],上报状态[{2}]",taskId , reportTime,taskStatus),
+                        CreateTime = DateTime.Now
+                    });
                     scope.Complete();
                 }
                 catch (Exception ex)
                 {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
                     throw ex;
                 }
             }
@@ -260,19 +366,43 @@ namespace ApplicationCore.Services
 
         public async Task OutConfirm(string trayCode)
         {
-           Guard.Against.NullOrEmpty(trayCode,nameof(trayCode));
-           WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
-               null, null, null, null, null, null, null, null,null);
-           List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
-           if(warehouseTrays.Count==0)
-               throw new Exception(string.Format("托盘[{0}],不存在！",trayCode));
-           WarehouseTray warehouseTray = warehouseTrays[0];
-           if(warehouseTray.TrayStep!=Convert.ToInt32(TRAY_STEP.出库完成等待确认))
-               throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
-                   trayCode));
-           warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
-           warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
-           this._warehouseTrayRepository.Update(warehouseTray);
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
+                    WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null,
+                        null, null, null, null, null, null, null, null, null);
+                    List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                    if (warehouseTrays.Count == 0)
+                        throw new Exception(string.Format("托盘[{0}],不存在！", trayCode));
+                    WarehouseTray warehouseTray = warehouseTrays[0];
+                    if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.出库完成等待确认))
+                        throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
+                            trayCode));
+                    warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
+                    warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
+                    this._warehouseTrayRepository.Update(warehouseTray);
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("出库托盘[{0}],人工PDA操作确认出库!",trayCode),
+                        CreateTime = DateTime.Now
+                    });
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw ex;
+                }
+            }
         }
     }
 }

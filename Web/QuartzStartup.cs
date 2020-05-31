@@ -48,21 +48,21 @@ namespace Web
                 .WithCronSchedule("0/5 * * * * ?")
                 .Build();
             var jobDetail3 = JobBuilder.Create<Web.Jobs.ChuKuKJob>()
-                .WithIdentity("job2", "group2")
+                .WithIdentity("job3", "group3")
                 .Build();
             
             var trigger4 = TriggerBuilder.Create()
                 .WithCronSchedule("0/5 * * * * ?")
                 .Build();
             var jobDetail4 = JobBuilder.Create<Web.Jobs.OrderStatusSyncJob>()
-                .WithIdentity("job2", "group2")
+                .WithIdentity("job4", "group4")
                 .Build();
             
             var trigger5 = TriggerBuilder.Create()
                 .WithCronSchedule("0/5 * * * * ?")
                 .Build();
             var jobDetail5 = JobBuilder.Create<Web.Jobs.SendWCSTaskJob>()
-                .WithIdentity("job2", "group2")
+                .WithIdentity("job5", "group5")
                 .Build();
             
             // Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>> triggersAndJobs = new Dictionary<IJobDetail, IReadOnlyCollection<ITrigger>>();
@@ -74,6 +74,7 @@ namespace Web
 
             await _scheduler.ScheduleJob(jobDetail,trigger);
             await _scheduler.ScheduleJob(jobDetail2,trigger2);
+            await _scheduler.ScheduleJob(jobDetail5,trigger5);
 
             _logger.LogInformation("Quarzt.net 启动成功...");
         }

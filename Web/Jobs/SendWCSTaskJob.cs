@@ -39,9 +39,9 @@ namespace Web.Jobs
                     List<InOutTask> orderTasks = inOutTasks.OrderBy(t => t.CreateTime).ToList();
                     foreach (var ot in orderTasks)
                     {
+                        string wcsUrl = ot.PhyWarehouse.Memo + WCS_TASK_RECEIVE_URL;
                         try
                         {
-                            string wcsUrl = ot.PhyWarehouse.Memo + WCS_TASK_RECEIVE_URL;
                             dynamic taskGroup = new ExpandoObject();
                             taskGroup.groupId = Guid.NewGuid().ToString();
                             taskGroup.msgTime = DateTime.Now.Ticks.ToString();
@@ -80,8 +80,8 @@ namespace Web.Jobs
                         {
                             this._logRecordService.AddLog(new LogRecord
                             {
-                                LogType = Convert.ToInt32(LOG_TYPE.WebService调用日志),
-                                LogDesc = "事件源[发送WCS任务Job]:" + ex.Message,
+                                LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                                LogDesc = wcsUrl+" [发送WCS任务Job]:" + ex.Message,
                                 CreateTime = DateTime.Now
                             });
                         }

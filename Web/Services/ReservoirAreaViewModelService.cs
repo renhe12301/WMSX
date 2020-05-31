@@ -305,24 +305,11 @@ namespace Web.Services
             {
                 if(!locationViewModel.ReservoirAreaId.HasValue)throw new Exception("分配货位,库区编号不能为空！");
                 await this._reservoirAreaService.AssignLocation(locationViewModel.ReservoirAreaId.Value, locationViewModel.LocationIds);
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = string.Format("子库存[{0}],分配货位！",locationViewModel.ReservoirAreaId),
-                    Founder = locationViewModel.Tag?.ToString(),
-                    CreateTime = DateTime.Now
-                });
             }
             catch (Exception ex)
             {
                 response.Code = 500;
                 response.Data = ex.Message;
-                await this._logRecordService.AddLog(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                    LogDesc = ex.StackTrace,
-                    CreateTime = DateTime.Now
-                });
             }
             return response;
         }

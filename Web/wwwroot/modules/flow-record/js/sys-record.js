@@ -73,6 +73,24 @@ $(function () {
                     field: 'CreateTime',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: '日志类型',
+                    field: 'LogType',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter : function(value, row, index) {
+                        if(value=="WebService调用日志")
+                        {
+                            return '<span class="badge bg-blue">WebService调用</span>';
+                        }
+                        else if(value=="定时任务日志")
+                        {
+                            return '<span class="badge bg-green">定时任务</span>';
+                        }
+                        else if(value=="异常日志")
+                            return '<span class="badge bg-red">异常</span>';
+                    }
                 }
             ]
     });

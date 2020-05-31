@@ -9,6 +9,8 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Net.Security;
 using System.Transactions;
+using ApplicationCore.Entities.FlowRecord;
+using ApplicationCore.Misc;
 
 namespace ApplicationCore.Services
 {
@@ -16,61 +18,167 @@ namespace ApplicationCore.Services
     {
 
         private readonly IAsyncRepository<MaterialType> _materialTypeRepository;
-
-        public MaterialTypeService(IAsyncRepository<MaterialType> materialTypeRepository)
+        private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        public MaterialTypeService(IAsyncRepository<MaterialType> materialTypeRepository,
+                                   IAsyncRepository<LogRecord> logRecordRepository
+            )
         {
             this._materialTypeRepository = materialTypeRepository;
+            this._logRecordRepository = logRecordRepository;
         }
 
         public async Task AddMaterialType(MaterialType materialType,bool unique=false)
         {
-            Guard.Against.Null(materialType, nameof(materialType));
-            if (unique)
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                var materialTypeSpec = new MaterialTypeSpecification(null, null, materialType.TypeName);
-                var materialTypes = await this._materialTypeRepository.ListAsync(materialTypeSpec);
-                if (materialTypes.Count == 0)
-                    await this._materialTypeRepository.AddAsync(materialType);
-            }
-            else
-            {
-                await this._materialTypeRepository.AddAsync(materialType);
+                try
+                {
+                    Guard.Against.Null(materialType, nameof(materialType));
+                    if (unique)
+                    {
+                        var materialTypeSpec = new MaterialTypeSpecification(null, null, materialType.TypeName);
+                        var materialTypes = await this._materialTypeRepository.ListAsync(materialTypeSpec);
+                        if (materialTypes.Count == 0)
+                             this._materialTypeRepository.Add(materialType);
+                    }
+                    else
+                    {
+                         this._materialTypeRepository.Add(materialType);
+                    }
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("新增物料字典类型!"),
+                        CreateTime = DateTime.Now
+                    });
+
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw;
+                }
+               
             }
         }
 
         public async Task AddMaterialType(List<MaterialType> materialTypes,bool unique=false)
         {
-            Guard.Against.Null(materialTypes, nameof(materialTypes));
-            if (unique)
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                List<MaterialType> adds = new List<MaterialType>();
-                materialTypes.ForEach(async (mt) =>
+                try
                 {
-                    var materialTypeSpec = new MaterialTypeSpecification(null, null, mt.TypeName);
-                    var mts = await this._materialTypeRepository.ListAsync(materialTypeSpec);
-                    if(mts.Count==0)
-                        adds.Add(mts.First());
-                });
-                if (adds.Count > 0)
-                    await this._materialTypeRepository.AddAsync(adds);
+                    Guard.Against.Null(materialTypes, nameof(materialTypes));
+                    if (unique)
+                    {
+                        List<MaterialType> adds = new List<MaterialType>();
+                        materialTypes.ForEach(async (mt) =>
+                        {
+                            var materialTypeSpec = new MaterialTypeSpecification(null, null, mt.TypeName);
+                            var mts =  this._materialTypeRepository.List(materialTypeSpec);
+                            if (mts.Count == 0)
+                                adds.Add(mts.First());
+                        });
+                        if (adds.Count > 0)
+                             this._materialTypeRepository.Add(adds);
+                    }
+                    else
+                    {
+                         this._materialTypeRepository.Add(materialTypes);
+                    }
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("新增物料字典类型!"),
+                        CreateTime = DateTime.Now
+                    });
+
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw;
+                }
             }
-            else
-            {
-                await this._materialTypeRepository.AddAsync(materialTypes);
-            }
-            
+
         }
 
         public async Task UpdateMaterialType(MaterialType materialType)
         {
-            Guard.Against.Null(materialType, nameof(materialType));
-            await this._materialTypeRepository.UpdateAsync(materialType);
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    Guard.Against.Null(materialType, nameof(materialType));
+                    this._materialTypeRepository.Update(materialType);
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("更新物料字典类型!"),
+                        CreateTime = DateTime.Now
+                    });
+
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw;
+                }
+
+            }
         }
 
         public async Task UpdateMaterialType(List<MaterialType> materialTypes)
         {
-            Guard.Against.Null(materialTypes, nameof(materialTypes));
-            await this._materialTypeRepository.UpdateAsync(materialTypes);
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    Guard.Against.Null(materialTypes, nameof(materialTypes));
+                    this._materialTypeRepository.Update(materialTypes);
+                    
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("更新物料字典类型!"),
+                        CreateTime = DateTime.Now
+                    });
+
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw;
+                }
+
+            }
         }
         
     }
