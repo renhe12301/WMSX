@@ -134,14 +134,15 @@ $(function () {
                                             icon = "fa fa-grin-beam";
                                             title += "货位状态：正常\n";
                                         } else if (sl[i].Status == "锁定") {
-                                            icon = "fa fa-cog fa-spin";
-                                            title += "货位状态：执行任务\n";
+                                            icon = "fa fa-lock";
+                                            title += "货位状态：锁定\n";
                                         } else if (sl[i].Status == "禁用") {
                                             icon = "fa fa-skull-crossbones";
                                             title += "货位状态：禁用\n";
                                             btnSty = "gray";
                                         }
                                         title += "货载：" + sl[i].InStock + "\n";
+                                        title+="任务："+sl[i].IsTask+"\n";
                                         if (sl[i].ReservoirAreaName)
                                             title += "库区：" + sl[i].ReservoirAreaName + "\n";
                                         if (sl[i].WarehouseName)
@@ -158,7 +159,7 @@ $(function () {
                                             content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ",\"空托盘\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].SysCode + "</a>";
                                         }
                                         else if (sl[i].InStock == "无货" && sl[i].InStock != "禁用") {
-                                            content += "<a class='btn btn-app' onclick='showLocationCargo(" + sl[i].Id + "," + JSON.stringify(sl[i].UserCode).replace(/"/g, '&quot;') + ")'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].SysCode + "</a>";
+                                            content += "<a class='btn btn-app'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].SysCode + "</a>";
                                         }
                                         else {
                                             content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + sl[i].SysCode + "</a>";
@@ -198,8 +199,8 @@ $(function () {
                                             }
                                             else if(l.Status=="锁定")
                                             {
-                                                icon="fa fa-cog fa-spin";
-                                                title+="货位状态：执行任务\n";
+                                                icon="fa fa-lock";
+                                                title+="货位状态：锁定\n";
                                             }
                                             else if(l.Status=="禁用")
                                             {
@@ -208,6 +209,7 @@ $(function () {
                                                 btnSty="gray";
                                             }
                                             title+="货载："+l.InStock+"\n";
+                                            title+="任务："+l.IsTask+"\n";
                                             if(l.ReservoirAreaName)
                                                 title+="库区："+l.ReservoirAreaName+"\n";
                                             if(l.WarehouseName)
@@ -225,10 +227,10 @@ $(function () {
                                                 content += "<a class='btn btn-app' onclick='showLocationCargo(" + l.Id + "," + JSON.stringify(l.UserCode).replace(/"/g, '&quot;') + ",\"空托盘\")' title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.SysCode + "</a>";
                                             }
                                             else if (l.InStock == "无货" && l.Status != "禁用"){
-                                                content += "<a class='btn btn-app' onclick='showLocationCargo(" + l.Id + "," + JSON.stringify(l.UserCode).replace(/"/g, '&quot;') + ")'  title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.SysCode+"</a>";
+                                                content += "<a class='btn btn-app'   title='" + title + "' style='background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.SysCode+"</a>";
                                             }
                                             else {
-                                                content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.UserCode + "</a>";
+                                                content += "<a class='btn btn-app'  title='" + title + "' style='cursor: default;background-color:" + btnSty + ";font-size: 2px;'><i class='" + icon + "'></i>" + l.SysCode + "</a>";
                                             }
                                             content+="</td>";
                                         }
