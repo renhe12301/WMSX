@@ -47,10 +47,12 @@ namespace Web.Services
                     OrganizationViewModel organizationViewModel = new OrganizationViewModel
                     {
                         OrgName = r.OrgName,
+                        OUId = r.OU?.Id,
+                        OUCode = r.OU?.OUCode,
+                        OUName = r.OU?.OUName,
                         OrgCode = r.OrgCode,
                         CreateTime = r.CreateTime.ToString(),
-                        Id = r.Id,
-                        OUName = r.OU?.OUName
+                        Id = r.Id
                     };
                     organizationViewModels.Add(organizationViewModel);
                 });
