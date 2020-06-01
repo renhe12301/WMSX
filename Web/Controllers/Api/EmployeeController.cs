@@ -38,17 +38,17 @@ namespace Web.Controllers.Api
         /// </summary>
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">一页条数</param>
-        ///  <param name="orgId">部门编号</param>
+        ///  <param name="depId">部门编号</param>
         /// <param name="employeeId">员工编号</param>
         /// <param name="employeeName">员工姓名</param>
-        /// <param name="loginName">登录名</param>
+        /// <param name="userCode">员工编号</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetEmployees(int? pageIndex,int? itemsPage,int? orgId,int? employeeId,
-                                                      string employeeName,string loginName)
+        public async Task<IActionResult> GetEmployees(int? pageIndex,int? itemsPage,int? depId,int? employeeId,
+                                                      string employeeName,string userCode)
         {
-            var response  = await this._employeeViewModelService.GetEmployees(pageIndex,itemsPage,orgId,employeeId, 
-                                                                              employeeName,loginName);
+            var response  = await this._employeeViewModelService.GetEmployees(pageIndex,itemsPage,depId,employeeId, 
+                                                                              employeeName,userCode);
             return Content(JsonConvert.SerializeObject(response));
         }
         
