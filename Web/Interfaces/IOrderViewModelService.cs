@@ -14,7 +14,8 @@ namespace Web.Interfaces
              int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
              string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
-        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,int? sourceId, string status,
+        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
+            string orderNumber, int? ouId,int? warehouseId,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
         Task<ResponseResultViewModel> GetTKOrderMaterials(int ouId,int warehouseId,int? areaId);

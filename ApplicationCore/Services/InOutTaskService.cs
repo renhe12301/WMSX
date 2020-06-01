@@ -374,7 +374,8 @@ namespace ApplicationCore.Services
                             
                             OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
                                 null,null,null,null,null,null,null,
-                                null,null);
+                                null,null,null,null,null,null,null,
+                                null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
                             
                             OrderRow orderRow = orderRows.First();

@@ -334,7 +334,9 @@ namespace ApplicationCore.Services
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
                                     subOrderRow.OrderRowId,
-                                    null, null, null, null, null, null, null, null, null);
+                                    null, null, null, null, null, null, 
+                                    null, null, null,null,null,null
+                                    ,null,null,null);
                                 List<OrderRow> orderRows =
                                     this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
@@ -413,7 +415,9 @@ namespace ApplicationCore.Services
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
                                     subOrderRow.OrderRowId,
-                                    null, null, null, null, null, null, null, null, null);
+                                    null, null, null, null, null, null,
+                                    null, null, null,null,null,null,null
+                                    ,null,null);
                                 List<OrderRow> orderRows =
                                      this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
@@ -468,9 +472,8 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,
-                                    null, null, null, null, null, null, null,
-                                    null, null);
+                                    subOrderRow.OrderRowId,null, null, null, null, null, null, null,
+                                    null, null,null,null,null,null,null,null);
                                 List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
                                 OrderRow orderRow = orderRows.First();

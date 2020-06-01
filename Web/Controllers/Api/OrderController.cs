@@ -82,7 +82,15 @@ namespace Web.Controllers.Api
         /// <param name="itemsPage">一页显示条数</param>
         /// <param name="id">行编号</param>
         /// <param name="orderId">订单编号</param>
+        /// <param name="orderTypeIds">订单类型集合</param>
         ///  <param name="sourceId">集约化物资订单编号</param>
+        /// <param name="orderNumber">订单编号</param>
+        /// <param name="ouId">业务实体编号</param>
+        /// <param name="warehouseId">库存组织编号</param>
+        /// <param name="supplierId">供应商编号</param>
+        /// <param name="supplierName">供应商名称</param>
+        /// <param name="supplierSiteId">供应商站编号</param>
+        /// <param name="supplierSiteName">供应商站名称</param>
         /// <param name="status">订单行状态</param>
         /// <param name="sCreateTime">订单行创建时间范围</param>
         /// <param name="eCreateTime">订单行创建时间范围</param>
@@ -90,11 +98,12 @@ namespace Web.Controllers.Api
         /// <param name="eFinishTime">订单行结束时间范围</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,int? sourceId, string status,
+        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
+            string orderNumber, int? ouId,int? warehouseId,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
         {
-            var response = await this._orderViewModelService.GetOrderRows(pageIndex, itemsPage, id, orderId,sourceId, status,
-                sCreateTime, eCreateTime, sFinishTime, eFinishTime);
+            var response = await this._orderViewModelService.GetOrderRows(pageIndex, itemsPage, id, orderId,orderTypeIds,sourceId,
+                orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,status,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
 

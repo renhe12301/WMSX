@@ -133,8 +133,9 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,int? sourceId, string status, string sCreateTime,
-            string eCreateTime, string sFinishTime, string eFinishTime)
+        public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
+            string orderNumber, int? ouId,int? warehouseId,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
+            string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -147,14 +148,23 @@ namespace Web.Services
                         StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
+                List<int> orderTypes = null;
+                if (!string.IsNullOrEmpty(orderTypeIds))
+                {
+                    orderTypes = orderTypeIds.Split(new char[]{','}, 
+                        StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,null,sourceId,orderStatuss,
+                    spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,orderTypes,sourceId,
+                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
-                    spec = new OrderRowSpecification(id,orderId,null,sourceId,null,orderStatuss,
+                    spec = new OrderRowSpecification(id,orderId,orderTypes,sourceId,
+                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orderRows = await this._orderRowRepository.ListAsync(spec);
@@ -190,8 +200,9 @@ namespace Web.Services
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,null,sourceId,null
-                        ,orderStatuss,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
+                    var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,orderTypes,sourceId,
+                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
                     dyn.total = count;
@@ -218,6 +229,7 @@ namespace Web.Services
             try
             {
                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,null,null,
+                    null,null,null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);

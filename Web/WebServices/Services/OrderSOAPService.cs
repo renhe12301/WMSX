@@ -73,7 +73,7 @@ namespace Web.WebServices.Services
                 return responseResult;
             }
             
-                using (ModuleLock.GetAsyncLock().LockAsync())
+                using (await ModuleLock.GetAsyncLock().LockAsync())
                 {
                     using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
@@ -90,27 +90,28 @@ namespace Web.WebServices.Services
                                 List<Order> orders = this._orderRepository.List(orderSpec);
 
                                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                    RequestRKJSOrder.DocumentNumber, null, null, null, null, null);
+                                    RequestRKJSOrder.DocumentNumber, null, null, null, null, null,
+                                    null,null,null,null,null,null);
                                 List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 
                                 #region 字段合法性校验
 
-                                OUSpecification ouSpec = new OUSpecification(null, null, RequestRKJSOrder.OuCode, null);
+                                OUSpecification ouSpec = new OUSpecification(Convert.ToInt32(RequestRKJSOrder.OuCode), null, null, null);
                                 List<OU> ous = this._ouRepository.List(ouSpec);
                                 if (ous.Count == 0)
                                 {
-                                    string err = string.Format("入库订单[{0}],关联业务实体编码[{1}]不存在!",
+                                    string err = string.Format("入库订单[{0}],关联业务实体[{1}]不存在!",
                                         RequestRKJSOrder.DocumentNumber, RequestRKJSOrder.OuCode);
                                     throw new Exception(err);
                                 }
 
                                 OU ou = ous[0];
                                 WarehouseSpecification warehouseSpec =
-                                    new WarehouseSpecification(null, null, null, RequestRKJSOrder.OrganizationCode);
+                                    new WarehouseSpecification(Convert.ToInt32(RequestRKJSOrder.OrganizationCode), null, null, null);
                                 List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
                                 if (warehouses.Count == 0)
                                 {
-                                    string err = string.Format("入库订单[{0}],关联库存组织编码[{1}]不存在!",
+                                    string err = string.Format("入库订单[{0}],关联库存组织[{1}]不存在!",
                                         RequestRKJSOrder.DocumentNumber, RequestRKJSOrder.OrganizationCode);
                                     throw new Exception(err);
                                 }
@@ -122,7 +123,7 @@ namespace Web.WebServices.Services
                                 List<Supplier> suppliers = this._supplierRepository.List(supplierSpec);
                                 if (suppliers.Count == 0)
                                 {
-                                    string err = string.Format("入库订单[{0}],关联供应商头Id[{1}]不存在!",
+                                    string err = string.Format("入库订单[{0}],关联供应商头[{1}]不存在!",
                                         RequestRKJSOrder.DocumentNumber, RequestRKJSOrder.VendorId);
                                     throw new Exception(err);
                                 }
@@ -135,7 +136,7 @@ namespace Web.WebServices.Services
                                 List<SupplierSite> supplierSites = this._supplierSiteRepository.List(supplierSiteSpec);
                                 if (supplierSites.Count == 0)
                                 {
-                                    string err = string.Format("入库订单[{0}],关联供应商地址Id[{1}]不存在!",
+                                    string err = string.Format("入库订单[{0}],关联供应商地址[{1}]不存在!",
                                         RequestRKJSOrder.DocumentNumber, RequestRKJSOrder.VendorSiteId);
                                     throw new Exception(err);
                                 }
@@ -160,7 +161,7 @@ namespace Web.WebServices.Services
                                 List<Employee> employees = this._employeeRepository.List(employeeSpec);
                                 if (employees.Count == 0)
                                 {
-                                    string err = string.Format("入库订单[{0}],关联经办人Id[{1}]不存在!",
+                                    string err = string.Format("入库订单[{0}],关联经办人[{1}]不存在!",
                                         RequestRKJSOrder.DocumentNumber, RequestRKJSOrder.ManagerId);
                                     throw new Exception(err);
                                 }
@@ -170,19 +171,19 @@ namespace Web.WebServices.Services
                                 if (orders.Count > 0)
                                 {
                                     var srcOrder = orders[0];
-                                    if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
-                                    {
-                                        string err = string.Format("入库订单[{0}]已经完成无法修改！",
-                                            RequestRKJSOrder.DocumentNumber);
-                                        throw new Exception(err);
-                                    }
-
-                                    if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
-                                    {
-                                        string err = string.Format("入库订单[{0}]已经关闭无法修改！",
-                                            RequestRKJSOrder.DocumentNumber);
-                                        throw new Exception(err);
-                                    }
+                                    // if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
+                                    // {
+                                    //     string err = string.Format("入库订单[{0}]已经完成无法修改！",
+                                    //         RequestRKJSOrder.DocumentNumber);
+                                    //     throw new Exception(err);
+                                    // }
+                                    //
+                                    // if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
+                                    // {
+                                    //     string err = string.Format("入库订单[{0}]已经关闭无法修改！",
+                                    //         RequestRKJSOrder.DocumentNumber);
+                                    //     throw new Exception(err);
+                                    // }
 
                                     List<OrderRow> addOrderRows = new List<OrderRow>();
                                     foreach (var eor in RequestRKJSOrder.RequestRKJSRows)
@@ -393,7 +394,7 @@ namespace Web.WebServices.Services
             }
 
             
-            using (ModuleLock.GetAsyncLock().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
@@ -409,28 +410,29 @@ namespace Web.WebServices.Services
                             List<Order> orders = this._orderRepository.List(orderSpec);
 
                             OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                RequestCKLLOrder.AlyNumber, null, null, null, null, null);
+                                RequestCKLLOrder.AlyNumber, null, null, null, null, null,
+                                null,null,null,null,null,null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 
                             #region 字段合法性校验
 
                             OUSpecification ouSpec =
-                                new OUSpecification(null, null, RequestCKLLOrder.BusinessEntity, null);
+                                new OUSpecification(Convert.ToInt32(RequestCKLLOrder.BusinessEntity), null, null, null);
                             List<OU> ous = this._ouRepository.List(ouSpec);
                             if (ous.Count == 0)
                             {
-                                string err = string.Format("出库订单[{0}],关联业务实体编码[{1}]不存在!", RequestCKLLOrder.AlyNumber,
+                                string err = string.Format("出库订单[{0}],关联业务实体[{1}]不存在!", RequestCKLLOrder.AlyNumber,
                                     RequestCKLLOrder.BusinessEntity);
                                 throw new Exception(err);
                             }
 
                             OU ou = ous[0];
                             WarehouseSpecification warehouseSpec =
-                                new WarehouseSpecification(null, null, null, RequestCKLLOrder.InventoryOrg);
+                                new WarehouseSpecification(Convert.ToInt32(RequestCKLLOrder.InventoryOrg), null, null, null);
                             List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
                             if (warehouses.Count == 0)
                             {
-                                string err = string.Format("出库订单[{0}],关联库存组织编码[{1}]不存在!", RequestCKLLOrder.AlyNumber,
+                                string err = string.Format("出库订单[{0}],关联库存组织[{1}]不存在!", RequestCKLLOrder.AlyNumber,
                                     RequestCKLLOrder.InventoryOrg);
                                 throw new Exception(err);
                             }
@@ -454,28 +456,28 @@ namespace Web.WebServices.Services
                             List<Employee> employees = this._employeeRepository.List(employeeSpec);
                             if (employees.Count == 0)
                             {
-                                string err = string.Format("出库订单[{0}],关联经办人Id[{1}]不存在!", RequestCKLLOrder.AlyNumber,
+                                string err = string.Format("出库订单[{0}],关联经办人[{1}]不存在!", RequestCKLLOrder.AlyNumber,
                                     RequestCKLLOrder.CreationBy);
                                 throw new Exception(err);
                             }
 
                             OrganizationSpecification organizationSpec =
-                                new OrganizationSpecification(null, RequestCKLLOrder.AlyDepCode, null, null);
+                                new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.AlyDepCode), null, null, null);
                             List<Organization> alyOrgs = this._organizationRepository.List(organizationSpec);
                             if (alyOrgs.Count == 0)
                             {
-                                string err = string.Format("出库订单[{0}],关联申请部门编码[{1}]不存在！", RequestCKLLOrder.AlyNumber,
+                                string err = string.Format("出库订单[{0}],关联申请部门[{1}]不存在！", RequestCKLLOrder.AlyNumber,
                                     RequestCKLLOrder.AlyDepCode);
                                 throw new Exception(err);
                             }
 
                             Organization alyOrg = alyOrgs[0];
                             organizationSpec =
-                                new OrganizationSpecification(null, RequestCKLLOrder.TransDepCode, null, null);
+                                new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.TransDepCode), null, null, null);
                             List<Organization> transOrgs = this._organizationRepository.List(organizationSpec);
                             if (transOrgs.Count == 0)
                             {
-                                string err = string.Format("出库订单[{0}],关联领料部门编码[{1}]不存在！", RequestCKLLOrder.AlyNumber,
+                                string err = string.Format("出库订单[{0}],关联领料部门[{1}]不存在！", RequestCKLLOrder.AlyNumber,
                                     RequestCKLLOrder.TransDepCode);
                                 throw new Exception(err);
                             }
@@ -485,30 +487,30 @@ namespace Web.WebServices.Services
                             if (orders.Count > 0)
                             {
                                 var srcOrder = orders[0];
-                                if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
-                                {
-                                    string err = string.Format("出库订单[{0}]已经完成无法修改！", RequestCKLLOrder.AlyNumber);
-                                    throw new Exception(err);
-
-                                }
-
-                                if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
-                                {
-                                    string err = string.Format("出库订单[{0}]已经关闭无法修改！", RequestCKLLOrder.AlyNumber);
-                                    throw new Exception(err);
-
-                                }
+                                // if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成))
+                                // {
+                                //     string err = string.Format("出库订单[{0}]已经完成无法修改！", RequestCKLLOrder.AlyNumber);
+                                //     throw new Exception(err);
+                                //
+                                // }
+                                //
+                                // if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
+                                // {
+                                //     string err = string.Format("出库订单[{0}]已经关闭无法修改！", RequestCKLLOrder.AlyNumber);
+                                //     throw new Exception(err);
+                                //
+                                // }
 
                                 if (RequestCKLLOrder.AlyStatusCode == "3")
                                 {
-                                    if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.执行中) ||
-                                        srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成) ||
-                                        srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
-                                    {
-                                        string err = string.Format("出库订单[{0}][{1}],无法撤销！", RequestCKLLOrder.AlyNumber,
-                                            Enum.GetName(typeof(ORDER_STATUS), srcOrder.Status));
-                                        throw new Exception(err);
-                                    }
+                                    // if (srcOrder.Status == Convert.ToInt32(ORDER_STATUS.执行中) ||
+                                    //     srcOrder.Status == Convert.ToInt32(ORDER_STATUS.完成) ||
+                                    //     srcOrder.Status == Convert.ToInt32(ORDER_STATUS.关闭))
+                                    // {
+                                    //     string err = string.Format("出库订单[{0}][{1}],无法撤销！", RequestCKLLOrder.AlyNumber,
+                                    //         Enum.GetName(typeof(ORDER_STATUS), srcOrder.Status));
+                                    //     throw new Exception(err);
+                                    // }
 
                                     orderRows.ForEach(or =>
                                     {
@@ -590,7 +592,7 @@ namespace Web.WebServices.Services
                                             addOrderRow.PreCount = Convert.ToInt32(eor.ReqQty);
                                             addOrderRow.CancelCount = Convert.ToInt32(eor.CancelQty);
                                             addOrderRow.ReservoirAreaId = area.Id;
-                                            addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+                                            //addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                             addOrderRow.Memo = eor.Remark;
                                             addOrderRows.Add(addOrderRow);
                                         }
