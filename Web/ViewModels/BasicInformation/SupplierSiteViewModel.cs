@@ -9,7 +9,7 @@ namespace Web.ViewModels.BasicInformation
         public string Contact { get; set; }
         public string TelPhone { get; set; }
         public int OUId { get; set; }
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
         public string SupplierName { get; set; }
         public string OUName { get; set; }
     }

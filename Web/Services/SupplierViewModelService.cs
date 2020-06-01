@@ -103,11 +103,14 @@ namespace Web.Services
                     SupplierSiteViewModel supplierSiteViewModel = new SupplierSiteViewModel
                     {
                         Id = e.Id,
-                        SupplierName = e.Supplier.SupplierName,
+                        SiteName = e.SiteName,
+                        SupplierId = e.Supplier?.Id,
+                        SupplierName = e.Supplier?.SupplierName,
                         Address = e.Address,
                         Contact = e.Contact,
                         TelPhone = e.TelPhone,
-                        OUName = e.OU.OUName
+                        OUId = e.OUId,
+                        OUName = e.OU?.OUName
                     };
                     supplierSiteViewModels.Add(supplierSiteViewModel);
                 });
