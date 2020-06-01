@@ -65,12 +65,20 @@ namespace Web
                 .WithIdentity("job5", "group5")
                 .Build();
             
+            var trigger6 = TriggerBuilder.Create()
+                .WithCronSchedule("0/5 * * * * ?")
+                .Build();
+            var jobDetail6 = JobBuilder.Create<Web.Jobs.StockSyncJob>()
+                .WithIdentity("job6", "group6")
+                .Build();
+            
 
             await _scheduler.ScheduleJob(jobDetail,trigger);
             await _scheduler.ScheduleJob(jobDetail2,trigger2);
             await _scheduler.ScheduleJob(jobDetail3,trigger3);
             await _scheduler.ScheduleJob(jobDetail4,trigger4);
             await _scheduler.ScheduleJob(jobDetail5,trigger5);
+            await _scheduler.ScheduleJob(jobDetail6,trigger6);
 
             _logger.LogInformation("Quarzt.net 启动成功...");
         }

@@ -61,8 +61,8 @@ namespace Web.Jobs
                                     rkOrderRequest.RKOrderRequest = new RKOrderRequest();
                                     rkOrderRequest.RKOrderRequest.headId = subOrder.Id;
                                     rkOrderRequest.RKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                    rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                    rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                                    rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     rkOrderRequest.RKOrderRequest.vendorId = subOrder.SupplierId.ToString();
                                     rkOrderRequest.RKOrderRequest.vendorSiteId = subOrder.SupplierSiteId.ToString();
                                     rkOrderRequest.RKOrderRequest.currency = subOrder.Currency;
@@ -82,7 +82,7 @@ namespace Web.Jobs
                                         requestRkRow.processingQuantity = subOrderRows[i].PreCount;
                                         requestRkRow.price = subOrderRows[i].Price.Value;
                                         requestRkRow.amount = subOrderRows[i].Amount.Value;
-                                        requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                        requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
                                     }
 
                                     var response = await warehouseReceiptPort.RKOrderAsync(rkOrderRequest);
@@ -98,8 +98,8 @@ namespace Web.Jobs
                                     ckOrderRequest.CKOrderRequest = new CKOrderRequest();
                                     ckOrderRequest.CKOrderRequest.headId = subOrder.Id;
                                     ckOrderRequest.CKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                    ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                    ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                                    ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
                                     ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrders.Count];
 
@@ -112,7 +112,7 @@ namespace Web.Jobs
                                         requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                         requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                         requestCkRow.processingQuantity = subOrderRows[i].PreCount;
-                                        requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                        requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
                                     }
 
                                     var response = await stockOutOrderPort.CKOrderAsync(ckOrderRequest);
@@ -127,8 +127,8 @@ namespace Web.Jobs
                                     tkOrderRequest.TKOrderRequest = new TKOrderRequest();
                                     tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
                                     tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
-                                    tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.OUCode;
-                                    tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                                    tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
                                     tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrders.Count];
 
@@ -141,7 +141,7 @@ namespace Web.Jobs
                                         requestTkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                         requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                         requestTkRow.processingQuantity = subOrderRows[i].PreCount;
-                                        requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                        requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
                                     }
 
                                     var response = await withdrawalPort.TKOrderAsync(tkOrderRequest);
@@ -156,8 +156,8 @@ namespace Web.Jobs
                                     rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
                                     rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
                                     rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
-                                    rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.OUCode;
-                                    rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.WhCode;
+                                    rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                                    rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
                                     rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrders.Count];
 
@@ -170,7 +170,7 @@ namespace Web.Jobs
                                         requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                         requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                         requestRtRow.processingQuantity = subOrderRows[i].PreCount;
-                                        requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                        requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
                                     }
 
                                     var response = await inboundReturnsPort.RTOrderAsync(rtOrderRequest1);
