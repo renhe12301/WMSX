@@ -180,7 +180,11 @@ namespace Web.Services
                         Price = e.Price,
                         Amount = e.Amount,
                         UseFor = e.UseFor,
-                        IsScrap = e.IsScrap
+                        IsScrap = e.IsScrap,
+                        OUId = e.SubOrder.OUId,
+                        WarehouseId = e.SubOrder.WarehouseId,
+                        SupplierId = e.SubOrder.SupplierId,
+                        SupplierSiteId = e.SubOrder.SupplierSiteId
                     };
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });

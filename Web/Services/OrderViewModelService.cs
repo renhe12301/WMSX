@@ -193,7 +193,11 @@ namespace Web.Services
                         Price = e.Price,
                         Amount = e.Amount,
                         OrderId = e.OrderId,
-                        RelatedId = e.RelatedId
+                        RelatedId = e.RelatedId,
+                        OUId = e.Order.OUId,
+                        WarehouseId = e.Order.WarehouseId,
+                        SupplierId = e.Order.SupplierId,
+                        SupplierSiteId = e.Order.SupplierSiteId
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

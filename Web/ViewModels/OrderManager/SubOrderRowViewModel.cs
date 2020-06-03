@@ -100,6 +100,15 @@ namespace Web.ViewModels.OrderManager
         /// 订单是否作废
         /// </summary>
         public int IsScrap { get; set; }
+        
+        public int? OUId { get; set; }
+        
+        public int? WarehouseId { get; set; }
+        
+        public int? SupplierId { get; set; }
+        
+        public int? SupplierSiteId { get; set; }
+        
 
         public string IsScrapStr { get; set; }
 

@@ -42,6 +42,11 @@ namespace Web.ViewModels.OrderManager
 
         public string Tag { get; set; }
 
+        public int? OUId { get; set; }
+        public int? WarehouseId { get; set; }
+        public int? SupplierId { get; set; }
+        public int? SupplierSiteId { get; set; }
+
         public string UseFor { get; set; }
 
         public int? RelatedId { get; set; }
