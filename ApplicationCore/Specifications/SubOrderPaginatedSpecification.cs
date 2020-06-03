@@ -18,7 +18,7 @@ namespace ApplicationCore.Specifications
                        (!isRead.HasValue || b.IsRead == isRead) &&
                        (!isSync.HasValue || b.IsSync == isSync) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
-                       (!warehouseId.HasValue || b.WarehouseId == pyId) &&
+                       (!warehouseId.HasValue || b.WarehouseId == warehouseId) &&
                        (!pyId.HasValue || b.PhyWarehouseId == pyId) &&
                        (!supplierId.HasValue || b.SupplierId == supplierId) &&
                        (supplierName == null || b.Supplier.SupplierName.Contains(supplierName)) &&
