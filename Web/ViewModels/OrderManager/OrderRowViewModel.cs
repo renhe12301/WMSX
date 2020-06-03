@@ -50,5 +50,7 @@ namespace Web.ViewModels.OrderManager
         public string UseFor { get; set; }
 
         public int? RelatedId { get; set; }
+
+        public int? SourceId { get; set; }
     }
 }

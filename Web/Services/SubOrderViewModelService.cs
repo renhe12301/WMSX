@@ -94,7 +94,8 @@ namespace Web.Services
                         StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         PhyWarehouseId = e.PhyWarehouseId,
                         PhyWarehouseName = e.PhyWarehouse?.PhyName,
-                        IsScrap = e.IsScrap
+                        IsScrap = e.IsScrap,
+                        SourceId = e.SourceId
                     };
                     orderViewModels.Add(subOrderViewModel);
                 });
@@ -184,7 +185,8 @@ namespace Web.Services
                         OUId = e.SubOrder.OUId,
                         WarehouseId = e.SubOrder.WarehouseId,
                         SupplierId = e.SubOrder.SupplierId,
-                        SupplierSiteId = e.SubOrder.SupplierSiteId
+                        SupplierSiteId = e.SubOrder.SupplierSiteId,
+                        SourceId = e.SourceId
                     };
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });

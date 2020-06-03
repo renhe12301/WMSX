@@ -40,7 +40,11 @@ namespace Web.ViewModels.OrderManager
         public string EmployeeName { get; set; }
 
         public string Tag { get; set; }
-        
+
+        public int? SourceId { get; set; }
+
+        public string BussinessTypeCode { get; set; }
+
         public List<OrderRowViewModel> OrderRows { get; set; }
     }
 }

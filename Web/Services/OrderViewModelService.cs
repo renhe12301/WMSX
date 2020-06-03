@@ -106,7 +106,8 @@ namespace Web.Services
                     //orderViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
                     orderViewModel.EmployeeId = e.EmployeeId;
                     orderViewModel.EmployeeName = e.Employee?.UserName;
-                    
+                    orderViewModel.SourceId = e.SourceId;
+                    orderViewModel.BussinessTypeCode = e.BusinessTypeCode;
                     orderViewModels.Add(orderViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
@@ -197,7 +198,8 @@ namespace Web.Services
                         OUId = e.Order.OUId,
                         WarehouseId = e.Order.WarehouseId,
                         SupplierId = e.Order.SupplierId,
-                        SupplierSiteId = e.Order.SupplierSiteId
+                        SupplierSiteId = e.Order.SupplierSiteId,
+                        SourceId = e.SourceId
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);
