@@ -60,5 +60,7 @@ namespace ApplicationCore.Entities.StockManager
         public int? PhyWarehouseId { get; set; }
         
         public PhyWarehouse PhyWarehouse { get; set; }
+
+        public int? OutCount { get; set; }
     }
 }

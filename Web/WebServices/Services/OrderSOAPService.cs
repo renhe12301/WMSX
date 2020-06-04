@@ -12,6 +12,7 @@ using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using ApplicationCore.Entities.FlowRecord;
+using ApplicationCore.Entities.StockManager;
 using Ardalis.GuardClauses;
 
 namespace Web.WebServices.Services
@@ -30,9 +31,11 @@ namespace Web.WebServices.Services
         private readonly IAsyncRepository<Organization> _organizationRepository;
         private readonly IAsyncRepository<ReservoirArea> _areaRepository;
         private readonly IAsyncRepository<LogRecord> _logRepository;
-        private readonly ILogRecordService _logRecordService;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
+        private readonly IAsyncRepository<SubOrder> _subOrderRepository;
+        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
         public OrderSOAPService()
         {
@@ -47,11 +50,12 @@ namespace Web.WebServices.Services
             this._employeeRepository = EnginContext.Current.Resolve<IAsyncRepository<Employee>>();
             this._organizationRepository = EnginContext.Current.Resolve<IAsyncRepository<Organization>>();
             this._areaRepository = EnginContext.Current.Resolve<IAsyncRepository<ReservoirArea>>();
-            this._logRecordService = EnginContext.Current.Resolve<ILogRecordService>();
             this._logRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
-            ;
+            this._subOrderRepository =  EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
             this._orderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<OrderRow>>();
             this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();
+            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
+            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
         }
 
         public async Task<ResponseResult> CreateRKJSOrder(string RequestRKJSOrderJson)
@@ -450,16 +454,16 @@ namespace Web.WebServices.Services
                             //     throw new Exception(err);
                             // }
 
-                            EmployeeSpecification employeeSpec =
-                                new EmployeeSpecification(Convert.ToInt32(RequestCKLLOrder.CreationBy), null, null,
-                                    null);
-                            List<Employee> employees = this._employeeRepository.List(employeeSpec);
-                            if (employees.Count == 0)
-                            {
-                                string err = string.Format("出库订单[{0}],关联经办人[{1}]不存在!", RequestCKLLOrder.AlyNumber,
-                                    RequestCKLLOrder.CreationBy);
-                                throw new Exception(err);
-                            }
+                            // EmployeeSpecification employeeSpec =
+                            //     new EmployeeSpecification(Convert.ToInt32(RequestCKLLOrder.CreationBy), null, null,
+                            //         null);
+                            // List<Employee> employees = this._employeeRepository.List(employeeSpec);
+                            // if (employees.Count == 0)
+                            // {
+                            //     string err = string.Format("出库订单[{0}],关联经办人[{1}]不存在!", RequestCKLLOrder.AlyNumber,
+                            //         RequestCKLLOrder.CreationBy);
+                            //     throw new Exception(err);
+                            // }
 
                             OrganizationSpecification organizationSpec =
                                 new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.AlyDepCode), null, null, null);
@@ -481,7 +485,61 @@ namespace Web.WebServices.Services
                                     RequestCKLLOrder.TransDepCode);
                                 throw new Exception(err);
                             }
+                            
+                            //出库订单行里面的物料数量库存校验，防止有正在执行或者待处理的的退库订单冲突。
+                            
+                            SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null,null,null,null,
+                                new List<int>{Convert.ToInt32(ORDER_TYPE.入库退库)},ou.Id,warehouse.Id,null,null,null,null,
+                                null,new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null );
 
+                            List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);
+                            var tkSubOrderRowGroup = tkSubOrderRows.GroupBy(sr => new
+                                {sr.SubOrder.OUId, sr.SubOrder.WarehouseId, sr.ReservoirAreaId, sr.MaterialDicId});
+                            foreach (var tkGroup in tkSubOrderRowGroup)
+                            {
+                                var key = tkGroup.Key;
+                                
+                                //校验同一个OU、库存组织、子库区、物料编码的出库领料单行的物料数量是否小于剩余物料数量
+                                var findSameRows = RequestCKLLOrder.RequestCKLLRows.FindAll(f=>Convert.ToInt32(f.InventoryCode)==key.ReservoirAreaId&&Convert.ToInt32(f.MaterialId)==key.MaterialDicId);
+                                if (findSameRows.Count == 0) continue;
+                                
+                                var totalTKOrderRowCount = tkGroup.Sum(m => m.PreCount);
+                                
+                                // 同一个OU、库存组织、子库区、物料编码 的数量总和
+                                int totalMaterialCount = 0;
+                                List<WarehouseMaterial> warehouseMaterials = null;
+                                // 入库完成在货架上的物料
+                                WarehouseMaterialSpecification inWarehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,key.MaterialDicId,null,null,
+                                    null,null,null,null,null,new List<int>{Convert.ToInt32(TRAY_STEP.入库完成)},null,key.OUId,key.WarehouseId,
+                                    key.ReservoirAreaId,null,null,null,null,null);
+                                
+                                warehouseMaterials = this._warehouseMaterialRepository.List(inWarehouseMaterialSpec);
+                                totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
+                                    
+                                // 正在执行出库中、出库完成待确认的物料
+                                WarehouseMaterialSpecification exeWarehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,key.MaterialDicId,null,null,
+                                    null,null,null,null,null,new List<int>{Convert.ToInt32(TRAY_STEP.待出库),Convert.ToInt32(TRAY_STEP.出库中未执行),Convert.ToInt32(TRAY_STEP.出库中已执行),
+                                      Convert.ToInt32(TRAY_STEP.出库完成等待确认)},null,key.OUId,key.WarehouseId,
+                                    key.ReservoirAreaId,null,null,null,null,null);
+                                warehouseMaterials = this._warehouseMaterialRepository.List(exeWarehouseMaterialSpec);
+                                totalMaterialCount += (warehouseMaterials.Sum(t => t.MaterialCount)- warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
+                                
+                                // 出库完成确认完成的物料
+                                WarehouseMaterialSpecification outEndWarehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,key.MaterialDicId,null,null,
+                                    null,null,null,null,null,new List<int>{Convert.ToInt32(TRAY_STEP.出库完成等待确认)},null,key.OUId,key.WarehouseId,
+                                    key.ReservoirAreaId,null,null,null,null,null);
+                                warehouseMaterials = this._warehouseMaterialRepository.List(outEndWarehouseMaterialSpec);
+                                totalMaterialCount +=  warehouseMaterials.Sum(t => t.MaterialCount);
+                                
+                                //同一个OU、库存组织、子库区、物料编码 剩余的数量总和 (库存物料数量-退库订单行物料数量)
+                                int surplusTotalMaterialCount = totalMaterialCount - totalTKOrderRowCount;
+
+                                if (surplusTotalMaterialCount < findSameRows.Sum(r => Convert.ToInt32(r.ReqQty)))
+                                {
+                                    throw new Exception(string.Format("出库订单[{0}],出库订单行[{1}]数量和退库订单[{2}],退库订单行[{3}]数量冲突!"));
+                                }
+                            }
+                            
                             #endregion
 
                             if (orders.Count > 0)
