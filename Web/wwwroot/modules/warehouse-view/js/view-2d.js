@@ -1,4 +1,4 @@
-var phyId=null;
+var phyId=1;
 var types=null;
 var showLocationCargo=function (id,sysCode,cargoType) {
     $('#location-detail-dlg').modal('show');
@@ -59,34 +59,7 @@ $(function () {
     $("#sidebar").css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
     $('#sidebar3').overlayScrollbars({});
-    $('.card card-primary card-outline card-tabs').css("height", parentHeight);
-    asynTask({
-        type:'get',
-        url:controllers["phy-warehouse"]["get-phy-warehouses"],
-        successCallback:function(response)
-        {
-            if(response.Code==200)
-            {
-                var data=[];
-                $.each(response.Data, function(key, val) {
-                    data.push({id:val.Id,text:val.PhyName});
-                });
-                $(".select2").select2({
-                    data: data,
-                    theme: 'bootstrap4'
-                });
-                $(".select2").change(function () {
-                    phyId=parseInt($("#phy-select").val());
-                    loadPlanData();
-                });
-                if(data.length>0)
-                {
-                    phyId=parseInt(data[0].id);
-                    loadPlanData();
-                }
-            }
-        }
-    });
+    $('.tab-content border border-top-0').css("height", parentHeight);
 
     var loadPlanData = function()
     {
@@ -254,10 +227,16 @@ $(function () {
             }
         });
     };
-
-    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    //     tabType=$("#"+e.target.id).text();
-    // });
-    //
-
+    
+    
+    loadPlanData();
+    
+    $("#ljx-tab").click(function () {
+        phyId = 1;
+        loadPlanData()
+    });
+    $("#gh-tab").click(function () {
+        phyId = 2;
+        loadPlanData()
+    });
 });

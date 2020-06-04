@@ -36,22 +36,50 @@
 <div class="container-fluid themed-container">
     <div class="col-md-12">
         <div class="container-fluid">
-            <div id="toolbar" class="input-group input-group-sm">
-                <select class="select2" id="phy-select" data-placeholder="物理仓库">
-                </select>
-            </div>
-            <div class="row mb-md-5">
-                <div class="col-md-12">
-                    <div class="card card-primary card-outline card-tabs">
-                        <div class="card-body">
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="ljx-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home"
+                       aria-selected="true">
+                        <h6>李家峡</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="gh-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="profile"
+                       aria-selected="false">
+                        <h6>共和</h6>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content border border-top-0" id="myTabContent">
+                <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
                             <div id="sidebar" style="width: 100%;">
                                 <table style="width: 100%;" id="planTable">
                                 </table>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            
+<!--            <div id="toolbar" class="input-group input-group-sm">-->
+<!--                <select class="select2" id="phy-select" data-placeholder="物理仓库">-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="row mb-md-5">-->
+<!--                <div class="col-md-12">-->
+<!--                    <div class="card card-primary card-outline card-tabs">-->
+<!--                        <div class="card-body">-->
+<!--                            <div id="sidebar" style="width: 100%;">-->
+<!--                                <table style="width: 100%;" id="planTable">-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
     </div>
