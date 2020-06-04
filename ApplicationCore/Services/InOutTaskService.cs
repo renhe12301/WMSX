@@ -331,6 +331,7 @@ namespace ApplicationCore.Services
                     else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
                     {
                         task.Status = Convert.ToInt32(TASK_STATUS.完成);
+                        int outCount = warehouseTray.OutCount.GetValueOrDefault();
                         if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
                         {
                             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
@@ -338,6 +339,7 @@ namespace ApplicationCore.Services
                         else
                         {
                             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
+                            warehouseTray.OutCount = 0;
                         }
 
                         LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
@@ -367,29 +369,31 @@ namespace ApplicationCore.Services
                         this._warehouseTrayRepository.Update(warehouseTray);
                         this._inOutTaskRepository.Update(task);
                         this._locationRepository.Update(location);
-                        
+
                         if (warehouseTray.SubOrderRowId.HasValue)
                         {
                             SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
-                            
-                            OrderRowSpecification orderRowSpecification =new OrderRowSpecification(subOrderRow.OrderRowId,
-                                null,null,null,null,null,null,null,
-                                null,null,null,null,null,null,null,
+
+                            OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                subOrderRow.OrderRowId,
+                                null, null, null, null, null, null, null,
+                                null, null, null, null, null, null, null,
                                 null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-                            
+
                             OrderRow orderRow = orderRows.First();
                             int preCount = orderRow.RealityCount.GetValueOrDefault();
-                            preCount += warehouseTray.MaterialCount;
+                            preCount += (warehouseTray.MaterialCount + outCount);
                             orderRow.RealityCount = preCount;
 
-                          
+
                             preCount = subOrderRow.RealityCount.GetValueOrDefault();
-                            preCount += warehouseTray.MaterialCount;
+                            preCount += (warehouseTray.MaterialCount + outCount);
                             subOrderRow.RealityCount = preCount;
-                            
+
                             this._subOrderRowRepository.Update(subOrderRow);
                             this._orderRowRepository.Update(orderRow);
+
                         }
                     }
                     else
@@ -435,7 +439,7 @@ namespace ApplicationCore.Services
                     if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.出库完成等待确认))
                         throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
                             trayCode));
-                    warehouseTray.MaterialCount = warehouseTray.MaterialCount - warehouseTray.OutCount.GetValueOrDefault();
+                    warehouseTray.MaterialCount = warehouseTray.MaterialCount + warehouseTray.OutCount.GetValueOrDefault();
                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
                     warehouseTray.SubOrderId = null;
                     warehouseTray.SubOrderRowId = null;
@@ -465,6 +469,7 @@ namespace ApplicationCore.Services
                         {
                             WarehouseMaterial warehouseMaterial = warehouseMaterials.First();
                             warehouseMaterial.MaterialCount = warehouseTray.MaterialCount;
+                            warehouseMaterial.OutCount = 0;
                             warehouseMaterial.SubOrderId = null;
                             warehouseMaterial.SubOrderRowId = null;
                             warehouseMaterial.Amount = warehouseMaterial.Price * warehouseMaterial.MaterialCount;

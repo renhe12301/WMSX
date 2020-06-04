@@ -55,9 +55,8 @@ namespace Web.Jobs
                         {
                             try
                             {
-                                //任务的起始地址为数据库中的PDA生成任务的起始目的点
                                 string srcId = tray.Location.SysCode;
-                                //任务的起始库存区域为数据库中的PDA生成任务的起始库存区域
+                               
                                 int areaId = tray.ReservoirAreaId.Value;
 
                                 LocationSpecification locationSpec = new LocationSpecification(null, null, null, null,
@@ -72,7 +71,7 @@ namespace Web.Jobs
                                 List<Location> locations = this._locationRepository.List(locationSpec);
                                 if (locations.Count == 0)
                                     throw new Exception(string.Format("子库区[{0}]下没有可用的空货位!", areaId));
-                                //引用
+                                
                                 Location location = locations[0];
                                 InOutTask inOutTask = new InOutTask();
                                 inOutTask.SrcId = srcId;

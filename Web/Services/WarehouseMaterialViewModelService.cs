@@ -60,6 +60,8 @@ namespace Web.Services
                     WarehouseMaterialViewModel warehouseMaterialViewModel = new WarehouseMaterialViewModel
                     {
                         Id = e.Id,
+                        SubOrderId = e.SubOrderId,
+                        SubOrderRowId = e.SubOrderRowId,
                         CreateTime = e.CreateTime.ToString(),
                         Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier),
                         Code = e.MaterialDic?.MaterialCode,
@@ -67,16 +69,23 @@ namespace Web.Services
                         LocationId = e.LocationId.GetValueOrDefault(),
                         LocationCode = e.Location?.SysCode,
                         MaterialCount = e.MaterialCount,
+                        MaterialDicId = e.MaterialDic?.Id,
                         MaterialName = e.MaterialDic?.MaterialName,
                         Spec = e.MaterialDic?.Spec,
+                        ReservoirAreaId = e.ReservoirAreaId,
                         ReservoirAreaName = e.ReservoirArea?.AreaName,
+                        WarehouseTrayId = e.WarehouseTrayId,
                         TrayCode = e.WarehouseTray?.TrayCode,
+                        WarehouseId = e.WarehouseId,
                         WarehouseName = e.Warehouse?.WhName,
+                        OUId = e.OUId,
                         OUName = e.OU?.OUName,
+                        SupplierId = e.SubOrderId,
                         SupplierName = e.Supplier?.SupplierName,
+                        SupplierSiteId = e.SupplierSiteId,
                         SupplierSiteName = e.SupplierSite?.SiteName,
+                        OutCount = e.OutCount,
                         TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.WarehouseTray.TrayStep)
-
                     };
                     warehouseMaterialViewModels.Add(warehouseMaterialViewModel);
                 });

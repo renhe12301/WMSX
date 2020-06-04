@@ -147,7 +147,7 @@ namespace Web.Services
             try
             {
                 await this._inOutTaskService.EntryApply(warehouseTrayViewModel.LocationCode,
-                    warehouseTrayViewModel.TrayCode, warehouseTrayViewModel.CargoHeight,warehouseTrayViewModel.CargoWeight);
+                    warehouseTrayViewModel.TrayCode, warehouseTrayViewModel.CargoHeight.GetValueOrDefault(),warehouseTrayViewModel.CargoWeight);
             }
             catch (Exception ex)
             {
@@ -163,7 +163,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyOut(warehouseTrayViewModel.ReservoirId,
+                await this._inOutTaskService.EmptyOut(warehouseTrayViewModel.ReservoirAreaId.GetValueOrDefault(),
                     warehouseTrayViewModel.OutCount);
             }
             catch (Exception ex)
@@ -180,7 +180,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.ReservoirId);
+                await this._inOutTaskService.EmptyEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.ReservoirAreaId.GetValueOrDefault());
             }
             catch (Exception ex)
             {

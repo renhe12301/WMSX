@@ -194,11 +194,11 @@ namespace Web.Jobs
                                      if (totalCount >= subOrderRow.PreCount)
                                      {
                                          end=true;
-                                         warehouseTray.OutCount = subOrderRow.PreCount-totalCnt.Sum(t => t);
+                                         warehouseTray.OutCount = -(subOrderRow.PreCount-totalCnt.Sum(t => t));
                                      }
                                      else
                                      {
-                                         warehouseTray.OutCount = sortMaterial.MaterialCount;
+                                         warehouseTray.OutCount = -sortMaterial.MaterialCount;
                                      }
                                      totalCnt.Add(sortMaterial.MaterialCount);
                                      warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);

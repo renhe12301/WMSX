@@ -116,19 +116,20 @@ namespace ApplicationCore.Services
                         var whTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
                         if (whTrays.Count > 0 && whTrays[0].TrayStep == Convert.ToInt32(TRAY_STEP.待入库))
                         {
-                            if (whTrays[0].SubOrderRow.Id != subOrderRowId)
+                            var sortingTray = whTrays[0];
+                            if (sortingTray.SubOrderRow.Id != subOrderRowId)
                                 throw new Exception(string.Format("托盘[{0}]分拣的订单行[{1}]与当前订单行[{2}]不一致",
-                                    whTrays[0].TrayCode,
-                                    whTrays[0].SubOrderRow.Id, subOrderRowId));
+                                    sortingTray.TrayCode,
+                                    sortingTray.SubOrderRow.Id, subOrderRowId));
 
-                            var srcTrayCount = whTrays[0].MaterialCount + whTrays[0].OutCount;
+                            var srcTrayCount = sortingTray.MaterialCount + sortingTray.OutCount;
                             subOrderRow.Sorting -= srcTrayCount;
                             var pOrderRow = subOrderRow.OrderRow;
                             pOrderRow.Sorting -= srcTrayCount;
                             if ((subOrderRow.Sorting + sortingCount) > subOrderRow.PreCount)
                             {
                                 throw new Exception(string.Format("托盘分拣的总数量[{0}]大于订单行[{1}]数量",
-                                    (subOrderRow.Sorting + sortingCount), whTrays[0].SubOrderRow.Id,
+                                    (subOrderRow.Sorting + sortingCount), sortingTray.SubOrderRow.Id,
                                     subOrderRowId));
                             }
 
@@ -150,6 +151,26 @@ namespace ApplicationCore.Services
                             {
                                 subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
                             }
+
+                            sortingTray.MaterialCount = sortingCount + (sortingTray.OutCount.GetValueOrDefault()<0?sortingTray.OutCount.GetValueOrDefault()*-1:sortingTray.OutCount.GetValueOrDefault());
+                            
+                            WarehouseMaterialSpecification warehouseMaterialSpec =
+                                new WarehouseMaterialSpecification(
+                                    null,
+                                    null, null, null, null, null, sortingTray.Id, null,
+                                    null, null, null, null, null, null, null,
+                                    null, null, null, null, null);
+
+                            List<WarehouseMaterial> oldMaterials =
+                                this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+
+                            if (oldMaterials.Count > 0)
+                            {
+                                oldMaterials[0].MaterialCount = sortingTray.MaterialCount;
+                                this._warehouseMaterialRepository.Update(oldMaterials[0]);
+                            }
+
+                            this._warehouseTrayRepository.Update(sortingTray);
                             this._subOrderRepository.Update(subOrder);
                             this._subOrderRowRepository.Update(subOrderRow);
                             this._orderRowRepository.Update(pOrderRow);
@@ -191,6 +212,7 @@ namespace ApplicationCore.Services
                                     CreateTime = now,
                                     WarehouseTrayId = addTray.Id,
                                     MaterialCount = sortingCount,
+                                    OutCount = 0,
                                     MaterialDicId = materialDic.Id,
                                     Price = subOrderRow.Price,
                                     Amount = subOrderRow.Price * sortingCount,
@@ -215,7 +237,7 @@ namespace ApplicationCore.Services
                                 WarehouseMaterialSpecification warehouseMaterialSpec =
                                     new WarehouseMaterialSpecification(
                                         null,
-                                        null, null, null, null, trayCode, null, null,
+                                        null, null, null, null, null, warehouseTray.Id, null,
                                         null, null, null, null, null, null, null,
                                         null, null, null, null, null);
 
@@ -249,6 +271,7 @@ namespace ApplicationCore.Services
                                 warehouseMaterial.CreateTime = now;
                                 warehouseMaterial.WarehouseTrayId = warehouseTray.Id;
                                 warehouseMaterial.MaterialCount = oldCount + sortingCount;
+                                warehouseMaterial.OutCount = warehouseTray.OutCount;
                                 warehouseMaterial.MaterialDicId = materialDic.Id;
                                 warehouseMaterial.Price = subOrderRow.Price;
                                 warehouseMaterial.Amount = subOrderRow.Price * (oldCount + sortingCount);
