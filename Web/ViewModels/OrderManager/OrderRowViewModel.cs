@@ -52,5 +52,7 @@ namespace Web.ViewModels.OrderManager
         public int? RelatedId { get; set; }
 
         public int? SourceId { get; set; }
+
+        public int? OrderTypeId { get; set; }
     }
 }

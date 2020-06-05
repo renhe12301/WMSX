@@ -93,13 +93,18 @@ $(function () {
             userName=$("#user-name").val();
             orderCode=$("#order-code").val();
             supplierName=$("#supplier-name").val();
-            sourceId=$("#source-id").val();
+          
             corderId=$("#order-id").val();
             if(userName!="")rd.employeeName=userName;
             if(orderCode!="")rd.orderNumber=orderCode;
             if(supplierName!="")rd.supplierName=supplierName;
-            if(sourceId!="")rd.sourceId=sourceId;
+           
             if(corderId!="")rd.id=corderId;
+
+            var statusSels=$("#status-select").val();
+            if(statusSels.length>0)tstatus=statusSels;
+            else tstatus=null;
+            
             if(tstatus)rd.status=tstatus;
             if(type)rd.orderTypeIds=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;
@@ -388,9 +393,5 @@ $(function () {
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
     });
-    $("#save-btn").click(function () {
-        var statusSels=$("#status-select").val();
-        if(statusSels.length>0)tstatus=statusSels;
-        else tstatus=null;
-    });
+   
 });

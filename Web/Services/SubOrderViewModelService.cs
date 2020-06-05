@@ -186,7 +186,8 @@ namespace Web.Services
                         WarehouseId = e.SubOrder.WarehouseId,
                         SupplierId = e.SubOrder.SupplierId,
                         SupplierSiteId = e.SubOrder.SupplierSiteId,
-                        SourceId = e.SourceId
+                        SourceId = e.SourceId,
+                        OrderTypeId = e.SubOrder?.OrderTypeId
                     };
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });

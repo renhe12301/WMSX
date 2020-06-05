@@ -200,7 +200,8 @@ namespace Web.Services
                         WarehouseId = e.Order.WarehouseId,
                         SupplierId = e.Order.SupplierId,
                         SupplierSiteId = e.Order.SupplierSiteId,
-                        SourceId = e.SourceId
+                        SourceId = e.SourceId,
+                        OrderTypeId = e.Order?.OrderTypeId
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

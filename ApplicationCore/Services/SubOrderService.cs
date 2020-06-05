@@ -364,9 +364,11 @@ namespace ApplicationCore.Services
                                     this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
                                 OrderRow orderRow = orderRows.First();
-                                if ((orderRow.PreCount - orderRow.Expend) > subOrderRow.PreCount)
+                                if(subOrderRow.PreCount<=0)
+                                    throw new Exception(string.Format("订单行[{0}]数量[{1}],不是有效的数字!",subOrderRow.OrderRowId,subOrderRow.PreCount));
+                                if ( subOrderRow.PreCount>(orderRow.PreCount - orderRow.Expend.GetValueOrDefault()))
                                     throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
-                                        subOrderRow.OrderRowId, orderRow.PreCount - orderRow.Expend));
+                                        subOrderRow.OrderRowId, orderRow.PreCount - orderRow.Expend.GetValueOrDefault()));
                                 double expend = orderRow.Expend.GetValueOrDefault();
                                 expend += subOrderRow.PreCount;
                                 orderRow.Expend = expend;

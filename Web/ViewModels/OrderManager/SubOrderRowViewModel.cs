@@ -118,5 +118,7 @@ namespace Web.ViewModels.OrderManager
 
         public string Tag { get; set; }
 
+        public int? OrderTypeId { get; set; }
+
     }
 }

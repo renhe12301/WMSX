@@ -321,9 +321,5 @@ $(function () {
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
     });
-    $("#save-btn").click(function () {
-        var statusSels=$("#status-select").val();
-        if(statusSels.length>0)tstatus=statusSels;
-        else tstatus=null;
-    });
+   
 });

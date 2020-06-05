@@ -966,12 +966,7 @@ $(function () {
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
     });
-    $("#save-btn").click(function () {
-        var statusSels=$("#status-select").val();
-        if(statusSels.length>0)tstatus=statusSels;
-        else tstatus=null;
-    });
-
+   
     $('#create-order-dlg').on('shown.bs.modal', function () {
         $('#warehouse-material-table').bootstrapTable('destroy').bootstrapTable({
             ajax:function(request)
