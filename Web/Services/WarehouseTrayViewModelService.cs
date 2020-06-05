@@ -91,6 +91,8 @@ namespace Web.Services
                     warehouseTrayViewModel.CargoWeight = e.CargoWeight;
                     warehouseTrayViewModel.LocationId = e.LocationId;
                     warehouseTrayViewModel.OutCount = e.OutCount.GetValueOrDefault();
+                    warehouseTrayViewModel.PhyWarehouseId = e.PhyWarehouseId;
+                    warehouseTrayViewModel.PhyName = e.PhyWarehouse?.PhyName;
                     warehouseTrayViewModels.Add(warehouseTrayViewModel);
                 });
 

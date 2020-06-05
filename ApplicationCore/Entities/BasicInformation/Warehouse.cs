@@ -15,6 +15,7 @@ namespace ApplicationCore.Entities.BasicInformation
         public string Memo { get; set; }
         public int OUId { get; set; }
         public OU OU { get; set; }
-        
+        public int? PhyWarehouseId { get; set; }
+        public PhyWarehouse PhyWarehouse { get; set; }
     }
 }

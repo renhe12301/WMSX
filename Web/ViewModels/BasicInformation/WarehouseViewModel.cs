@@ -11,5 +11,9 @@ namespace Web.ViewModels.BasicInformation
         public string Memo { get; set; }
         public int OUId { get; set; }
         public string OUName { get; set; }
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public string PhyName { get; set; }
     }
 }

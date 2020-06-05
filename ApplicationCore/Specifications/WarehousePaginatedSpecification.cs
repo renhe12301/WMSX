@@ -11,6 +11,7 @@ namespace ApplicationCore.Specifications
         {
             ApplyPaging(skip, take);
             AddInclude(b => b.OU);
+            AddInclude(b=>b.PhyWarehouse);
         }
     }
 }

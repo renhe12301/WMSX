@@ -73,7 +73,9 @@ namespace Web.Services
                         WarehouseName = e.Warehouse.WhName,
                         AreaCode= e.AreaCode,
                         OUName = e.OU.OUName,
-                        Status = Enum.GetName(typeof(AREA_STATUS), e.Status)
+                        Status = Enum.GetName(typeof(AREA_STATUS), e.Status),
+                        PhyWarehouseId = e.PhyWarehouseId,
+                        PhyName = e.PhyWarehouse?.PhyName
                     };
                     areaViewModels.Add(areaViewModel);
                 });

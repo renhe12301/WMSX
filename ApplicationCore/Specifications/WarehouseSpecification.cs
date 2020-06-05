@@ -11,6 +11,7 @@ namespace ApplicationCore.Specifications
                   (whCode==null||b.WhCode.Contains(whCode)))
         {
             AddInclude(b => b.OU);
+            AddInclude(b=>b.PhyWarehouse);
         }
     }
 }

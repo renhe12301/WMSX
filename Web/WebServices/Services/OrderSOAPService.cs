@@ -287,6 +287,7 @@ namespace Web.WebServices.Services
                                     addOrder.TotalAmount = Convert.ToDouble(RequestRKJSOrder.TotalAmount);
                                     addOrder.ApplyTime = DateTime.Parse(RequestRKJSOrder.ExitEntryDate);
                                     addOrder.CreateTime = DateTime.Parse(RequestRKJSOrder.CreationDate);
+                                    addOrder.SourceOrderType = RequestRKJSOrder.DocumentType;
                                     //addOrder.EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId),
                                     addOrder.Memo = RequestRKJSOrder.Remark;
 
@@ -709,6 +710,7 @@ namespace Web.WebServices.Services
                                 addOrder.CallingParty = RequestCKLLOrder.AplSourceCode;
                                 addOrder.BusinessTypeCode = RequestCKLLOrder.BusinessTypeCode;
                                 addOrder.CreateTime = DateTime.Parse(RequestCKLLOrder.CreationDate);
+                                addOrder.SourceOrderType = RequestCKLLOrder.DocumentType;
                                 //addOrder.EBSProjectId = Convert.ToInt32(RequestCKLLOrder.ItemId);
                                 addOrder.Memo = RequestCKLLOrder.Remark;
                                 List<OrderRow> addOrderRows = new List<OrderRow>();

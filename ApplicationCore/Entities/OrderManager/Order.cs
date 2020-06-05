@@ -143,9 +143,14 @@ namespace ApplicationCore.Entities.OrderManager
         public Employee Employee { get; set; }
 
         /// <summary>
-        /// 第三方系统编号
+        /// 集约化物资系统订单Id
         /// </summary>
         public int? SourceId { get; set; }
+        
+        /// <summary>
+        /// 集约化物资系统订单类型
+        /// </summary>
+        public string SourceOrderType { get; set; }
         
         /// <summary>
         /// 物理仓库编号

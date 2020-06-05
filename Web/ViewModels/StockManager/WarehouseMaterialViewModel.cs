@@ -33,6 +33,10 @@ namespace Web.ViewModels.StockManager
         public int? OutCount { get; set; }
 
         public string Spec { get; set; }
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public string PhyName { get; set; }
 
     }
 }

@@ -64,7 +64,9 @@ namespace Web.Services
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
                         OUName= e.OU.OUName,
-                        Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status)
+                        Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status),
+                        PhyWarehouseId = e.PhyWarehouseId,
+                        PhyName = e.PhyWarehouse?.PhyName
                     };
                     warehouseViewModels.Add(wareHouseViewModel);
                 });

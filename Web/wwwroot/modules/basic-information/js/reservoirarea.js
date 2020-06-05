@@ -16,12 +16,42 @@ operateEvents = {
     'click .assign-location': function (e, value, row, index)
     {
         typeRow=row;
+        asynTask({
+            type:'get',
+            url:controllers["phy-warehouse"]["get-phy-warehouses"],
+            successCallback:function(response)
+            {
+                if(response.Code==200)
+                {
+                    var data=[];
+                    $.each(response.Data, function(key, val) {
+                        data.push({id:val.Id,text:val.PhyName});
+                    });
+                    $("#phy-sel").select2({
+                        data: data,
+                        theme: 'bootstrap4'
+                    });
+                    if(typeRow.PhyName)
+                    {
+                        $("#phy-sel").val(typeRow.PhyWarehouseId).select2({
+                            data: data,
+                            theme: 'bootstrap4'
+                        });
+                    }
+                    phyId=$("#phy-sel").val();
+                    loadFRC(phyId);
+                    loadLocs();
+                }
+            }
+        });
         $('#assign-loc-dlg').modal('show');
         $("#dic-sel").empty();
-        $('#dic-sel').bootstrapDualListbox(
+      
+        var selectLab=typeRow.PhyName?typeRow.AreaName+"("+typeRow.PhyName+")":typeRow.AreaName;
+         $('#dic-sel').bootstrapDualListbox(
             {
                 nonSelectedListLabel: '物理货位',
-                selectedListLabel: row.AreaName,
+                selectedListLabel: selectLab,
                 preserveSelectionOnMove: 'moved',
                 moveOnSelect: false,
                 infoText:'总记录数： {0}',
@@ -30,7 +60,10 @@ operateEvents = {
                 infoTextFiltered:'<span class="label label-warning">找到记录：</span> {0} 总记录： {1}',
                 filterTextClear:""
             });
-        $('#dic-sel').bootstrapDualListbox('refresh',true);
+       // dlist.refresh();
+        $('#dic-sel').bootstrapDualListbox("refresh", true);
+        $('#dic-sel').bootstrapDualListbox("setSelectedListLabel",selectLab,true);
+    
     }
 };
 var typeRow=null;
@@ -38,32 +71,81 @@ var ouId=null;
 var whId=null;
 var areaId=null;
 var areaNameClick;
+
+
+var loadLocs=function () {
+    var rd={};
+    phyId = $("#phy-sel").val();
+    rd.phyId=phyId;
+    var row=$("#row-sel").val();
+    var rank=$("#rank-sel").val();
+    var col=$("#col-sel").val();
+    if(row!="0")
+        rd.floors=row;
+    if(rank!="0")
+        rd.items=rank;
+    if(col!="0")
+        rd.cols=col;
+    asynTask({
+        type:'get',
+        url:controllers.location["get-locations"],
+        jsonData: rd,
+        successCallback:function(response)
+        {
+            $("#dic-sel").empty();
+            $.each(response.Data, function(key, val)
+            {
+                var o = document.createElement("option");
+                o.value = val.Id;
+                o.text = val.SysCode;
+                if(val.ReservoirAreaId==typeRow.Id)
+                    o.selected='selected';
+                $("#dic-sel").append(o);
+            });
+            $('#dic-sel').bootstrapDualListbox('refresh',true);
+        }
+    });
+}
+
+var loadFRC=function (phyId) {
+    asynTask({
+        type:'get',
+        url:controllers.location["get-max-floor-item-col"],
+        jsonData:{phyId:phyId},
+        successCallback:function(response)
+        {
+            if(response.Code==200)
+            {
+                var frl=response.Data;
+                data=[];
+                for (var i=0;i<frl[0];i++) data.push({id:i+1,text:i+1});
+                $("#row-sel").select2({
+                    data: data,
+                    theme: 'bootstrap4'
+                });
+                data=[];
+                for (var i=0;i<frl[1];i++) data.push({id:i+1,text:i+1});
+                $("#rank-sel").select2({
+                    data: data,
+                    theme: 'bootstrap4'
+                });
+                data=[];
+                for (var i=0;i<frl[2];i++) data.push({id:i+1,text:i+1});
+                $("#col-sel").select2({
+                    data: data,
+                    theme: 'bootstrap4'
+                });
+            }
+        }
+    });
+};
+
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
     $('#sidebar2').overlayScrollbars({});
-
-    asynTask({
-        type:'get',
-        url:controllers["phy-warehouse"]["get-phy-warehouses"],
-        successCallback:function(response)
-        {
-            if(response.Code==200)
-            {
-                var data=[];
-                $.each(response.Data, function(key, val) {
-                    data.push({id:val.Id,text:val.PhyName});
-                });
-                $("#phy-sel").select2({
-                    data: data,
-                    theme: 'bootstrap4'
-                });
-                phyId=$("#phy-sel").val();
-                loadFRC(phyId);
-            }
-        }
-    });
+    
 
    loadingShow();
     areaNameClick = function (id) {
@@ -98,6 +180,7 @@ $(function () {
                 url: controllers["reservoir-area"]["get-areas"],
                 jsonData: rd,
                 successCallback: function (response) {
+                    console.log(response.Data);
                     $('#area-table').bootstrapTable('load', response.Data);
                     $('#area-table').bootstrapTable('hideLoading');
                 }
@@ -156,102 +239,61 @@ $(function () {
     });
 
     $("#phy-query-btn").click(function () {
-
-        var rd={};
-        phyId = $("#phy-sel").val();
-        rd.phyId=phyId;
-        var row=$("#row-sel").val();
-        var rank=$("#rank-sel").val();
-        var col=$("#col-sel").val();
-        if(row!="0")
-            rd.floors=row;
-        if(rank!="0")
-            rd.items=rank;
-        if(col!="0")
-            rd.cols=col;
-        asynTask({ 
-            type:'get', 
-            url:controllers.location["get-locations"], 
-            jsonData: rd, 
-            successCallback:function(response) 
-            {
-                $("#dic-sel").empty();
-                $.each(response.Data, function(key, val)
-                {
-                    var o = document.createElement("option");
-                    o.value = val.Id;
-                    o.text = val.SysCode;
-                    if(val.ReservoirAreaId==typeRow.Id)
-                        o.selected='selected';
-                    $("#dic-sel").append(o);
-                });
-                $('#dic-sel').bootstrapDualListbox('refresh',true);
-            } 
-        });
-
+        loadLocs();
     });
 
     $("#phy-sel").change(function () {
         phyId = $("#phy-sel").val();
+        loadLocs();
         loadFRC(phyId);
     });
-
-    var loadFRC=function (phyId) {
-        asynTask({
-            type:'get',
-            url:controllers.location["get-max-floor-item-col"],
-            jsonData:{phyId:phyId},
-            successCallback:function(response)
-            {
-                if(response.Code==200)
-                {
-                    var frl=response.Data;
-                    data=[];
-                    for (var i=0;i<frl[0];i++) data.push({id:i+1,text:i+1});
-                    $("#row-sel").select2({
-                        data: data,
-                        theme: 'bootstrap4'
-                    });
-                    data=[];
-                    for (var i=0;i<frl[1];i++) data.push({id:i+1,text:i+1});
-                    $("#rank-sel").select2({
-                        data: data,
-                        theme: 'bootstrap4'
-                    });
-                    data=[];
-                    for (var i=0;i<frl[2];i++) data.push({id:i+1,text:i+1});
-                    $("#col-sel").select2({
-                        data: data,
-                        theme: 'bootstrap4'
-                    });
-                }
-            }
-        });
-    };
-
+    
     $("#assign-loc-btn").click(function () {
         var dicSelects=$("#dic-sel").val(); 
         var dicIds=[]; 
         $.each(dicSelects, function(key, val) { 
             dicIds.push(parseInt(val));
                  });
-        if(dicIds.length==0)
+        // if(dicIds.length==0)
+        // {
+        //     toastr.error("请选择左边需要划分的货位！", '错误信息', {timeOut: 3000});
+        //     return;
+        // }
+        
+        if(typeRow.PhyWarehouseId&&$("#phy-sel").val()!=typeRow.PhyWarehouseId)
         {
-            toastr.error("请选择左边需要划分的货位！", '错误信息', {timeOut: 3000});
-            return;
+
+            confirmShow(function () {
+
+                asynTask({
+                    type: 'post',
+                    url: controllers["reservoir-area"]["assign-location"],
+                    jsonData: {ReservoirAreaId: typeRow.Id, LocationIds: dicIds},
+                    successCallback: function (response) {
+                        $('#assign-loc-dlg').modal('hide');
+                        toastr.success("操作成功！", '系统信息', {timeOut: 3000});
+                        $('#area-table').bootstrapTable('refresh');
+                    }
+                });
+            },"子库区["+typeRow.AreaName+"]绑定仓库与当前仓库不一致,操作后会覆盖原有绑定信息");
         }
-        asynTask({
-            type:'post',
-            url:controllers["reservoir-area"]["assign-location"],
-            jsonData: {ReservoirAreaId:typeRow.Id,LocationIds:dicIds},
-            successCallback:function(response)
-            {
-                $('#assign-loc-dlg').modal('hide');
-                toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
-            }
-        });
+        else {
+            asynTask({
+                type: 'post',
+                url: controllers["reservoir-area"]["assign-location"],
+                jsonData: {ReservoirAreaId: typeRow.Id, LocationIds: dicIds},
+                successCallback: function (response) {
+                    $('#assign-loc-dlg').modal('hide');
+                    toastr.success("操作成功！", '系统信息', {timeOut: 3000});
+                    $('#area-table').bootstrapTable('refresh');
+                }
+            });
+        }
+
+       
     });
 
+   
 
     $("#sync-btn").click(function () {
         asynTask({

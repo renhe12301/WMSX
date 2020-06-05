@@ -17,14 +17,17 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<Warehouse> _warehouseRepository;
         public ReservoirAreaService(IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                     IAsyncRepository<Location> locationRepository,
-                                    IAsyncRepository<LogRecord> logRecordRepository
+                                    IAsyncRepository<LogRecord> logRecordRepository,
+                                    IAsyncRepository<Warehouse> warehouseRepository
                                     )
         {
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._locationRepository = locationRepository;
             this._logRecordRepository = logRecordRepository;
+            this._warehouseRepository = warehouseRepository;
         }
 
         public async Task AddArea(ReservoirArea reservoirArea,bool unique=false)
@@ -111,7 +114,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     Guard.Against.Zero(areaId, nameof(areaId));
-                    Guard.Against.NullOrEmpty(locationIds, nameof(locationIds));
+                    Guard.Against.Null(locationIds, nameof(locationIds));
                     ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
                         null, null, null, null);
                     var ares =  this._reservoirAreaRepository.List(reservoirAreaSpec);
@@ -119,6 +122,8 @@ namespace ApplicationCore.Services
                     LocationSpecification locationSpecification = new LocationSpecification(null, null, null, null,
                         null, null, null, areaId, null, null, null, null, null, null);
                     var areaLocations = this._locationRepository.List(locationSpecification);
+                    List<ReservoirArea> srcUpdAreas = new List<ReservoirArea>();
+                    List<Warehouse> srcUpdWarehouses = new List<Warehouse>();
                     foreach (var areaLocation in areaLocations)
                     {
                         areaLocation.ReservoirAreaId = null;
@@ -126,8 +131,15 @@ namespace ApplicationCore.Services
                         areaLocation.WarehouseId = null;
                     }
 
-                    this._locationRepository.Update(areaLocations);
-
+                    ares[0].PhyWarehouseId = null;
+                    ares[0].Warehouse.PhyWarehouseId = null;
+                    this._reservoirAreaRepository.Update( ares[0]);
+                    this._warehouseRepository.Update(ares[0].Warehouse);
+                    
+                    if (areaLocations.Count > 0)
+                    {
+                        this._locationRepository.Update(areaLocations);
+                    }
                     var locations =  this._locationRepository.ListAll();
                     List<Location> updLocations = new List<Location>();
                     locationIds.ForEach(async (id) =>
@@ -138,13 +150,23 @@ namespace ApplicationCore.Services
                         location.WarehouseId = ares[0].WarehouseId;
                         updLocations.Add(location);
                     });
-                    this._locationRepository.Update(updLocations);
-                    this._logRecordRepository.Add(new LogRecord
+                    if (updLocations.Count > 0)
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                        LogDesc = string.Format("库区[{0}],分配货位!",areaId),
-                        CreateTime = DateTime.Now
-                    });
+                        ReservoirArea curArea = ares[0];
+                        curArea.PhyWarehouseId = updLocations[0].PhyWarehouseId;
+                        Warehouse curWarehouse = curArea.Warehouse;
+                        curWarehouse.PhyWarehouseId = updLocations[0].PhyWarehouseId;
+                        this._locationRepository.Update(updLocations);
+                        this._reservoirAreaRepository.Update(curArea);
+                        this._warehouseRepository.Update(curWarehouse);
+                        
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("库区[{0}],分配货位!",areaId),
+                            CreateTime = DateTime.Now
+                        });
+                    }
                     scope.Complete();
                 }
                 catch (Exception ex)

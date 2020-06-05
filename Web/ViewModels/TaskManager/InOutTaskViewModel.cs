@@ -35,6 +35,10 @@ namespace Web.ViewModels.TaskManager
         public string WarehouseName { get; set; }
       
         public string ReservoirAreaName { get; set;  }
+        
+        public int? PhyWarehouseId { get; set; }
+        
+        public string PhyName { get; set; }
 
         public List<WarehouseTray> WarehouseTrays { get; set; }
 

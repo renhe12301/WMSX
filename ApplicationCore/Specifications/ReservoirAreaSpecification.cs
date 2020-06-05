@@ -14,6 +14,7 @@ namespace ApplicationCore.Specifications
         {
             AddInclude(b => b.Warehouse);
             AddInclude(b=>b.OU);
+            AddInclude(b=>b.PhyWarehouse);
         }
     }
 }

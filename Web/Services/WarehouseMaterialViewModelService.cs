@@ -85,7 +85,9 @@ namespace Web.Services
                         SupplierSiteId = e.SupplierSiteId,
                         SupplierSiteName = e.SupplierSite?.SiteName,
                         OutCount = e.OutCount,
-                        TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.WarehouseTray.TrayStep)
+                        TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.WarehouseTray.TrayStep),
+                        PhyWarehouseId = e.PhyWarehouseId,
+                        PhyName = e.PhyWarehouse?.PhyName
                     };
                     warehouseMaterialViewModels.Add(warehouseMaterialViewModel);
                 });

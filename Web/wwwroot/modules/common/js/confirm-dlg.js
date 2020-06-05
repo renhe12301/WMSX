@@ -9,7 +9,7 @@ var dlg='<div class="modal fade" id="option-confirm-dlg" style="display: none;" 
         '<span aria-hidden="true">×</span></button>'+
         '</div>'+
         '<div class="modal-body">'+
-          '<p>确认要继续此操作吗？</p>'+
+          '<p id="confirm-title">确认要继续此操作吗？</p>'+
         '</div>'+
        '<div class="modal-footer justify-content-between">'+
         '<button type="button" class="btn btn-outline-dark" data-dismiss="modal">关闭</button>'+
@@ -19,8 +19,12 @@ var dlg='<div class="modal fade" id="option-confirm-dlg" style="display: none;" 
         '</div>'+
         '</div>';
 $("body").append(dlg);
-    confirmShow=function(option)
+    confirmShow=function(option,title="",)
     {
+        if(title&&title!="")
+        {
+            $('#confirm-title').text(title+","+"确认要继续此操作吗？")
+        }
         $('#option-confirm-dlg').modal('show');
         $("#option-confirm-btn").unbind("click");
         $("#option-confirm-btn").click(function () {

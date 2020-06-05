@@ -19,6 +19,9 @@ namespace ApplicationCore.Entities.BasicInformation
         public int Status { get; set; }
         public int Type { get; set; }
         public string Memo { get; set; }
+        
+        public int? PhyWarehouseId { get; set; }
+        public PhyWarehouse PhyWarehouse { get; set; }
        
     }
 }

@@ -52,7 +52,7 @@ namespace Web.WebServices.Models
         [DataMember]
         public string AddFlag { get; set; }
         
-        [JsonProperty(PropertyName ="relatedId")]
+        [JsonProperty(PropertyName ="sourceLineId")]
         [DataMember]
         public string RelatedId { get; set; }
         
