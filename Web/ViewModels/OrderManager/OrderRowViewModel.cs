@@ -54,5 +54,13 @@ namespace Web.ViewModels.OrderManager
         public int? SourceId { get; set; }
 
         public int? OrderTypeId { get; set; }
+
+        public string Currency { get; set; }
+
+        public string BusinessTypeCode { get; set; }
+
+        public string SourceOrderType { get; set; }
+
+        public double? Expend { get; set; }
     }
 }

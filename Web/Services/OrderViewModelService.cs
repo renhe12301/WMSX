@@ -201,7 +201,11 @@ namespace Web.Services
                         SupplierId = e.Order.SupplierId,
                         SupplierSiteId = e.Order.SupplierSiteId,
                         SourceId = e.SourceId,
-                        OrderTypeId = e.Order?.OrderTypeId
+                        OrderTypeId = e.Order?.OrderTypeId,
+                        SourceOrderType = e.Order?.SourceOrderType,
+                        BusinessTypeCode = e.Order?.BusinessTypeCode,
+                        Currency = e.Order?.Currency,
+                        Expend = e.Expend
 
                     };
                     orderRowViewModels.Add(orderRowViewModel);

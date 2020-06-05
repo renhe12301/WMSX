@@ -243,6 +243,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '集约化行Id',
+                    field: 'SourceId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '物料名称',
                     field: 'MaterialDicName',
                     valign: 'middle',
@@ -257,6 +263,12 @@ $(function () {
                 {
                     title: '出库数量',
                     field: 'RealityCount',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '消耗数量',
+                    field: 'Expend',
                     valign: 'middle',
                     align: 'center'
                 },

@@ -363,6 +363,18 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '前置行Id',
+                    field: 'OrderRowId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '前置集约化行Id',
+                    field: 'SourceId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '物料名称',
                     field: 'MaterialDicName',
                     valign: 'middle',

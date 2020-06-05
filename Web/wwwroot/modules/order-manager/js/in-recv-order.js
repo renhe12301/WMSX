@@ -266,6 +266,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '集约化行Id',
+                    field: 'SourceId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '物料名称',
                     field: 'MaterialDicName',
                     valign: 'middle',
@@ -286,6 +292,12 @@ $(function () {
                 {
                     title: '分拣数量',
                     field: 'Sorting',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '消耗数量',
+                    field: 'Expend',
                     valign: 'middle',
                     align: 'center'
                 },

@@ -95,7 +95,8 @@ namespace Web.Services
                         PhyWarehouseId = e.PhyWarehouseId,
                         PhyWarehouseName = e.PhyWarehouse?.PhyName,
                         IsScrap = e.IsScrap,
-                        SourceId = e.SourceId
+                        SourceId = e.SourceId,
+                        SourceOrderType = e.SourceOrderType
                     };
                     orderViewModels.Add(subOrderViewModel);
                 });
@@ -240,7 +241,7 @@ namespace Web.Services
                 {
                     OUId = subOrderViewModel.OUId,
                     WarehouseId = subOrderViewModel.WarehouseId,
-                    OrderNumber = subOrderViewModel.OrderNumber??"Sub_Order_"+now.Ticks,
+                    OrderNumber = subOrderViewModel.OrderNumber??"O"+now.Ticks,
                     CreateTime = now,
                     OrderTypeId = subOrderViewModel.OrderTypeId,
                     Status = 0,
@@ -265,7 +266,7 @@ namespace Web.Services
                         Price = or.Price,
                         Status = 0,
                         OrderRowId = or.OrderRowId,
-                        RowNumber = or.RowNumber??"Sub_Order_Row_"+now.Ticks,
+                        RowNumber = or.RowNumber??"OR"+now.Ticks,
                         UseFor = or.UseFor,
                         Amount = or.Amount,
                         SourceId = or.SourceId

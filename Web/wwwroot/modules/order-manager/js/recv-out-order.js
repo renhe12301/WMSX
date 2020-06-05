@@ -214,6 +214,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '集约化行Id',
+                    field: 'SourceId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '物料名称',
                     field: 'MaterialDicName',
                     valign: 'middle',

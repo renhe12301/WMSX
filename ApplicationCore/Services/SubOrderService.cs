@@ -384,7 +384,7 @@ namespace ApplicationCore.Services
                         this._logRecordRepository.Add(new LogRecord
                         {
                             LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                            LogDesc = "创建订单!",
+                            LogDesc = string.Format("新建后置订单[{0}]!",newSubOrder.Id),
                             CreateTime = DateTime.Now
                         });
                         scope.Complete();
