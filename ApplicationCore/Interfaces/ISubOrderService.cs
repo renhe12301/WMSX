@@ -7,7 +7,7 @@ namespace ApplicationCore.Interfaces
     public interface ISubOrderService
     {
         
-        Task SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode,int areaId, string tag);
+        Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,int areaId, string tag);
         
         Task CreateOrder(SubOrder subOrder);
 

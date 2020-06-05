@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities.StockManager
         public int? SubOrderRowId { get; set; }
         public int MaterialDicId { get; set; }
         public int WarehouseTrayId { get; set; }
-        public int MaterialCount { get; set; }
+        public double MaterialCount { get; set; }
         public string BatchNo { get; set; }
         public int? LocationId { get; set; }
         public int? OUId { get; set; }
@@ -61,6 +61,6 @@ namespace ApplicationCore.Entities.StockManager
         
         public PhyWarehouse PhyWarehouse { get; set; }
 
-        public int? OutCount { get; set; }
+        public double? OutCount { get; set; }
     }
 }

@@ -325,7 +325,7 @@ namespace Web.WebServices.Services
                                         addOrderRow.SourceId = Convert.ToInt32(eor.LineId);
                                         addOrderRow.RowNumber = eor.LineNumber;
                                         addOrderRow.MaterialDicId = materialDic.Id;
-                                        addOrderRow.PreCount = Convert.ToInt32(eor.ProcessingQuantity);
+                                        addOrderRow.PreCount = Convert.ToDouble(eor.ProcessingQuantity);
                                         addOrderRow.Price = Convert.ToDouble(eor.Price);
                                         addOrderRow.Amount = Convert.ToDouble(eor.Amount);
                                         //EBSTaskId = ebsTask.Id,
@@ -507,7 +507,7 @@ namespace Web.WebServices.Services
                                 var totalTKOrderRowCount = tkGroup.Sum(m => m.PreCount);
                                 
                                 // 同一个OU、库存组织、子库区、物料编码 的数量总和
-                                int totalMaterialCount = 0;
+                                double totalMaterialCount = 0;
                                 List<WarehouseMaterial> warehouseMaterials = null;
                                 // 入库完成在货架上的物料
                                 WarehouseMaterialSpecification inWarehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,key.MaterialDicId,null,null,
@@ -533,7 +533,7 @@ namespace Web.WebServices.Services
                                 totalMaterialCount +=  warehouseMaterials.Sum(t => t.MaterialCount);
                                 
                                 //同一个OU、库存组织、子库区、物料编码 剩余的数量总和 (库存物料数量-退库订单行物料数量)
-                                int surplusTotalMaterialCount = totalMaterialCount - totalTKOrderRowCount;
+                                double surplusTotalMaterialCount = totalMaterialCount - totalTKOrderRowCount;
 
                                 if (surplusTotalMaterialCount < findSameRows.Sum(r => Convert.ToInt32(r.ReqQty)))
                                 {
@@ -648,8 +648,8 @@ namespace Web.WebServices.Services
                                             addOrderRow.RowNumber = eor.LineNum;
                                             addOrderRow.MaterialDicId = materialDic.Id;
                                             addOrderRow.UseFor = eor.UseFor;
-                                            addOrderRow.PreCount = Convert.ToInt32(eor.ReqQty);
-                                            addOrderRow.CancelCount = Convert.ToInt32(eor.CancelQty);
+                                            addOrderRow.PreCount = Convert.ToDouble(eor.ReqQty);
+                                            addOrderRow.CancelCount = Convert.ToDouble(eor.CancelQty);
                                             addOrderRow.ReservoirAreaId = area.Id;
                                             //addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                             addOrderRow.Memo = eor.Remark;
@@ -757,8 +757,8 @@ namespace Web.WebServices.Services
                                     addOrderRow.RowNumber = eor.LineNum;
                                     addOrderRow.MaterialDicId = materialDic.Id;
                                     addOrderRow.UseFor = eor.UseFor;
-                                    addOrderRow.PreCount = Convert.ToInt32(eor.ReqQty);
-                                    addOrderRow.CancelCount = Convert.ToInt32(eor.CancelQty);
+                                    addOrderRow.PreCount = Convert.ToDouble(eor.ReqQty);
+                                    addOrderRow.CancelCount = Convert.ToDouble(eor.CancelQty);
                                     addOrderRow.ReservoirAreaId = area.Id;
                                     //EBSTaskId = Convert.ToInt32(eor.TaskId),
                                     addOrderRow.Memo = eor.Remark;

@@ -12,8 +12,8 @@ namespace Web.ViewModels.StockManager
         public int? LocationId { get; set; }
 
         public string LocationCode { get; set; }
-        public int MaterialCount { get; set; }
-        public int OutCount { get; set; }
+        public double MaterialCount { get; set; }
+        public double OutCount { get; set; }
         public string WarehouseName { get; set; }
         public int? TrayStep { get; set; }
         public string ReservoirAreaName { get; set; }

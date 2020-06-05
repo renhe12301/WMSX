@@ -47,7 +47,7 @@ namespace ApplicationCore.Services
             this._orderRowRepository = orderRowRepository;
         }
 
-        public async Task EmptyOut(int areaId, int outCount)
+        public async Task EmptyOut(int areaId, double outCount)
         {
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
@@ -331,7 +331,7 @@ namespace ApplicationCore.Services
                     else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
                     {
                         task.Status = Convert.ToInt32(TASK_STATUS.完成);
-                        int outCount = warehouseTray.OutCount.GetValueOrDefault();
+                        double outCount = warehouseTray.OutCount.GetValueOrDefault();
                         if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
                         {
                             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
@@ -382,7 +382,7 @@ namespace ApplicationCore.Services
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
 
                             OrderRow orderRow = orderRows.First();
-                            int preCount = orderRow.RealityCount.GetValueOrDefault();
+                            double preCount = orderRow.RealityCount.GetValueOrDefault();
                             preCount += (warehouseTray.MaterialCount + outCount);
                             orderRow.RealityCount = preCount;
 

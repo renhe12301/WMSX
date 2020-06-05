@@ -59,7 +59,7 @@ namespace ApplicationCore.Services
             this._inOutTaskRepository = inOutTaskRepository;
         }
 
-        public async Task SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode, int areaId,
+        public async Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId,
             string tag)
         {
             Guard.Against.Zero(subOrderId, nameof(subOrderId));
@@ -133,10 +133,10 @@ namespace ApplicationCore.Services
                                     subOrderRowId));
                             }
 
-                            int pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
+                            double pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
                             pOrderRowSorting += sortingCount;
                             
-                            int subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
+                            double subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
                             subOrderRowSorting += sortingCount;
                             
                             pOrderRow.Sorting = pOrderRowSorting;
@@ -244,7 +244,7 @@ namespace ApplicationCore.Services
                                 List<WarehouseMaterial> oldMaterials =
                                     this._warehouseMaterialRepository.List(warehouseMaterialSpec);
 
-                                int oldCount = 0;
+                                double oldCount = 0;
                                 if (warehouseTray.MaterialCount > 0)
                                 {
                                     if (oldMaterials[0].MaterialDicId != subOrderRow.MaterialDicId)
@@ -288,10 +288,10 @@ namespace ApplicationCore.Services
                             }
                             
                             var pOrderRow = subOrderRow.OrderRow;
-                            int pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
+                            double pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();
                             pOrderRowSorting += sortingCount;
                             
-                            int subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
+                            double subOrderRowSorting = subOrderRow.Sorting.GetValueOrDefault();
                             subOrderRowSorting += sortingCount;
                             
                             pOrderRow.Sorting = pOrderRowSorting;
@@ -367,7 +367,7 @@ namespace ApplicationCore.Services
                                 if ((orderRow.PreCount - orderRow.Expend) > subOrderRow.PreCount)
                                     throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
                                         subOrderRow.OrderRowId, orderRow.PreCount - orderRow.Expend));
-                                int expend = orderRow.Expend.GetValueOrDefault();
+                                double expend = orderRow.Expend.GetValueOrDefault();
                                 expend += subOrderRow.PreCount;
                                 orderRow.Expend = expend;
                                 updOrderRows.Add(orderRow);

@@ -182,8 +182,8 @@ namespace Web.Jobs
                                  if (sumMaterialCount < subOrderRow.PreCount)
                                      throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
                                  var sortMaterials = warehouseMaterials.OrderBy(m => m.CreateTime);
-                                 int totalCount = 0;
-                                 List<int> totalCnt = new List<int>();
+                                 double totalCount = 0;
+                                 List<double> totalCnt = new List<double>();
                                  Random random = new Random();
                                  bool end = false;
                                  foreach (var sortMaterial in sortMaterials)

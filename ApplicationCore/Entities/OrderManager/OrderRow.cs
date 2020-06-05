@@ -36,15 +36,15 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 订单物料数量
         /// </summary>
-        public int PreCount { get; set; }
+        public double PreCount { get; set; }
         /// <summary>
         /// 分拣数量
         /// </summary>
-        public int? Sorting { get; set; }
+        public double? Sorting { get; set; }
         /// <summary>
         /// 实际数量
         /// </summary>
-        public int? RealityCount { get; set; }
+        public double? RealityCount { get; set; }
 
         /// <summary>
         /// 不合格数量
@@ -54,7 +54,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 取消数量
         /// </summary>
-        public int? CancelCount { get; set; }
+        public double? CancelCount { get; set; }
 
         /// <summary>
         /// 完成进度
@@ -120,7 +120,7 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 消耗数量
         /// </summary>
-        public int? Expend { get; set; }
+        public double? Expend { get; set; }
 
 
     }

@@ -15,8 +15,8 @@ namespace ApplicationCore.Entities.StockManager
         public int? SubOrderRowId { get; set; }
         public string TrayCode { get; set; }
         public int? LocationId { get; set; }
-        public int MaterialCount { get; set; }
-        public int? OutCount { get; set; }
+        public double MaterialCount { get; set; }
+        public double? OutCount { get; set; }
         public int? OUId { get; set; }
         public int? WarehouseId { get; set; }
         public int? ReservoirAreaId { get; set; }

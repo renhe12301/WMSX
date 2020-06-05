@@ -1,4 +1,6 @@
 ﻿using System;
+using Quartz.Impl.AdoJobStore;
+
 namespace Web.ViewModels.StockManager
 {
     public class WarehouseMaterialViewModel
@@ -11,7 +13,7 @@ namespace Web.ViewModels.StockManager
         public string MaterialName { get; set; }
         public int? LocationId { get; set; }
         public string LocationCode { get; set; }
-        public int MaterialCount { get; set; }
+        public double MaterialCount { get; set; }
         public string WarehouseName { get; set; }
         public int? WarehouseTrayId { get; set; }
         public string TrayCode { get; set; }
@@ -30,7 +32,7 @@ namespace Web.ViewModels.StockManager
 
         public string TrayStepStr { get; set; }
 
-        public int? OutCount { get; set; }
+        public double? OutCount { get; set; }
 
         public string Spec { get; set; }
         

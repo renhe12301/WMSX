@@ -39,15 +39,15 @@ namespace ApplicationCore.Entities.OrderManager
         /// <summary>
         /// 订单物料数量
         /// </summary>
-        public int PreCount { get; set; }
+        public double PreCount { get; set; }
         /// <summary>
         /// 分拣数量
         /// </summary>
-        public int? Sorting { get; set; }
+        public double? Sorting { get; set; }
         /// <summary>
         /// 实际数量
         /// </summary>
-        public int? RealityCount { get; set; }
+        public double? RealityCount { get; set; }
 
         /// <summary>
         /// 不合格数量

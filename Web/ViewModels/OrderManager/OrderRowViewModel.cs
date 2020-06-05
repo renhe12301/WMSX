@@ -16,10 +16,10 @@ namespace Web.ViewModels.OrderManager
         
         public string CreateTime { get; set; }
         public string FinishTime { get; set; }
-        public int PreCount { get; set; }
+        public double PreCount { get; set; }
         
-        public int RealityCount { get; set; }
-        public int Sorting { get; set; }
+        public double RealityCount { get; set; }
+        public double Sorting { get; set; }
 
         public int BadCount { get; set; }
         public int Progress { get; set; }

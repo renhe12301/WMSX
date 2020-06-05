@@ -213,7 +213,7 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, int sortingCount, string trayCode, int areaId, string tag)
+        public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId, string tag)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try

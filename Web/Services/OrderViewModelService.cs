@@ -260,10 +260,10 @@ namespace Web.Services
                          dynamic dyn = new ExpandoObject();
                          dyn.MaterialId = mg.First().MaterialDic.Id;
                          dyn.MaterialName = mg.First().MaterialDic.MaterialName;
-                         int materialCount = mg.Sum(m => m.MaterialCount);
+                         double materialCount = mg.Sum(m => m.MaterialCount);
                          double totalAmount = mg.Sum(m => m.Amount.GetValueOrDefault());
                          dyn.MaterialCount = materialCount;
-                         int occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
+                         double occCount = tkOrderRows.Where(or => or.MaterialDicId == mg.First().MaterialDicId)
                              .Sum(or => or.PreCount);
                          dyn.RemainingCount = materialCount - occCount;
                          dyn.OccCount = occCount;
