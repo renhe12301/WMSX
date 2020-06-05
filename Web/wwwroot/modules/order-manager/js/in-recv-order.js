@@ -183,6 +183,18 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '集约化Id',
+                    field: 'SourceId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '集约化单据类型',
+                    field: 'SourceOrderType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '接收日期',
                     field: 'ApplyTime',
                     valign: 'middle',

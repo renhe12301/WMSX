@@ -121,6 +121,9 @@ namespace Web.ViewModels.OrderManager
         public int IsScrap { get; set; }
 
         public string IsScrapStr { get; set; }
+        
+        
+        public string SourceOrderType { get; set; }
 
         /// <summary>
         /// 关联拆分订单行

@@ -146,6 +146,12 @@ $(function () {
                     }
                 },
                 {
+                    title: '集约化单据类型',
+                    field: 'SourceOrderType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '创建日期',
                     field: 'CreateTime',
                     valign: 'middle',

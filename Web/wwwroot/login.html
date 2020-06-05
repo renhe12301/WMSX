@@ -22,7 +22,9 @@
     <script>
         $(function () {
             var responseData = null;
-            $("#loginBtn").click(function () {
+            
+            var loginOp = function()
+            {
                 var loginName = $("#loginTxt").val();
                 var pwd = $("#pwdTxt").val();
                 if (loginName == "")
@@ -91,6 +93,18 @@
                         toastr.error("访问服务出现故障！", '错误信息', {timeOut: 3000});
                     }
                 });
+            }
+            
+            
+            $('#pwdTxt').bind('keypress',function(event){
+                if(event.keyCode == "13")
+                {
+                    loginOp();
+                }
+            });
+            
+            $("#loginBtn").click(function () {
+                loginOp();
            });
 
             $("#assign-btn").click(function () {

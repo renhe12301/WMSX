@@ -248,7 +248,8 @@ namespace Web.Services
                     Currency = subOrderViewModel.Currency,
                     BusinessTypeCode = subOrderViewModel.BusinessTypeCode,
                     TotalAmount = subOrderViewModel.TotalAmount,
-                    SourceId = subOrderViewModel.SourceId
+                    SourceId = subOrderViewModel.SourceId,
+                    SourceOrderType = subOrderViewModel.SourceOrderType
                     
                 };
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();

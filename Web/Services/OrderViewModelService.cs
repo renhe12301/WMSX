@@ -108,6 +108,7 @@ namespace Web.Services
                     orderViewModel.EmployeeName = e.Employee?.UserName;
                     orderViewModel.SourceId = e.SourceId;
                     orderViewModel.BussinessTypeCode = e.BusinessTypeCode;
+                    orderViewModel.SourceOrderType = e.SourceOrderType;
                     orderViewModels.Add(orderViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
