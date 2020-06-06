@@ -13,8 +13,8 @@ $(function () {
     $('#donutChart').css("width", parentWidth - 200);
     $('#barChart').css("height", parentHeight / 2 - 105);
     $('#barChart').css("width", parentWidth - 200);
-    $('#barChart2').css("height", parentHeight / 2 - 105);
-    $('#barChart2').css("width", parentWidth - 200);
+    // $('#barChart2').css("height", parentHeight / 2 - 105);
+    // $('#barChart2').css("width", parentWidth - 200);
 
     renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'ou',url:controllers.ou["get-ou-trees"],
         successCallback:function(rdata)
@@ -25,7 +25,7 @@ $(function () {
                 var name = rdata.Children[0].Name;
                 $("#warehouse-title").text(name+"-"+"库存组织物料统计");
                 $("#area-title").text(name+"-"+"子库存物料统计");
-                $("#type-title").text(name+"-"+"物料类型统计");
+                // $("#type-title").text(name+"-"+"物料类型统计");
                loadChart(id);
             }
 
@@ -38,7 +38,7 @@ $(function () {
             }
             $("#warehouse-title").text(data.text+"-"+"库存组织物料统计");
             $("#area-title").text(data.text+"-"+"子库存物料统计");
-            $("#type-title").text(data.text+"-"+"物料类型统计");
+            // $("#type-title").text(data.text+"-"+"物料类型统计");
             loadChart(ouId);
         },
         showRoot:true
@@ -84,7 +84,7 @@ $(function () {
                         maintainAspectRatio : false,
                         responsive : true,
                     };
-                    var donutChart = new Chart(donutChartCanvas, {
+                    new Chart(donutChartCanvas, {
                         type: 'doughnut',
                         data: donutData,
                         options: donutOptions
@@ -128,7 +128,7 @@ $(function () {
                         maintainAspectRatio     : false,
                         datasetFill             : false
                     };
-                    var barChart = new Chart(barChartCanvas, {
+                    new Chart(barChartCanvas, {
                         type: 'bar',
                         data: barChartData,
                         options: barChartOptions
@@ -138,56 +138,53 @@ $(function () {
 
             }
         });
-
-
-        asynTask({type:'get',url:controllers["material-type"]["material-type-chart"],
-            jsonData:
-                {
-                    ouId:ouId
-                },
-            successCallback:function (response) {
-                if(response.Code==200)
-                {
-                    var barChartData = {
-                        labels  : response.Data.labels,
-                        datasets: [
-                            {
-                                label               : '物料类型统计',
-                                backgroundColor     : 'rgba(60,141,188,0.9)',
-                                borderColor         : 'rgba(60,141,188,0.8)',
-                                pointRadius          : false,
-                                pointColor          : '#3b8bba',
-                                pointStrokeColor    : 'rgba(60,141,188,1)',
-                                pointHighlightFill  : '#fff',
-                                pointHighlightStroke: 'rgba(60,141,188,1)',
-                                data                : response.Data.datas
-                            }
-                        ]
-                    };
-                    var barChartCanvas = $('#barChart2').get(0).getContext('2d');
-                    var barChartData = jQuery.extend(true, {}, barChartData);
-                    var temp1 = barChartData.datasets[0];
-                    barChartData.datasets[0] = temp1;
-
-                    var barChartOptions = {
-                        responsive              : true,
-                        maintainAspectRatio     : false,
-                        datasetFill             : false
-                    };
-                    var barChart = new Chart(barChartCanvas, {
-                        type: 'bar',
-                        data: barChartData,
-                        options: barChartOptions
-                    });
-                    loadingClose();
-
-                }
-
-            }
-        });
-
-
-
+        
+        // asynTask({type:'get',url:controllers["material-type"]["material-type-chart"],
+        //     jsonData:
+        //         {
+        //             ouId:ouId
+        //         },
+        //     successCallback:function (response) {
+        //         if(response.Code==200)
+        //         {
+        //             var barChartData = {
+        //                 labels  : response.Data.labels,
+        //                 datasets: [
+        //                     {
+        //                         label               : '物料类型统计',
+        //                         backgroundColor     : 'rgba(60,141,188,0.9)',
+        //                         borderColor         : 'rgba(60,141,188,0.8)',
+        //                         pointRadius          : false,
+        //                         pointColor          : '#3b8bba',
+        //                         pointStrokeColor    : 'rgba(60,141,188,1)',
+        //                         pointHighlightFill  : '#fff',
+        //                         pointHighlightStroke: 'rgba(60,141,188,1)',
+        //                         data                : response.Data.datas
+        //                     }
+        //                 ]
+        //             };
+        //             var barChartCanvas = $('#barChart2').get(0).getContext('2d');
+        //             var barChartData = jQuery.extend(true, {}, barChartData);
+        //             var temp1 = barChartData.datasets[0];
+        //             barChartData.datasets[0] = temp1;
+        //
+        //             var barChartOptions = {
+        //                 responsive              : true,
+        //                 maintainAspectRatio     : false,
+        //                 datasetFill             : false
+        //             };
+        //             var barChart = new Chart(barChartCanvas, {
+        //                 type: 'bar',
+        //                 data: barChartData,
+        //                 options: barChartOptions
+        //             });
+        //             loadingClose();
+        //
+        //         }
+        //
+        //     }
+        // });
+        loadingClose();
     };
 
 

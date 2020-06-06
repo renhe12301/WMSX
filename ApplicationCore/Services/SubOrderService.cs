@@ -183,7 +183,8 @@ namespace ApplicationCore.Services
 
                             DateTime now = DateTime.Now;
                             if ((sortingCount + subOrderRow.Sorting.GetValueOrDefault()) > subOrderRow.PreCount)
-                                throw new Exception(string.Format("已分拣数量总和大于订单行[{0}]数量", subOrderRowId));
+                                throw new Exception(string.Format("已分拣数量[{0}]总和大于订单行[{1}]数量[{2}]", 
+                                    (sortingCount + subOrderRow.Sorting.GetValueOrDefault()),subOrderRowId,subOrderRow.PreCount));
 
                             WarehouseTray warehouseTray = null;
                             if (whTrays.Count == 0)
