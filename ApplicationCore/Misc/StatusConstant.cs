@@ -25,7 +25,7 @@ namespace ApplicationCore.Misc
         入库接收 = 1,
         入库退库 = 2,
         出库领料 = 3,
-        出库退料 = 4,
+        入库退料 = 4,
         接收退料 = 5
     }
     

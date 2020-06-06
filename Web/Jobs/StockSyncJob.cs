@@ -61,6 +61,7 @@ namespace Web.Jobs
                                     rkOrderRequest.RKOrderRequest = new RKOrderRequest();
                                     rkOrderRequest.RKOrderRequest.headId = subOrder.Id;
                                     rkOrderRequest.RKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    rkOrderRequest.RKOrderRequest.documentType = subOrder.SourceOrderType;
                                     rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                                     rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     rkOrderRequest.RKOrderRequest.vendorId = subOrder.SupplierId.ToString();
@@ -98,6 +99,7 @@ namespace Web.Jobs
                                     ckOrderRequest.CKOrderRequest = new CKOrderRequest();
                                     ckOrderRequest.CKOrderRequest.headId = subOrder.Id;
                                     ckOrderRequest.CKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    ckOrderRequest.CKOrderRequest.documentType = subOrder.SourceOrderType;
                                     ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                                     ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
@@ -127,6 +129,7 @@ namespace Web.Jobs
                                     tkOrderRequest.TKOrderRequest = new TKOrderRequest();
                                     tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
                                     tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    tkOrderRequest.TKOrderRequest.documentType = subOrder.SourceOrderType;
                                     tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                                     tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
@@ -149,13 +152,14 @@ namespace Web.Jobs
                                     subOrder.IsSync = 1;
                                     this._subOrderRepository.Update(subOrder);
                                 }
-                                else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料))
+                                else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料))
                                 {
                                     InboundReturnsPort inboundReturnsPort = new InboundReturnsPortClient();
                                     RTOrderRequest1 rtOrderRequest1 = new RTOrderRequest1();
                                     rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
                                     rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
                                     rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
+                                    rtOrderRequest1.RTOrderRequest.documentType = subOrder.SourceOrderType;
                                     rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.Id.ToString();
                                     rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                                     rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;

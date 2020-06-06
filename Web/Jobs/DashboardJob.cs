@@ -295,7 +295,7 @@ namespace Web.Jobs
             List<Order> orders3 = orders.Where(r =>
                 r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
             List<Order> orders4 = orders.Where(r =>
-                r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退料)).ToList();
+                r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料)).ToList();
             List<Order> orders5 = orders.Where(r =>
                 r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料)).ToList();
             List<Order> orders6 = orders.Where(r =>

@@ -337,7 +337,7 @@ namespace Web.Services
                     orderTypeIds = new List<int>
                     {
                         Convert.ToInt32(ORDER_TYPE.入库接收),
-                        Convert.ToInt32(ORDER_TYPE.出库退料)
+                        Convert.ToInt32(ORDER_TYPE.入库退料)
                     };
                 }
                 else

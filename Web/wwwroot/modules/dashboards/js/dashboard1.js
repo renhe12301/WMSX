@@ -272,7 +272,7 @@ function initInOrderAnalysis(chart) {
 
         calculable : false,
         legend: {
-            data:['入库接收','接收退料','出库退料'],
+            data:['入库接收','接收退料','入库退料'],
             textStyle:{
                 color:"#e9ebee"
 
