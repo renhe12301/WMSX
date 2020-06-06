@@ -43,7 +43,7 @@ namespace Web.Services
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
-            int?id,string orderNumber,int? sourceId, int? orderTypeId,string status,int? ouId,int? warehouseId,int? pyId,string applyUserCode, 
+            int?id,string orderNumber,int? sourceId, string orderTypeIds,string status,int? ouId,int? warehouseId,int? pyId,string applyUserCode, 
             string approveUserCode,int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
             string eApproveTime,string sCreateTime,string eCreateTime,string sFinishTime,string eFinishTime)
         {
@@ -58,16 +58,23 @@ namespace Web.Services
                                                   StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
 
                 }
+                List<int> orderTypes = null;
+                if (!string.IsNullOrEmpty(orderTypeIds))
+                {
+                    orderTypes = orderTypeIds.Split(new char[]{','}, 
+                        StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+
+                }
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
-                    spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber,sourceId, orderTypeId,
+                    spec = new OrderPaginatedSpecification(pageIndex.Value,itemsPage.Value,id, orderNumber,sourceId, orderTypes,
                         orderStatuss,ouId,warehouseId,pyId, applyUserCode, approveUserCode,employeeId,employeeName, supplierId, supplierName, 
                         sApplyTime, eApplyTime, sApproveTime, eApproveTime,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
-                    spec = new OrderSpecification(id, orderNumber,sourceId, orderTypeId,
+                    spec = new OrderSpecification(id, orderNumber,sourceId, orderTypes,
                         orderStatuss,ouId,warehouseId,pyId,applyUserCode, approveUserCode, employeeId,employeeName, supplierId, supplierName,sApplyTime, eApplyTime, 
                         sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
@@ -113,7 +120,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
-                    var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber,sourceId, orderTypeId,
+                    var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber,sourceId, orderTypes,
                         orderStatuss,ouId,warehouseId, pyId,applyUserCode, approveUserCode, employeeId,employeeName,supplierId, supplierName,
                         sApplyTime, eApplyTime, sApproveTime, eApproveTime,sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();

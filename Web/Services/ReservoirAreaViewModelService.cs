@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.FlowRecord;
+using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Entities.TaskManager;
 using ApplicationCore.Interfaces;
@@ -25,12 +26,14 @@ namespace Web.Services
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
+        private readonly IAsyncRepository<Order> _orderRepository;
         public ReservoirAreaViewModelService(IReservoirAreaService reservoirAreaService,
                                              IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                              ILogRecordService logRecordService,
                                              IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
                                              IAsyncRepository<WarehouseTray> warehouseTrayRepository,
-                                             IAsyncRepository<InOutTask> inOutTaskRepository
+                                             IAsyncRepository<InOutTask> inOutTaskRepository,
+                                             IAsyncRepository<Order> orderRepository
                                              )
         {
             this._reservoirAreaService = reservoirAreaService;
@@ -39,6 +42,7 @@ namespace Web.Services
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._inOutTaskRepository = inOutTaskRepository;
+            this._orderRepository = orderRepository;
         }
 
 
@@ -298,7 +302,6 @@ namespace Web.Services
 
             return response;
         }
-
 
         public async Task<ResponseResultViewModel> AssignLocation(LocationViewModel locationViewModel)
         {

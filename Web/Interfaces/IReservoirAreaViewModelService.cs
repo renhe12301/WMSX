@@ -20,6 +20,7 @@ namespace Web.Interfaces
         
         Task<ResponseResultViewModel> AreaEntryOutRecordChart(int ouId, int inOutType, int queryType);
         
-        
+
+
     }
 }

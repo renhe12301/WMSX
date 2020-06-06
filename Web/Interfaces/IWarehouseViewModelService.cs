@@ -18,5 +18,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> WarehouseTrayChart(int ouId);
 
         Task<ResponseResultViewModel> WarehouseEntryOutRecordChart(int ouId, int inOutType, int queryType);
+
+        Task<ResponseResultViewModel> WarehouseEntryOutOrderChart(int ouId, int inOutType, int queryType);
     }
 }

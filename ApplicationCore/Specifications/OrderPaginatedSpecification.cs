@@ -6,7 +6,7 @@ namespace ApplicationCore.Specifications
 {
     public class OrderPaginatedSpecification : BaseSpecification<Order>
     {
-        public OrderPaginatedSpecification(int skip, int take, int? id, string orderNumber,int? sourceId, int? orderTypeId,
+        public OrderPaginatedSpecification(int skip, int take, int? id, string orderNumber,int? sourceId, List<int> orderTypeIds,
              List<int> status, int? ouId, int? warehouseId, int? pyId, string applyUserCode, string approveUserCode,
              int? employeeId, string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime,
              string sApproveTime, string eApproveTime,
@@ -15,7 +15,7 @@ namespace ApplicationCore.Specifications
             : base(b => (!id.HasValue || b.Id == id) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                        (!sourceId.HasValue || b.SourceId == sourceId) &&
-                       (!orderTypeId.HasValue || b.OrderTypeId == orderTypeId) &&
+                       (orderTypeIds == null || orderTypeIds.Contains(b.OrderTypeId)) &&
                        (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
                        (!warehouseId.HasValue || b.WarehouseId == warehouseId) &&
