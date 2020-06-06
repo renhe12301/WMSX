@@ -89,7 +89,7 @@ namespace ApplicationCore.Services
                         var subOrderRows = this._subOrderRowRepository.List(subOrderRowSpec);
                         if (subOrderRows.Count == 0)
                             throw new Exception(string.Format("订单行编号[{0}],不存在！", subOrderRowId));
-                        SubOrderRow subOrderRow = subOrderRows.First();
+                        SubOrderRow subOrderRow = subOrderRows[0];
                         if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.待处理) &&
                             subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单行[{0}]状态必须为待处理或执行中！", subOrderRowId));
@@ -122,15 +122,15 @@ namespace ApplicationCore.Services
                                     sortingTray.TrayCode,
                                     sortingTray.SubOrderRow.Id, subOrderRowId));
 
-                            var srcTrayCount = sortingTray.MaterialCount + sortingTray.OutCount;
+                            var srcTrayCount = sortingTray.MaterialCount + sortingTray.OutCount.GetValueOrDefault();
                             subOrderRow.Sorting -= srcTrayCount;
                             var pOrderRow = subOrderRow.OrderRow;
                             pOrderRow.Sorting -= srcTrayCount;
                             if ((subOrderRow.Sorting + sortingCount) > subOrderRow.PreCount)
                             {
-                                throw new Exception(string.Format("托盘分拣的总数量[{0}]大于订单行[{1}]数量",
-                                    (subOrderRow.Sorting + sortingCount), sortingTray.SubOrderRow.Id,
-                                    subOrderRowId));
+                                throw new Exception(string.Format("当前托盘分拣的数量[{0}]大于订单行[{1}]数量[{2}]",
+                                    sortingCount, sortingTray.SubOrderRow.Id,
+                                    subOrderRow.PreCount));
                             }
 
                             double pOrderRowSorting = pOrderRow.Sorting.GetValueOrDefault();

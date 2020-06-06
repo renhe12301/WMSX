@@ -29,8 +29,8 @@ namespace Web.Controllers.Api
         /// <param name="id">托盘唯一id</param>
         /// <param name="trayCode">托盘唯一编码</param>
         /// <param name="rangeMaterialCount">托盘物料数量范围,例如 1,100</param>
-        /// <param name="orderId">关联订单编号</param>
-        /// <param name="orderRowId">关联订单行编号</param>
+        /// <param name="subOrderId">关联订单编号</param>
+        /// <param name="subOrderRowId">关联订单行编号</param>
         /// <param name="carrier">载体</param>
         /// <param name="trayTaskStatus">托盘任务状态,多个以逗号隔开</param>
         /// <param name="ouId">业务实体编号</param>
@@ -41,11 +41,11 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetTrays(int? pageIndex, int? itemsPage,
-              int? id, string trayCode, string rangeMaterialCount,int? orderId, int? orderRowId, int? carrier,
+              int? id, string trayCode, string rangeMaterialCount,int? subOrderId, int? subOrderRowId, int? carrier,
             string trayTaskStatus, int? locationId,int? ouId, int? wareHouseId, int? areaId,int? pyId)
         {
             var response = await this._warehouseTrayViewModelService.GetTrays(pageIndex,itemsPage,id,
-                trayCode,rangeMaterialCount, orderId,orderRowId,carrier, trayTaskStatus, locationId,ouId, wareHouseId, areaId,pyId);
+                trayCode,rangeMaterialCount, subOrderId,subOrderRowId,carrier, trayTaskStatus, locationId,ouId, wareHouseId, areaId,pyId);
             return Content(JsonConvert.SerializeObject(response));
         }
 

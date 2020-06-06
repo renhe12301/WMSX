@@ -9,7 +9,7 @@ namespace ApplicationCore.Specifications
     public class WarehouseMaterialPaginatedSpecification: BaseSpecification<WarehouseMaterial>
     {
         public WarehouseMaterialPaginatedSpecification(int skip,int take,int? id, string materialCode, int? materialDicId,
-            string materialName,string materialSpec,string trayCode, int? trayDicId,int? orderId,int? orderRowId, 
+            string materialName,string materialSpec,string trayCode, int? warehouseTrayId,int? subOrderId,int? subOrderRowId, 
             int? carrier, List<int> traySteps, int? locationId, int? ouId, int? wareHouseId, int? areaId,int? supplierId,
             int? supplierSiteId,int? pyId,string sCreateTime,string eCreateTime)
             : base(b =>(!id.HasValue || b.Id == id) &&
@@ -18,10 +18,10 @@ namespace ApplicationCore.Specifications
                        (materialName == null || b.MaterialDic.MaterialName.Contains(materialName)) &&
                        (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&
                        (trayCode == null || b.WarehouseTray.TrayCode == trayCode) &&
-                       (!trayDicId.HasValue || b.WarehouseTray.Id == trayDicId) &&
-                       (!orderId.HasValue || b.SubOrderId == orderId) &&
+                       (!warehouseTrayId.HasValue || b.WarehouseTray.Id == warehouseTrayId) &&
+                       (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
                        (!carrier.HasValue || b.Carrier == carrier) &&
-                       (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
+                       (!subOrderRowId.HasValue || b.SubOrderRowId == subOrderRowId) &&
                        (traySteps == null || traySteps.Contains(b.WarehouseTray.TrayStep.Value)) &&
                        (!locationId.HasValue || b.LocationId == locationId) &&
                        (!ouId.HasValue || b.OUId == ouId) &&

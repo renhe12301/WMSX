@@ -31,13 +31,12 @@ namespace Web.Controllers.Api
         /// <param name="materialName">关联物料字典名称</param>
         /// <param name="materialSpec">关联物料字典属性</param>
         /// <param name="trayCode">关联托盘字典编码</param>
-        /// <param name="trayDicId">关联托盘字典编号</param>
-        /// <param name="orderId">关联订单编号</param>
-        /// <param name="orderRowId">关联订单行编号</param>
+        /// <param name="warehouseTrayId">关联托盘字典编号</param>
+        /// <param name="subOrderId">关联订单编号</param>
+        /// <param name="subOrderRowId">关联订单行编号</param>
         /// <param name="carrier">所属载体</param>
         /// <param name="traySteps">关联托盘状态,多个以逗号隔开</param>
         /// <param name="locationId">所在货位编号</param>
-        /// <param name="orgId">所属公司编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">所在仓库编号</param>
         /// <param name="areaId">所在分区编号</param>
@@ -48,12 +47,12 @@ namespace Web.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetMaterials(int? pageIndex,
             int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
-            int? trayDicId, int? orderId, int? orderRowId, int? carrier, string traySteps, int? locationId, int? orgId, int? ouId
+            int? warehouseTrayId, int? subOrderId, int? subOrderRowId, int? carrier, string traySteps, int? locationId, int? ouId
             , int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId,int? pyId)
         {
             var response = await this._warehouseMaterialViewModelService.GetMaterials(pageIndex,
-                itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode, trayDicId, orderId,orderRowId,
-                carrier, traySteps, locationId,orgId,ouId,wareHouseId, areaId,supplierId,supplierSiteId,pyId);
+                itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode, warehouseTrayId, subOrderId,subOrderRowId,
+                carrier, traySteps, locationId,ouId,wareHouseId, areaId,supplierId,supplierSiteId,pyId);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

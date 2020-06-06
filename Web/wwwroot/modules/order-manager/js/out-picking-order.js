@@ -29,7 +29,7 @@ var sCreateTime=null;
 var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
-var type=3;
+var type=[3];
 var tstatus=[0,1];
 var orderId=0;
 $(function () {
@@ -98,7 +98,7 @@ $(function () {
             sourceId=$("#source-id").val();
             corderId=$("#order-id").val();
             if(tstatus)rd.status=tstatus;
-            if(type)rd.orderTypeId=type;
+            if(type)rd.orderTypeIds=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;
             if(eCreateTime)rd.eCreateTime=eCreateTime;
             if(sFinishTime)rd.sFinishTime=sFinishTime;
@@ -249,7 +249,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '物料名称',
+                    title: '行物料',
                     field: 'MaterialDicName',
                     valign: 'middle',
                     align: 'center'

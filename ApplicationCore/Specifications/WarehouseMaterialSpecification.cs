@@ -9,7 +9,7 @@ namespace ApplicationCore.Specifications
     public class WarehouseMaterialSpecification: BaseSpecification<WarehouseMaterial>
     {
         public WarehouseMaterialSpecification(int? id,string materialCode, int? materialDicId,
-            string materialName,string materialSpec,string trayCode,int? warehouseTrayId,int? orderId,int? orderRowId, int? carrier,
+            string materialName,string materialSpec,string trayCode,int? warehouseTrayId,int? subOrderId,int? subOrderRowId, int? carrier,
             List<int> traySteps, int? locationId,int? ouId,int? wareHouseId,int? areaId,int? supplierId,int? supplierSiteId,int? pyId,
             string sCreateTime,string eCreateTime)
             :base(b =>(!id.HasValue || b.Id == id) &&
@@ -21,8 +21,8 @@ namespace ApplicationCore.Specifications
                       (!warehouseTrayId.HasValue || b.WarehouseTray.Id == warehouseTrayId) &&
                       (!ouId.HasValue || b.OUId == ouId) &&
                       (!carrier.HasValue || b.Carrier == carrier)&&
-                      (!orderId.HasValue || b.SubOrderId == orderId) &&
-                      (!orderRowId.HasValue || b.SubOrderRowId == orderRowId) &&
+                      (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
+                      (!subOrderRowId.HasValue || b.SubOrderRowId == subOrderRowId) &&
                       (traySteps == null || traySteps.Contains(b.WarehouseTray.TrayStep.Value)) &&
                       (!locationId.HasValue||b.LocationId== locationId) &&
                       (!wareHouseId.HasValue || b.WarehouseId == wareHouseId) &&

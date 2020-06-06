@@ -4,7 +4,9 @@ function whTrayQueryParams(params) {
         itemsPage: params.limit
     }
 }
-
+function orderRowDetailQueryParams() {
+    return {};
+}
 var ouId=null;
 var whId=null;
 var areaId=null;
@@ -107,6 +109,75 @@ $(function () {
         toolbar: '#toolbar',
         showColumns: true,
         showRefresh: true,
+        detailView: true,
+        onExpandRow: function (index, row, $detail) {
+            var subTable2 = $detail.html('<table></table>').find('table');
+            subTable2.bootstrapTable({
+                ajax:function(request)
+                {
+                    var srd=request.data;
+                    srd.warehouseTrayId=row.Id;
+                    asynTask({
+                        type:'get',
+                        url:controllers["warehouse-material"]["get-materials"],
+                        jsonData: srd,
+                        successCallback:function(response)
+                        {
+                            subTable2.bootstrapTable('load', response.Data);
+                            subTable2.bootstrapTable('hideLoading');
+                        }
+                    });
+                },
+                height:200,
+                queryParams:'orderRowDetailQueryParams',
+                pagination: false,
+                columns:
+                    [
+                        {
+                            title: '编号',
+                            field: 'Id',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '物料编码',
+                            field: 'Code',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '物料名称',
+                            field: 'MaterialName',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '物料属性',
+                            field: 'Spec',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '物料数量',
+                            field: 'MaterialCount',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '所在货位',
+                            field: 'LocationCode',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '所在托盘',
+                            field: 'TrayCode',
+                            valign: 'middle',
+                            align: 'center'
+                        }
+                    ]
+            });
+        },
         columns:
             [
                 {
@@ -149,19 +220,22 @@ $(function () {
                     title: '子库区',
                     field: 'ReservoirAreaName',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    visible:false
                 },
                 {
                     title: '库组织',
                     field: 'WarehouseName',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    visible:false
                 },
                 {
                     title: '业务实体',
                     field: 'OUName',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    visible:false
                 }
             ]
     });

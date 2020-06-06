@@ -55,8 +55,10 @@ namespace Web.Jobs
                         foreach (var subRow in subRows)
                         {
                             if (subRow.RealityCount >= subRow.PreCount)
+                            {
                                 subRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                            updSubRows.Add(subRow);
+                                updSubRows.Add(subRow);
+                            }
                         }
 
                         if (updSubRows.Count > 0)
@@ -79,8 +81,10 @@ namespace Web.Jobs
                                 null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, null, null);
                             List<SubOrderRow> endRows = this._subOrderRowRepository.List(endSubRowSpec);
                             if (allRows.Count == endRows.Count)
+                            {
                                 subOrder.Status = Convert.ToInt32(ORDER_STATUS.完成);
-                            updSubOrders.Add(subOrder);
+                                updSubOrders.Add(subOrder);
+                            }
                         }
 
                         if (updSubOrders.Count > 0)
