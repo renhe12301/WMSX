@@ -177,6 +177,62 @@ namespace ApplicationCore.Services
             }
         }
 
+        public async Task TrayEntry(string trayCode, int areaId)
+        {
+            using (await ModuleLock.GetAsyncLock().LockAsync())
+            {
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                {
+                    try
+                    {
+                        Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
+                        Guard.Against.Zero(areaId, nameof(areaId));
+
+                        ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null,
+                            null,
+                            null, null, null);
+                        List<ReservoirArea> areas = this._reservoirAreaRepository.List(reservoirAreaSpec);
+                        if (areas.Count == 0) throw new Exception(string.Format("子库存[{0}],不存在！", areaId));
+                        WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, trayCode,
+                            null,
+                            null, null, null, null, null, null, null, null, null);
+                        List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                        if(warehouseTrays.Count==0)
+                            throw new Exception(string.Format("托盘[{0}],不存在!",trayCode));
+                        WarehouseTray warehouseTray = warehouseTrays[0];
+                        if (warehouseTray.MaterialCount <= 0)
+                            throw new Exception(string.Format("当前的操作只适用于剩余物料反馈,无法进行空托盘入库操作!"));
+                        if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
+                        {
+                            throw new Exception(string.Format("托盘[{0}]状态未初始化,当前状态为[{1}]！",
+                                trayCode, Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep)));
+                        }
+
+                        warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
+                        this._warehouseTrayRepository.Update(warehouseTray);
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                            LogDesc = string.Format("剩余托盘[{0}]物料返库,返库库区[{1}]", trayCode, areaId),
+                            CreateTime = DateTime.Now
+                        });
+
+                        scope.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logRecordRepository.Add(new LogRecord
+                        {
+                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                            LogDesc = ex.ToString(),
+                            CreateTime = DateTime.Now
+                        });
+                        throw;
+                    }
+                }
+            }
+        }
+
         public async Task EntryApply(string fromPort, string barCode, int cargoHeight, string cargoWeight)
         {
             using (await ModuleLock.GetAsyncLock().LockAsync())

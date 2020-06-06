@@ -47,6 +47,18 @@ namespace Web.Controllers.Api
             var response = await this._inOutTaskViewModelService.EntryApply(warehouseTrayViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 托盘剩余物料入库
+        /// </summary>
+        /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> TrayEntry([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
+        {
+            var response = await this._inOutTaskViewModelService.TrayEntry(warehouseTrayViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
         /// <summary>
         /// 空托盘出库任务申请

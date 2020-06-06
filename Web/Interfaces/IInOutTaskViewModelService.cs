@@ -12,6 +12,8 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel);
 
         Task<ResponseResultViewModel> EmptyEntry(WarehouseTrayViewModel warehouseTrayViewModel);
+        
+        Task<ResponseResultViewModel> TrayEntry(WarehouseTrayViewModel warehouseTrayViewModel);
 
         Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel);
         
