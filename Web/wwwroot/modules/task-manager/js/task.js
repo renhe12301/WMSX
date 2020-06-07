@@ -4,7 +4,9 @@ function taskQueryParams(params) {
         itemsPage: params.limit
     }
 }
-
+function orderRowDetailQueryParams() {
+    return {};
+}
 var ouId=null;
 var whId=null;
 var areaId=null;
@@ -122,6 +124,157 @@ $(function () {
         toolbar: '#toolbar',
         showColumns: true,
         showRefresh: true,
+        detailView: true,
+        onExpandRow: function (index, row, $detail) {
+            if(row.Status!=0&&row.Status!=1)return;
+            var subTable = $detail.html('<table></table>').find('table');
+            subTable.bootstrapTable({
+                ajax:function(request)
+                {
+                    var srd=request.data;
+                    srd.Id=row.WarehouseTrayId;
+                    asynTask({
+                        type:'get',
+                        url:controllers["warehouse-tray"]["get-trays"],
+                        jsonData: srd,
+                        successCallback:function(response)
+                        {
+                            subTable.bootstrapTable('load', response.Data);
+                            subTable.bootstrapTable('hideLoading');
+                        }
+                    });
+                },
+                height:200,
+                queryParams:'orderRowDetailQueryParams',
+                pagination: false,
+                detailView: true,
+                onExpandRow: function (index, row, $detail) {
+                    var subTable2 = $detail.html('<table></table>').find('table');
+                    subTable2.bootstrapTable({
+                        ajax:function(request)
+                        {
+                            var srd=request.data;
+                            srd.warehouseTrayId=row.Id;
+                            asynTask({
+                                type:'get',
+                                url:controllers["warehouse-material"]["get-materials"],
+                                jsonData: srd,
+                                successCallback:function(response)
+                                {
+                                    subTable2.bootstrapTable('load', response.Data);
+                                    subTable2.bootstrapTable('hideLoading');
+                                }
+                            });
+                        },
+                        height:200,
+                        queryParams:'orderRowDetailQueryParams',
+                        pagination: false,
+                        columns:
+                            [
+                                {
+                                    title: '编号',
+                                    field: 'Id',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '物料编码',
+                                    field: 'Code',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '物料名称',
+                                    field: 'MaterialName',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '物料属性',
+                                    field: 'Spec',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '物料数量',
+                                    field: 'MaterialCount',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '所在货位',
+                                    field: 'LocationCode',
+                                    valign: 'middle',
+                                    align: 'center'
+                                },
+                                {
+                                    title: '所在托盘',
+                                    field: 'TrayCode',
+                                    valign: 'middle',
+                                    align: 'center'
+                                }
+                            ]
+                    });
+                },
+                columns:
+                    [
+                        {
+                            title: '编号',
+                            field: 'Id',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '托盘编码',
+                            field: 'TrayCode',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '物料数量',
+                            field: 'MaterialCount',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '所在货位',
+                            field: 'LocationCode',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '载体',
+                            field: 'Carrier',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '状态',
+                            field: 'TrayStepStr',
+                            valign: 'middle',
+                            align: 'center',
+                            formatter : function(value, row, index) {
+                                if(value=="初始化")
+                                {
+                                    return '<span class="badge bg-blue">value</span>';
+                                }
+                                else if(value=="入库中已执行"||value=="出库中已执行")
+                                {
+                                    return '<span class="badge bg-green">value</span>';
+                                }
+                                else if(value=="待入库"||value=="入库申请"||value=="入库中未执行"
+                                    ||value=="待出库"||value=="出库中未执行")
+                                {
+                                    return '<span class="badge bg-yellow">value</span>';
+                                }
+                                else if(value=="入库完成"||value=="出库完成等待确认")
+                                    return '<span class="badge bg-gray">value</span>';
+
+                            }
+                        }
+                    ]
+            });
+        },
         columns:
             [
                 {

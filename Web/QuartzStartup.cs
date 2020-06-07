@@ -78,7 +78,7 @@ namespace Web
             await _scheduler.ScheduleJob(jobDetail3,trigger3);
             await _scheduler.ScheduleJob(jobDetail4,trigger4);
             await _scheduler.ScheduleJob(jobDetail5,trigger5);
-            await _scheduler.ScheduleJob(jobDetail6,trigger6);
+            // await _scheduler.ScheduleJob(jobDetail6,trigger6);
 
             _logger.LogInformation("Quarzt.net 启动成功...");
         }
