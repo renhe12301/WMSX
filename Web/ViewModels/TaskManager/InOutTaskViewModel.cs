@@ -7,9 +7,8 @@ namespace Web.ViewModels.TaskManager
     public class InOutTaskViewModel
     {
         public int Id { get; set; }
-        public string OrderNumber { get; set; }
-        public int? OrderId { get; set; }
-        public int? OrderRowId { get; set; }
+        public int? SubOrderId { get; set; }
+        public int? SubOrderRowId { get; set; }
         public string TrayCode { get; set; }
         public string SrcId { get; set; }
         public string TargetId { get; set; }
@@ -33,7 +32,10 @@ namespace Web.ViewModels.TaskManager
         public double? MaterialCount { get; set; }
         public string OUName { get; set; }
         public string WarehouseName { get; set; }
-      
+
+        public int? WarehouseTrayId { get; set; }
+
+        public int? ReservoirAreaId { get; set; }
         public string ReservoirAreaName { get; set;  }
         
         public int? PhyWarehouseId { get; set; }

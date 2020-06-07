@@ -201,7 +201,7 @@ namespace ApplicationCore.Services
                             throw new Exception(string.Format("托盘[{0}],不存在!",trayCode));
                         WarehouseTray warehouseTray = warehouseTrays[0];
                         if (warehouseTray.MaterialCount <= 0)
-                            throw new Exception(string.Format("当前的操作只适用于剩余物料反馈,无法进行空托盘入库操作!"));
+                            throw new Exception(string.Format("当前的操作只适用于剩余物料返库,无法进行空托盘入库操作!"));
                         if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
                         {
                             throw new Exception(string.Format("托盘[{0}]状态未初始化,当前状态为[{1}]！",
@@ -249,6 +249,9 @@ namespace ApplicationCore.Services
                         List<Location> locations = this._locationRepository.List(locationSpecification);
                         if (locations.Count == 0)
                             throw new Exception(string.Format("货位[{0}]不存在!", fromPort));
+
+                        int srcPhyWarehouseId = locations[0].PhyWarehouseId.GetValueOrDefault();
+                        
                         WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, barCode,
                             null, null,
                             null, null, null, null, null, null, null, null);
@@ -259,6 +262,11 @@ namespace ApplicationCore.Services
                         WarehouseTray warehouseTray = warehouseTrays[0];
                         if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.待入库))
                             throw new Exception(string.Format("托盘[{0}]未进行待入库操作", barCode));
+
+                        ReservoirArea area = warehouseTray.ReservoirArea;
+                        if(srcPhyWarehouseId!=area.PhyWarehouseId)
+                            throw new Exception(string.Format("当前入库申请货位[{0}]对应物理仓库Id[{1}]与托盘[{2}]绑定子库区[{3}]的物理仓库[{4}]不一致,入库申请失败!",
+                                fromPort,srcPhyWarehouseId,barCode,area.Id,area.PhyWarehouseId));
 
                         WarehouseMaterialSpecification warehouseMaterialSpecification =
                             new WarehouseMaterialSpecification(null, null,
@@ -295,7 +303,7 @@ namespace ApplicationCore.Services
                         this._logRecordRepository.Add(new LogRecord
                         {
                             LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                            LogDesc = string.Format("托盘[{0}],货位[{1}],入库申请",barCode , fromPort),
+                            LogDesc = string.Format("托盘[{0}],货位[{1}],入库申请!",barCode , fromPort),
                             CreateTime = DateTime.Now
                         });
                         scope.Complete();
@@ -391,11 +399,14 @@ namespace ApplicationCore.Services
                         if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
                         {
                             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
+                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                         }
                         else
                         {
+                            
                             warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
                             warehouseTray.OutCount = 0;
+                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
                         }
 
                         LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
@@ -408,7 +419,7 @@ namespace ApplicationCore.Services
                         location.InStock = warehouseTray.MaterialCount > 0
                             ? Convert.ToInt32(LOCATION_INSTOCK.有货)
                             : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
-                        warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                       
                         warehouseTray.LocationId = location.Id;
                         WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,
                             null,null,null,null,null,warehouseTray.Id,
@@ -419,7 +430,7 @@ namespace ApplicationCore.Services
                         warehouseMaterials.ForEach(m =>
                         {
                             m.LocationId = location.Id;
-                            m.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                            m.Carrier = warehouseTray.Carrier;
                         });
                         this._warehouseMaterialRepository.Update(warehouseMaterials);
                         this._warehouseTrayRepository.Update(warehouseTray);

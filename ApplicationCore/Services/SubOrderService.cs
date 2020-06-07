@@ -98,16 +98,22 @@ namespace ApplicationCore.Services
                         var areas = this._reservoirAreaRepository.List(areaSpec);
                         if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
                         var area = areas[0];
+                        
+                        if (area.WarehouseId != subOrder.WarehouseId)
+                            throw new Exception(string.Format("当前订单[{0}]的库存组织和分拣托盘的库组织不一致,无法分拣！", subOrderId));
+
+                        LocationSpecification locationSpec = new LocationSpecification(null,null,null,null,null,null,
+                            null,area.Id,null,null,null,null,null,null);
+                        List<Location> locations = this._locationRepository.List(locationSpec);
+                        if(locations.Count==0)
+                            throw new Exception(string.Format("子库区[{0}]没有分配对应的仓库存储位,无法分拣!",area.Id));
 
                         var materialDicSpec =
                             new MaterialDicSpecification(subOrderRow.MaterialDicId, null, null, null, null);
                         var materialDics = this._materialDicRepository.List(materialDicSpec);
                         if (materialDics.Count == 0)
                             throw new Exception(string.Format("物料字典[{0}]),不存在！", subOrderRow.MaterialDicId));
-
-                        if (area.WarehouseId != subOrder.WarehouseId)
-                            throw new Exception(string.Format("当前订单[{0}]的库存组织和分拣托盘的库组织不一致,无法分拣！", subOrderId));
-
+                        
                         MaterialDic materialDic = materialDics[0];
 
                         var warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null, null, null, null,

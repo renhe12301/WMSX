@@ -48,7 +48,7 @@ namespace Web
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<BaseContext>(c =>
-              c.UseMySql(Configuration.GetConnectionString("WMSConnection")).EnableSensitiveDataLogging());
+              c.UseMySql(Configuration.GetConnectionString("WMSConnection")));
             ConfigureServices(services);
         }
 
@@ -119,6 +119,7 @@ namespace Web
             services.AddTransient<Web.Jobs.ChuKuKJob>();     
             services.AddTransient<Web.Jobs.SendWcsTaskJob>();    
             services.AddTransient<Web.Jobs.OrderStatusSyncJob>();     
+            services.AddTransient<Web.Jobs.StockSyncJob>();     
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
             services.AddSingleton<IJobFactory, IOCJobFactory>();

@@ -38,21 +38,21 @@ namespace Web
                 .Build();
             
             var trigger2 = TriggerBuilder.Create()
-                .WithCronSchedule("0/5 * * * * ?")
+                .WithCronSchedule("0/3 * * * * ?")
                 .Build();
             var jobDetail2 = JobBuilder.Create<Web.Jobs.RuKuJob>()
                 .WithIdentity("job2", "group2")
                 .Build();
             
             var trigger3 = TriggerBuilder.Create()
-                .WithCronSchedule("0/5 * * * * ?")
+                .WithCronSchedule("0/4 * * * * ?")
                 .Build();
             var jobDetail3 = JobBuilder.Create<Web.Jobs.ChuKuKJob>()
                 .WithIdentity("job3", "group3")
                 .Build();
             
             var trigger4 = TriggerBuilder.Create()
-                .WithCronSchedule("0/5 * * * * ?")
+                .WithCronSchedule("0/6 * * * * ?")
                 .Build();
             var jobDetail4 = JobBuilder.Create<Web.Jobs.OrderStatusSyncJob>()
                 .WithIdentity("job4", "group4")
@@ -66,7 +66,7 @@ namespace Web
                 .Build();
             
             var trigger6 = TriggerBuilder.Create()
-                .WithCronSchedule("0/5 * * * * ?")
+                .WithCronSchedule("0/7 * * * * ?")
                 .Build();
             var jobDetail6 = JobBuilder.Create<Web.Jobs.StockSyncJob>()
                 .WithIdentity("job6", "group6")
