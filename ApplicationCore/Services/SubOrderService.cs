@@ -98,15 +98,12 @@ namespace ApplicationCore.Services
                         var areas = this._reservoirAreaRepository.List(areaSpec);
                         if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
                         var area = areas[0];
-                        
-                        if (area.WarehouseId != subOrder.WarehouseId)
-                            throw new Exception(string.Format("当前订单[{0}]的库存组织和分拣托盘的库组织不一致,无法分拣！", subOrderId));
-
                         LocationSpecification locationSpec = new LocationSpecification(null,null,null,null,null,null,
                             null,area.Id,null,null,null,null,null,null);
                         List<Location> locations = this._locationRepository.List(locationSpec);
                         if(locations.Count==0)
                             throw new Exception(string.Format("子库区[{0}]没有分配对应的仓库存储位,无法分拣!",area.Id));
+                        
 
                         var materialDicSpec =
                             new MaterialDicSpecification(subOrderRow.MaterialDicId, null, null, null, null);
@@ -120,13 +117,31 @@ namespace ApplicationCore.Services
                             null, null, null, null, null, null);
 
                         var whTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+
+                        if (whTrays.Count > 0)
+                        {
+                            if (subOrderRow.ReservoirAreaId.HasValue)
+                            {
+                                if (subOrderRow.ReservoirAreaId != whTrays[0].ReservoirAreaId)
+                                    throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与订单行[{2}]子库区[{3}]不一致,无法分拣!",
+                                        trayCode,subOrderRow.ReservoirAreaId,subOrderRow.Id, subOrderRow.ReservoirAreaId));
+                            }
+
+                            if (whTrays[0].SubOrderRow.Id != subOrderRowId)
+                                throw new Exception(string.Format("托盘[{0}]绑定的订单行[{1}]与当前订单行[{2}]不一致",
+                                    whTrays[0].TrayCode,
+                                    whTrays[0].SubOrderRow.Id, subOrderRowId));
+                            
+                            if (whTrays[0].ReservoirAreaId != areaId)
+                            {
+                                throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与当前选择的子库区[{2}]不一致,无法分拣!",
+                                    trayCode,subOrderRow.ReservoirAreaId,areaId));
+                            }
+                        }
+
                         if (whTrays.Count > 0 && whTrays[0].TrayStep == Convert.ToInt32(TRAY_STEP.待入库))
                         {
                             var sortingTray = whTrays[0];
-                            if (sortingTray.SubOrderRow.Id != subOrderRowId)
-                                throw new Exception(string.Format("托盘[{0}]分拣的订单行[{1}]与当前订单行[{2}]不一致",
-                                    sortingTray.TrayCode,
-                                    sortingTray.SubOrderRow.Id, subOrderRowId));
 
                             var srcTrayCount = sortingTray.MaterialCount + sortingTray.OutCount.GetValueOrDefault();
                             subOrderRow.Sorting -= srcTrayCount;
@@ -157,7 +172,10 @@ namespace ApplicationCore.Services
                             {
                                 subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
                             }
-
+                            if (!subOrderRow.ReservoirAreaId.HasValue)
+                            {
+                                subOrderRow.ReservoirAreaId = areaId;
+                            }
                             sortingTray.MaterialCount = sortingCount + (sortingTray.OutCount.GetValueOrDefault()<0?sortingTray.OutCount.GetValueOrDefault()*-1:sortingTray.OutCount.GetValueOrDefault());
                             
                             WarehouseMaterialSpecification warehouseMaterialSpec =
@@ -313,6 +331,12 @@ namespace ApplicationCore.Services
                             {
                                 subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
                             }
+
+                            if (!subOrderRow.ReservoirAreaId.HasValue)
+                            {
+                                subOrderRow.ReservoirAreaId = areaId;
+                            }
+
                             this._subOrderRepository.Update(subOrder);
                             this._subOrderRowRepository.Update(subOrderRow);
                             this._orderRowRepository.Update(pOrderRow);
