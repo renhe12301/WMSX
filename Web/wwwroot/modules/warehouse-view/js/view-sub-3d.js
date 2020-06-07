@@ -5,12 +5,34 @@ $(function () {
 
     $('#sidebar3').overlayScrollbars({ });
 
+    asynTask({
+        type: 'get',
+        url: controllers.statistical["py-warehouse-chart"],
+        jsonData: { pyId: phyId },
+        successCallback: function (response) {
+            if (response.Code == 200) {
+                $("#nor-cnt").text(response.Data.norLocCnt);
+                $("#task-cnt").text(response.Data.taskLocCnt);
+                $("#dis-cnt").text(response.Data.disLocCnt);
+                $("#empty-tray-cnt").text(response.Data.emptyTrayLocCnt);
+                $("#material-loc-cnt").text(response.Data.materialLocCnt);
+                $("#ou-cnt").text(response.Data.ouCnt);
+                $("#supplier-cnt").text(response.Data.supplierCnt);
+                $("#supplier-site-cnt").text(response.Data.supplierSiteCnt);
+                $("#org-cnt").text(response.Data.warehouseCnt);
+                $("#area-cnt").text(response.Data.areaCnt);
+                $("#empty-cnt-cnt").text(response.Data.emptyLocCnt);
+            }
+        }
+    });
+    
+
     var stats = initStats();
     var scene, camera, renderer, controls,raycaster;
     var mouse = new THREE.Vector2();
     var matArrayA=[];//内墙
     var matArrayB = [];//外墙
-    var rackMat, rackMat2, cargoMat;
+    var rackMat, rackMat2, cargoMat,emptyCargoMat;
     var floorW=2600,floorH=1400;
     var cargoTagFont;
 
@@ -18,7 +40,7 @@ $(function () {
         rackMat = new THREE.MeshLambertMaterial();
         rackMat2 = new THREE.MeshPhongMaterial({color:0x1C86EE});
         cargoMat = new THREE.MeshLambertMaterial();
-
+        emptyCargoMat = new THREE.MeshLambertMaterial();
         new THREE.TextureLoader().load( "../../lib/treejs/my/rack.png", function( map ) {
             rackMat.map = map;
             rackMat.needsUpdate = true;
@@ -28,7 +50,10 @@ $(function () {
             cargoMat.map = map;
             cargoMat.needsUpdate = true;
         } );
-
+        new THREE.TextureLoader().load( "../../lib/treejs/textures/brick_diffuse.jpg", function( map ) {
+            emptyCargoMat.map = map;
+            emptyCargoMat.needsUpdate = true;
+        } );
     }
 
     // 初始化场景
@@ -258,6 +283,9 @@ $(function () {
         var holder = new THREE.BoxGeometry(holder_x, holder_y, holder_z);
         var cargo = new THREE.BoxGeometry(30, 30, 30);
         cargo.Tag=tag;
+        
+        var emptyCargo = new THREE.BoxGeometry(30, 5, 30);
+        emptyCargo.Tag=tag;
 
         var offset_x = x + index * plane_x;
         var obj = new THREE.Mesh(plane, rackMat);
@@ -283,8 +311,14 @@ $(function () {
         var cargoMesh = new THREE.Mesh(cargo, cargoMat);
         cargoMesh.visible = false;
         cargoMesh.position.set(offset_x, y + 17, z);
-        scene.add(cargoMesh);
 
+        var emptyCargoMesh = new THREE.Mesh(emptyCargo, emptyCargoMat);
+        emptyCargoMesh.visible = false;
+        emptyCargoMesh.position.set(offset_x, y+5, z);
+        
+        scene.add(cargoMesh);
+        scene.add(emptyCargoMesh);
+        
         var geometryCube = cube(30);
         var lineSegments = new THREE.LineSegments(geometryCube, new THREE.LineDashedMaterial({ color: '#FCFCFC', dashSize: 3, gapSize: 1 }));
         lineSegments.computeLineDistances();
@@ -299,6 +333,9 @@ $(function () {
             cargoMesh.visible = true;
         if (tag.InStock == "无货")
             lineSegments.visible = true;
+        if (tag.InStock == "空托盘")
+            emptyCargoMesh.visible = true;
+           
        
     }
      

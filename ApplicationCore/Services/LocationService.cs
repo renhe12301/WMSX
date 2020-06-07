@@ -93,7 +93,8 @@ namespace ApplicationCore.Services
                                     Floor = i,
                                     Item = j,
                                     Col = k,
-                                    PhyWarehouseId = phyId
+                                    PhyWarehouseId = phyId,
+                                    Type = Convert.ToInt32(LOCATION_TYPE.仓库区货位)
                                 };
                                 addLocations.Add(location);
                             }

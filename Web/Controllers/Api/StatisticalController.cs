@@ -196,5 +196,16 @@ namespace Web.Controllers.Api
             var response = await this._statisticalViewModelService.OutSubOrderSheet(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
+        /// <summary>
+        /// 物理仓库数据统计
+        /// </summary>
+        /// <param name="pyId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> PyWarehouseChart(int pyId)
+        {
+            var response = await this._statisticalViewModelService.PyWarehouseChart(pyId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
     }
 }

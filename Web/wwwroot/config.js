@@ -128,7 +128,8 @@ const controllers =
                               'in-order-sheet': baseUrl + "/statistical/in-order-sheet",
                               'out-order-sheet': baseUrl + "/statistical/out-order-sheet",
                               'in-sub-order-sheet': baseUrl + "/statistical/in-sub-order-sheet",
-                              'out-sub-order-sheet': baseUrl + "/statistical/out-sub-order-sheet"
+                              'out-sub-order-sheet': baseUrl + "/statistical/out-sub-order-sheet",
+                              'py-warehouse-chart': baseUrl + "/statistical/py-warehouse-chart"
                           }
 
 

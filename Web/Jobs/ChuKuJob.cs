@@ -178,10 +178,20 @@ namespace Web.Jobs
                                          null, null, null, null);
                                  List<WarehouseMaterial> warehouseMaterials =
                                      this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
-                                 var sumMaterialCount = warehouseMaterials.Sum(m => m.MaterialCount);
+                                 List<WarehouseMaterial> inFinishWarehouseMaterials = warehouseMaterials
+                                     .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
+                                 List<WarehouseMaterial> initWarehouseMaterials = warehouseMaterials
+                                     .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化)).ToList();
+                                 var sumMaterialCount = inFinishWarehouseMaterials.Sum(m => m.MaterialCount);
                                  if (sumMaterialCount < subOrderRow.PreCount)
-                                     throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
-                                 var sortMaterials = warehouseMaterials.OrderBy(m => m.CreateTime);
+                                 {
+                                     inFinishWarehouseMaterials.AddRange(initWarehouseMaterials);
+                                     sumMaterialCount = inFinishWarehouseMaterials.Sum(m => m.MaterialCount);
+                                     if (sumMaterialCount < subOrderRow.PreCount)
+                                         throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
+                                 }
+                                 
+                                 var sortMaterials = inFinishWarehouseMaterials.OrderBy(m => m.CreateTime);
                                  double totalCount = 0;
                                  List<double> totalCnt = new List<double>();
                                  Random random = new Random();

@@ -24,13 +24,17 @@ namespace Web.Services
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
+        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
+        private readonly IAsyncRepository<Location> _locationRepository;
 
         public StatisticalViewModelService(IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
             IAsyncRepository<Warehouse> warehouseRepository,
             IAsyncRepository<ReservoirArea> reservoirAreaRepository,
             IAsyncRepository<InOutTask> inOutTaskRepository,
             IAsyncRepository<Order> orderRepository,
-            IAsyncRepository<SubOrder> subOrderRepository
+            IAsyncRepository<SubOrder> subOrderRepository,
+            IAsyncRepository<WarehouseTray> warehouseTrayRepository,
+            IAsyncRepository<Location> locationRepository
             )
         {
             this._warehouseMaterialRepository = warehouseMaterialRepository;
@@ -39,6 +43,8 @@ namespace Web.Services
             this._inOutTaskRepository = inOutTaskRepository;
             this._orderRepository = orderRepository;
             this._subOrderRepository = subOrderRepository;
+            this._warehouseTrayRepository = warehouseTrayRepository;
+            this._locationRepository = locationRepository;
         }
 
         public async Task<ResponseResultViewModel> MaterialChart(int ouId)
@@ -1014,6 +1020,7 @@ namespace Web.Services
 
             return response;
         }
+
         public async Task<ResponseResultViewModel> InSubOrderSheet(int ouId, int queryType)
         {
           ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -1094,6 +1101,65 @@ namespace Web.Services
             return response;
         }
 
+        
+        public async Task<ResponseResultViewModel> PyWarehouseChart(int pyId)
+        {
+             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                dynamic result = new ExpandoObject();
+                LocationSpecification locationSpec = new LocationSpecification(null,null,null,null,pyId,null,null,
+                    null,null,null,null,null,null,null);
+
+                List<Location> locations = await  this._locationRepository.ListAsync(locationSpec);
+                
+                WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,null,null,
+                    null,null,null,null,null,null,null,null, pyId);
+                List<WarehouseTray> warehouseTrays = await this._warehouseTrayRepository.ListAsync(warehouseTraySpec);
+                var norLocCnt = locations.Where(t => t.Status == Convert.ToInt32(LOCATION_STATUS.正常)&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位))
+                    .Count();
+                var disLocCnt = locations.Where(t => t.Status == Convert.ToInt32(LOCATION_STATUS.禁用)&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位))
+                    .Count();
+                var taskLocCnt = locations.Where(t => t.Status == Convert.ToInt32(LOCATION_STATUS.锁定)&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位))
+                    .Count();
+                var emptyTrayLocCnt = locations.Where(t => t.InStock == 2&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位)).Count();
+                
+                var emptyLocCnt = locations.Where(t => t.InStock == 0&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位)).Count();
+                
+                var materialLocCnt = locations.Where(t => t.InStock==1&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位)).Count();
+                
+                var ouCnt = warehouseTrays.GroupBy(t=>t.OUId).Count();
+
+                var warehouseCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
+                
+                var areaCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
+                
+                var supplierCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierId).Count();
+                
+                var supplierSiteCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierSiteId).Count();
+
+                result.norLocCnt = norLocCnt;
+                result.disLocCnt = disLocCnt;
+                result.taskLocCnt = taskLocCnt;
+                result.emptyLocCnt = emptyLocCnt;
+                result.emptyTrayLocCnt = emptyTrayLocCnt;
+                result.materialLocCnt = materialLocCnt;
+                result.ouCnt = ouCnt;
+                result.warehouseCnt = warehouseCnt;
+                result.areaCnt = areaCnt;
+                result.supplierCnt = supplierCnt;
+                result.supplierSiteCnt = supplierSiteCnt;
+                
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
        
     }
 }

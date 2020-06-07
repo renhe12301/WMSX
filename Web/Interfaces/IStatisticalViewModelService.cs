@@ -31,5 +31,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> OutOrderChart(int ouId, int queryType);
         Task<ResponseResultViewModel> OutOrderSheet(int ouId, int queryType);
         
+        Task<ResponseResultViewModel> PyWarehouseChart(int pyId);
+        
     }
 }
