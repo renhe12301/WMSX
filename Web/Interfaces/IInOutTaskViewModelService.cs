@@ -18,7 +18,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel);
         
         Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel);
-        Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,
+        Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,string materialCode,
                                                     int? subOrderId,int? subOrderRowId,
                                                     string status,string steps,string types,int? ouId,
                                                     int? wareHouseId, int? areaId,int? pyId,

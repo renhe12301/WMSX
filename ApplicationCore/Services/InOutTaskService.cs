@@ -328,7 +328,7 @@ namespace ApplicationCore.Services
             {
                 try
                 {
-                    InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null, null, null, null,
+                    InOutTaskSpecification taskSpec = new InOutTaskSpecification(taskId, null,null, null, null, null,
                         null, null, null, null, null, null,
                         null, null, null, null, null);
                     var tasks = this._inOutTaskRepository.List(taskSpec);

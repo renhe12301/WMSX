@@ -37,5 +37,11 @@ namespace ApplicationCore.Entities.TaskManager
 
         public int? WarehouseTrayId { get; set; }
         public WarehouseTray WarehouseTray { get; set; }
+
+        public string MaterialCode { get; set; }
+
+        public int? MaterialDicId { get; set; }
+
+        public MaterialDic MaterialDic { get; set; }
     }
 }

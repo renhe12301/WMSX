@@ -6,12 +6,13 @@ namespace ApplicationCore.Specifications
 {
     public class InOutTaskPaginatedSpecification:BaseSpecification<InOutTask>
     {
-        public InOutTaskPaginatedSpecification(int skip,int take,int? id,string trayCode,int? subOrderId,int? subOrderRowId,
+        public InOutTaskPaginatedSpecification(int skip,int take,int? id,string trayCode,string materialCode,int? subOrderId,int? subOrderRowId,
             List<int> status,List<int> steps,List<int> types, int? isRead,int? ouId, int? wareHouseId, int? areaId,int? pyId,
             string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
             :base(b=>(!id.HasValue||b.Id==id)&&
                      (trayCode==null||b.TrayCode==trayCode)&&
+                     (materialCode==null||b.MaterialCode==materialCode)&&
                      (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
                      (!subOrderRowId.HasValue || b.SubOrderRowId == subOrderRowId) &&
                      (!ouId.HasValue || b.OUId == ouId) &&
@@ -36,6 +37,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.SubOrderRow);
             AddInclude(b => b.PhyWarehouse);
             AddInclude(b=>b.WarehouseTray);
+            AddInclude(b=>b.MaterialDic);
         }
     }
 }

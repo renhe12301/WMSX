@@ -596,7 +596,7 @@ namespace ApplicationCore.Services
                             Guard.Against.Zero(locations.Count, nameof(locations));
                             Location location = locations.First();
                             PhyWarehouse phyWarehouse = location.PhyWarehouse;
-                            InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null,null,null,
+                            InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null,null,null,null,
                                 new List<int>
                                 {
                                     Convert.ToInt32(TASK_STATUS.待处理),

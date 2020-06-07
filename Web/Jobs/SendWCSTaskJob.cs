@@ -31,7 +31,7 @@ namespace Web.Jobs
         {
             try
             {
-                InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null, null, null,
+                InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null,null, null, null,
                     null, null, null,
                     (int) TASK_READ.未读, null, null, null, null, null, null, null, null);
                 List<InOutTask> inOutTasks = await this._inOutTaskRepository.ListAsync(inOutTaskSpecification);

@@ -264,7 +264,7 @@ namespace Web.Services
                 }
                 
                 inOutRecordSpec = new InOutTaskSpecification(null, null,
-                    null, null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null,
+                    null,null, null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null,
                     new List<int>{inOutType}, null,ouId,null,
                     null, null, sCreateTime, eCreateTime , null,null);
                 

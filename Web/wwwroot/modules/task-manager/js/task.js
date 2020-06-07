@@ -19,6 +19,7 @@ var types=null;
 var tstatus=null;
 var steps=null;
 var trayCode=null;
+var materialCode = null;
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     $('#sidebar').css("height", parentHeight);
@@ -98,10 +99,22 @@ $(function () {
             if(eCreateTime)rd.eCreateTime=eCreateTime;
             if(sFinishTime)rd.sFinishTime=sFinishTime;
             if(eFinishTime)rd.eFinishTime=eFinishTime;
+            
+            var typeSels=$("#type-select").val();
+            if(typeSels.length>0)types=typeSels;
+            var statusSels=$("#status-select").val();
+            if(statusSels.length>0)tstatus=statusSels;
+            var stepSels=$("#step-select").val();
+            if(stepSels.length>0)steps=stepSels;
             if(tstatus)rd.status=tstatus;
             if(types)rd.types=types;
             if(steps)rd.steps=steps;
+            
+            trayCode=$("#tray-code").val();
             if(trayCode)rd.trayCode=trayCode;
+            materialCode=$("#material-code").val();
+            if(materialCode)rd.materialCode=materialCode;
+            
             asynTask({
                 type:'get',
                 url:controllers["in-out-task"]["get-in-out-tasks"],
@@ -302,6 +315,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '物料编码',
+                    field: 'MaterialCode',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '类型',
                     field: 'Type',
                     valign: 'middle',
@@ -385,15 +404,5 @@ $(function () {
     });
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
-    });
-    $("#save-btn").click(function () {
-       var typeSels=$("#type-select").val();
-       if(typeSels.length>0)types=typeSels;
-        var statusSels=$("#status-select").val();
-        if(statusSels.length>0)tstatus=statusSels;
-        var stepSels=$("#step-select").val();
-        if(stepSels.length>0)steps=stepSels;
-        trayCode=$("#tray-code").val();
-
     });
 });
