@@ -68,7 +68,9 @@ namespace Web.Services
                         WhName = e.WhName,
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
-                        OUName= e.OU.OUName,
+                        OUId = e.OUId,
+                        OUName= e.OU?.OUName,
+                        WhCode = e.WhCode,
                         Status = Enum.GetName(typeof(WAREHOUSE_STATUS), e.Status),
                         PhyWarehouseId = e.PhyWarehouseId,
                         PhyName = e.PhyWarehouse?.PhyName

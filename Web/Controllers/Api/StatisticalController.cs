@@ -30,6 +30,18 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
+        /// 物料库存统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> MaterialSheet(int ouId)
+        {
+            var response = await this._statisticalViewModelService.MaterialSheet(ouId);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
         /// 入库记录统计
         /// </summary>
         /// <param name="ouId"></param>
@@ -39,6 +51,19 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> InRecordChart(int ouId,int queryType)
         {
             var response = await this._statisticalViewModelService.InRecordChart(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 入库记录统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> InRecordSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.InRecordSheet(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
         
@@ -56,6 +81,19 @@ namespace Web.Controllers.Api
         }
         
         /// <summary>
+        /// 出库记录统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> OutRecordSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.OutRecordSheet(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
         /// 前置入库订单统计
         /// </summary>
         /// <param name="ouId"></param>
@@ -67,6 +105,20 @@ namespace Web.Controllers.Api
             var response = await this._statisticalViewModelService.InOrderChart(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 前置入库订单统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> InOrderSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.InOrderSheet(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
         /// <summary>
         /// 前置出库订单统计
         /// </summary>
@@ -79,6 +131,20 @@ namespace Web.Controllers.Api
             var response = await this._statisticalViewModelService.OutOrderChart(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 前置出库订单统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> OutOrderSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.OutOrderSheet(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
         /// <summary>
         /// 后置入库订单统计
         /// </summary>
@@ -91,6 +157,20 @@ namespace Web.Controllers.Api
             var response = await this._statisticalViewModelService.InSubOrderChart(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
+        
+        /// <summary>
+        /// 后置入库订单统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> InSubOrderSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.InSubOrderSheet(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
         /// <summary>
         /// 后置出库订单统计
         /// </summary>
@@ -101,6 +181,19 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> OutSubOrderChart(int ouId,int queryType)
         {
             var response = await this._statisticalViewModelService.OutSubOrderChart(ouId,queryType);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+        
+        /// <summary>
+        /// 后置出库订单统计
+        /// </summary>
+        /// <param name="ouId"></param>
+        /// <param name="queryType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> OutSubOrderSheet(int ouId,int queryType)
+        {
+            var response = await this._statisticalViewModelService.OutSubOrderSheet(ouId,queryType);
             return Content(JsonConvert.SerializeObject(response));
         }
     }

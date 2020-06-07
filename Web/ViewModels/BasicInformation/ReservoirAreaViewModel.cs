@@ -19,5 +19,11 @@ namespace Web.ViewModels.BasicInformation
         public int? PhyWarehouseId { get; set; }
         
         public string PhyName { get; set; }
+
+        public string TotalStatisticalCount { get; set; }
+        
+        public string StatisticalCount { get; set; }
+        
+        
     }
 }

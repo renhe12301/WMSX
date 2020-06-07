@@ -12,6 +12,7 @@ using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
 using Web.Interfaces;
 using Web.ViewModels;
+using Web.ViewModels.BasicInformation;
 
 namespace Web.Services
 {
@@ -91,6 +92,7 @@ namespace Web.Services
             return response;
         }
 
+       
         public async Task<ResponseResultViewModel> InRecordChart(int ouId, int queryType)
         {
              ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -172,6 +174,7 @@ namespace Web.Services
 
             return response;
         }
+        
 
         public async Task<ResponseResultViewModel> OutRecordChart(int ouId, int queryType)
         {
@@ -332,6 +335,7 @@ namespace Web.Services
             return response;
         }
 
+        
         public async Task<ResponseResultViewModel> OutOrderChart(int ouId, int queryType)
         {
              ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -409,6 +413,7 @@ namespace Web.Services
             return response;
         }
         
+
         public async Task<ResponseResultViewModel> InSubOrderChart(int ouId, int queryType)
         {
            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -455,7 +460,7 @@ namespace Web.Services
 
                 orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
                     null,null,ouId,null,null,null,null,null,
-                    null,null,null,null,null);
+                    null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
                 List<string> wlables = new List<string>();
@@ -484,6 +489,7 @@ namespace Web.Services
 
             return response;
         }
+       
 
         public async Task<ResponseResultViewModel> OutSubOrderChart(int ouId, int queryType)
         {
@@ -531,7 +537,7 @@ namespace Web.Services
 
                 orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
                     null,null,ouId,null,null,null,null,null,
-                    null,null,null,null,null);
+                    null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
                 List<string> wlables = new List<string>();
@@ -550,6 +556,533 @@ namespace Web.Services
                 result.warehouseLabels = wlables;
                 result.warehouseDatas = wdatas;
                 result.warehouseDatas2 = wdatas2;
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        
+        
+        public async Task<ResponseResultViewModel> MaterialSheet(int ouId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                
+                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                    null,null,null,null,null,null,null,
+                    null,null,null,null,ouId,null,null,null,
+                    null,null,null,null);
+                List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
+                
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
+                var groupAreas = areas.GroupBy(g => g.WarehouseId);
+                foreach (var groupArea in groupAreas)
+                {
+                    var totalMaterilCnt = warehouseMaterials.Where(m => m.WarehouseId == groupArea.Key)
+                        .Sum(m => m.MaterialCount);
+                    
+                    foreach (var gas in groupArea)
+                    {
+                        var materilCnt = warehouseMaterials.Where(m => m.ReservoirAreaId == gas.Id)
+                            .Sum(m => m.MaterialCount);
+                        ReservoirAreaViewModel areaViewModel = new ReservoirAreaViewModel
+                        {
+                            AreaName =gas.AreaName,
+                            Id = gas.Id,
+                            AreaCode= gas.AreaCode,
+                            WarehouseName = gas.Warehouse?.WhName,
+                            StatisticalCount = materilCnt.ToString(),
+                            TotalStatisticalCount = totalMaterilCnt.ToString()
+                        };
+                        reservoirAreaViewModels.Add(areaViewModel);
+                    }
+                }
+
+                response.Data = reservoirAreaViewModels;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        
+        
+         public async Task<ResponseResultViewModel> InRecordSheet(int ouId, int queryType)
+        {
+           ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                InOutTaskSpecification inOutRecordSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                
+                inOutRecordSpec = new InOutTaskSpecification(null, null,
+                    null,null, null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null,
+                    new List<int>{Convert.ToInt32(TASK_TYPE.物料入库)}, null,ouId,null,
+                    null, null, sCreateTime, eCreateTime , null,null);
+                
+                List<InOutTask> inOutRecords = await this._inOutTaskRepository.ListAsync(inOutRecordSpec);
+                
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
+                var groupAreas = areas.GroupBy(g => g.WarehouseId);
+                foreach (var groupArea in groupAreas)
+                {
+                    var totalCnt = inOutRecords.Where(m => m.WarehouseId == groupArea.Key).Count();
+                    
+                    foreach (var gas in groupArea)
+                    {
+                        var cnt = inOutRecords.Where(m => m.ReservoirAreaId == gas.Id)
+                            .Count();
+                        ReservoirAreaViewModel areaViewModel = new ReservoirAreaViewModel
+                        {
+                            AreaName =gas.AreaName,
+                            Id = gas.Id,
+                            AreaCode= gas.AreaCode,
+                            WarehouseName = gas.Warehouse?.WhName,
+                            StatisticalCount = cnt.ToString(),
+                            TotalStatisticalCount = totalCnt.ToString()
+                        };
+                        reservoirAreaViewModels.Add(areaViewModel);
+                    }
+                }
+
+                response.Data = reservoirAreaViewModels;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        
+        public async Task<ResponseResultViewModel> OutRecordSheet(int ouId, int queryType)
+        {
+           ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                InOutTaskSpecification inOutRecordSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                
+                inOutRecordSpec = new InOutTaskSpecification(null, null,
+                    null,null, null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null,
+                    new List<int>{Convert.ToInt32(TASK_TYPE.物料出库)}, null,ouId,null,
+                    null, null, sCreateTime, eCreateTime , null,null);
+                
+                List<InOutTask> inOutRecords = await this._inOutTaskRepository.ListAsync(inOutRecordSpec);
+                
+                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
+                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
+                var groupAreas = areas.GroupBy(g => g.WarehouseId);
+                foreach (var groupArea in groupAreas)
+                {
+                    var totalCnt = inOutRecords.Where(m => m.WarehouseId == groupArea.Key).Count();
+                    
+                    foreach (var gas in groupArea)
+                    {
+                        var cnt = inOutRecords.Where(m => m.ReservoirAreaId == gas.Id)
+                            .Count();
+                        ReservoirAreaViewModel areaViewModel = new ReservoirAreaViewModel
+                        {
+                            AreaName =gas.AreaName,
+                            Id = gas.Id,
+                            AreaCode= gas.AreaCode,
+                            WarehouseName = gas.Warehouse?.WhName,
+                            StatisticalCount = cnt.ToString(),
+                            TotalStatisticalCount = totalCnt.ToString()
+                        };
+                        reservoirAreaViewModels.Add(areaViewModel);
+                    }
+                }
+
+                response.Data = reservoirAreaViewModels;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        
+        public async Task<ResponseResultViewModel> OutSubOrderSheet(int ouId, int queryType)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                SubOrderSpecification orderSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+
+                List<int> orderTypeIds = new List<int>
+                {
+                    Convert.ToInt32(ORDER_TYPE.出库领料),
+                    Convert.ToInt32(ORDER_TYPE.入库退库)
+                };
+
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
+                    null,null,ouId,null,null,null,null,null,
+                    null,sCreateTime,null,eCreateTime,null);
+                
+                List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
+                
+                WarehouseSpecification warehouseSpecification = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpecification);
+                List<dynamic> result = new List<dynamic>();
+                foreach (var warehouse in warehouses)
+                {
+                    var totalCnt = orders.Where(m => m.WarehouseId == warehouse.Id).Count();
+                    dynamic dyn = new ExpandoObject();
+                    dyn.WarehouseName = warehouse.WhName;
+                    dyn.OrderType = "领料";
+                    dyn.TotalStatisticalCount = totalCnt;
+                    dyn.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库领料)).Count();
+                    
+                    dynamic dyn2 = new ExpandoObject();
+                    dyn2.WarehouseName = warehouse.WhName;
+                    dyn2.OrderType = "退库";
+                    dyn2.TotalStatisticalCount = totalCnt;
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    
+                    result.Add(dyn);
+                    result.Add(dyn2);
+                }
+
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        
+        public async Task<ResponseResultViewModel> InOrderSheet(int ouId, int queryType)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                OrderSpecification orderSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+
+                List<int> orderTypeIds = new List<int>
+                {
+                    Convert.ToInt32(ORDER_TYPE.入库接收),
+                    Convert.ToInt32(ORDER_TYPE.入库退料)
+                };
+
+                orderSpec = new OrderSpecification(null,null,null,orderTypeIds,null, ouId
+                    ,null,null,null,null,null,null,null,
+                    null,null,null,null,null,sCreateTime,eCreateTime,
+                    null,null);
+                
+                List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
+                
+                WarehouseSpecification warehouseSpecification = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpecification);
+                List<dynamic> result = new List<dynamic>();
+                foreach (var warehouse in warehouses)
+                {
+                    var totalCnt = orders.Where(m => m.WarehouseId == warehouse.Id).Count();
+                    dynamic dyn = new ExpandoObject();
+                    dyn.WarehouseName = warehouse.WhName;
+                    dyn.OrderType = "入库";
+                    dyn.TotalStatisticalCount = totalCnt;
+                    dyn.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库接收)).Count();
+                    
+                    dynamic dyn2 = new ExpandoObject();
+                    dyn2.WarehouseName = warehouse.WhName;
+                    dyn2.OrderType = "退料";
+                    dyn2.TotalStatisticalCount = totalCnt;
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退料)).Count();
+                    
+                    result.Add(dyn);
+                    result.Add(dyn2);
+                }
+
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        public async Task<ResponseResultViewModel> OutOrderSheet(int ouId, int queryType)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                OrderSpecification orderSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+
+                List<int> orderTypeIds = new List<int>
+                {
+                    Convert.ToInt32(ORDER_TYPE.出库领料),
+                    Convert.ToInt32(ORDER_TYPE.入库退库)
+                };
+
+                orderSpec = new OrderSpecification(null,null,null,orderTypeIds,null, ouId
+                    ,null,null,null,null,null,null,null,
+                    null,null,null,null,null,sCreateTime,eCreateTime,
+                    null,null);
+                
+                List<Order> orders = await this._orderRepository.ListAsync(orderSpec);
+                
+                WarehouseSpecification warehouseSpecification = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpecification);
+                List<dynamic> result = new List<dynamic>();
+                foreach (var warehouse in warehouses)
+                {
+                    var totalCnt = orders.Where(m => m.WarehouseId == warehouse.Id).Count();
+                    dynamic dyn = new ExpandoObject();
+                    dyn.WarehouseName = warehouse.WhName;
+                    dyn.OrderType = "领料";
+                    dyn.TotalStatisticalCount = totalCnt;
+                    dyn.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库领料)).Count();
+                    
+                    dynamic dyn2 = new ExpandoObject();
+                    dyn2.WarehouseName = warehouse.WhName;
+                    dyn2.OrderType = "退库";
+                    dyn2.TotalStatisticalCount = totalCnt;
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    
+                    result.Add(dyn);
+                    result.Add(dyn2);
+                }
+
+                response.Data = result;
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+        public async Task<ResponseResultViewModel> InSubOrderSheet(int ouId, int queryType)
+        {
+          ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                SubOrderSpecification orderSpec = null;
+                string sCreateTime = DateTime.Now.ToShortDateString()+" 00:00:00";
+                string eCreateTime = DateTime.Now.ToString();
+                //本周
+                if (queryType == 1)
+                {
+                    int dayWeek = Convert.ToInt32(DateTime.Now.DayOfWeek);
+                    dayWeek = dayWeek == 0 ? 7 : dayWeek;
+                    sCreateTime = DateTime.Now.AddDays(-dayWeek).AddDays(1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本月
+                else if (queryType == 2)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本季度
+                else if(queryType == 3)
+                {
+                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+                //本年
+                else if(queryType == 4)
+                {
+                    sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+                    eCreateTime = DateTime.Now.ToString();
+                }
+
+                List<int> orderTypeIds = new List<int>
+                {
+                    Convert.ToInt32(ORDER_TYPE.入库接收),
+                    Convert.ToInt32(ORDER_TYPE.入库退料)
+                };
+
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
+                    null,null,ouId,null,null,null,null,null,
+                    null,sCreateTime,eCreateTime,null,null);
+                
+                List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
+                
+                WarehouseSpecification warehouseSpecification = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpecification);
+                List<dynamic> result = new List<dynamic>();
+                foreach (var warehouse in warehouses)
+                {
+                    var totalCnt = orders.Where(m => m.WarehouseId == warehouse.Id).Count();
+                    dynamic dyn = new ExpandoObject();
+                    dyn.WarehouseName = warehouse.WhName;
+                    dyn.OrderType = "入库";
+                    dyn.TotalStatisticalCount = totalCnt;
+                    dyn.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库接收)).Count();
+                    
+                    dynamic dyn2 = new ExpandoObject();
+                    dyn2.WarehouseName = warehouse.WhName;
+                    dyn2.OrderType = "退料";
+                    dyn2.TotalStatisticalCount = totalCnt;
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退料)).Count();
+                    
+                    result.Add(dyn);
+                    result.Add(dyn2);
+                }
+
                 response.Data = result;
             }
             catch (Exception ex)

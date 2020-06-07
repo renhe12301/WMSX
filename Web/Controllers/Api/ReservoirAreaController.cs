@@ -59,20 +59,6 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
         
-        
-        /// <summary>
-        /// 子库存出入库记录统计
-        /// </summary>
-        /// <param name="ouId">业务实体编号</param>
-        /// <param name="inOutType">出入库类型 0-入库 1-出库</param>
-        /// <param name="queryType">查询类型 0-当天 1-本周 2-本月 3-本季度 4-本年</param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> AreaEntryOutRecordChart(int ouId,int inOutType,int queryType)
-        {
-            var response = await this._reservoirAreaViewModelService.AreaEntryOutRecordChart(ouId,inOutType,queryType);
-            return Content(JsonConvert.SerializeObject(response));
-        }
 
     }
 }

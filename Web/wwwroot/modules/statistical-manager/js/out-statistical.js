@@ -1,31 +1,37 @@
 
-var ouId=null;
+var ouId=0;
 var treeNode=null;
+var queryType = 4;
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     parentWidth = parent.document.getElementById("contentFrame").clientWidth;
     $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
-    $('#myTabContent').css("height", parentHeight-70);
-    $('#wChart').css("height", parentHeight/2-50);
+    $('#sidebar2').css("height", parentHeight);
+    $('#sidebar2').overlayScrollbars({});
+    $('#wChart').css("height", parentHeight/3-15);
     $('#wChart').css("width", parentWidth-$('#sidebar').css("width"));
-    $('#aChart').css("height", parentHeight/2-50);
+    $('#aChart').css("height", parentHeight/3-15);
     $('#aChart').css("width", parentWidth-$('#sidebar').css("width"));
     renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'ou',url:controllers.ou["get-ou-trees"],
+        successCallback:function()
+        {
+            loadChart(ouId);
+        },
         selectNodeCall:function (node, data) {
             treeNode=data;
             if(data.type=="ou")
             {
                 ouId=data.id;
             }
-            loadChart(ouId,4);
+            loadChart(ouId);
+            $('#statistical-table').bootstrapTable('refresh',true);
         },
         showRoot:true
     });
 
-    var loadChart=function(ouId,queryType)
+    var loadChart=function(ouId)
     {
-        loadingShow();
 
         asynTask({
             type: 'get',
@@ -181,9 +187,55 @@ $(function () {
             }
         });
 
-
-        loadingClose();
     };
+
+    $('#statistical-table').bootstrapTable({
+        ajax: function (request) {
+            var rd = request.data;
+            if (ouId) rd.ouId = ouId;
+            rd.queryType = queryType
+            asynTask({
+                type: 'get',
+                url: controllers.statistical["out-record-sheet"],
+                jsonData: rd,
+                successCallback: function (response) {
+                    $('#statistical-table').bootstrapTable('load', response.Data);
+                    $('#statistical-table').bootstrapTable('hideLoading');
+                    mergeCells(response.Data, "WarehouseName", 1, $('#statistical-table'));
+                    mergeCells(response.Data, "TotalStatisticalCount", 1, $('#statistical-table'));
+                }
+            });
+        },
+        height: parentHeight/3-15,
+        smartDisplay: false,
+        columns:
+            [
+                {
+                    title: '库存组织',
+                    field: 'WarehouseName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '库区名称',
+                    field: 'AreaName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '入库记录',
+                    field: 'StatisticalCount',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '合计',
+                    field: 'TotalStatisticalCount',
+                    valign: 'middle',
+                    align: 'center'
+                }
+            ]
+    });
 
     $("#today-btn").click(function () {
         if(!ouId)
@@ -191,7 +243,9 @@ $(function () {
             toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
             return;
         }
-        loadChart(ouId,5)
+        queryType = 5;
+        loadChart(ouId);
+        $('#statistical-table').bootstrapTable('refresh',true);
     });
     $("#week-btn").click(function () {
         if(!ouId)
@@ -199,7 +253,9 @@ $(function () {
             toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
             return;
         }
-        loadChart(ouId,1)
+        queryType = 1;
+        loadChart(ouId);
+        $('#statistical-table').bootstrapTable('refresh',true);
     });
     $("#month-btn").click(function () {
         if(!ouId)
@@ -207,7 +263,9 @@ $(function () {
             toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
             return;
         }
-        loadChart(ouId,2)
+        queryType = 2;
+        loadChart(ouId);
+        $('#statistical-table').bootstrapTable('refresh',true);
     });
     $("#season-btn").click(function () {
         if(!ouId)
@@ -215,7 +273,9 @@ $(function () {
             toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
             return;
         }
-        loadChart(ouId,3)
+        queryType = 3;
+        loadChart(ouId);
+        $('#statistical-table').bootstrapTable('refresh',true);
     });
     $("#year-btn").click(function () {
         if(!ouId)
@@ -223,6 +283,8 @@ $(function () {
             toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
             return;
         }
-        loadChart(ouId,4)
+        queryType = 4;
+        loadChart(ouId);
+        $('#statistical-table').bootstrapTable('refresh',true);
     });
 });

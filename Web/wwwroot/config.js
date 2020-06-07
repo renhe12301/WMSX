@@ -121,7 +121,14 @@ const controllers =
                               'in-order-chart': baseUrl + "/statistical/in-order-chart",
                               'out-order-chart': baseUrl + "/statistical/out-order-chart",
                               'in-sub-order-chart': baseUrl + "/statistical/in-sub-order-chart",
-                              'out-sub-order-chart': baseUrl + "/statistical/out-sub-order-chart"
+                              'out-sub-order-chart': baseUrl + "/statistical/out-sub-order-chart",
+                              'material-sheet': baseUrl + "/statistical/material-sheet",
+                              'in-record-sheet': baseUrl + "/statistical/in-record-sheet",
+                              'out-record-sheet': baseUrl + "/statistical/out-record-sheet",
+                              'in-order-sheet': baseUrl + "/statistical/in-order-sheet",
+                              'out-order-sheet': baseUrl + "/statistical/out-order-sheet",
+                              'in-sub-order-sheet': baseUrl + "/statistical/in-sub-order-sheet",
+                              'out-sub-order-sheet': baseUrl + "/statistical/out-sub-order-sheet"
                           }
 
 

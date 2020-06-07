@@ -25,6 +25,7 @@
     <script src="../common/js/loading.js"></script>
     <script src="../../config.js"></script>
     <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/table-cell-merge.js"></script>
     <script src="../common/js/render-tree.js"></script>
     <script src="js/material-statistical.js"></script>
 </head>
@@ -32,7 +33,7 @@
  <div class="container-fluid themed-container">
     <div class="row mb-5">
         <div class="col-md-2">
-            <div id="sidebar" style="height: 600px;">
+            <div id="sidebar">
                 <div id="jsTree">
 
                 </div>
@@ -41,37 +42,13 @@
         <div class="col-md-10" id="sidebar2">
             
             <div class="container-fluid">
-                
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="ljx-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home"
-                           aria-selected="true">
-                            <h6>柱状图</h6>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="gh-tab" data-toggle="tab" href="#admin2" role="tab" aria-controls="profile"
-                           aria-selected="false">
-                            <h6>表格</h6>
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content border border-top-0" id="myTabContent">
-                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div id="wChart"></div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="tab-pane fade show active" id="admin2" role="tabpanel" aria-labelledby="home-tab">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div id="aChart"></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <div id="wChart"></div>
+                <div id="aChart"></div>
+                <table id="statistical-table"
+                       class="table table-condensed">
+                    <thead>
+                    </thead>
+                </table>
             </div>
             
             
