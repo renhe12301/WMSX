@@ -7,10 +7,8 @@ $(function () {
     $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
     $('#myTabContent').css("height", parentHeight-70);
-    $('#wChart').css("height", parentHeight/2-50);
+    $('#wChart').css("height", parentHeight-100);
     $('#wChart').css("width", parentWidth-$('#sidebar').css("width"));
-    $('#aChart').css("height", parentHeight/2-50);
-    $('#aChart').css("width", parentWidth-$('#sidebar').css("width"));
     renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'ou',url:controllers.ou["get-ou-trees"],
         selectNodeCall:function (node, data) {
             treeNode=data;
@@ -29,7 +27,7 @@ $(function () {
 
         asynTask({
             type: 'get',
-            url: controllers.statistical["in-record-chart"],
+            url: controllers.statistical["in-sub-order-chart"],
             jsonData:
                 {
                     ouId: ouId,
@@ -52,7 +50,7 @@ $(function () {
 
                         calculable : false,
                         legend: {
-                            data:['库存组织入库记录'],
+                            data:['入库','退料'],
                             textStyle:{
                                 color:"#000000"
 
@@ -92,90 +90,30 @@ $(function () {
 
                         ],
                         series : [
-
                             {
-                                name:'库存组织入库记录',
+                                name:'入库',
                                 type:'bar',
                                 data: response.Data.warehouseDatas,
                                 itemStyle: {
                                     normal: {
-                                        color:"#2e7cff"
+                                        color:"#45c0ff"
+                                    }
+                                }
+                            },
+                            {
+                                name:'退料',
+                                type:'bar',
+                                data: response.Data.warehouseDatas2,
+                                itemStyle: {
+                                    normal: {
+                                        color:"#feb602"
                                     }
                                 }
                             }
                         ]
                     };
                     wChart.setOption(woption);
-
-
-                    var aChart = echarts.init($("#aChart")[0]);
-                    aoption = {
-                        tooltip : {
-                            trigger: 'axis'
-                        },
-                        grid: {
-                            x: 46,
-                            y:30,
-                            x2:30,
-                            y2:20,
-                            borderWidth: 0
-                        },
-
-                        calculable : false,
-                        legend: {
-                            data:['子库区入库记录'],
-                            textStyle:{
-                                color:"#000000"
-
-                            }
-                        },
-                        xAxis : [
-                            {
-                                type : 'category',
-                                data : response.Data.areaLabels,
-                                splitLine: {
-                                    show: false
-                                },
-                                axisLabel: {
-                                    show: true,
-                                    textStyle: {
-                                        color: '#000000',
-                                        align: 'center'
-                                    }
-                                }
-
-                            }
-                        ],
-                        yAxis : [
-                            {
-                                type : 'value',
-                                axisLabel : {
-                                    formatter: '{value} ',
-                                    textStyle: {
-                                        color: '#a4a7ab',
-                                        align: 'right'
-                                    }
-                                },
-                                splitLine: {
-                                    show: false
-                                },
-                            }
-
-                        ],
-                        series : [
-                            {
-                                name:'子库区入库记录',
-                                type:'bar',
-                                data: response.Data.areaDatas,
-                                itemStyle: {
-                                    normal: {
-                                        color:"#00cc33"
-                                    }
-                                }
-                            }
-                        ]
-                    };
-                    aChart.setOption(aoption);
+                    
                 }
 
             }

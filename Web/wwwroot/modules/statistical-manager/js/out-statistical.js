@@ -1,164 +1,228 @@
 
 var ouId=null;
 var treeNode=null;
-var queryType = 0;
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     parentWidth = parent.document.getElementById("contentFrame").clientWidth;
     $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
-    $('#sidebar2').css("height", parentHeight);
-    $('#sidebar2').overlayScrollbars({});
-
-    $('#donutChart').css("height", parentHeight / 2 - 125);
-    $('#donutChart').css("width", parentWidth - 200);
-    $('#barChart').css("height", parentHeight / 2 - 125);
-    $('#barChart').css("width", parentWidth - 200);
-
-    renderTree({
-        rootId: 0, renderTarget: 'jsTree', depthTag: 'ou', url: controllers.ou["get-ou-trees"],
-        successCallback: function (rdata) {
-            if (rdata.Children.length > 0) {
-                var id = rdata.Children[0].Id;
-                ouId = id;
-                var name = rdata.Children[0].Name;
-                $("#warehouse-title").text(name+"-"+"库存组织出库统计");
-                $("#area-title").text(name+"-"+"子库存出库统计");
-                loadChart(ouId);
+    $('#myTabContent').css("height", parentHeight-70);
+    $('#wChart').css("height", parentHeight/2-50);
+    $('#wChart').css("width", parentWidth-$('#sidebar').css("width"));
+    $('#aChart').css("height", parentHeight/2-50);
+    $('#aChart').css("width", parentWidth-$('#sidebar').css("width"));
+    renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'ou',url:controllers.ou["get-ou-trees"],
+        selectNodeCall:function (node, data) {
+            treeNode=data;
+            if(data.type=="ou")
+            {
+                ouId=data.id;
             }
+            loadChart(ouId,4);
         },
-        selectNodeCall: function (node, data) {
-            treeNode = data;
-            if (data.type == "ou") {
-                ouId = data.id;
-            }
-            $("#warehouse-title").text(data.text+"-"+"库存组织出库统计");
-            $("#area-title").text(data.text+"-"+"子库存出库统计");
-            loadChart(ouId);
-        },
-        showRoot: true
+        showRoot:true
     });
 
-    function getRandomColors(len) {
-        var colors = [];
-        for (var i = 0; i < len; i++) {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var j = 0; j < 6; j++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            colors.push(color);
-        }
-        return colors;
-    }
-
-    var loadChart = function (ouId) {
+    var loadChart=function(ouId,queryType)
+    {
         loadingShow();
+
         asynTask({
-            type: 'get', url: controllers.warehouse["warehouse-entry-out-record-chart"],
+            type: 'get',
+            url: controllers.statistical["out-record-chart"],
             jsonData:
                 {
                     ouId: ouId,
-                    inOutType: 1,
-                    queryType: queryType
+                    queryType:queryType
                 },
             successCallback: function (response) {
                 if (response.Code == 200) {
+                    var wChart = echarts.init($("#wChart")[0]);
+                    woption = {
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        grid: {
+                            x: 46,
+                            y:30,
+                            x2:30,
+                            y2:20,
+                            borderWidth: 0
+                        },
 
-                    var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-                    var donutData = {
-                        labels: response.Data.labels,
-                        datasets: [
+                        calculable : false,
+                        legend: {
+                            data:['库存组织入库记录'],
+                            textStyle:{
+                                color:"#000000"
+
+                            }
+                        },
+                        xAxis : [
                             {
-                                data: response.Data.datas,
-                                backgroundColor: getRandomColors(response.Data.labels.length)
+                                type : 'category',
+                                data : response.Data.warehouseLabels,
+                                splitLine: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: '#000000',
+                                        align: 'center'
+                                    }
+                                }
+
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                axisLabel : {
+                                    formatter: '{value} ',
+                                    textStyle: {
+                                        color: '#a4a7ab',
+                                        align: 'right'
+                                    }
+                                },
+                                splitLine: {
+                                    show: false
+                                },
+                            }
+
+                        ],
+                        series : [
+
+                            {
+                                name:'库存组织入库记录',
+                                type:'bar',
+                                data: response.Data.warehouseDatas,
+                                itemStyle: {
+                                    normal: {
+                                        color:"#2e7cff"
+                                    }
+                                }
                             }
                         ]
                     };
-                    var donutOptions = {
-                        maintainAspectRatio: false,
-                        responsive: true,
+                    wChart.setOption(woption);
+
+
+                    var aChart = echarts.init($("#aChart")[0]);
+                    aoption = {
+                        tooltip : {
+                            trigger: 'axis'
+                        },
+                        grid: {
+                            x: 46,
+                            y:30,
+                            x2:30,
+                            y2:20,
+                            borderWidth: 0
+                        },
+
+                        calculable : false,
+                        legend: {
+                            data:['子库区入库记录'],
+                            textStyle:{
+                                color:"#000000"
+
+                            }
+                        },
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : response.Data.areaLabels,
+                                splitLine: {
+                                    show: false
+                                },
+                                axisLabel: {
+                                    show: true,
+                                    textStyle: {
+                                        color: '#000000',
+                                        align: 'center'
+                                    }
+                                }
+
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                axisLabel : {
+                                    formatter: '{value} ',
+                                    textStyle: {
+                                        color: '#a4a7ab',
+                                        align: 'right'
+                                    }
+                                },
+                                splitLine: {
+                                    show: false
+                                },
+                            }
+
+                        ],
+                        series : [
+                            {
+                                name:'子库区入库记录',
+                                type:'bar',
+                                data: response.Data.areaDatas,
+                                itemStyle: {
+                                    normal: {
+                                        color:"#00cc33"
+                                    }
+                                }
+                            }
+                        ]
                     };
-                    var donutChart = new Chart(donutChartCanvas, {
-                        type: 'doughnut',
-                        data: donutData,
-                        options: donutOptions
-                    });
+                    aChart.setOption(aoption);
                 }
 
             }
         });
 
-        asynTask({
-            type: 'get', url: controllers["reservoir-area"]["area-entry-out-record-chart"],
-            jsonData:
-                {
-                    ouId: ouId,
-                    inOutType: 1,
-                    queryType: queryType
-                },
-            successCallback: function (response) {
-                if (response.Code == 200) {
-                    var barChartData = {
-                        labels: response.Data.labels,
-                        datasets: [
-                            {
-                                label: '子库存出库统计',
-                                backgroundColor: 'rgba(60,141,188,0.9)',
-                                borderColor: 'rgba(60,141,188,0.8)',
-                                pointRadius: false,
-                                pointColor: '#3b8bba',
-                                pointStrokeColor: 'rgba(60,141,188,1)',
-                                pointHighlightFill: '#fff',
-                                pointHighlightStroke: 'rgba(60,141,188,1)',
-                                data: response.Data.datas
-                            }
-                        ]
-                    };
-                    var barChartCanvas = $('#barChart').get(0).getContext('2d');
-                    var barChartData = jQuery.extend(true, {}, barChartData);
-                    var temp1 = barChartData.datasets[0];
-                    barChartData.datasets[0] = temp1;
 
-                    var barChartOptions = {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        datasetFill: false
-                    };
-                    var barChart = new Chart(barChartCanvas, {
-                        type: 'bar',
-                        data: barChartData,
-                        options: barChartOptions
-                    });
-
-                    loadingClose();
-                }
-
-            }
-        });
-
-
+        loadingClose();
     };
 
     $("#today-btn").click(function () {
-        queryType = 0;
-        loadChart(ouId);
+        if(!ouId)
+        {
+            toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
+            return;
+        }
+        loadChart(ouId,5)
     });
     $("#week-btn").click(function () {
-        queryType = 1;
-        loadChart(ouId);
+        if(!ouId)
+        {
+            toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
+            return;
+        }
+        loadChart(ouId,1)
     });
     $("#month-btn").click(function () {
-        queryType = 2;
-        loadChart(ouId);
+        if(!ouId)
+        {
+            toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
+            return;
+        }
+        loadChart(ouId,2)
     });
     $("#season-btn").click(function () {
-        queryType = 3;
-        loadChart(ouId);
+        if(!ouId)
+        {
+            toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
+            return;
+        }
+        loadChart(ouId,3)
     });
     $("#year-btn").click(function () {
-        queryType = 4;
-        loadChart(ouId);
+        if(!ouId)
+        {
+            toastr.error("请选择左边业务对象!", '错误信息', {timeOut: 3000});
+            return;
+        }
+        loadChart(ouId,4)
     });
-
 });

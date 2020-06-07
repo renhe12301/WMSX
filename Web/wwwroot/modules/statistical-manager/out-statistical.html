@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../common/css/grid.css">
     <link rel="stylesheet" href="../../lib/jstree/themes/default/style.min.css">
     <link rel="stylesheet" href="../../lib/bootstrap-table/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" href="../../lib/loading/css/loading.css">
     <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
     <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -19,8 +20,10 @@
     <script src="../../lib/jstree/jstree.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
-    <script src="../../lib/adminlte/plugins/chart.js/Chart.js"></script>
+    <script src="../../lib/echarts/echarts.js"></script>
+    <script src="../../lib/echarts/china.js"></script>
     <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
     <script src="../common/js/loading.js"></script>
     <script src="../../config.js"></script>
     <script src="../common/js/asyn-task.js"></script>
@@ -38,41 +41,50 @@
             </div>
         </div>
         <div class="col-md-10" id="sidebar2">
+
             <div class="container-fluid">
-                <div class="row mb-md-1">
-                    <div class="col-md-12">
-                        <div id="toolbar" class="input-group input-group-sm">
+                <div id="toolbar" class="input-group input-group-sm">
 
-                            <button type="button" id="today-btn" class="btn btn-info btn-flat">当天</button>
-                            <button type="button" id="week-btn" class="btn btn-success btn-flat">本周</button>
-                            <button type="button" id="month-btn" class="btn btn-primary btn-flat">本月</button>
-                                 <button type="button" id="season-btn" class="btn btn-warning btn-flat">本季度</button>
-                            <button type="button" id="year-btn" class="btn btn-danger btn-flat">本年</button>
+                    <button type="button" id="today-btn" class="btn btn-info btn-flat">当天</button>
+                    <button type="button" id="week-btn" class="btn btn-success btn-flat">本周</button>
+                    <button type="button" id="month-btn" class="btn btn-primary btn-flat">本月</button>
+                    <button type="button" id="season-btn" class="btn btn-warning btn-flat">本季度</button>
+                    <button type="button" id="year-btn" class="btn btn-danger btn-flat">本年</button>
 
-                        </div>
-                    </div>
                 </div>
-                <div class="row mb-md-1">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title" id="warehouse-title">库存组织出库统计</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="donutChart"></canvas>
-                        </div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding-top: 5px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="ljx-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home"
+                           aria-selected="true">
+                            <h6>柱状图</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="gh-tab" data-toggle="tab" href="#admin2" role="tab" aria-controls="profile"
+                           aria-selected="false">
+                            <h6>表格</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div id="wChart"></div>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <div class="row mb-md-1">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title" id="area-title">子库存出库统计</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="barChart"></canvas>
-                        </div>
+                    <div class="tab-pane fade show active" id="admin2" role="tabpanel" aria-labelledby="home-tab">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div id="aChart"></div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 </div>
