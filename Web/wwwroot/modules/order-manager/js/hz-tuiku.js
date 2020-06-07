@@ -349,19 +349,19 @@ $(function () {
                             formatter : function(value, row, index) {
                                 if(value=="初始化")
                                 {
-                                    return '<span class="badge bg-blue">value</span>';
+                                    return '<span class="badge bg-blue">'+value+'</span>';
                                 }
                                 else if(value=="入库中已执行"||value=="出库中已执行")
                                 {
-                                    return '<span class="badge bg-green">value</span>';
+                                    return '<span class="badge bg-green">'+value+'</span>';
                                 }
                                 else if(value=="待入库"||value=="入库申请"||value=="入库中未执行"
                                     ||value=="待出库"||value=="出库中未执行")
                                 {
-                                    return '<span class="badge bg-yellow">value</span>';
+                                    return '<span class="badge bg-yellow">'+value+'</span>';
                                 }
                                 else if(value=="入库完成"||value=="出库完成等待确认")
-                                    return '<span class="badge bg-gray">value</span>';
+                                    return '<span class="badge bg-gray">'+value+'</span>';
 
                             }
                         }
