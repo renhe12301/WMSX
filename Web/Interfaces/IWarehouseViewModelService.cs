@@ -11,14 +11,6 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> GetWarehouses(int? pageIndex, int? itemsPage,
                                       int? id,int? ouId, string whName);
         
-        Task<ResponseResultViewModel> WarehouseAssetChart(int ouId);
-        
-        Task<ResponseResultViewModel> WarehouseMaterialChart(int ouId);
-        
-        Task<ResponseResultViewModel> WarehouseTrayChart(int ouId);
-
-        Task<ResponseResultViewModel> WarehouseEntryOutRecordChart(int ouId, int inOutType, int queryType);
-
         Task<ResponseResultViewModel> WarehouseEntryOutOrderChart(int ouId, int inOutType, int queryType);
     }
 }

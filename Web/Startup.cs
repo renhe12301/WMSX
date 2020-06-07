@@ -111,7 +111,8 @@ namespace Web
             services.AddScoped(typeof(ILogRecordViewModelService), typeof(LogRecordViewModelService));
             services.AddScoped(typeof(ISysConfigViewModelService), typeof(SysConfigViewModelService));
             services.AddScoped(typeof(ISubOrderViewModelService), typeof(SubOrderViewModelService));
-
+            services.AddScoped(typeof(IStatisticalViewModelService), typeof(StatisticalViewModelService));
+            
             //定时器工厂
             services.AddSingleton<QuartzStartup>();
             services.AddTransient<Web.Jobs.DashboardJob>();     

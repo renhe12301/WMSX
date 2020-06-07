@@ -19,7 +19,8 @@
     <script src="../../lib/jstree/jstree.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
     <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
-    <script src="../../lib/adminlte/plugins/chart.js/Chart.js"></script>
+    <script src="../../lib/echarts/echarts.js"></script>
+    <script src="../../lib/echarts/china.js"></script>
     <script src="../../lib/loading/js/loading.js"></script>
     <script src="../common/js/loading.js"></script>
     <script src="../../config.js"></script>
@@ -38,38 +39,42 @@
             </div>
         </div>
         <div class="col-md-10" id="sidebar2">
+            
             <div class="container-fluid">
-                <div class="row mb-md-1">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title" id="warehouse-title">库存组织统计</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="donutChart"></canvas>
-                        </div>
+                
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="ljx-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home"
+                           aria-selected="true">
+                            <h6>柱状图</h6>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="gh-tab" data-toggle="tab" href="#admin2" role="tab" aria-controls="profile"
+                           aria-selected="false">
+                            <h6>表格</h6>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0" id="myTabContent">
+                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div id="wChart"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade show active" id="admin2" role="tabpanel" aria-labelledby="home-tab">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div id="aChart"></div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <div class="row mb-md-1">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title" id="area-title">子库存统计</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="barChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-<!--                <div class="row mb-md-1">-->
-<!--                    <div class="card card-info">-->
-<!--                        <div class="card-header">-->
-<!--                            <h3 class="card-title" id="type-title">物料类型统计</h3>-->
-<!--                        </div>-->
-<!--                        <div class="card-body">-->
-<!--                            <canvas id="barChart2"></canvas>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
+            
+            
         </div>
     </div>
   </div>

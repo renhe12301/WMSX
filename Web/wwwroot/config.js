@@ -7,20 +7,12 @@ const controllers =
                 },
             'warehouse':
                 {
-                         'get-warehouses': baseUrl + '/warehouse/get-warehouses',
-                         'warehouse-asset-chart':baseUrl+'/warehouse/warehouse-asset-chart',
-                         'warehouse-material-chart':baseUrl+'/warehouse/warehouse-material-chart',
-                         'warehouse-tray-chart':baseUrl+'/warehouse/warehouse-tray-chart',
-                         'warehouse-entry-out-record-chart':baseUrl+'/warehouse/warehouse-entry-out-record-chart'
+                         'get-warehouses': baseUrl + '/warehouse/get-warehouses'
                 },
             'reservoir-area':
                 {
                         'get-areas': baseUrl + '/reservoir-area/get-areas',
-                        'assign-location': baseUrl + '/reservoir-area/assign-location',
-                        'area-asset-chart':baseUrl+'/reservoir-area/area-asset-chart',
-                        'area-material-chart':baseUrl+'/reservoir-area/area-material-chart',
-                        'area-tray-chart':baseUrl+'/reservoir-area/area-warehouse-tray-chart',
-                        'area-entry-out-record-chart':baseUrl+'/reservoir-area/area-entry-out-record-chart'
+                        'assign-location': baseUrl + '/reservoir-area/assign-location'
                 },
              'supplier':
               {
@@ -58,8 +50,7 @@ const controllers =
               'material-type':
                   {
                       'get-material-type-tree':baseUrl+'/material-type/get-material-type-trees',
-                      'get-material-types':baseUrl+'/material-type/get-material-types',
-                      'material-type-chart':baseUrl+'/material-type/material-type-chart'
+                      'get-material-types':baseUrl+'/material-type/get-material-types'
                   },
               'material-dic':
                   {
@@ -97,7 +88,6 @@ const controllers =
                     {
                         'get-orders':baseUrl+"/order/get-orders",
                         'get-order-rows':baseUrl+"/order/get-order-rows",
-                        'get-tkorder-materials':baseUrl+"/order/get-tkorder-materials",
                         'create-out-order':baseUrl+"/order/create-out-order",
                         'close-order':baseUrl+"/order/close-order",
                         'close-order-row':baseUrl+"/order/close-order-row"
@@ -122,7 +112,17 @@ const controllers =
                     'ebstask':
                       {
                           'get-tasks': baseUrl + "/ebstask/get-tasks"
-                      }
+                      },
+                      'statistical': 
+                          {
+                              'material-chart': baseUrl + "/statistical/material-chart",
+                              'in-record-chart': baseUrl + "/statistical/in-record-chart",
+                              'out-record-chart': baseUrl + "/statistical/out-record-chart",
+                              'in-order-chart': baseUrl + "/statistical/in-order-chart",
+                              'out-order-chart': baseUrl + "/statistical/out-order-chart",
+                              'in-sub-order-chart': baseUrl + "/statistical/in-sub-order-chart",
+                              'out-sub-order-chart': baseUrl + "/statistical/out-sub-order-chart"
+                          }
 
 
 
