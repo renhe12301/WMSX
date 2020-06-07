@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="lib/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <link rel="stylesheet" href="lib/adminlte/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="lib/adminlte/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="lib/selectmenu/selectmenu.css">
     <script src="lib/adminlte/plugins/jquery/jquery.min.js"></script>
     <script src="lib/jquery-cookie/jquery.cookie.js"></script>
     <script src="lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -14,9 +15,9 @@
     <script src="lib/adminlte/dist/js/adminlte.js"></script>
     <script src="lib/adminlte/plugins/toastr/toastr.min.js"></script>
     <script src="config.js"></script>
-
+    <script src="lib/selectmenu/selectmenu.js"></script>
     <script src="login-check.js"></script>
-
+    <script src="modules/common/js/confirm-dlg.js"></script>
     <script>
         $(function () {
             loginCheck();
@@ -59,6 +60,14 @@
                 }
             });
 
+            $("#sys-out").click(function () {
+                confirmShow(function () {
+                    $.cookie('wms-user', null);
+                    window.location.href = "login.html";
+                   
+                },"退出系统");
+               
+            });
         });
     </script>
 </head>
@@ -83,6 +92,11 @@
                 <a class="nav-link xxx" title="共和" href="javascript:window.open('modules/dashboards/dashboard1.html');"><i
                         class="fas fa-desktop"></i></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link xxx" title="系统注销" href="#" id="sys-out">
+                    <i class="fas fa-window-close"></i>
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -95,7 +109,6 @@
                  style="opacity: .8">
             <span class="brand-text font-weight-light">黄河水电智能仓库</span>
         </a>
-
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
