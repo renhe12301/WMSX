@@ -143,5 +143,7 @@ namespace Web.ViewModels.OrderManager
         public string Tag { get; set; }
         
         public int? SourceId { get; set; }
+
+        public string IsSyncStr { get; set; }
     }
 }

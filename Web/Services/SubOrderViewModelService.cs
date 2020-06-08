@@ -96,7 +96,8 @@ namespace Web.Services
                         PhyWarehouseName = e.PhyWarehouse?.PhyName,
                         IsScrap = e.IsScrap,
                         SourceId = e.SourceId,
-                        SourceOrderType = e.SourceOrderType
+                        SourceOrderType = e.SourceOrderType,
+                        IsSyncStr = e.IsSync==1?"已同步":"未同步"
                     };
                     orderViewModels.Add(subOrderViewModel);
                 });

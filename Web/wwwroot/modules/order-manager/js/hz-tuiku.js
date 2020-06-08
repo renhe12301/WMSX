@@ -188,6 +188,22 @@ $(function () {
                         else if(value=="关闭")
                             return '<span class="badge bg-gray-dark">关闭</span>';
                     }
+                },
+                {
+                    title: '同步到集约化',
+                    field: 'IsSyncStr',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter : function(value, row, index) {
+                        if(value=="已同步")
+                        {
+                            return '<span class="badge bg-green">'+value+'</span>';
+                        }
+                        else if(value=="未同步")
+                        {
+                            return '<span class="badge bg-red">'+value+'</span>';
+                        }
+                    }
                 }
             ]
     });
