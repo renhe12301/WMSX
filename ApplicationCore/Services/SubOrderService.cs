@@ -373,13 +373,110 @@ namespace ApplicationCore.Services
         public async Task CreateOrder(SubOrder order)
         {
             Guard.Against.Null(order, nameof(order));
+            Guard.Against.Zero(order.OrderTypeId, nameof(order.OrderTypeId));
             Guard.Against.Zero(order.SubOrderRow.Count, nameof(order.SubOrderRow));
+            
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try
                     {
+                        // 退库时,校验库存现有量
+                        if (order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库))
+                        {
+
+                            SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null, null,
+                                null, null,
+                                new List<int> {Convert.ToInt32(ORDER_TYPE.入库退库),
+                                                          Convert.ToInt32(ORDER_TYPE.出库领料)},
+                                order.OUId, order.WarehouseId, null,
+                                null,
+                                null, null,
+                                null,
+                                new List<int>
+                                    {Convert.ToInt32(ORDER_STATUS.待处理), Convert.ToInt32(ORDER_STATUS.执行中)}, null,
+                                null, null, null);
+
+                            List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);
+                            var tkSubOrderRowGroup = tkSubOrderRows.GroupBy(sr => new
+                                {sr.SubOrder.OUId, sr.SubOrder.WarehouseId, sr.ReservoirAreaId, sr.MaterialDicId});
+                            
+
+                            foreach (var subOrderRow in order.SubOrderRow)
+                            {
+                                foreach (var tkGroup in tkSubOrderRowGroup)
+                                {
+                                    var key = tkGroup.Key;
+                                    //校验同一个OU、库存组织、子库区、物料编码的出库领料单行的物料数量是否小于剩余物料数量
+                                    if (subOrderRow.ReservoirAreaId ==
+                                        key.ReservoirAreaId && subOrderRow.MaterialDicId == key.MaterialDicId)
+                                    {
+                                        // 领料单与退库单冲突
+                                        var totalTKOrderRowCount = tkGroup.Sum(m => m.PreCount);
+
+                                        // 同一个OU、库存组织、子库区、物料编码 的库存现有数量总和
+                                        double totalMaterialCount = 0;
+                                        
+                                        List<WarehouseMaterial> warehouseMaterials = null;
+                                        // 入库完成在货架上的物料
+                                        WarehouseMaterialSpecification inWarehouseMaterialSpec =
+                                            new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
+                                                null,
+                                                null, null, null, null, null,
+                                                new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)}, null, key.OUId,
+                                                key.WarehouseId,
+                                                key.ReservoirAreaId, null, null, null, null, null);
+
+                                        warehouseMaterials =
+                                            this._warehouseMaterialRepository.List(inWarehouseMaterialSpec);
+                                        totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
+
+                                        // 正在执行出库中、出库完成待确认的物料
+                                        WarehouseMaterialSpecification exeWarehouseMaterialSpec =
+                                            new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
+                                                null,
+                                                null, null, null, null, null, new List<int>
+                                                {
+                                                    Convert.ToInt32(TRAY_STEP.待出库), Convert.ToInt32(TRAY_STEP.出库中未执行),
+                                                    Convert.ToInt32(TRAY_STEP.出库中已执行),
+                                                    Convert.ToInt32(TRAY_STEP.出库完成等待确认)
+                                                }, null, key.OUId, key.WarehouseId,
+                                                key.ReservoirAreaId, null, null, null, null, null);
+                                        warehouseMaterials =
+                                            this._warehouseMaterialRepository.List(exeWarehouseMaterialSpec);
+                                        totalMaterialCount +=
+                                            (warehouseMaterials.Sum(t => t.MaterialCount) +
+                                             warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
+
+                                        // 出库完成确认完成的物料
+                                        WarehouseMaterialSpecification outEndWarehouseMaterialSpec =
+                                            new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
+                                                null,
+                                                null, null, null, null, null,
+                                                new List<int> {Convert.ToInt32(TRAY_STEP.初始化)}, null, key.OUId,
+                                                key.WarehouseId,
+                                                key.ReservoirAreaId, null, null, null, null, null);
+                                        warehouseMaterials =
+                                            this._warehouseMaterialRepository.List(outEndWarehouseMaterialSpec);
+                                        totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
+
+                                        //同一个OU、库存组织、子库区、物料编码 剩余的数量总和 (库存物料数量-退库订单行物料数量)
+                                        double surplusTotalMaterialCount = totalMaterialCount - totalTKOrderRowCount;
+
+                                        if (surplusTotalMaterialCount < subOrderRow.PreCount)
+                                        {
+                                            throw new Exception(string.Format(
+                                                "行上物料[{0}],退库和领料数量[{1}],库存现有量[{2}],库存现有量不足,无法退库!",
+                                                subOrderRow.MaterialDicId, totalTKOrderRowCount,
+                                                surplusTotalMaterialCount));
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
                         List<OrderRow> updOrderRows = new List<OrderRow>();
                         foreach (var subOrderRow in order.SubOrderRow)
                         {

@@ -475,8 +475,8 @@ namespace Web.WebServices.Services
                                     RequestCKLLOrder.AlyDepCode);
                                 throw new Exception(err);
                             }
-
                             Organization alyOrg = alyOrgs[0];
+                            
                             organizationSpec =
                                 new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.TransDepCode), null, null, null);
                             List<Organization> transOrgs = this._organizationRepository.List(organizationSpec);
@@ -504,9 +504,10 @@ namespace Web.WebServices.Services
                                 var findSameRows = RequestCKLLOrder.RequestCKLLRows.FindAll(f=>Convert.ToInt32(f.InventoryCode)==key.ReservoirAreaId&&Convert.ToInt32(f.MaterialId)==key.MaterialDicId);
                                 if (findSameRows.Count == 0) continue;
                                 
+                                // 领料单与退库单冲突
                                 var totalTKOrderRowCount = tkGroup.Sum(m => m.PreCount);
                                 
-                                // 同一个OU、库存组织、子库区、物料编码 的数量总和
+                                // 同一个OU、库存组织、子库区、物料编码 的库存现有数量总和
                                 double totalMaterialCount = 0;
                                 List<WarehouseMaterial> warehouseMaterials = null;
                                 // 入库完成在货架上的物料
@@ -523,11 +524,11 @@ namespace Web.WebServices.Services
                                       Convert.ToInt32(TRAY_STEP.出库完成等待确认)},null,key.OUId,key.WarehouseId,
                                     key.ReservoirAreaId,null,null,null,null,null);
                                 warehouseMaterials = this._warehouseMaterialRepository.List(exeWarehouseMaterialSpec);
-                                totalMaterialCount += (warehouseMaterials.Sum(t => t.MaterialCount)- warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
+                                totalMaterialCount += (warehouseMaterials.Sum(t => t.MaterialCount) + warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
                                 
                                 // 出库完成确认完成的物料
                                 WarehouseMaterialSpecification outEndWarehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,key.MaterialDicId,null,null,
-                                    null,null,null,null,null,new List<int>{Convert.ToInt32(TRAY_STEP.出库完成等待确认)},null,key.OUId,key.WarehouseId,
+                                    null,null,null,null,null,new List<int>{Convert.ToInt32(TRAY_STEP.初始化)},null,key.OUId,key.WarehouseId,
                                     key.ReservoirAreaId,null,null,null,null,null);
                                 warehouseMaterials = this._warehouseMaterialRepository.List(outEndWarehouseMaterialSpec);
                                 totalMaterialCount +=  warehouseMaterials.Sum(t => t.MaterialCount);
@@ -537,7 +538,8 @@ namespace Web.WebServices.Services
 
                                 if (surplusTotalMaterialCount < findSameRows.Sum(r => Convert.ToInt32(r.ReqQty)))
                                 {
-                                    throw new Exception(string.Format("出库订单[{0}],出库订单行[{1}]数量和退库订单[{2}],退库订单行[{3}]数量冲突!"));
+                                    throw new Exception(string.Format("前置出库订单头[{0}],行[{1}],行需求数量[{2}],退库数量[{3}],剩余数量[{4}],物料库存现有量不足无法出库!",
+                                                                                RequestCKLLOrder.HeaderId,findSameRows[0].LineId,findSameRows[0].ReqQty,totalTKOrderRowCount,surplusTotalMaterialCount));
                                 }
                             }
                             

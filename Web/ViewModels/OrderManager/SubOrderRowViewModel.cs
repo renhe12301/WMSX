@@ -8,6 +8,9 @@ namespace Web.ViewModels.OrderManager
     /// </summary>
     public class SubOrderRowViewModel
     {
+        /// <summary>
+        /// 订单行编号
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
@@ -31,7 +34,10 @@ namespace Web.ViewModels.OrderManager
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
-
+        
+        /// <summary>
+        /// 物料字典名称
+        /// </summary>
         public string MaterialDicName { get; set; }
 
         /// <summary>
@@ -101,23 +107,46 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public int IsScrap { get; set; }
         
+        /// <summary>
+        /// 业务实体编号
+        /// </summary>
         public int? OUId { get; set; }
         
+        /// <summary>
+        /// 库存组织编号
+        /// </summary>
         public int? WarehouseId { get; set; }
         
+        /// <summary>
+        /// 供应商编号
+        /// </summary>
         public int? SupplierId { get; set; }
         
+        /// <summary>
+        /// 供应商站点编号
+        /// </summary>
         public int? SupplierSiteId { get; set; }
         
-
+        /// <summary>
+        /// 是否作废显示名称
+        /// </summary>
         public string IsScrapStr { get; set; }
 
+        /// <summary>
+        /// 前置订单行编号
+        /// </summary>
         public int? SourceId { get; set; }
 
+        /// <summary>
+        /// 托盘码
+        /// </summary>
         public string TrayCode { get; set; }
 
         public string Tag { get; set; }
 
+        /// <summary>
+        /// 订单头类型编号
+        /// </summary>
         public int? OrderTypeId { get; set; }
 
     }

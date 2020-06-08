@@ -10,7 +10,9 @@ namespace Web.ViewModels.OrderManager
     /// </summary>
     public class SubOrderViewModel
     {
-
+        /// <summary>
+        /// 后置订单编号
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
@@ -21,7 +23,10 @@ namespace Web.ViewModels.OrderManager
         /// 订单类型编号
         /// </summary>
         public int OrderTypeId { get; set; }
-
+        
+        /// <summary>
+        /// 订单类型显示名称
+        /// </summary>
         public string OrderType { get; set; }
 
         /// <summary>
@@ -119,10 +124,15 @@ namespace Web.ViewModels.OrderManager
         /// 订单是否作废
         /// </summary>
         public int IsScrap { get; set; }
-
+        
+        /// <summary>
+        /// 订单是否作废显示名称
+        /// </summary>
         public string IsScrapStr { get; set; }
         
-        
+        /// <summary>
+        /// 前置订单类型显示名称
+        /// </summary>
         public string SourceOrderType { get; set; }
 
         /// <summary>
@@ -131,7 +141,7 @@ namespace Web.ViewModels.OrderManager
         public List<SubOrderRowViewModel> SubOrderRows { get; set; }
         
         public string Tag { get; set; }
-
+        
         public int? SourceId { get; set; }
     }
 }
