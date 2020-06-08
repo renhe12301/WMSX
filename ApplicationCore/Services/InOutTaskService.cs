@@ -335,133 +335,146 @@ namespace ApplicationCore.Services
                     if (tasks.Count == 0)
                         throw new Exception(string.Format("任务编号[{0}],不存在！", taskId));
                     var task = tasks[0];
-
-                    WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
-                        task.TrayCode, null, null, null, null, null,
-                        null, null, null, null, null);
-                    var warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
-                    var warehouseTray = warehouseTrays[0];
-
+                    WarehouseTray warehouseTray = null;
+                    if (task.TrayCode != null)
+                    {
+                        WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,
+                            task.TrayCode, null, null, null, null, null,
+                            null, null, null, null, null);
+                        var warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                    
+                        warehouseTray = warehouseTrays[0];
+                    }
                     task.Step = taskStatus;
                     if (taskStatus == Convert.ToInt32(TASK_STEP.任务开始))
                     {
                         task.Status = Convert.ToInt32(TASK_STATUS.执行中);
-                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中未执行))
+
+                        if (warehouseTray != null)
                         {
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已执行);
+                            if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中未执行))
+                            {
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中已执行);
+                            }
+                            if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中未执行))
+                            {
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中已执行);
+                            }
+                            this._warehouseTrayRepository.Update(warehouseTray);
                         }
 
-                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库中未执行))
-                        {
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库中已执行);
-                        }
-
-                        this._warehouseTrayRepository.Update(warehouseTray);
                         this._inOutTaskRepository.Update(task);
                     }
                     else if (taskStatus == Convert.ToInt32(TASK_STEP.取货完成))
                     {
-                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已执行))
+                        if (warehouseTray != null)
                         {
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已下架);
+                            if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.出库中已执行))
+                            {
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.已下架);
+                            }
+                            LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId, null,
+                                null, null, null, null, null, null, null, null,
+                                null, null, null);
+                            var locations = this._locationRepository.List(locationSpec);
+                            var location = locations[0];
+                            location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                            location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
+                            location.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
+                            warehouseTray.LocationId = null;
+                            WarehouseMaterialSpecification warehouseMaterialSpecification =
+                                new WarehouseMaterialSpecification(null,
+                                    null, null, null, null, null, warehouseTray.Id,
+                                    null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null);
+                            List<WarehouseMaterial> warehouseMaterials =
+                                this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+                            warehouseMaterials.ForEach(m =>
+                            {
+                                m.LocationId = null;
+                                m.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
+                            });
+                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
+                            this._warehouseMaterialRepository.Update(warehouseMaterials);
+                            this._warehouseTrayRepository.Update(warehouseTray);
+                            this._locationRepository.Update(location);
                         }
 
-                        LocationSpecification locationSpec = new LocationSpecification(null, task.SrcId, null,
-                            null, null, null, null, null, null, null, null,
-                            null, null, null);
-                        var locations = this._locationRepository.List(locationSpec);
-                        var location = locations[0];
-                        location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-                        location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
-                        location.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
-                        warehouseTray.LocationId = null;
-                        WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,
-                            null,null,null,null,null,warehouseTray.Id,
-                            null,null,null,null,null,null,null,null,null,
-                            null,null,null,null);
-                        List<WarehouseMaterial> warehouseMaterials =
-                            this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
-                        warehouseMaterials.ForEach(m =>
-                        {
-                            m.LocationId = null;
-                            m.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
-                        });
-                        warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.车辆);
-                        this._warehouseMaterialRepository.Update(warehouseMaterials);
-                        this._warehouseTrayRepository.Update(warehouseTray);
-                        this._locationRepository.Update(location);
                         this._inOutTaskRepository.Update(task);
                     }
                     else if (taskStatus == Convert.ToInt32(TASK_STEP.放货完成))
                     {
                         task.Status = Convert.ToInt32(TASK_STATUS.完成);
-                        double outCount = warehouseTray.OutCount.GetValueOrDefault();
-                        if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
+
+                        if (warehouseTray != null)
                         {
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
-                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
-                        }
-                        else
-                        {
-                            
-                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
-                            warehouseTray.OutCount = 0;
-                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
+                            double outCount = warehouseTray.OutCount.GetValueOrDefault();
+                            if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.已下架))
+                            {
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
+                                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                            }
+                            else
+                            {
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
+                                warehouseTray.OutCount = 0;
+                                warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
+                            }
+
+                            LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
+                                null, null, null, null, null, null, null, null,
+                                null, null, null);
+                            var locations = this._locationRepository.List(locationSpec);
+                            var location = locations[0];
+                            location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
+                            location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
+                            location.InStock = warehouseTray.MaterialCount > 0
+                                ? Convert.ToInt32(LOCATION_INSTOCK.有货)
+                                : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
+
+                            warehouseTray.LocationId = location.Id;
+                            WarehouseMaterialSpecification warehouseMaterialSpecification =
+                                new WarehouseMaterialSpecification(null,
+                                    null, null, null, null, null, warehouseTray.Id,
+                                    null, null, null, null, null, null, null, null, null,
+                                    null, null, null, null);
+                            List<WarehouseMaterial> warehouseMaterials =
+                                this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+                            warehouseMaterials.ForEach(m =>
+                            {
+                                m.LocationId = location.Id;
+                                m.Carrier = warehouseTray.Carrier;
+                            });
+                            this._warehouseMaterialRepository.Update(warehouseMaterials);
+                            this._warehouseTrayRepository.Update(warehouseTray);
+                            this._locationRepository.Update(location);
+
+                            if (warehouseTray.SubOrderRowId.HasValue)
+                            {
+                                SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
+
+                                OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                    subOrderRow.OrderRowId,
+                                    null, null, null, null, null, null, null,
+                                    null, null, null, null, null, null, null,
+                                    null);
+                                List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+
+                                OrderRow orderRow = orderRows.First();
+                                double preCount = orderRow.RealityCount.GetValueOrDefault();
+                                preCount += (warehouseTray.MaterialCount + outCount);
+                                orderRow.RealityCount = preCount;
+                                
+                                preCount = subOrderRow.RealityCount.GetValueOrDefault();
+                                preCount += (warehouseTray.MaterialCount + outCount);
+                                subOrderRow.RealityCount = preCount;
+
+                                this._subOrderRowRepository.Update(subOrderRow);
+                                this._orderRowRepository.Update(orderRow);
+                            }
                         }
 
-                        LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId, null,
-                            null, null, null, null, null, null, null, null,
-                            null, null, null);
-                        var locations =  this._locationRepository.List(locationSpec);
-                        var location = locations[0];
-                        location.Status = Convert.ToInt32(LOCATION_STATUS.正常);
-                        location.IsTask = Convert.ToInt32(LOCATION_TASK.没有任务);
-                        location.InStock = warehouseTray.MaterialCount > 0
-                            ? Convert.ToInt32(LOCATION_INSTOCK.有货)
-                            : Convert.ToInt32(LOCATION_INSTOCK.空托盘);
-                       
-                        warehouseTray.LocationId = location.Id;
-                        WarehouseMaterialSpecification warehouseMaterialSpecification = new WarehouseMaterialSpecification(null,
-                            null,null,null,null,null,warehouseTray.Id,
-                            null,null,null,null,null,null,null,null,null,
-                            null,null,null,null);
-                        List<WarehouseMaterial> warehouseMaterials =
-                            this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
-                        warehouseMaterials.ForEach(m =>
-                        {
-                            m.LocationId = location.Id;
-                            m.Carrier = warehouseTray.Carrier;
-                        });
-                        this._warehouseMaterialRepository.Update(warehouseMaterials);
-                        this._warehouseTrayRepository.Update(warehouseTray);
                         this._inOutTaskRepository.Update(task);
-                        this._locationRepository.Update(location);
-
-                        if (warehouseTray.SubOrderRowId.HasValue)
-                        {
-                            SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
-
-                            OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                subOrderRow.OrderRowId,
-                                null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null,
-                                null);
-                            List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-
-                            OrderRow orderRow = orderRows.First();
-                            double preCount = orderRow.RealityCount.GetValueOrDefault();
-                            preCount += (warehouseTray.MaterialCount + outCount);
-                            orderRow.RealityCount = preCount;
-
-
-                            preCount = subOrderRow.RealityCount.GetValueOrDefault();
-                            preCount += (warehouseTray.MaterialCount + outCount);
-                            subOrderRow.RealityCount = preCount;
-
-                            this._subOrderRowRepository.Update(subOrderRow);
-                            this._orderRowRepository.Update(orderRow);
-
-                        }
                     }
                     else
                     {

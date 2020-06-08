@@ -54,10 +54,12 @@ namespace Web.Jobs
                                             ot.Type == Convert.ToInt32(TASK_TYPE.空托盘入库)
                                 ? 0
                                 : 1;
-                            task.district = ot.ReservoirArea.Id.ToString();
+                            if(ot.ReservoirAreaId.HasValue)
+                                task.district = ot.ReservoirAreaId;
                             task.startNode = ot.SrcId.ToString();
                             task.endNode = ot.TargetId.ToString();
-                            task.barCode = ot.TrayCode;
+                            if(ot.TrayCode!=null)
+                                task.barCode = ot.TrayCode;
                             tasks.Add(task);
                             taskGroup.tasks = tasks;
                             string sendJsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(taskGroup);

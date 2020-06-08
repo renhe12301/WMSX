@@ -28,5 +28,7 @@ namespace Web.Interfaces
         Task<ResponseResultViewModel> OutConfirm(WarehouseTrayViewModel warehouseTrayViewModel);
         
         
+        Task<ResponseResultViewModel> SendWcs(InOutTaskViewModel inOutTaskViewModel);
+        
     }
 }

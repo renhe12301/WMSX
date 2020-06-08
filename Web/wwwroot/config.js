@@ -77,7 +77,8 @@ const controllers =
                     },
                 'in-out-task':
                   {
-                      'get-in-out-tasks':baseUrl+"/in-out-task/get-in-out-tasks"
+                      'get-in-out-tasks':baseUrl+"/in-out-task/get-in-out-tasks",
+                      'send-wcs':baseUrl+"/in-out-task/send-wcs"
                   },
                  'phy-warehouse':
                      {

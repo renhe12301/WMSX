@@ -304,7 +304,7 @@ $(function () {
                 if (response.Code == 200)
                     toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
                 else
-                    toastr.success(response.Data, '系统信息', { timeOut: 3000 });
+                    toastr.error(response.Data, '系统信息', { timeOut: 3000 });
             }
         });
     });

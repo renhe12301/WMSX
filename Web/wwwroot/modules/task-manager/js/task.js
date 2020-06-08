@@ -140,6 +140,7 @@ $(function () {
         detailView: true,
         onExpandRow: function (index, row, $detail) {
             if(row.Status!=0&&row.Status!=1)return;
+            if(!row.TrayCode)return;
             var subTable = $detail.html('<table></table>').find('table');
             subTable.bootstrapTable({
                 ajax:function(request)
@@ -322,7 +323,7 @@ $(function () {
                 },
                 {
                     title: '类型',
-                    field: 'Type',
+                    field: 'TypeStr',
                     valign: 'middle',
                     align: 'center'
                 },
@@ -404,5 +405,49 @@ $(function () {
     });
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
+    });
+    $("#send-btn").click(function () {
+        confirmShow(function () {
+            $('#send-dlg').modal('show');
+        });
+    });
+    $("#save-btn").click(function () {
+         var pickCode = $("#pick-code").val();
+         var dropCode = $("#drop-code").val();
+         if(pickCode.trim()=="")
+         {
+             $("#pick-code").focus();
+             toastr.error("请输入取货位置编码!", '错误信息', {timeOut: 3000});
+             return;
+         }
+        if(dropCode.trim()=="")
+        {
+            $("#drop-code").focus();
+            toastr.error("请输入放货位置编码!", '错误信息', {timeOut: 3000});
+            return;
+        }
+
+        asynTask({
+            type:'post',
+            url:controllers["in-out-task"]["send-wcs"],
+            jsonData: 
+                {
+                    Type:parseInt($("#type-sel").val()),
+                    SrcId:pickCode,
+                    TargetId:dropCode,
+                    PhyWarehouseId:parseInt($("#py-sel").val())
+                },
+            successCallback:function(response) {
+                if (response.Code == 200) {
+                    toastr.success("操作成功!", '系统信息', {timeOut: 3000});
+                    $('#send-dlg').modal('hide');
+                    $('#task-table').bootstrapTable('refresh');
+                } else {
+                    toastr.error(response.Data, '系统信息', {timeOut: 3000});
+                }
+
+            }
+        });
+        
     });
 });

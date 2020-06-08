@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../lib/adminlte/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="../../lib/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="../../lib/loading/css/loading.css">
+    <link rel="stylesheet" href="../../lib/adminlte/plugins/toastr/toastr.min.css">
     <script src="../../lib/adminlte/plugins/jquery/jquery.min.js"></script>
     <script src="../../lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../lib/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
@@ -24,8 +25,10 @@
     <script src="../../lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
     <script src="../../lib/adminlte/plugins/select2/js/select2.full.min.js"></script>
     <script src="../../lib/loading/js/loading.js"></script>
+    <script src="../../lib/adminlte/plugins/toastr/toastr.min.js"></script>
     <script src="../../config.js"></script>
     <script src="../common/js/asyn-task.js"></script>
+    <script src="../common/js/confirm-dlg.js"></script>
     <script src="../common/js/render-tree.js"></script>
     <script src="../common/js/range-time-ymdhhssmm.js"></script>
     <script src="js/task.js"></script>
@@ -56,6 +59,7 @@
                             <span class="input-group-append">
                             <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
                             <button type="button" id="more-query-btn" class="btn btn-secondary btn-flat">更多查询...</button>
+                            <button type="button" id="send-btn" class="btn btn-danger btn-flat">手动下发</button>    
                             </span>
                         </div>
                         <div class="bootstrap-table bootstrap4">
@@ -128,6 +132,56 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="send-dlg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">手动下发WCS任务</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-primary card-outline">
+                    <form id="send-form" class="form-horizontal" method="post" novalidate="novalidate">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>取货位置</label>
+                                <input type="text" class="form-control" placeholder="请输入取货位置编码..." id="pick-code" >
+                            </div>
+                            <div class="form-group">
+                                <label>放货位置</label>
+                                <input type="text" class="form-control" placeholder="请输入取货位置编码..." id="drop-code" >
+                            </div>
+                            <div class="form-group">
+                                <label>类型</label>
+                                <select class="select2" id="type-sel" >
+                                    <option value="0">入库</option>
+                                    <option value="1">出库</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>仓库</label>
+                                <select class="select2" id="py-sel" >
+                                    <option value="1">李家峡</option>
+                                    <option value="2">共和</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="save-btn" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+           
         </div>
         <!-- /.modal-content -->
     </div>

@@ -16,7 +16,8 @@ namespace Web.ViewModels.TaskManager
         public int Step { get; set; }
         public string StatusStr { get; set; }
         public string StepStr { get; set; }
-        public string Type { get; set; }
+        public string TypeStr { get; set; }
+        public int Type { get; set; }
         public int Progress { get; set; }
         public int Feedback { get; set; }
         public string CreateTime { get; set; }

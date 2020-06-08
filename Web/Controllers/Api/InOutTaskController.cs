@@ -132,6 +132,17 @@ namespace Web.Controllers.Api
             return Content(JsonConvert.SerializeObject(response));
         }
 
+        /// <summary>
+        /// 手动发送wcs任务
+        /// </summary>
+        /// <param name="inOutTaskViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SendWcs([FromBody]InOutTaskViewModel inOutTaskViewModel)
+        {
+            var response = await this._inOutTaskViewModelService.SendWcs(inOutTaskViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
     }
 }

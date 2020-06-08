@@ -137,7 +137,8 @@ namespace ApplicationCore.Misc
         物料入库=0,
         物料出库=1,
         空托盘入库=2,
-        空托盘出库=3
+        空托盘出库=3,
+        手动下发=4
     }
 
     public enum INOUTRECORD_FLAG

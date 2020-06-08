@@ -9,6 +9,7 @@ using ApplicationCore.Specifications;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Misc;
 using Web.ViewModels.StockManager;
 
@@ -20,12 +21,16 @@ namespace Web.Services
 
         private readonly IInOutTaskService _inOutTaskService;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
+        private readonly IAsyncRepository<Location> _locationRepository;
 
         public InOutTaskViewModelService(IInOutTaskService inOutTaskService,
-                                         IAsyncRepository<InOutTask> inOutTaskRepository)
+                                         IAsyncRepository<InOutTask> inOutTaskRepository,
+                                         IAsyncRepository<Location> locationRepository
+                                         )
         {
             this._inOutTaskService = inOutTaskService;
             this._inOutTaskRepository = inOutTaskRepository;
+            this._locationRepository = locationRepository;
         }
 
 
@@ -91,7 +96,7 @@ namespace Web.Services
                         Status = e.Status,
                         StatusStr= Enum.GetName(typeof(TASK_STATUS), e.Status),
                         StepStr = Enum.GetName(typeof(TASK_STEP), e.Step),
-                        Type =  Enum.GetName(typeof(TASK_TYPE), e.Type),
+                        TypeStr =  Enum.GetName(typeof(TASK_TYPE), e.Type),
                         OUId = e.OUId,
                         OUName = e.OU?.OUName,
                         ReservoirAreaId = e.ReservoirAreaId,
@@ -139,6 +144,52 @@ namespace Web.Services
             try
             {
                 await this._inOutTaskService.OutConfirm(warehouseTrayViewModel.TrayCode);
+            }
+            catch (Exception ex)
+            {
+                responseResultViewModel.Code = 500;
+                responseResultViewModel.Data = ex.Message;
+            }
+
+            return responseResultViewModel;
+        }
+
+        public async Task<ResponseResultViewModel> SendWcs(InOutTaskViewModel inOutTaskViewModel)
+        {
+            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                if(inOutTaskViewModel.SrcId==null)
+                    throw new Exception(string.Format("取货货位编码不能为空!"));
+                if(inOutTaskViewModel.TargetId==null)
+                    throw new Exception(string.Format("取货货位编码不能为空!"));
+                if(inOutTaskViewModel.PhyWarehouseId==null)
+                    throw new Exception(string.Format("物理仓库编号不能为空!"));
+                
+                LocationSpecification srcLocationSpec = new LocationSpecification(null,inOutTaskViewModel.SrcId,null,
+                    null,inOutTaskViewModel.PhyWarehouseId,null,null,null,null,null,null,
+                    null,null,null);
+                List<Location> srcLocations = await this._locationRepository.ListAsync(srcLocationSpec);
+                
+                if(srcLocations.Count==0)
+                    throw new Exception(string.Format("货位编码[{0}]不存在!",inOutTaskViewModel.SrcId));
+                LocationSpecification targetTocationSpec = new LocationSpecification(null,inOutTaskViewModel.TargetId,null,
+                    null,inOutTaskViewModel.PhyWarehouseId,null,null,null,null,null,null,
+                    null,null,null);
+                List<Location> tarLocations = await this._locationRepository.ListAsync(targetTocationSpec);
+                if(tarLocations.Count==0)
+                    throw new Exception(string.Format("货位编码[{0}]不存在!",inOutTaskViewModel.TargetId));
+              
+                
+                InOutTask inOutTask = new InOutTask();
+                inOutTask.Type = inOutTaskViewModel.Type;
+                inOutTask.SrcId = inOutTaskViewModel.SrcId;
+                inOutTask.TargetId = inOutTaskViewModel.TargetId;
+                inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
+                inOutTask.IsRead = Convert.ToInt32(TASK_READ.未读);
+                inOutTask.PhyWarehouseId = inOutTaskViewModel.PhyWarehouseId;
+                inOutTask.Type = Convert.ToInt32(TASK_TYPE.手动下发);
+                await this._inOutTaskRepository.AddAsync(inOutTask);
             }
             catch (Exception ex)
             {
