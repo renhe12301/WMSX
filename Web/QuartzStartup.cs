@@ -73,7 +73,7 @@ namespace Web
                 .Build();
             
             // // 大数据分析 job
-            // await _scheduler.ScheduleJob(jobDetail,trigger);
+             await _scheduler.ScheduleJob(jobDetail,trigger);
             // // 入库 job
             // await _scheduler.ScheduleJob(jobDetail2,trigger2);
             // // 出库 job

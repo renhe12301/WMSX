@@ -109,7 +109,7 @@ namespace Web.Jobs
                 List<InOutTask> recvs = inOutTasks
                     .Where(r => r.Type == Convert.ToInt32(TASK_TYPE.物料入库) && r.CreateTime >= now &&
                                 r.CreateTime <= eCreateTime).ToList();
-                data1.Add(recvs.Sum(r => r.WarehouseTray.MaterialCount));
+                data1.Add(recvs.Count);
                 //data1.Add(random.Next(10,100));
             }
             result.Add(data1);
@@ -235,7 +235,7 @@ namespace Web.Jobs
             }
 
             result.Add(data1);
-            result.Add(data2);
+           // result.Add(data2);
             result.Add(data3);
             return result;
         }
@@ -317,7 +317,7 @@ namespace Web.Jobs
         async Task<List<double>> GetStockCountAnalysis()
         {
             List<double> result = new List<double>();
-            Random random = new Random();
+            //Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
             WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null, null, null,
                 null, null, null, null, null, null, null, null, null,
@@ -332,7 +332,7 @@ namespace Web.Jobs
                 
                 List<WarehouseMaterial> ms = materials.Where(m=>m.CreateTime >= now &&m.CreateTime <= eCreateTime).ToList();
                 result.Add(ms.Sum(r => r.MaterialCount));
-                result.Add(random.Next(10,100));
+                //result.Add(random.Next(10,100));
             }
 
             return result;
@@ -364,8 +364,8 @@ namespace Web.Jobs
             
             for (int i = 1; i <= 7; i++)
             {
-                var sCreateTime = now.AddDays(-dayWeek).AddDays(i).ToShortDateString() + "00:00:00";
-                var eCreateTime = now.AddDays(-dayWeek).AddDays(i).ToShortDateString() + "23:59:59";
+                var sCreateTime = now.AddDays(-dayWeek).AddDays(i).ToShortDateString() + " 00:00:00";
+                var eCreateTime = now.AddDays(-dayWeek).AddDays(i).ToShortDateString() + " 23:59:59";
                 
                 
                 List<SubOrder> orders2 = orders.Where(r =>
@@ -432,14 +432,14 @@ namespace Web.Jobs
         /// 库存利用率分析
         /// </summary>
         /// <returns></returns>
-        async Task<List<int>> GetStockUtilizationAnalysis()
+        async Task<List<double>> GetStockUtilizationAnalysis()
         {
-            List<int> result = new List<int>();
+            List<double> result = new List<double>();
             Random random = new Random();
             List<Location> all = await this._locationRepository.ListAllAsync();
-            int emptyCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.无货)).Count();
-            int emptyTrayCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.空托盘)).Count();
-            int materialCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.有货)).Count();
+            double emptyCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.无货)).Count();
+            double emptyTrayCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.空托盘)).Count();
+            double materialCount = all.Where(l => l.InStock == Convert.ToInt32(LOCATION_INSTOCK.有货)).Count();
             result.Add(all.Count>0?emptyCount/all.Count:0);
             result.Add(all.Count>0?emptyTrayCount/all.Count:0);
             result.Add(all.Count>0?materialCount/all.Count:0);

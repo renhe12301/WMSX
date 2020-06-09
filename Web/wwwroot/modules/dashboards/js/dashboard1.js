@@ -29,7 +29,6 @@ $(function(){
         var option = inOrderChart.getOption();
         option.series[0].data = datas[0];
         option.series[1].data = datas[1];
-        option.series[2].data = datas[2];
         inOrderChart.setOption(option);
     });
 
@@ -60,7 +59,6 @@ $(function(){
         option.series[0].data[1].value = datas[1];
         option.series[0].data[2].value = datas[2];
         option.series[0].data[3].value = datas[3];
-        option.series[0].data[4].value = datas[4];
         orderTypeChart.setOption(option);
     });
 
@@ -82,7 +80,6 @@ $(function(){
         option.series[1].data = datas[1];
         option.series[2].data = datas[2];
         option.series[3].data = datas[3];
-        option.series[4].data = datas[4];
         inWeekOrderChart.setOption(option);
     });
 
