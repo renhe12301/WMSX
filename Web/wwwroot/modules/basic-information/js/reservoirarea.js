@@ -255,12 +255,6 @@ $(function () {
         $.each(dicSelects, function(key, val) { 
             dicIds.push(parseInt(val));
                  });
-        // if(dicIds.length==0)
-        // {
-        //     toastr.error("请选择左边需要划分的货位！", '错误信息', {timeOut: 3000});
-        //     return;
-        // }
-        
         if(typeRow.PhyWarehouseId&&$("#phy-sel").val()!=typeRow.PhyWarehouseId)
         {
 
