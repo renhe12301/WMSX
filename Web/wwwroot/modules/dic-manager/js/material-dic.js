@@ -39,9 +39,7 @@ $(function () {
             spec=$("#material-dic-spec").val();
             if(spec!="")
                 rd.spec=spec;
-            var typeId=$("#type-select").val();
-            if(typeId!="0")
-                rd.typeId=typeId;
+          
             asynTask({
                 type:'get',
                 url:controllers["material-dic"]["get-material-dics"],

@@ -83,10 +83,22 @@ $(function () {
                 rd.trayCode=trayCode;
             typeSelect=$("#type-select").val();
             if(typeSelect=="1")
-                rd.rangeMaterialCount="0,0";
+                rd.rangeMaterialCount="0.000000001,999999999";
             else if(typeSelect=="2")
-                rd.rangeMaterialCount="1,9999999";
-            console.log(rd);
+                rd.rangeMaterialCount="0,0";
+            
+            if($("#type-step").val()!="-1")
+            {
+                rd.trayTaskStatus=$("#type-step").val();
+            }
+            if($("#suborder-id").val()!="")
+            {
+                rd.subOrderId=parseInt($("#suborder-id").val());
+            }
+            if($("#suborderrow-id").val()!="")
+            {
+                rd.subOrderRowId=parseInt($("#suborderrow-id").val());
+            }
             asynTask({
                 type:'get',
                 url:controllers["warehouse-tray"]["get-trays"],
@@ -140,8 +152,8 @@ $(function () {
                             align: 'center'
                         },
                         {
-                            title: '物料编码',
-                            field: 'Code',
+                            title: '订单Id',
+                            field: 'SubOrderId',
                             valign: 'middle',
                             align: 'center'
                         },
@@ -183,6 +195,24 @@ $(function () {
                 {
                     title: '编号',
                     field: 'Id',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '订单Id',
+                    field: 'SubOrderId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '行Id',
+                    field: 'SubOrderRowId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '物料编码',
+                    field: 'Code',
                     valign: 'middle',
                     align: 'center'
                 },

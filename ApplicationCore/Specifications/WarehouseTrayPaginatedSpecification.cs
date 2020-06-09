@@ -9,15 +9,15 @@ namespace ApplicationCore.Specifications
     public class WarehouseTrayPaginatedSpecification : BaseSpecification<WarehouseTray>
     {
         public WarehouseTrayPaginatedSpecification(int skip, int take, int? id, string trayCode,
-            List<int> rangeMaterialCount,
+            List<double> rangeMaterialCount,
             int? subOrderId, int? subOrderRowId, int? carrier,
             List<int> traySteps, int? locationId, int? ouId, int? wareHouseId, int? areaId, int? pyId)
             : base(b => (!id.HasValue || b.Id == id) &&
                         (trayCode == null || b.TrayCode == trayCode) &&
                         (rangeMaterialCount == null || (b.MaterialCount >= rangeMaterialCount[0] &&
                                                         b.MaterialCount <= rangeMaterialCount[1])) &&
-                        (!subOrderId.HasValue || b.SubOrderRowId == subOrderId) &&
-                        (!subOrderRowId.HasValue || b.SubOrderId == subOrderRowId) &&
+                        (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
+                        (!subOrderRowId.HasValue || b.SubOrderRowId == subOrderRowId) &&
                         (carrier == null || b.Carrier == carrier) &&
                         (traySteps == null || traySteps.Contains(b.TrayStep.Value)) &&
                         (!locationId.HasValue || b.LocationId == locationId) &&

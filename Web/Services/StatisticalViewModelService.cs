@@ -1128,15 +1128,15 @@ namespace Web.Services
                 
                 var materialLocCnt = locations.Where(t => t.InStock==1&&t.Type==Convert.ToInt32(LOCATION_TYPE.仓库区货位)).Count();
                 
-                var ouCnt = warehouseTrays.GroupBy(t=>t.OUId).Count();
-
-                var warehouseCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
-                
-                var areaCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
-                
-                var supplierCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierId).Count();
-                
-                var supplierSiteCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierSiteId).Count();
+                // var ouCnt = warehouseTrays.GroupBy(t=>t.OUId).Count();
+                //
+                // var warehouseCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
+                //
+                // var areaCnt = warehouseTrays.GroupBy(t=>t.WarehouseId).Count();
+                //
+                // var supplierCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierId).Count();
+                //
+                // var supplierSiteCnt = warehouseTrays.GroupBy(t=>t.SubOrder.SupplierSiteId).Count();
 
                 result.norLocCnt = norLocCnt;
                 result.disLocCnt = disLocCnt;
@@ -1144,11 +1144,11 @@ namespace Web.Services
                 result.emptyLocCnt = emptyLocCnt;
                 result.emptyTrayLocCnt = emptyTrayLocCnt;
                 result.materialLocCnt = materialLocCnt;
-                result.ouCnt = ouCnt;
-                result.warehouseCnt = warehouseCnt;
-                result.areaCnt = areaCnt;
-                result.supplierCnt = supplierCnt;
-                result.supplierSiteCnt = supplierSiteCnt;
+                // result.ouCnt = ouCnt;
+                // result.warehouseCnt = warehouseCnt;
+                // result.areaCnt = areaCnt;
+                // result.supplierCnt = supplierCnt;
+                // result.supplierSiteCnt = supplierSiteCnt;
                 
                 response.Data = result;
             }

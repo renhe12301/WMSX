@@ -59,7 +59,7 @@ namespace ApplicationCore.Services
                         Guard.Against.Zero(outCount, nameof(outCount));
                         
                         WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null, null,
-                            new List<int> {0, 0}, null, null, null,
+                            new List<double> {0, 0}, null, null, null,
                             new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)},
                             null, null, null, null, pyId);
                         

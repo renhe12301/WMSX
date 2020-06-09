@@ -20,6 +20,7 @@ var tstatus=null;
 var steps=null;
 var trayCode=null;
 var materialCode = null;
+
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
     $('#sidebar').css("height", parentHeight);
@@ -109,6 +110,16 @@ $(function () {
             if(tstatus)rd.status=tstatus;
             if(types)rd.types=types;
             if(steps)rd.steps=steps;
+
+
+           if($("#suborder-id").val()!="")
+           {
+               rd.subOrderId=parseInt($("#suborder-id").val());
+           }
+            if($("#suborderrow-id").val()!="")
+            {
+               rd.subOrderRowId=parseInt($("#suborderrow-id").val());
+            }
             
             trayCode=$("#tray-code").val();
             if(trayCode)rd.trayCode=trayCode;
@@ -298,6 +309,18 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '订单Id',
+                    field: 'SubOrderId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '行Id',
+                    field: 'SubOrderRowId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '取货',
                     field: 'SrcId',
                     valign: 'middle',
@@ -400,6 +423,24 @@ $(function () {
         {
             sFinishTime=null;
             eFinishTime=null;
+        }
+        if($("#suborder-id").val()!="")
+        {
+            var ival = parseInt($("#suborder-id").val());
+            if(isNaN(ival))
+            {
+                toastr.error("订单Id只能输入数字!", '错误信息', {timeOut: 3000});
+                return;
+            }
+        }
+        if($("#suborderrow-id").val()!="")
+        {
+            var ival = parseInt($("#suborderrow-id").val());
+            if(isNaN(ival))
+            {
+                toastr.error("订单行Id只能输入数字!", '错误信息', {timeOut: 3000});
+                return;
+            }
         }
         $('#task-table').bootstrapTable('refresh');
     });

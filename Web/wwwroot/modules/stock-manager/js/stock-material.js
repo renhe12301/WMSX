@@ -76,6 +76,14 @@ $(function () {
             if(ouId)rd.ouId=parseInt(ouId);
             if(whId)rd.wareHouseId=parseInt(whId);
             if(areaId)rd.areaId=parseInt(areaId);
+            if($("#suborder-id").val()!="")
+            {
+                rd.subOrderId=parseInt($("#suborder-id").val());
+            }
+            if($("#suborderrow-id").val()!="")
+            {
+                rd.subOrderRowId=parseInt($("#suborderrow-id").val());
+            }
             asynTask({
                 type:'get',
                 url:controllers["warehouse-material"]["get-materials"],
@@ -103,6 +111,18 @@ $(function () {
                 {
                     title: '编号',
                     field: 'Id',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '订单Id',
+                    field: 'SubOrderId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '行Id',
+                    field: 'SubOrderRowId',
                     valign: 'middle',
                     align: 'center'
                 },

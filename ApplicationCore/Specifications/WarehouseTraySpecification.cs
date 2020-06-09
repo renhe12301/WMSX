@@ -8,7 +8,7 @@ namespace ApplicationCore.Specifications
 {
     public class WarehouseTraySpecification: BaseSpecification<WarehouseTray>
     {
-        public WarehouseTraySpecification(int? id,string trayCode,List<int> rangeMaterialCount,
+        public WarehouseTraySpecification(int? id,string trayCode,List<double> rangeMaterialCount,
             int? subOrderId,int? subOrderRowId, int? carrier,List<int> trayStatus,int? locationId,
              int? ouId, int? wareHouseId,int? areaId,int? pyId)
             :base(b =>(!id.HasValue || b.Id == id) &&

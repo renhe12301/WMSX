@@ -43,13 +43,13 @@ namespace Web.Services
 
                 }
 
-                List<int> trayMaterilCount = null;
+                List<double> trayMaterilCount = null;
                 if (!string.IsNullOrEmpty(rangeMaterialCount))
                 {
                     trayMaterilCount = rangeMaterialCount.Split(new char[]
                     {
                         ','
-                    }, StringSplitOptions.RemoveEmptyEntries).Select(Int32.Parse).ToList();
+                    }, StringSplitOptions.RemoveEmptyEntries).Select(double.Parse).ToList();
 
                 }
 
