@@ -216,12 +216,12 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId, string tag)
+        public async Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId, int pyId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._subOrderService.SortingOrder(subOrderId, subOrderRowId, sortingCount, trayCode, areaId, tag);
+                await this._subOrderService.SortingOrder(subOrderId, subOrderRowId, sortingCount, trayCode, areaId, pyId);
             }
             catch (Exception ex)
             {

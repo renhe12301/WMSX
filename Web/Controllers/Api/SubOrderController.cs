@@ -115,7 +115,8 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> SortingOrder([FromBody]SubOrderRowViewModel subOrderRowView)
         {
             var response = await this._subOrderViewModelService.SortingOrder(subOrderRowView.SubOrderId,subOrderRowView.Id,
-                subOrderRowView.Sorting.Value,subOrderRowView.TrayCode,subOrderRowView.ReservoirAreaId.Value,subOrderRowView.Tag);
+                subOrderRowView.Sorting.Value,subOrderRowView.TrayCode,subOrderRowView.ReservoirAreaId.Value,
+                subOrderRowView.PhyWarehouseId.GetValueOrDefault());
             return Content(JsonConvert.SerializeObject(response));
         }
         

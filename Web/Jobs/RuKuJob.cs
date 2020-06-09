@@ -57,12 +57,11 @@ namespace Web.Jobs
                             {
                                 string srcId = tray.Location.SysCode;
                                
-                                int areaId = tray.ReservoirAreaId.Value;
+                                int pyId = tray.PhyWarehouseId.Value;
 
-                                LocationSpecification locationSpec = new LocationSpecification(null, null, null, null,
-                                    null,
-                                    null,
-                                    null, areaId,
+                                LocationSpecification locationSpec = new LocationSpecification(null, null, null,
+                                    new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)}, pyId,null,
+                                    null, null,
                                     new List<int> {Convert.ToInt32(LOCATION_STATUS.正常)},
                                     new List<int> {Convert.ToInt32(LOCATION_INSTOCK.无货)},
                                     new List<int> {Convert.ToInt32(LOCATION_TASK.没有任务)},
@@ -70,7 +69,7 @@ namespace Web.Jobs
 
                                 List<Location> locations = this._locationRepository.List(locationSpec);
                                 if (locations.Count == 0)
-                                    throw new Exception(string.Format("子库区[{0}]下没有可用的空货位!", areaId));
+                                    throw new Exception(string.Format("仓库[{0}]下没有可用的空货位!", pyId));
                                 
                                 Location location = locations[0];
                                 InOutTask inOutTask = new InOutTask();

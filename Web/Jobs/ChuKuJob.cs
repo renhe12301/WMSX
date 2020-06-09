@@ -151,37 +151,29 @@ namespace Web.Jobs
                              foreach (var subOrderRow in subOrderRows)
                              {
                                  ReservoirArea area = subOrderRow.ReservoirArea;
-                                 LocationSpecification locationSpecification = new LocationSpecification(null, null,
-                                     null, null, null, null, null, area.Id, null,
-                                     null, null, null, null, null);
-                                 List<Location> locations = this._locationRepository.List(locationSpecification);
-                                 if (locations.Count == 0)
-                                     throw new Exception("订单[{0}],订单行[{1}],子库区[{2}],没有分配货位,请联系管理员!");
-                                 Location location = locations.First();
-                                 PhyWarehouse phyWarehouse = location.PhyWarehouse;
-                                 locationSpecification = new LocationSpecification(null, null,
-                                     null, new List<int> {Convert.ToInt32(LOCATION_TYPE.出库区货位)}, phyWarehouse.Id, null,
-                                     null, null, null,
-                                     null, null, null, null, null);
-                                 locations = this._locationRepository.List(locationSpecification);
-                                 if (locations.Count == 0)
-                                     throw new Exception("没有出库区货位!");
-                                 MaterialDic materialDic = subOrderRow.MaterialDic;
                                  WarehouseMaterialSpecification warehouseMaterialSpecification =
                                      new WarehouseMaterialSpecification(null, null,
-                                         subOrderRow.MaterialDicId, null, null, null, null, null, null, null,
+                                         subOrderRow.MaterialDicId, null, null, null, 
+                                         null, null, null, null,
                                          new List<int>
                                          {
                                              Convert.ToInt32(TRAY_STEP.入库完成),
                                              Convert.ToInt32(TRAY_STEP.初始化)
                                          }, null, null, null, area.Id, null,
                                          null, null, null, null);
-                                 List<WarehouseMaterial> warehouseMaterials =
+                                 List<WarehouseMaterial> allWarehouseMaterials =
                                      this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
-                                 List<WarehouseMaterial> inFinishWarehouseMaterials = warehouseMaterials
+                                 
+                                 if(allWarehouseMaterials.Count==0)
+                                     throw new Exception(string.Format("后置出库订单[{0}],订单行[{1}],子库区[{2}]没有对应的物料[{3}]",
+                                                                               subOrder.Id,subOrderRow.Id,area.Id,subOrderRow.MaterialDicId));
+                                 
+                                 List<WarehouseMaterial> inFinishWarehouseMaterials = allWarehouseMaterials
                                      .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
-                                 List<WarehouseMaterial> initWarehouseMaterials = warehouseMaterials
+                                 
+                                 List<WarehouseMaterial> initWarehouseMaterials = allWarehouseMaterials
                                      .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化)).ToList();
+                                 
                                  var sumMaterialCount = inFinishWarehouseMaterials.Sum(m => m.MaterialCount);
                                  if (sumMaterialCount < subOrderRow.PreCount)
                                  {
@@ -191,7 +183,17 @@ namespace Web.Jobs
                                          throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
                                  }
                                  
-                                 var sortMaterials = inFinishWarehouseMaterials.OrderBy(m => m.CreateTime);
+                                 List<WarehouseMaterial> sortMaterials = inFinishWarehouseMaterials.OrderBy(m => m.CreateTime).ToList();
+
+                                 PhyWarehouse phyWarehouse = sortMaterials[0].PhyWarehouse;
+                                 
+                                 LocationSpecification locationSpecification = new LocationSpecification(null, null,
+                                         null, new List<int> {Convert.ToInt32(LOCATION_TYPE.出库区货位)}, phyWarehouse.Id, null,
+                                         null, null, null,
+                                         null, null, null, null, null);
+                                 List<Location> locations = this._locationRepository.List(locationSpecification);
+                                 if (locations.Count == 0)
+                                         throw new Exception(string.Format("仓库[{0}]没有可用的出库区货位!"));
                                  double totalCount = 0;
                                  List<double> totalCnt = new List<double>();
                                  Random random = new Random();

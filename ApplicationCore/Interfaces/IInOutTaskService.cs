@@ -7,10 +7,10 @@ namespace ApplicationCore.Interfaces
 {
     public interface IInOutTaskService
     {
-        Task EmptyOut(int areaId,double outCount);
-        Task EmptyEntry(string trayCode,int areaId);
+        Task EmptyOut(int pyId,double outCount);
+        Task EmptyEntry(string trayCode,int pyId);
 
-        Task TrayEntry(string trayCode, int areaId);
+        Task TrayEntry(string trayCode, int pyId);
 
         Task EntryApply(string fromPort,string barCode,int cargoHeight,string cargoWeight);
         

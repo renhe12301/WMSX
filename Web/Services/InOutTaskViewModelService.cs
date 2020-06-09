@@ -205,7 +205,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.TrayEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.ReservoirAreaId.GetValueOrDefault());
+                await this._inOutTaskService.TrayEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.PhyWarehouseId.GetValueOrDefault());
             }
             catch (Exception ex)
             {
@@ -238,7 +238,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyOut(warehouseTrayViewModel.ReservoirAreaId.GetValueOrDefault(),
+                await this._inOutTaskService.EmptyOut(warehouseTrayViewModel.PhyWarehouseId.GetValueOrDefault(),
                     warehouseTrayViewModel.OutCount);
             }
             catch (Exception ex)
@@ -255,7 +255,7 @@ namespace Web.Services
             ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await this._inOutTaskService.EmptyEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.ReservoirAreaId.GetValueOrDefault());
+                await this._inOutTaskService.EmptyEntry(warehouseTrayViewModel.TrayCode,warehouseTrayViewModel.PhyWarehouseId.GetValueOrDefault());
             }
             catch (Exception ex)
             {

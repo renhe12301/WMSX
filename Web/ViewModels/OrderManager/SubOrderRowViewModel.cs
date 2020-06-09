@@ -142,12 +142,17 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public string TrayCode { get; set; }
 
-        public string Tag { get; set; }
+        public int Tag { get; set; }
 
         /// <summary>
         /// 订单头类型编号
         /// </summary>
         public int? OrderTypeId { get; set; }
+        
+        /// <summary>
+        ///  物理仓库编号
+        /// </summary>
+        public int? PhyWarehouseId { get; set; }
 
     }
 }

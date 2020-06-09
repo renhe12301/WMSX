@@ -18,7 +18,7 @@ namespace Web.Interfaces
             string orderTypeIds,int? ouId,int? warehouseId,int? pyId,int? supplierId, string supplierName,int? supplierSiteId,
             string supplierSiteName,string status,string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
-        Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,int areaId, string tag);
+        Task<ResponseResultViewModel> SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,int areaId, int pyId);
         
         Task<ResponseResultViewModel> CreateOrder(SubOrderViewModel subOrderViewModel);
 

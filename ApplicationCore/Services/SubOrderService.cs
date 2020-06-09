@@ -60,12 +60,13 @@ namespace ApplicationCore.Services
         }
 
         public async Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId,
-            string tag)
+            int pyId)
         {
             Guard.Against.Zero(subOrderId, nameof(subOrderId));
             Guard.Against.Zero(subOrderRowId, nameof(subOrderRowId));
             Guard.Against.Zero(sortingCount, nameof(sortingCount));
             Guard.Against.Zero(areaId, nameof(areaId));
+            Guard.Against.Zero(pyId, nameof(pyId));
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
 
             using (await ModuleLock.GetAsyncLock().LockAsync())
@@ -98,13 +99,7 @@ namespace ApplicationCore.Services
                         var areas = this._reservoirAreaRepository.List(areaSpec);
                         if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
                         var area = areas[0];
-                        LocationSpecification locationSpec = new LocationSpecification(null,null,null,null,null,null,
-                            null,area.Id,null,null,null,null,null,null);
-                        List<Location> locations = this._locationRepository.List(locationSpec);
-                        if(locations.Count==0)
-                            throw new Exception(string.Format("子库区[{0}]没有分配对应的仓库存储位,无法分拣!",area.Id));
                         
-
                         var materialDicSpec =
                             new MaterialDicSpecification(subOrderRow.MaterialDicId, null, null, null, null);
                         var materialDics = this._materialDicRepository.List(materialDicSpec);
@@ -118,23 +113,18 @@ namespace ApplicationCore.Services
 
                         var whTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
 
-                        if (whTrays.Count > 0)
+                        if (whTrays.Count > 0&&whTrays[0].MaterialCount>0)
                         {
-                            if (subOrderRow.ReservoirAreaId.HasValue)
+                            if (whTrays[0].SubOrderRowId.HasValue)
                             {
-                                if (subOrderRow.ReservoirAreaId != whTrays[0].ReservoirAreaId)
-                                    throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与订单行[{2}]子库区[{3}]不一致,无法分拣!",
-                                        trayCode,subOrderRow.ReservoirAreaId,subOrderRow.Id, subOrderRow.ReservoirAreaId));
+                                if (whTrays[0].SubOrderRow.Id != subOrderRowId)
+                                    throw new Exception(string.Format("托盘[{0}]绑定的订单行[{1}]与当前订单行[{2}]不一致",
+                                        whTrays[0].TrayCode,
+                                        whTrays[0].SubOrderRow.Id, subOrderRowId));
                             }
-
-                            if (whTrays[0].SubOrderRow.Id != subOrderRowId)
-                                throw new Exception(string.Format("托盘[{0}]绑定的订单行[{1}]与当前订单行[{2}]不一致",
-                                    whTrays[0].TrayCode,
-                                    whTrays[0].SubOrderRow.Id, subOrderRowId));
-                            
                             if (whTrays[0].ReservoirAreaId != areaId)
                             {
-                                throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与当前选择的子库区[{2}]不一致,无法分拣!",
+                                throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与当前选择的行子库区[{2}]不一致,无法分拣!",
                                     trayCode,subOrderRow.ReservoirAreaId,areaId));
                             }
                         }
@@ -227,7 +217,8 @@ namespace ApplicationCore.Services
                                     Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
                                     OutCount = 0,
                                     OUId = area.OUId,
-                                    WarehouseId = area.WarehouseId
+                                    WarehouseId = area.WarehouseId,
+                                    PhyWarehouseId = pyId
                                 };
                                 var addTray = this._warehouseTrayRepository.Add(warehouseTray);
                                 WarehouseMaterial warehouseMaterial = new WarehouseMaterial
@@ -246,7 +237,8 @@ namespace ApplicationCore.Services
                                     OUId = area.OUId,
                                     Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
                                     SupplierId = subOrder.SupplierId,
-                                    SupplierSiteId = subOrder.SupplierSiteId
+                                    SupplierSiteId = subOrder.SupplierSiteId,
+                                    PhyWarehouseId = pyId
                                 };
                                 this._warehouseMaterialRepository.Add(warehouseMaterial);
                             }
@@ -254,11 +246,7 @@ namespace ApplicationCore.Services
                             {
 
                                 warehouseTray = whTrays[0];
-                                if (warehouseTray.WarehouseId != subOrder.WarehouseId)
-                                    throw new Exception("托盘与订单库存组织不一致无法分拣!");
-                                if (warehouseTray.ReservoirAreaId != subOrderRow.ReservoirAreaId)
-                                    throw new Exception("托盘与订单行库区不一致无法分拣!");
-
+                               
                                 WarehouseMaterialSpecification warehouseMaterialSpec =
                                     new WarehouseMaterialSpecification(
                                         null,
@@ -351,7 +339,6 @@ namespace ApplicationCore.Services
                                 subOrderRow.Id,
                                 subOrderRow.Sorting,
                                 trayCode),
-                            Founder = tag,
                             CreateTime = DateTime.Now
                         });
                         scope.Complete();
