@@ -272,7 +272,7 @@ function initInOrderAnalysis(chart) {
 
         calculable : false,
         legend: {
-            data:['入库接收','接收退料','入库退料'],
+            data:['入库','退料'],
             textStyle:{
                 color:"#e9ebee"
 
@@ -313,7 +313,7 @@ function initInOrderAnalysis(chart) {
         series : [
 
             {
-                name:'入库接收',
+                name:'入库',
                 type:'bar',
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -323,17 +323,7 @@ function initInOrderAnalysis(chart) {
                 }
             },
             {
-                name:'接收退料',
-                type:'bar',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                itemStyle: {
-                    normal: {
-                        color:"#feb602"
-                    }
-                }
-            },
-            {
-                name:'出库退料',
+                name:'退料',
                 type:'bar',
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -364,7 +354,7 @@ function initOutOrderAnalysis(chart) {
 
         calculable : false,
         legend: {
-            data:['出库领料','入库退库'],
+            data:['领料','退库'],
             textStyle:{
                 color:"#e9ebee"
 
@@ -406,7 +396,7 @@ function initOutOrderAnalysis(chart) {
         series : [
 
             {
-                name:'出库领料',
+                name:'领料',
                 type:'bar',
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -416,7 +406,7 @@ function initOutOrderAnalysis(chart) {
                 }
             },
             {
-                name:'入库退库',
+                name:'退库',
                 type:'bar',
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -437,7 +427,7 @@ function initOrderTypeAnalysis(chart) {
         legend: {
             orient : 'vertical',
             x : 'left',
-            data:['入库接收','入库退库','出库退料','出库领料','接收退料'], textStyle:{
+            data:['入库','退库','退料','领料'], textStyle:{
                 color:"#e9ebee"
 
             }
@@ -457,7 +447,7 @@ function initOrderTypeAnalysis(chart) {
                 data:[
                     {
                         value:0, 
-                        name:'入库接收',
+                        name:'入库',
                         itemStyle: {
                             normal: {
                                 color:"#45c0ff"
@@ -465,7 +455,7 @@ function initOrderTypeAnalysis(chart) {
                         }},
                     {
                         value:0, 
-                        name:'入库退库',
+                        name:'退库',
                         itemStyle: {
                             normal: {
                                 color:"#e15828"
@@ -473,7 +463,7 @@ function initOrderTypeAnalysis(chart) {
                         }},
                     {
                         value:0, 
-                        name:'出库退料',
+                        name:'退料',
                         itemStyle: {
                             normal: {
                                 color:"#ff81cb"
@@ -481,19 +471,10 @@ function initOrderTypeAnalysis(chart) {
                         }},
                     {
                         value:0, 
-                        name:'出库领料',
+                        name:'领料',
                         itemStyle: {
                             normal: {
                                 color:"#2e7cff"
-                            }
-                        }
-                    },
-                    {
-                        value:0, 
-                        name:'接收退料',
-                        itemStyle: {
-                            normal: {
-                                color:"#feb602"
                             }
                         }
                     }
@@ -592,7 +573,7 @@ function initWeekOrderAnalysis(chart) {
         },
         calculable : false,
         legend: {
-            data:['入库接收','入库退库','出库退料','出库领料','接收退料'],
+            data:['入库','退库','退料','领料'],
             textStyle:{
                 color:"#e9ebee"
 
@@ -634,7 +615,7 @@ function initWeekOrderAnalysis(chart) {
         series : [
 
             {
-                name:'入库接收',
+                name:'入库',
                 type:'bar',
                 data:[0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -644,7 +625,7 @@ function initWeekOrderAnalysis(chart) {
                 }
             },
             {
-                name:'入库退库',
+                name:'退库',
                 type:'bar',
                 data:[0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -654,7 +635,7 @@ function initWeekOrderAnalysis(chart) {
                 }
             },
             {
-                name:'出库退料',
+                name:'退料',
                 type:'bar',
                 data:[0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
@@ -664,22 +645,12 @@ function initWeekOrderAnalysis(chart) {
                 }
             },
             {
-                name:'出库领料',
+                name:'领料',
                 type:'bar',
                 data:[0, 0, 0, 0, 0, 0, 0],
                 itemStyle: {
                     normal: {
                         color:"#2e7cff"
-                    }
-                }
-            },
-            {
-                name:'接收退料',
-                type:'line',
-                data:[0, 0, 0, 0, 0, 0, 0],
-                itemStyle: {
-                    normal: {
-                        color:"#feb602"
                     }
                 }
             }

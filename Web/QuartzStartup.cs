@@ -72,12 +72,17 @@ namespace Web
                 .WithIdentity("job6", "group6")
                 .Build();
             
-
-            await _scheduler.ScheduleJob(jobDetail,trigger);
-            await _scheduler.ScheduleJob(jobDetail2,trigger2);
-            await _scheduler.ScheduleJob(jobDetail3,trigger3);
-            await _scheduler.ScheduleJob(jobDetail4,trigger4);
-            await _scheduler.ScheduleJob(jobDetail5,trigger5);
+            // // 大数据分析 job
+            // await _scheduler.ScheduleJob(jobDetail,trigger);
+            // // 入库 job
+            // await _scheduler.ScheduleJob(jobDetail2,trigger2);
+            // // 出库 job
+            // await _scheduler.ScheduleJob(jobDetail3,trigger3);
+            // // 订单状态同步 job
+            // await _scheduler.ScheduleJob(jobDetail4,trigger4);
+            // // 发送wcs任务 job
+            // await _scheduler.ScheduleJob(jobDetail5,trigger5);
+            // // 订单完成反馈集约化 job
             // await _scheduler.ScheduleJob(jobDetail6,trigger6);
 
             _logger.LogInformation("Quarzt.net 启动成功...");
