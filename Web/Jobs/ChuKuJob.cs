@@ -224,6 +224,8 @@ namespace Web.Jobs
                                      inOutTask.SubOrderId = subOrder.Id;
                                      inOutTask.SubOrderRowId = subOrderRow.Id;
                                      inOutTask.TrayCode = sortMaterial.WarehouseTray.TrayCode;
+                                     inOutTask.MaterialCode = sortMaterial.MaterialDic.MaterialCode;
+                                     inOutTask.MaterialDicId = sortMaterial.MaterialDicId;
                                      Location srcLoc = sortMaterial.Location;
                                      inOutTask.SrcId = srcLoc.SysCode;
                                      srcLoc.Status = Convert.ToInt32(LOCATION_STATUS.锁定);

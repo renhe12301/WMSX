@@ -27,6 +27,7 @@ namespace Web.Jobs
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
         public RuKuJob()
         {
@@ -34,6 +35,7 @@ namespace Web.Jobs
             this._locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
             this._inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
             this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
+            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -71,6 +73,13 @@ namespace Web.Jobs
                                 if (locations.Count == 0)
                                     throw new Exception(string.Format("仓库[{0}]下没有可用的空货位!", pyId));
                                 
+                                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
+                                    null,null,null,null,null,tray.Id,
+                                    null,null,null,null,null,null,null,null,
+                                    null,null,null,null,null);
+
+                                List<WarehouseMaterial> warehouseMaterials = this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+                                
                                 Location location = locations[0];
                                 InOutTask inOutTask = new InOutTask();
                                 inOutTask.SrcId = srcId;
@@ -85,6 +94,12 @@ namespace Web.Jobs
                                 inOutTask.WarehouseId = tray.WarehouseId;
                                 inOutTask.ReservoirAreaId = tray.ReservoirAreaId;
                                 inOutTask.IsRead = Convert.ToInt32(TASK_READ.未读);
+                                if (warehouseMaterials.Count > 0)
+                                {
+                                    inOutTask.MaterialCode = warehouseMaterials[0].MaterialDic.MaterialCode;
+                                    inOutTask.MaterialDicId = warehouseMaterials[0].MaterialDicId;
+                                }
+
                                 if (tray.SubOrderId.HasValue)
                                 {
                                     inOutTask.SubOrderId = tray.SubOrderId;
