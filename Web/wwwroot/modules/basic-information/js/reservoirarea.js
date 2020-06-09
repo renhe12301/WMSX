@@ -222,15 +222,16 @@ $(function () {
                     field: 'OUName',
                     valign: 'middle',
                     align: 'center'
-                },
-                {
-                    field: 'operate',
-                    title: '操作',
-                    align: 'center',
-                    clickToSelect: false,
-                    formatter: operateFormatter,
-                    events:operateEvents
                 }
+                // ,
+                // {
+                //     field: 'operate',
+                //     title: '操作',
+                //     align: 'center',
+                //     clickToSelect: false,
+                //     formatter: operateFormatter,
+                //     events:operateEvents
+                // }
             ]
     });
 
