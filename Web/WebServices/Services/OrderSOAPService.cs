@@ -669,7 +669,7 @@ namespace Web.WebServices.Services
                                                 List<SubOrderRow> subOrderRows =
                                                     this._subOrderRowRepository.List(subOrderRowSpecification);
                                                 if (subOrderRows.Count > 0)
-                                                    throw new Exception("前置订单行[{0}]在WMS系统中已经拆分无法取消数量操作!");
+                                                    throw new Exception(string.Format("前置订单行[{0}]在WMS系统中已经拆分无法取消数量操作!",existRow.Id));
                                             }
 
                                             existRow.CancelCount = Convert.ToInt32(eor.CancelQty);
