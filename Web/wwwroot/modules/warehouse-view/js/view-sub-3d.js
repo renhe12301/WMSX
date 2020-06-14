@@ -33,7 +33,7 @@ $(function () {
     var matArrayA=[];//内墙
     var matArrayB = [];//外墙
     var rackMat, rackMat2, cargoMat,emptyCargoMat;
-    var floorW=2600,floorH=1400;
+    var floorW=2600,floorH=2600;
     var cargoTagFont;
 
     function initMat() {
@@ -472,7 +472,8 @@ $(function () {
         initScene();
         initCamera();
         initRenderer();
-        initContent();
+        //createFloor();
+        //initContent();
         initLight();
         initControls();
         buildRacks();

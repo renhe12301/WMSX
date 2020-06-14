@@ -14,7 +14,7 @@ namespace ApplicationCore.Entities.BasicInformation
         public string Sex { get; set; }
         public string Telephone { get; set; }
         public string Email { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
         public DateTime? CreateTime { get; set; }
         public DateTime? EndTime { get; set; }
         public string Memo { get; set; }

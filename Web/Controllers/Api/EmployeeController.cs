@@ -30,7 +30,7 @@ namespace Web.Controllers.Api
         public async Task<IActionResult> Login(EmployeeViewModel employViewModel)
         {
             var response = await this._employeeViewModelService.Login(employViewModel);
-            return Content(JsonConvert.SerializeObject(response));;
+            return Content(JsonConvert.SerializeObject(response));
         }
 
         /// <summary>
