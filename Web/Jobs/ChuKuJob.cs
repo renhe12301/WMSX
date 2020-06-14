@@ -12,7 +12,6 @@ using System.Linq;
 using ApplicationCore.Entities.TaskManager;
 using System.Transactions;
 using ApplicationCore.Entities.FlowRecord;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web.Jobs
 {
@@ -109,6 +108,8 @@ namespace Web.Jobs
                                  CreateTime = DateTime.Now
                              });
                          }
+                         
+                         scope.Complete();
 
                      }
 
@@ -205,13 +206,14 @@ namespace Web.Jobs
                                      totalCount += sortMaterial.MaterialCount;
                                      if (totalCount >= subOrderRow.PreCount)
                                      {
-                                         end=true;
-                                         warehouseTray.OutCount = -(subOrderRow.PreCount-totalCnt.Sum(t => t));
+                                         end = true;
+                                         warehouseTray.OutCount = -(subOrderRow.PreCount - totalCnt.Sum(t => t));
                                      }
                                      else
                                      {
                                          warehouseTray.OutCount = -sortMaterial.MaterialCount;
                                      }
+
                                      totalCnt.Add(sortMaterial.MaterialCount);
                                      warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
                                      warehouseTray.SubOrderId = subOrder.Id;
@@ -220,6 +222,7 @@ namespace Web.Jobs
                                      sortMaterial.SubOrderId = subOrder.Id;
                                      sortMaterial.SubOrderRowId = subOrderRow.Id;
                                      updMaterials.Add(sortMaterial);
+                                     if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化)) continue;
                                      InOutTask inOutTask = new InOutTask();
                                      inOutTask.SubOrderId = subOrder.Id;
                                      inOutTask.SubOrderRowId = subOrderRow.Id;
@@ -246,6 +249,7 @@ namespace Web.Jobs
                                      inOutTask.ReservoirAreaId = subOrderRow.ReservoirAreaId;
                                      inOutTask.PhyWarehouseId = phyWarehouse.Id;
                                      sendTasks.Add(inOutTask);
+                                     
                                  }
 
                              }
@@ -256,7 +260,7 @@ namespace Web.Jobs
                              this._warehouseTrayRepository.Update(warehouseTrays);
                              this._warehouseMaterialRepository.Update(updMaterials);
                              this._locationRepository.Update(updLocations);
-                             scope.Complete();
+                           
                          }
                          catch (Exception ex)
                          {
@@ -267,6 +271,8 @@ namespace Web.Jobs
                                  CreateTime = DateTime.Now
                              });
                          }
+                         
+                         scope.Complete();
                      }
                  }
              }
