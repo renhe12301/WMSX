@@ -1,3 +1,4 @@
+var pyId = 1;
 var ouId=null;
 var whId=null;
 var areaId=null;
@@ -71,69 +72,14 @@ function locationQueryParams(params) {
 }
 
 $(function () {
-    parentHeight = parent.document.getElementById("contentFrame").height - 30;
-    $('#sidebar').css("height", parentHeight);
-    $('#sidebar').overlayScrollbars({});
+    parentHeight = parent.document.getElementById("contentFrame").height - 100;
     $('#sidebar2').overlayScrollbars({ });
     $('#sidebar3').overlayScrollbars({ });
     $('.card-body box-profile').overlayScrollbars({ });
     $(".select2").select2({
         theme: 'bootstrap4'
     });
-    $('body').loading({
-        loadingWidth: 240,
-        title: '请稍等!',
-        name: 'loadWindow',
-        discription: '正在加载数据...',
-        direction: 'column',
-        type: 'origin',
-        originDivWidth: 40,
-        originDivHeight: 40,
-        originWidth: 6,
-        originHeight: 6,
-        smallLoading: false,
-        loadingMaskBg: 'rgba(0,0,0,0.2)'
-    });
-
-    renderTree({rootId: 0,renderTarget:'jsTree',depthTag: 'area',url:controllers.ou["get-ou-trees"],
-        successCallback:function()
-        {
-            removeLoading('loadWindow');
-        },
-        selectNodeCall:function (node, data) {
-            treeNode=data;
-            if(data.type=="ou")
-            {
-                if(data.id==0)
-                    ouId=null;
-                else
-                    ouId=data.id;
-                whId=null;
-                areaId=null;
-            }
-            else if(data.type=="warehouse")
-            {
-                ouId=null;
-                whId=data.id;
-                areaId=null;
-            }
-            else if(data.type=="area")
-            {
-                ouId=null;
-                whId=null;
-                areaId=data.id;
-            }
-            sysCode=null;
-            userCode=null;
-            types=null;
-            lstatus=null;
-            inStocks=null;
-            isTasks=null;
-            $('#location-table').bootstrapTable("refresh");
-        },
-        showRoot:true
-    });
-
+    
     $('#location-table').bootstrapTable({
         ajax:function(request)
         {
@@ -147,6 +93,7 @@ $(function () {
             if(lstatus) rd.status=lstatus;
             if(inStocks)rd.inStocks=inStocks;
             if(isTasks)rd.isTasks=isTasks;
+            if(pyId)rd.phyId = pyId;
             asynTask({
                 type:'get',
                 url:controllers.location["get-locations"],
@@ -158,12 +105,12 @@ $(function () {
                 }
             });
         },
-        height: parent.document.getElementById("contentFrame").height - 10,
+        height: parentHeight,
         queryParams:'locationQueryParams',
         pagination: true,
         pageNumber:1,
         sidePagination: "server",
-        pageSize: parseInt((parent.document.getElementById("contentFrame").height - 10) / 55),
+        pageSize: parseInt(parentHeight / 55),
         pageList: [10, 25, 50, 100],
         smartDisplay:false,
         showColumns: true,
@@ -245,37 +192,20 @@ $(function () {
                         }
                         else return '无';
                     }
-                },
-                {
-                    title: '子库区',
-                    field: 'ReservoirAreaName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '库存组织',
-                    field: 'WarehouseName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '业务实体',
-                    field: 'OUName',
-                    valign: 'middle',
-                    align: 'center'
                 }
             ]
     });
-    var tableInit=true;
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        tabType=$("#"+e.target.id).text();
-        if(tabType=="列表"&&tableInit)
+        tabType=$("#"+e.target.id).text().trim();
+        if(tabType=="李家峡")
         {
-            $('#location-table').bootstrapTable("refresh");
-            tableInit=false;
+            pyId = 1;
         }
-        else if(tabType=='列表'&&!tableInit)
-            $('#location-table').bootstrapTable("resetView");
+        else if(tabType=="共和")
+        {
+            pyId = 2;
+        }
+        $('#location-table').bootstrapTable("refresh");
     });
 
     $("#more-query-btn").click(function () {

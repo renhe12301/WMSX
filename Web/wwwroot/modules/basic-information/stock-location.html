@@ -35,20 +35,13 @@
 <body>
 <div class="container-fluid themed-container">
     <div class="row mb-5">
-        <div class="col-md-2">
-            <div id="sidebar" style="height: 600px;">
-                <div id="jsTree">
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="container-fluid">
+                
                 <div class="row mb-md-2">
                     <div class="col-md-12">
                         <div id="toolbar" class="input-group input-group-sm">
-                            <input type="text" class="form-control" style="height: 38px;" id="sys-code" placeholder="系统编码 ...">
-                            <input type="text" class="form-control" style="height: 38px;" id="user-code" placeholder="用户编码 ...">
+                            <input type="text" class="form-control" style="height: 38px;" id="sys-code" placeholder="货位编码 ...">
                             <span class="input-group-append">
                                  <button type="button" id="query-btn" class="btn btn-info btn-flat">查询</button>
                                  <button type="button" id="more-query-btn" class="btn btn-secondary btn-flat">更多查询...</button>
@@ -59,11 +52,36 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12" id="div-table">
-                                <table id="location-table" data-show-fullscreen="true"
-                                       class="table table-condensed" style="width: 100%">
-                                    <thead>
-                                    </thead>
-                                </table>
+
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="ljx-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="home"
+                                           aria-selected="true">
+                                            <h6>李家峡</h6>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="gh-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="profile"
+                                           aria-selected="false">
+                                            <h6>共和</h6>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content border border-top-0" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="home-tab">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <div id="sidebar" style="width: 100%;">
+                                                    <table id="location-table" data-show-fullscreen="true"
+                                                           class="table table-condensed" style="width: 100%">
+                                                        <thead>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
