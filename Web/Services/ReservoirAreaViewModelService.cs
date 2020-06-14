@@ -73,10 +73,10 @@ namespace Web.Services
                         Id = e.Id,
                         CreateTime = e.CreateTime.ToString(),
                         TypeName = Enum.GetName(typeof(AREA_TYPE), e.Type),
-                        WarehouseId = e.WarehouseId,
-                        WarehouseName = e.Warehouse.WhName,
+                        WarehouseId = e.WarehouseId.GetValueOrDefault(),
+                        WarehouseName = e.Warehouse?.WhName,
                         AreaCode= e.AreaCode,
-                        OUName = e.OU.OUName,
+                        OUName = e.OU?.OUName,
                         Status = Enum.GetName(typeof(AREA_STATUS), e.Status),
                         PhyWarehouseId = e.PhyWarehouseId,
                         PhyName = e.PhyWarehouse?.PhyName

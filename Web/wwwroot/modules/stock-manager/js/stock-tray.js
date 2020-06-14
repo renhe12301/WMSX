@@ -211,12 +211,6 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '物料编码',
-                    field: 'Code',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
                     title: '托盘编码',
                     field: 'TrayCode',
                     valign: 'middle',

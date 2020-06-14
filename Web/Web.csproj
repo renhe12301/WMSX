@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
     <PackageReference Include="Quartz.Jobs" Version="3.0.7" />
     <PackageReference Include="Quartz.Plugins" Version="3.0.7" />
+    <PackageReference Include="QuartzHostedService" Version="0.0.7" />
     <PackageReference Include="SoapCore" Version="1.0.0.2-alpha" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc3" />
     <PackageReference Include="Quartz" Version="3.0.7" />

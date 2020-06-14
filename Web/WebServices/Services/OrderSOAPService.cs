@@ -37,25 +37,33 @@ namespace Web.WebServices.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
-        public OrderSOAPService()
+        public OrderSOAPService(IAsyncRepository<Order> orderRepository,
+            IAsyncRepository<OU> ouRepository,
+            IAsyncRepository<Warehouse> warehouseRepository,
+            IAsyncRepository<Supplier> supplierRepository,
+            IAsyncRepository<SupplierSite> supplierSiteRepository,
+            IAsyncRepository<MaterialDic> materialDicRepository,
+            IAsyncRepository<Employee> employeeRepository,
+            IAsyncRepository<Organization> organizationRepository,
+            IAsyncRepository<ReservoirArea> areaRepository,
+            IAsyncRepository<LogRecord> logRepository,
+            IAsyncRepository<OrderRow> orderRowRepository,
+            IAsyncRepository<SubOrderRow> subOrderRowRepository
+            
+            )
         {
-            this._ouRepository = EnginContext.Current.Resolve<IAsyncRepository<OU>>();
-            this._orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();
-            this._warehouseRepository = EnginContext.Current.Resolve<IAsyncRepository<Warehouse>>();
-            this._supplierRepository = EnginContext.Current.Resolve<IAsyncRepository<Supplier>>();
-            this._supplierSiteRepository = EnginContext.Current.Resolve<IAsyncRepository<SupplierSite>>();
-            this._materialDicRepository = EnginContext.Current.Resolve<IAsyncRepository<MaterialDic>>();
-            this._ebsProjectRepository = EnginContext.Current.Resolve<IAsyncRepository<EBSProject>>();
-            this._ebsTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<EBSTask>>();
-            this._employeeRepository = EnginContext.Current.Resolve<IAsyncRepository<Employee>>();
-            this._organizationRepository = EnginContext.Current.Resolve<IAsyncRepository<Organization>>();
-            this._areaRepository = EnginContext.Current.Resolve<IAsyncRepository<ReservoirArea>>();
-            this._logRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
-            this._subOrderRepository =  EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
-            this._orderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<OrderRow>>();
-            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();
-            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
-            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
+            this._ouRepository = ouRepository;
+            this._orderRepository = orderRepository;
+            this._warehouseRepository = warehouseRepository;
+            this._supplierRepository = supplierRepository;
+            this._supplierSiteRepository = supplierSiteRepository;
+            this._materialDicRepository = materialDicRepository;
+            this._employeeRepository = employeeRepository;
+            this._organizationRepository = organizationRepository;
+            this._areaRepository = areaRepository;
+            this._logRepository = logRepository;
+            this._orderRowRepository = orderRowRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
         }
 
         public async Task<ResponseResult> CreateRKJSOrder(string RequestRKJSOrderJson)

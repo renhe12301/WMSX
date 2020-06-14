@@ -216,13 +216,14 @@ $(function () {
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'
-                },
-                {
-                    title: '业务实体',
-                    field: 'OUName',
-                    valign: 'middle',
-                    align: 'center'
                 }
+                // ,
+                // {
+                //     title: '业务实体',
+                //     field: 'OUName',
+                //     valign: 'middle',
+                //     align: 'center'
+                // }
                 // ,
                 // {
                 //     field: 'operate',

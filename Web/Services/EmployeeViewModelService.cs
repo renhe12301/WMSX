@@ -152,23 +152,22 @@ namespace Web.Services
                     var roleNames = employeeRoles.FindAll(er => er.EmployeeId == e.Id)
                         .ConvertAll(er => er.SysRole.RoleName);
 
-                    EmployeeViewModel employViewModel = new EmployeeViewModel
-                    {
-                        Id = e.Id,
-                        UserName = e.UserName,
-                        UserCode = e.UserCode,
-                        Sex = e.Sex,
-                        Telephone = e.Telephone,
-                        Email = e.Email,
-                        Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Status),
-                        CreateTime = e.CreateTime.ToString(),
-                        LoginName = e.LoginName,
-                        LoginPwd = e.LoginPwd,
-                        RoleName = string.Join('、', roleNames),
-                        OrgName = e.Organization?.OrgName,
-                        OrgId = e.OrganizationId.GetValueOrDefault(),
-                        Img = e.Img
-                    };
+                    EmployeeViewModel employViewModel = new EmployeeViewModel();
+                    employViewModel.Id = e.Id;
+                    employViewModel.UserName = e.UserName;
+                    employViewModel.UserCode = e.UserCode;
+                    employViewModel.Sex = e.Sex;
+                    employViewModel.Telephone = e.Telephone;
+                    employViewModel.Email = e.Email;
+                    if(e.Status.HasValue)
+                    employViewModel.Status = Enum.GetName(typeof(EMPLOYEE_STATUS), e.Status);
+                    employViewModel.CreateTime = e.CreateTime.ToString();
+                    employViewModel.LoginName = e.LoginName;
+                    employViewModel.LoginPwd = e.LoginPwd;
+                    employViewModel.RoleName = string.Join('、', roleNames);
+                    employViewModel.OrgName = e.Organization?.OrgName;
+                    employViewModel.OrgId = e.OrganizationId.GetValueOrDefault();
+                    employViewModel.Img = e.Img;
                     employViewModels.Add(employViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)

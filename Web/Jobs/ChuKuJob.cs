@@ -23,8 +23,6 @@ namespace Web.Jobs
     {
       
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
-        private readonly IAsyncRepository<Warehouse> _warehouseRepository;
-        private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
@@ -32,17 +30,21 @@ namespace Web.Jobs
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
 
-        public ChuKuKJob()
+        public ChuKuKJob(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
+                         IAsyncRepository<Location> locationRepository,
+                         IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
+                         IAsyncRepository<InOutTask> inOutTaskRepository,
+                         IAsyncRepository<SubOrder> subOrderRepository,
+                         IAsyncRepository<SubOrderRow> subOrderRowRepository,
+                         IAsyncRepository<LogRecord> logRecordRepository)
         {
-            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
-            this._warehouseRepository = EnginContext.Current.Resolve<IAsyncRepository<Warehouse>>();
-            this._reservoirAreaRepository = EnginContext.Current.Resolve<IAsyncRepository<ReservoirArea>>();
-            this._locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
-            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
-            this._inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
-            this._subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
-            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();
-            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
+            this._warehouseTrayRepository = warehouseTrayRepository;
+            this._locationRepository = locationRepository;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
+            this._inOutTaskRepository = inOutTaskRepository;
+            this._subOrderRepository = subOrderRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
+            this._logRecordRepository = logRecordRepository;
         }
 
          public async Task Execute(IJobExecutionContext context)
@@ -134,9 +136,10 @@ namespace Web.Jobs
                  List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                  foreach (var subOrder in subOrders)
                  {
-                     using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+
+                     try
                      {
-                         try
+                         using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                          {
                              SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
                                  subOrder.Id, null,
@@ -154,7 +157,7 @@ namespace Web.Jobs
                                  ReservoirArea area = subOrderRow.ReservoirArea;
                                  WarehouseMaterialSpecification warehouseMaterialSpecification =
                                      new WarehouseMaterialSpecification(null, null,
-                                         subOrderRow.MaterialDicId, null, null, null, 
+                                         subOrderRow.MaterialDicId, null, null, null,
                                          null, null, null, null,
                                          new List<int>
                                          {
@@ -164,17 +167,17 @@ namespace Web.Jobs
                                          null, null, null, null);
                                  List<WarehouseMaterial> allWarehouseMaterials =
                                      this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
-                                 
-                                 if(allWarehouseMaterials.Count==0)
+
+                                 if (allWarehouseMaterials.Count == 0)
                                      throw new Exception(string.Format("后置出库订单[{0}],订单行[{1}],子库区[{2}]没有对应的物料[{3}]",
-                                                                               subOrder.Id,subOrderRow.Id,area.Id,subOrderRow.MaterialDicId));
-                                 
+                                         subOrder.Id, subOrderRow.Id, area.Id, subOrderRow.MaterialDicId));
+
                                  List<WarehouseMaterial> inFinishWarehouseMaterials = allWarehouseMaterials
                                      .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.入库完成)).ToList();
-                                 
+
                                  List<WarehouseMaterial> initWarehouseMaterials = allWarehouseMaterials
                                      .Where(m => m.WarehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化)).ToList();
-                                 
+
                                  var sumMaterialCount = inFinishWarehouseMaterials.Sum(m => m.MaterialCount);
                                  if (sumMaterialCount < subOrderRow.PreCount)
                                  {
@@ -183,18 +186,19 @@ namespace Web.Jobs
                                      if (sumMaterialCount < subOrderRow.PreCount)
                                          throw new Exception("订单[{0}],订单行[{1}],物料库存数量不足,无法执行出库操作!");
                                  }
-                                 
-                                 List<WarehouseMaterial> sortMaterials = inFinishWarehouseMaterials.OrderBy(m => m.CreateTime).ToList();
+
+                                 List<WarehouseMaterial> sortMaterials =
+                                     inFinishWarehouseMaterials.OrderBy(m => m.CreateTime).ToList();
 
                                  PhyWarehouse phyWarehouse = sortMaterials[0].PhyWarehouse;
-                                 
+
                                  LocationSpecification locationSpecification = new LocationSpecification(null, null,
-                                         null, new List<int> {Convert.ToInt32(LOCATION_TYPE.出库区货位)}, phyWarehouse.Id, null,
-                                         null, null, null,
-                                         null, null, null, null, null);
+                                     null, new List<int> {Convert.ToInt32(LOCATION_TYPE.出库区货位)}, phyWarehouse.Id, null,
+                                     null, null, null,
+                                     null, null, null, null, null);
                                  List<Location> locations = this._locationRepository.List(locationSpecification);
                                  if (locations.Count == 0)
-                                         throw new Exception(string.Format("仓库[{0}]没有可用的出库区货位!"));
+                                     throw new Exception(string.Format("仓库[{0}]没有可用的出库区货位!"));
                                  double totalCount = 0;
                                  List<double> totalCnt = new List<double>();
                                  Random random = new Random();
@@ -249,7 +253,7 @@ namespace Web.Jobs
                                      inOutTask.ReservoirAreaId = subOrderRow.ReservoirAreaId;
                                      inOutTask.PhyWarehouseId = phyWarehouse.Id;
                                      sendTasks.Add(inOutTask);
-                                     
+
                                  }
 
                              }
@@ -260,19 +264,17 @@ namespace Web.Jobs
                              this._warehouseTrayRepository.Update(warehouseTrays);
                              this._warehouseMaterialRepository.Update(updMaterials);
                              this._locationRepository.Update(updLocations);
-                           
+                             scope.Complete();
                          }
-                         catch (Exception ex)
+                     }
+                     catch (Exception ex)
+                     {
+                         this._logRecordRepository.Add(new LogRecord
                          {
-                             this._logRecordRepository.Add(new LogRecord
-                             {
-                                 LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                                 LogDesc = ex.Message,
-                                 CreateTime = DateTime.Now
-                             });
-                         }
-                         
-                         scope.Complete();
+                             LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                             LogDesc = ex.Message,
+                             CreateTime = DateTime.Now
+                         });
                      }
                  }
              }

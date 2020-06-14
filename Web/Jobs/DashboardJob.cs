@@ -22,21 +22,21 @@ namespace Web.Jobs
     {
         private readonly IAsyncRepository<WarehouseMaterial> _materialRepository;
         private readonly IHubContext<DashboardHub> _hubContext;
-        private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<Location> _locationRepository;
-        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
-
-        public DashboardJob(IHubContext<DashboardHub> hubContext)
+ 
+        public DashboardJob(IHubContext<DashboardHub> hubContext,
+                            IAsyncRepository<WarehouseMaterial> materialRepository,
+                            IAsyncRepository<Location> locationRepository,
+                            IAsyncRepository<InOutTask> inOutTaskRepository,
+                            IAsyncRepository<SubOrder> subOrderRepository)
         {
             _hubContext = hubContext;
-            _materialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
-            _orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();
-            _locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
-            _warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
-            _inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
-            _subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();
+            _materialRepository = materialRepository;
+            _locationRepository = locationRepository;
+            _inOutTaskRepository = inOutTaskRepository;
+            _subOrderRepository = subOrderRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)

@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
                       (areaName==null||b.AreaName.Contains(areaName)))
         {
             AddInclude(b => b.Warehouse);
-            AddInclude(b=>b.OU);
+            // AddInclude(b=>b.OU);
             AddInclude(b=>b.PhyWarehouse);
         }
     }

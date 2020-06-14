@@ -21,10 +21,11 @@ namespace Web.Jobs
         private readonly string WCS_TASK_RECEIVE_URL = "/fromWms/taskReceive";
         private static readonly HttpClient client = new HttpClient();
 
-        public SendWcsTaskJob()
+        public SendWcsTaskJob(IAsyncRepository<InOutTask> inOutTaskRepository,
+                              ILogRecordService logRecordService)
         {
-            _inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
-            _logRecordService = EnginContext.Current.Resolve<ILogRecordService>();
+            _inOutTaskRepository = inOutTaskRepository;
+            _logRecordService = logRecordService;
         }
 
         public async Task Execute(IJobExecutionContext context)

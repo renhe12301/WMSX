@@ -38,7 +38,7 @@ namespace ApplicationCore.Services
                 {
                     Guard.Against.Null(reservoirArea, nameof(reservoirArea));
                     Guard.Against.Zero(reservoirArea.Id, nameof(reservoirArea.Id));
-                    Guard.Against.Zero(reservoirArea.WarehouseId, nameof(reservoirArea.WarehouseId));
+                    Guard.Against.Zero(reservoirArea.WarehouseId.GetValueOrDefault(), nameof(reservoirArea.WarehouseId));
                     Guard.Against.NullOrEmpty(reservoirArea.AreaCode, nameof(reservoirArea.AreaCode));
                     if (unique)
                     {

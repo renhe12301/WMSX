@@ -29,13 +29,17 @@ namespace Web.Jobs
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
 
-        public RuKuJob()
+        public RuKuJob(IAsyncRepository<WarehouseTray> warehouseTrayRepository,
+                       IAsyncRepository<Location> locationRepository,
+                       IAsyncRepository<InOutTask> inOutTaskRepository,
+                       IAsyncRepository<LogRecord> logRecordRepository,
+                       IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
         {
-            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();
-            this._locationRepository = EnginContext.Current.Resolve<IAsyncRepository<Location>>();
-            this._inOutTaskRepository = EnginContext.Current.Resolve<IAsyncRepository<InOutTask>>();
-            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();
-            this._warehouseMaterialRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseMaterial>>();
+            this._warehouseTrayRepository = warehouseTrayRepository;
+            this._locationRepository = locationRepository;
+            this._inOutTaskRepository = inOutTaskRepository;
+            this._logRecordRepository = logRecordRepository;
+            this._warehouseMaterialRepository = warehouseMaterialRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -53,16 +57,17 @@ namespace Web.Jobs
 
                     warehouseTrays.ForEach(tray =>
                     {
-                        using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+
+                        try
                         {
-                            try
+                            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                             {
                                 string srcId = tray.Location.SysCode;
-                               
+
                                 int pyId = tray.PhyWarehouseId.Value;
 
                                 LocationSpecification locationSpec = new LocationSpecification(null, null, null,
-                                    new List<int>{Convert.ToInt32(LOCATION_TYPE.仓库区货位)}, pyId,null,
+                                    new List<int> {Convert.ToInt32(LOCATION_TYPE.仓库区货位)}, pyId, null,
                                     null, null,
                                     new List<int> {Convert.ToInt32(LOCATION_STATUS.正常)},
                                     new List<int> {Convert.ToInt32(LOCATION_INSTOCK.无货)},
@@ -72,21 +77,25 @@ namespace Web.Jobs
                                 List<Location> locations = this._locationRepository.List(locationSpec);
                                 if (locations.Count == 0)
                                     throw new Exception(string.Format("仓库[{0}]下没有可用的空货位!", pyId));
-                                
-                                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,
-                                    null,null,null,null,null,tray.Id,
-                                    null,null,null,null,null,null,null,null,
-                                    null,null,null,null,null);
 
-                                List<WarehouseMaterial> warehouseMaterials = this._warehouseMaterialRepository.List(warehouseMaterialSpec);
-                                
+                                WarehouseMaterialSpecification warehouseMaterialSpec =
+                                    new WarehouseMaterialSpecification(null,
+                                        null, null, null, null, null, tray.Id,
+                                        null, null, null, null, null, null, null, null,
+                                        null, null, null, null, null);
+
+                                List<WarehouseMaterial> warehouseMaterials =
+                                    this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+
                                 Location location = locations[0];
                                 InOutTask inOutTask = new InOutTask();
                                 inOutTask.SrcId = srcId;
                                 inOutTask.TargetId = location.SysCode;
                                 inOutTask.CreateTime = DateTime.Now;
                                 inOutTask.TrayCode = tray.TrayCode;
-                                inOutTask.Type = tray.MaterialCount==0?Convert.ToInt32(TASK_TYPE.空托盘入库):Convert.ToInt32(TASK_TYPE.物料入库);
+                                inOutTask.Type = tray.MaterialCount == 0
+                                    ? Convert.ToInt32(TASK_TYPE.空托盘入库)
+                                    : Convert.ToInt32(TASK_TYPE.物料入库);
                                 inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
                                 inOutTask.PhyWarehouseId = location.PhyWarehouseId;
                                 inOutTask.WarehouseTrayId = tray.Id;
@@ -118,19 +127,21 @@ namespace Web.Jobs
                                 this._locationRepository.Update(tray.Location);
                                 this._warehouseTrayRepository.Update(tray);
                                 this._inOutTaskRepository.Add(inOutTask);
+                                
+                                scope.Complete();
                             }
-                            catch (Exception ex)
-                            {
-                                this._logRecordRepository.Add(new LogRecord
-                                {
-                                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                                    LogDesc = ex.Message,
-                                    CreateTime = DateTime.Now
-                                });
-
-                            }
-                            scope.Complete();
                         }
+                        catch (Exception ex)
+                        {
+                            this._logRecordRepository.Add(new LogRecord
+                            {
+                                LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                                LogDesc = ex.Message,
+                                CreateTime = DateTime.Now
+                            });
+
+                        }
+
                     });
                 }
                 catch (Exception ex)

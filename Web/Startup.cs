@@ -19,17 +19,21 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using System.ServiceModel;
+using ApplicationCore.Entities.FlowRecord;
 using Quartz.Spi;
 using SoapCore;
 using Web.Jobs;
 using log4net.Config;
+using log4net.Repository.Hierarchy;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz.Impl;
 using Quartz;
+using QuartzHostedService;
 using Web;
 using Web.Hubs;
 using Web.WebServices.Interfaces;
 using Web.WebServices.Services;
+using IApplicationLifetime = Microsoft.AspNetCore.Hosting.IApplicationLifetime;
 
 namespace Web
 {
@@ -41,6 +45,7 @@ namespace Web
 
             var logRepository = log4net.LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -50,6 +55,8 @@ namespace Web
             services.AddDbContext<BaseContext>(c =>
               c.UseMySql(Configuration.GetConnectionString("WMSConnection")));
             ConfigureServices(services);
+            
+            
         }
 
         public void ConfigureProductionServices(IServiceCollection services)
@@ -70,6 +77,7 @@ namespace Web
             }));
             //DI 注入
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+      
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IEmployeeService), typeof(EmployeeService));
             services.AddScoped(typeof(IInOutTaskService), typeof(InOutTaskService));
@@ -112,23 +120,52 @@ namespace Web
             services.AddScoped(typeof(ISysConfigViewModelService), typeof(SysConfigViewModelService));
             services.AddScoped(typeof(ISubOrderViewModelService), typeof(SubOrderViewModelService));
             services.AddScoped(typeof(IStatisticalViewModelService), typeof(StatisticalViewModelService));
-            
-            //定时器工厂
-            services.AddSingleton<QuartzStartup>();
-            services.AddTransient<Web.Jobs.DashboardJob>();     
-            services.AddTransient<Web.Jobs.RuKuJob>();     
-            services.AddTransient<Web.Jobs.ChuKuKJob>();     
-            services.AddTransient<Web.Jobs.SendWcsTaskJob>();    
-            services.AddTransient<Web.Jobs.OrderStatusSyncJob>();     
-            services.AddTransient<Web.Jobs.StockSyncJob>();     
-            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-            services.AddSingleton<IJobFactory, IOCJobFactory>();
+
+            services.UseQuartzHostedService()
+                .RegiserJob<DashboardJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
+                    return result;
+                }).RegiserJob<RuKuJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(3).RepeatForever()));
+                    return result;
+                }) .RegiserJob<ChuKuKJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(4).RepeatForever()));
+                    return result;
+                }) .RegiserJob<OrderStatusSyncJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(6).RepeatForever()));
+                    return result;
+                }) .RegiserJob<SendWcsTaskJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()));
+                    return result;
+                }) .RegiserJob<StockSyncJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(7).RepeatForever()));
+                    return result;
+                });
             
-            EnginContext.initialize(new GeneralEngine(services.BuildServiceProvider()));
 
             services.Configure<AppSettings>(Configuration);
 
+            
+             
             //开启路由地址转换功能
             services.AddRouting(options =>
             {
@@ -136,7 +173,7 @@ namespace Web
             });
             
             services.AddSoapCore();
-            services.TryAddSingleton<OrderSOAPService>();
+            services.AddScoped<OrderSOAPService>();
 
             services.AddMvc(options =>
             {
@@ -227,9 +264,12 @@ namespace Web
                 routes.MapHub<DashboardHub>("/hubs/dashboard");
             });
           
-            var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
-            quartz.Start().Wait();
-
+            // var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
+            // quartz.Start().Wait();
+            
+            
+            
+            
         }
     }
 }

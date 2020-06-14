@@ -394,22 +394,19 @@ $(function () {
                     title: '子库区',
                     field: 'ReservoirAreaName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '库组织',
                     field: 'WarehouseName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '业务实体',
                     field: 'OUName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 }
             ]
     });

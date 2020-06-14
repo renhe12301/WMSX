@@ -12,6 +12,7 @@ using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Web.Interfaces;
 using Web.Services;
 
@@ -23,29 +24,26 @@ namespace Web.Jobs
     [DisallowConcurrentExecution]
     public class OrderStatusSyncJob:IJob
     {
-        private readonly IAsyncRepository<Order> _orderRepository;
-        private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
-        private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
-        public OrderStatusSyncJob()
+        public OrderStatusSyncJob(IAsyncRepository<LogRecord> logRecordRepository,
+                                  IAsyncRepository<SubOrder> subOrderRepository,
+                                  IAsyncRepository<SubOrderRow> subOrderRowRepository)
         {
-            this._orderRepository = EnginContext.Current.Resolve<IAsyncRepository<Order>>();;
-            this._orderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<OrderRow>>();;
-            this._logRecordRepository = EnginContext.Current.Resolve<IAsyncRepository<LogRecord>>();;
-            this._subOrderRowRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrderRow>>();;
-            this._warehouseTrayRepository = EnginContext.Current.Resolve<IAsyncRepository<WarehouseTray>>();;
-            this._subOrderRepository = EnginContext.Current.Resolve<IAsyncRepository<SubOrder>>();;
+            this._logRecordRepository = logRecordRepository;
+            this._subOrderRowRepository = subOrderRowRepository;
+            this._subOrderRepository = subOrderRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+
+                try
                 {
-                    try
+                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
                         SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
                             null, null, null, null, null, null, null, null, null,
@@ -63,7 +61,7 @@ namespace Web.Jobs
 
                         if (updSubRows.Count > 0)
                             this._subOrderRowRepository.Update(updSubRows);
-                        
+
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
                             new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null, null, null,
                             null, null, null, null, null, null, null);
@@ -93,17 +91,18 @@ namespace Web.Jobs
                         scope.Complete();
 
                     }
-                    catch (Exception ex)
-                    {
-                        this._logRecordRepository.Add(new LogRecord
-                        {
-                            LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                            LogDesc = ex.Message,
-                            CreateTime = DateTime.Now
-                        });
-                    }
 
                 }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.Message,
+                        CreateTime = DateTime.Now
+                    });
+                }
+                
             }
         }
     }

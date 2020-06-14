@@ -273,7 +273,7 @@ $(function () {
         $('#user-table').bootstrapTable('refresh');
     });
     $("#assign-btn").click(function () {
-        var selects=$('.select2').val();
+        var selects=$('#role-select').val();
         var rd={Id:parseInt($("#user-id").val()),RoleIds:[]};
         $.each( selects, function( key, value ) {
             rd.RoleIds.push(parseInt(value));

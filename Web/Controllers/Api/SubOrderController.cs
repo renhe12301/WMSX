@@ -53,8 +53,8 @@ namespace Web.Controllers.Api
             string sFinishTime, string eFinishTime)
         {
             var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,sourceId,
-                orderTypeIds, status,ouId,warehouseId,pyId, supplierSiteId,supplierSiteName,
-                supplierId, supplierName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
+                orderTypeIds, status,ouId,warehouseId,pyId, supplierId,supplierName,
+                supplierSiteId, supplierSiteName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
 
