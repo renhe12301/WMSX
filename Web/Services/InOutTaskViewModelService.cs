@@ -111,7 +111,10 @@ namespace Web.Services
                         IsReadStr = Enum.GetName(typeof(TASK_READ), e.IsRead),
                         PhyWarehouseId = e.PhyWarehouseId,
                         WarehouseTrayId = e.WarehouseTrayId,
-                        PhyName = e.PhyWarehouse?.PhyName
+                        PhyName = e.PhyWarehouse?.PhyName,
+                        MaterialCode = e.MaterialDic?.MaterialCode,
+                        
+                        
                     };
                     inOutTaskViewModels.Add(inOutTaskViewModel);
                 });

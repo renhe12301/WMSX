@@ -15,6 +15,6 @@ namespace ApplicationCore.Interfaces
 
         Task ScrapOrderRow(List<SubOrderRow> subOrderRows);
         
-        Task OutConfirm(int subOrderId);
+        Task OutConfirm(int subOrderId,int pyId);
     }
 }

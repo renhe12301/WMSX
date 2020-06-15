@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
-using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Entities.TaskManager;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.SignalR;
 using Quartz;
 using ApplicationCore.Specifications;
 using Web.Hubs;
-using Web.Services;
 
 namespace Web.Jobs
 {

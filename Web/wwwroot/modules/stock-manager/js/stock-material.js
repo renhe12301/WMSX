@@ -196,22 +196,19 @@ $(function () {
                     title: '子库存',
                     field: 'ReservoirAreaName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 },
                 {
                     title: '业务实体',
                     field: 'OUName',
                     valign: 'middle',
-                    align: 'center',
-                    visible:false
+                    align: 'center'
                 }
             ]
     });

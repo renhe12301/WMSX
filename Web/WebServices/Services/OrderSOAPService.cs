@@ -409,7 +409,6 @@ namespace Web.WebServices.Services
             
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-               
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     try

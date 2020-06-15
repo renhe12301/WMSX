@@ -159,6 +159,12 @@ namespace Web
                     result.Add(TriggerBuilder.Create()
                         .WithSimpleSchedule(x => x.WithIntervalInSeconds(7).RepeatForever()));
                     return result;
+                }).RegiserJob<ClearJob>(() =>
+                {
+                    var result = new List<TriggerBuilder>();
+                    result.Add(TriggerBuilder.Create()
+                        .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever()));
+                    return result;
                 });
             
 

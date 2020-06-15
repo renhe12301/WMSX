@@ -96,6 +96,7 @@ namespace Web.Jobs
                              inOutTask.WarehouseId = tray.WarehouseId;
                              inOutTask.ReservoirAreaId = tray.ReservoirAreaId;
                              inOutTask.PhyWarehouseId = tray.PhyWarehouseId;
+                             inOutTask.WarehouseTrayId = tray.Id;
 
                              tray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
                              this._warehouseTrayRepository.Update(tray);
@@ -231,6 +232,7 @@ namespace Web.Jobs
                                      inOutTask.SubOrderId = subOrder.Id;
                                      inOutTask.SubOrderRowId = subOrderRow.Id;
                                      inOutTask.TrayCode = sortMaterial.WarehouseTray.TrayCode;
+                                     inOutTask.WarehouseTrayId = warehouseTray.Id;
                                      inOutTask.MaterialCode = sortMaterial.MaterialDic.MaterialCode;
                                      inOutTask.MaterialDicId = sortMaterial.MaterialDicId;
                                      Location srcLoc = sortMaterial.Location;

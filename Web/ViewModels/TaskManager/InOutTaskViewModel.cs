@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ApplicationCore.Entities.StockManager;
+using Microsoft.AspNetCore.Http;
 using Web.ViewModels.StockManager;
 namespace Web.ViewModels.TaskManager
 {
@@ -10,6 +11,8 @@ namespace Web.ViewModels.TaskManager
         public int? SubOrderId { get; set; }
         public int? SubOrderRowId { get; set; }
         public string TrayCode { get; set; }
+
+        public string MaterialCode { get; set; }
         public string SrcId { get; set; }
         public string TargetId { get; set; }
         public int Status { get; set; }
@@ -35,6 +38,7 @@ namespace Web.ViewModels.TaskManager
         public string WarehouseName { get; set; }
 
         public int? WarehouseTrayId { get; set; }
+        
 
         public int? ReservoirAreaId { get; set; }
         public string ReservoirAreaName { get; set;  }

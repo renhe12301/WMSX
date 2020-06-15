@@ -26,7 +26,7 @@ namespace Web.Interfaces
 
         Task<ResponseResultViewModel> ScrapOrderRow(List<SubOrderRowViewModel> subOrderRowViewModels);
         
-        Task<ResponseResultViewModel> OutConfirm(int subOrderId);
+        Task<ResponseResultViewModel> OutConfirm(int subOrderId,int pyId);
 
     }
 }

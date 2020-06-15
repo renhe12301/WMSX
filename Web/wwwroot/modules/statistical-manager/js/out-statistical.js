@@ -58,7 +58,7 @@ $(function () {
 
                         calculable : false,
                         legend: {
-                            data:['库存组织入库记录'],
+                            data:['库存组织出库记录'],
                             textStyle:{
                                 color:"#000000"
 
@@ -100,7 +100,7 @@ $(function () {
                         series : [
 
                             {
-                                name:'库存组织入库记录',
+                                name:'库存组织出库记录',
                                 type:'bar',
                                 data: response.Data.warehouseDatas,
                                 itemStyle: {
@@ -129,7 +129,7 @@ $(function () {
 
                         calculable : false,
                         legend: {
-                            data:['子库区入库记录'],
+                            data:['子库区出库记录'],
                             textStyle:{
                                 color:"#000000"
 
@@ -170,7 +170,7 @@ $(function () {
                         ],
                         series : [
                             {
-                                name:'子库区入库记录',
+                                name:'子库区出库记录',
                                 type:'bar',
                                 data: response.Data.areaDatas,
                                 itemStyle: {
@@ -223,7 +223,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '入库记录',
+                    title: '出库记录',
                     field: 'StatisticalCount',
                     valign: 'middle',
                     align: 'center'

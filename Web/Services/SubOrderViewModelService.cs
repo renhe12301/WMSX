@@ -330,12 +330,12 @@ namespace Web.Services
             return response;
         }
 
-        public async Task<ResponseResultViewModel> OutConfirm(int subOrderId)
+        public async Task<ResponseResultViewModel> OutConfirm(int subOrderId,int pyId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
             {
-                await  this._subOrderService.OutConfirm(subOrderId);
+                await  this._subOrderService.OutConfirm(subOrderId,pyId);
             }
             catch (Exception ex)
             {

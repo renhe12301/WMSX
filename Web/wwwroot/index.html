@@ -78,6 +78,9 @@
             <li class="nav-item">
                 <a class="nav-link xxx" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link xxx" data-widget="pushmenu" id="breadcrumb" href="#">仓库视图/2D视图</a>
+            </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -137,25 +140,25 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/phy-warehouse.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/phy-warehouse.html');$('#breadcrumb').text('仓库视图 / 物理仓库')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>物理仓库</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/stock-location.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/stock-location.html');$('#breadcrumb').text('仓库视图 / 2D列表')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>2D列表</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/warehouse-view/view-2d.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/warehouse-view/view-2d.html');$('#breadcrumb').text('仓库视图 / 2D视图')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>2D视图</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/warehouse-view/view-3d.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/warehouse-view/view-3d.html');$('#breadcrumb').text('仓库视图 / 3D视图')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>3D视图</p>
                                 </a>
@@ -172,49 +175,43 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/material-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/material-statistical.html');$('#breadcrumb').text('统计报表 / 物料库存统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>物料库存统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/warehouse-tray-statistical.html')" class="nav-link">
-                                    <i class="fa fa-arrow-right nav-icon"></i>
-                                    <p>托盘统计</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/entry-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/entry-statistical.html');$('#breadcrumb').text('统计报表 / 入库记录统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>入库记录统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-statistical.html');$('#breadcrumb').text('统计报表 / 出库记录统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>出库记录统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/in-order-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/in-order-statistical.html');$('#breadcrumb').text('统计报表 / 前置入库单统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>前置入库单统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-order-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-order-statistical.html');$('#breadcrumb').text('统计报表 / 前置出库单统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>前置出库单统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/in-suborder-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/in-suborder-statistical.html');$('#breadcrumb').text('统计报表 / 后置入库单统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>后置入库单统计</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-suborder-statistical.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/statistical-manager/out-suborder-statistical.html');$('#breadcrumb').text('统计报表 / 后置出库单统计')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>后置出库单统计</p>
                                 </a>
@@ -231,13 +228,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/op-record.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/op-record.html');$('#breadcrumb').text('流水记录 / 操作记录')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>操作记录</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/login-record.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/login-record.html');$('#breadcrumb').text('流水记录 / 登录记录')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>登录记录</p>
                                 </a>
@@ -255,31 +252,31 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/in-recv-order.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/in-recv-order.html');$('#breadcrumb').text('集约化物资订单 / 入库接收')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>入库接收</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/recv-out-order.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/recv-out-order.html');$('#breadcrumb').text('集约化物资订单 / 接收退料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>接收退料</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/in-out-order.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/in-out-order.html');$('#breadcrumb').text('集约化物资订单 / 入库退库')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>入库退库</p>
                                 </a>
                             </li>
                             <li class="nav-item" >
-                                <a disabled="true" href="javascript:$('#contentFrame').attr('src','modules/order-manager/out-picking-order.html')" class="nav-link">
+                                <a disabled="true" href="javascript:$('#contentFrame').attr('src','modules/order-manager/out-picking-order.html');$('#breadcrumb').text('集约化物资订单 / 出库领料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>出库领料</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/out-return-order.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/out-return-order.html');$('#breadcrumb').text('集约化物资订单 / 入库退料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>入库退料</p>
                                 </a>
@@ -296,25 +293,25 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-ruku.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-ruku.html');$('#breadcrumb').text('后置订单 / 入库')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>入库</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-lingliao.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-lingliao.html');$('#breadcrumb').text('后置订单 / 领料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>领料</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-tuiliao.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-tuiliao.html');$('#breadcrumb').text('后置订单 / 退料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>退料</p>
                                 </a>
                             </li>
                             <li class="nav-item" >
-                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-tuiku.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/order-manager/hz-tuiku.html');$('#breadcrumb').text('后置订单 / 退库')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>退库</p>
                                 </a>
@@ -331,7 +328,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/task-manager/task.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/task-manager/task.html');$('#breadcrumb').text('任务管理 / 任务数据')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>任务数据</p>
                                 </a>
@@ -348,7 +345,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/authority-manager/role-manager.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/authority-manager/role-manager.html');$('#breadcrumb').text('权限管理 / 系统角色')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>系统角色</p>
                                 </a>
@@ -365,43 +362,43 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/ou.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/ou.html');$('#breadcrumb').text('基础数据 / 业务实体')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>业务实体</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/organization.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/organization.html');$('#breadcrumb').text('基础数据 / 公司部门')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>公司部门</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/user-manager.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/user-manager.html');$('#breadcrumb').text('基础数据 / 用户信息')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>用户信息</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/warehouse.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/warehouse.html');$('#breadcrumb').text('基础数据 / 库存组织')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>库存组织</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/reservoirarea.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/reservoirarea.html');$('#breadcrumb').text('基础数据 / 子库存')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>子库存</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/supplier.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/basic-information/supplier.html');$('#breadcrumb').text('基础数据 / 供应商')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>供应商</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/dic-manager/material-dic.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/dic-manager/material-dic.html');$('#breadcrumb').text('基础数据 / 物料字典')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>物料字典</p>
                                 </a>
@@ -426,13 +423,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/stock-manager/stock-material.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/stock-manager/stock-material.html');$('#breadcrumb').text('库存管理 / 库存物料')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>库存物料</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/stock-manager/stock-tray.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/stock-manager/stock-tray.html');$('#breadcrumb').text('库存管理 / 库存托盘')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>库存托盘</p>
                                 </a>
@@ -449,7 +446,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/sys-record.html')" class="nav-link">
+                                <a href="javascript:$('#contentFrame').attr('src','modules/flow-record/sys-record.html');$('#breadcrumb').text('系统管理 / 系统日志')" class="nav-link">
                                     <i class="fa fa-arrow-right nav-icon"></i>
                                     <p>系统日志</p>
                                 </a>
@@ -464,7 +461,7 @@
     </aside>
 
     <div class="content-wrapper">
-        <iframe id="contentFrame" src="modules/warehouse-view/view-3d.html"  frameborder="no" width="100%" onload="this.height=document.body.scrollHeight-65"  style="overflow: hidden" scrolling="no" >
+        <iframe id="contentFrame" src="modules/warehouse-view/view-2d.html"  frameborder="no" width="100%" onload="this.height=document.body.scrollHeight-65"  style="overflow: hidden" scrolling="no" >
         </iframe>
     </div>
     <!-- Main Footer -->

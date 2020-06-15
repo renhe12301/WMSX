@@ -19,6 +19,7 @@ namespace Web.WebServices.Models
         [DataMember]
         public string AlyNumber { get; set; }
         
+        [JsonProperty(PropertyName ="erpCreatedBy")]
         [DataMember]
         public string CreationBy { get; set; }
         

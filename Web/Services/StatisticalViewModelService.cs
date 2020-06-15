@@ -62,27 +62,28 @@ namespace Web.Services
                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
                 List<string> wlables = new List<string>();
                 List<double> wdatas = new List<double>();
-             
+                List<string> alables = new List<string>();
+                List<double> adatas = new List<double>();
                 foreach (var w in warehouses)
                 {
                     wlables.Add(w.WhName);
-                    wdatas.Add(warehouseMaterials.Where(t=>t.WarehouseId==w.Id).Count());
+                    wdatas.Add(warehouseMaterials.Where(t=>t.WarehouseId==w.Id).Sum(m=>m.MaterialCount));
+                    
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,w.Id,null,null);
+                    List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+
+                    foreach (var area in areas)
+                    {
+                        alables.Add(area.AreaName);
+                        adatas.Add(warehouseMaterials.Where(t=>t.ReservoirAreaId==area.Id).Sum(m=>m.MaterialCount));
+                    }
                 }
                
                 dynamic result = new ExpandoObject();
                 result.warehouseLabels = wlables;
                 result.warehouseDatas = wdatas;
                 
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                List<string> alables = new List<string>();
-                List<double> adatas = new List<double>();
               
-                foreach (var area in areas)
-                {
-                    alables.Add(area.AreaName);
-                    adatas.Add(warehouseMaterials.Where(t=>t.ReservoirAreaId==area.Id).Count());
-                }
                
                 result.areaLabels = alables;
                 result.areaDatas = adatas;
@@ -146,23 +147,26 @@ namespace Web.Services
                 
                 List<string> wlables = new List<string>();
                 List<double> wdatas = new List<double>();
+                List<string> alables = new List<string>();
+                List<double> adatas = new List<double>();
               
                 foreach (var w in warehouses)
                 {
                     wlables.Add(w.WhName);
                     wdatas.Add(inOutRecords.Where(t=>t.WarehouseId==w.Id).Count());
+                    
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,w.Id,null,null);
+                    List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+              
+             
+                    foreach (var area in areas)
+                    {
+                        alables.Add(area.AreaName);
+                        adatas.Add(inOutRecords.Where(t=>t.ReservoirAreaId==area.Id).Count());
+                    }
+
                 }
                
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                List<string> alables = new List<string>();
-                List<double> adatas = new List<double>();
-             
-                foreach (var area in areas)
-                {
-                    alables.Add(area.AreaName);
-                    adatas.Add(inOutRecords.Where(t=>t.ReservoirAreaId==area.Id).Count());
-                }
                
                 dynamic result = new ExpandoObject();
                 result.warehouseLabels = wlables;
@@ -229,23 +233,24 @@ namespace Web.Services
                 
                 List<string> wlables = new List<string>();
                 List<double> wdatas = new List<double>();
+                List<string> alables = new List<string>();
+                List<double> adatas = new List<double>();
               
                 foreach (var w in warehouses)
                 {
                     wlables.Add(w.WhName);
                     wdatas.Add(inOutRecords.Where(t=>t.WarehouseId==w.Id).Count());
-                }
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
-                List<string> alables = new List<string>();
-                List<double> adatas = new List<double>();
+                    
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,w.Id,null,null);
+                    List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
                 
-                foreach (var area in areas)
-                {
-                    alables.Add(area.AreaName);
-                    adatas.Add(inOutRecords.Where(t=>t.ReservoirAreaId==area.Id).Count());
+                    foreach (var area in areas)
+                    {
+                        alables.Add(area.AreaName);
+                        adatas.Add(inOutRecords.Where(t=>t.ReservoirAreaId==area.Id).Count());
+                    }
                 }
-                
+
                 dynamic result = new ExpandoObject();
                 result.warehouselabels = wlables;
                 result.warehousedatas = wdatas;
@@ -586,8 +591,16 @@ namespace Web.Services
                     null,null,null,null);
                 List<WarehouseMaterial> warehouseMaterials = await this._warehouseMaterialRepository.ListAsync(warehouseMaterialSpec);
                 
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                WarehouseSpecification warehouseSpec = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpec);
+                List<ReservoirArea> areas = new List<ReservoirArea>();
+                foreach (var warehouse in warehouses)
+                {
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,warehouse.Id,null,null);
+                    List<ReservoirArea> wareas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                    areas.AddRange(wareas);
+                }
+                
                 List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
                 var groupAreas = areas.GroupBy(g => g.WarehouseId);
                 foreach (var groupArea in groupAreas)
@@ -666,8 +679,17 @@ namespace Web.Services
                 
                 List<InOutTask> inOutRecords = await this._inOutTaskRepository.ListAsync(inOutRecordSpec);
                 
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+               
+                WarehouseSpecification warehouseSpec = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpec);
+                List<ReservoirArea> areas = new List<ReservoirArea>();
+                foreach (var warehouse in warehouses)
+                {
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,warehouse.Id,null,null);
+                    List<ReservoirArea> wareas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                    areas.AddRange(wareas);
+                }
+
                 List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
                 var groupAreas = areas.GroupBy(g => g.WarehouseId);
                 foreach (var groupArea in groupAreas)
@@ -744,8 +766,16 @@ namespace Web.Services
                 
                 List<InOutTask> inOutRecords = await this._inOutTaskRepository.ListAsync(inOutRecordSpec);
                 
-                ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,ouId,null,null,null);
-                List<ReservoirArea> areas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                WarehouseSpecification warehouseSpec = new WarehouseSpecification(null,ouId,null,null);
+                List<Warehouse> warehouses = await this._wareHouseRepository.ListAsync(warehouseSpec);
+                List<ReservoirArea> areas = new List<ReservoirArea>();
+                foreach (var warehouse in warehouses)
+                {
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(null,null,null,warehouse.Id,null,null);
+                    List<ReservoirArea> wareas = await this._reservoirAreaRepository.ListAsync(reservoirAreaSpec);
+                    areas.AddRange(wareas);
+                }
+                
                 List<ReservoirAreaViewModel> reservoirAreaViewModels = new List<ReservoirAreaViewModel> ();
                 var groupAreas = areas.GroupBy(g => g.WarehouseId);
                 foreach (var groupArea in groupAreas)
@@ -823,7 +853,7 @@ namespace Web.Services
 
                 orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
                     null,null,ouId,null,null,null,null,null,
-                    null,sCreateTime,null,eCreateTime,null);
+                    null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
                 

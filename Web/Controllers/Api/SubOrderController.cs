@@ -151,9 +151,10 @@ namespace Web.Controllers.Api
         /// <param name="subOrderViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> OutConfirm([FromBody] SubOrderViewModel subOrderViewModel)
+        public async Task<IActionResult> OutConfirm([FromBody]SubOrderViewModel subOrderViewModel)
         {
-            var response = await this._subOrderViewModelService.OutConfirm(subOrderViewModel.Id);
+            var response = await this._subOrderViewModelService.OutConfirm(subOrderViewModel.Id,
+                subOrderViewModel.PhyWarehouseId.GetValueOrDefault());
             return Content(JsonConvert.SerializeObject(response));
         }
     }

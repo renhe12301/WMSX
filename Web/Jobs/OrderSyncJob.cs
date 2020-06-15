@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.OrderManager;
-using ApplicationCore.Entities.StockManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Web.Interfaces;
-using Web.Services;
 
 namespace Web.Jobs
 {

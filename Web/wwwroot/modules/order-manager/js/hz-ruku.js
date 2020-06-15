@@ -80,6 +80,8 @@ $(function () {
                 whId=data.id;
             }
             $('#order-table').bootstrapTable('refresh');
+            orderId = 0;
+            $('#order-row-table').bootstrapTable('refresh');
         },
         showRoot:true
     });
@@ -189,7 +191,7 @@ $(function () {
                     visible:false
                 },
                 {
-                    title: '库组织',
+                    title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'

@@ -84,11 +84,7 @@ $(function () {
         ajax:function(request)
         {
             var rd=request.data;
-            if(ouId!=null)rd.ouId=parseInt(ouId);
-            if(whId!=null)rd.wareHouseId=parseInt(whId);
-            if(areaId!=null)rd.areaId=parseInt(areaId);
             if(sysCode)rd.sysCode=sysCode;
-            if(userCode)rd.userCode=userCode;
             if(types)rd.types=types;
             if(lstatus) rd.status=lstatus;
             if(inStocks)rd.inStocks=inStocks;
@@ -214,12 +210,11 @@ $(function () {
 
     $("#query-btn").click(function () {
         sysCode=$("#sys-code").val();
-        userCode=$("#user-code").val();
         var inStockSelects=$('#instock-select').val();
         var isTaskSelects=$("#istask-select").val();
         if(inStockSelects.length>0)inStocks=inStockSelects.join(',');
         if(isTaskSelects.length>0)isTasks=isTaskSelects.join(',');
-        loadTabData();
+        $('#location-table').bootstrapTable("refresh");
     });
 
     $("#disable-btn").click(function () {
