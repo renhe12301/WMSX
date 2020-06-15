@@ -139,13 +139,13 @@ namespace Web
                 {
                     var result = new List<TriggerBuilder>();
                     result.Add(TriggerBuilder.Create()
-                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(4).RepeatForever()));
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(3).RepeatForever()));
                     return result;
                 }) .RegiserJob<OrderStatusSyncJob>(() =>
                 {
                     var result = new List<TriggerBuilder>();
                     result.Add(TriggerBuilder.Create()
-                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(6).RepeatForever()));
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()));
                     return result;
                 }) .RegiserJob<SendWcsTaskJob>(() =>
                 {
@@ -157,7 +157,7 @@ namespace Web
                 {
                     var result = new List<TriggerBuilder>();
                     result.Add(TriggerBuilder.Create()
-                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(7).RepeatForever()));
+                        .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()));
                     return result;
                 }).RegiserJob<ClearJob>(() =>
                 {

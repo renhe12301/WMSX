@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
@@ -39,47 +40,47 @@ namespace Web.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            using (await ModuleLock.GetAsyncLock().LockAsync())
+            try
             {
-                try
+                if ((DateTime.Now - DashboardHub.now).TotalSeconds < 3)
                 {
-                    if ((DateTime.Now - DashboardHub.now).TotalSeconds < 3)
-                    {
-                        await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
-                        var inRecordChart = await GetInRecordAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowInRecordAnalysis", inRecordChart);
-                        var outRecordChart = await GetOutRecordAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowOutRecordAnalysis", outRecordChart);
-                        var inOrderChart = await GetInOrderAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowInOrderAnalysis", inOrderChart);
-                        var outOrderChart = await GetOutOrderAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowOutOrderAnalysis", outOrderChart);
-                        var orderTypeChart = await GetOrderTypeAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowOrderTypeAnalysis", orderTypeChart);
-                        var stockCountChart = await GetStockCountAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowStockCountAnalysis", stockCountChart);
-                        var weekOrderChart = await GetWeekOrderAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowWeekOrderAnalysis", weekOrderChart);
-                        var stockAssestChart = await GetStockAssestAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
-                        var stockUtilizationChart = await GetStockUtilizationAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
+                    await _hubContext.Clients.All.SendAsync("ShowTime", DateTime.Now.ToString());
+                    var inRecordChart = await GetInRecordAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowInRecordAnalysis", inRecordChart);
+                    var outRecordChart = await GetOutRecordAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOutRecordAnalysis", outRecordChart);
+                    var inOrderChart = await GetInOrderAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowInOrderAnalysis", inOrderChart);
+                    var outOrderChart = await GetOutOrderAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOutOrderAnalysis", outOrderChart);
+                    var orderTypeChart = await GetOrderTypeAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOrderTypeAnalysis", orderTypeChart);
+                    var stockCountChart = await GetStockCountAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowStockCountAnalysis", stockCountChart);
+                    var weekOrderChart = await GetWeekOrderAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowWeekOrderAnalysis", weekOrderChart);
+                    var stockAssestChart = await GetStockAssestAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowStockAssestAnalysis", stockAssestChart);
+                    var stockUtilizationChart = await GetStockUtilizationAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowStockUtilizationAnalysis", stockUtilizationChart);
 
-                        var orderChronergyChart = await GetOrderChronergyAnalysis();
-                        await _hubContext.Clients.All.SendAsync("ShowOrderChronergyChartAnalysis", orderChronergyChart);
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("大数据分析,等待客户端连接...");
-                    }
+                    var orderChronergyChart = await GetOrderChronergyAnalysis();
+                    await _hubContext.Clients.All.SendAsync("ShowOrderChronergyChartAnalysis", orderChronergyChart);
 
                 }
-                catch (Exception ex)
+                else
                 {
-
+                    Console.WriteLine("大数据分析,等待客户端连接...");
                 }
+
             }
+            catch (Exception ex)
+            {
+
+            }
+            
+            Thread.Sleep(100);
+
         }
 
         /// <summary>

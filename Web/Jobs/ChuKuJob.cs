@@ -9,6 +9,7 @@ using ApplicationCore.Misc;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
 using System.Linq;
+using System.Threading;
 using ApplicationCore.Entities.TaskManager;
 using System.Transactions;
 using ApplicationCore.Entities.FlowRecord;
@@ -54,6 +55,8 @@ namespace Web.Jobs
                  OrderMaterialChuKu();
                  EmptyTrayChuKu();
              }
+             
+             Thread.Sleep(100);
          }
 
          void EmptyTrayChuKu()
@@ -83,11 +86,14 @@ namespace Web.Jobs
                                  null, null, null,
                                  null, null, null, null, null);
                              List<Location> locations = this._locationRepository.List(locationSpecification);
+                             int index = random.Next(0, locations.Count - 1);
+                             var srcLoc = tray.Location;
+                             var tarLoc = locations[index];
                              InOutTask inOutTask = new InOutTask();
                              inOutTask.TrayCode = tray.TrayCode;
-                             inOutTask.SrcId = tray.Location.SysCode;
-                             int index = random.Next(0, locations.Count - 1);
-                             inOutTask.TargetId = locations[index].SysCode;
+                             inOutTask.SrcId = srcLoc.SysCode;
+                            
+                             inOutTask.TargetId = tarLoc.SysCode;
                              inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
                              inOutTask.Type = Convert.ToInt32(TASK_TYPE.空托盘出库);
                              inOutTask.CreateTime = DateTime.Now;
@@ -97,10 +103,17 @@ namespace Web.Jobs
                              inOutTask.ReservoirAreaId = tray.ReservoirAreaId;
                              inOutTask.PhyWarehouseId = tray.PhyWarehouseId;
                              inOutTask.WarehouseTrayId = tray.Id;
-
+                             
+                             srcLoc.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+                             srcLoc.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
+                             
+                             tarLoc.Status = Convert.ToInt32(LOCATION_STATUS.锁定);
+                             tarLoc.IsTask = Convert.ToInt32(LOCATION_TASK.有任务);
+                             
                              tray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
                              this._warehouseTrayRepository.Update(tray);
                              this._inOutTaskRepository.Add(inOutTask);
+                             this._locationRepository.Update(new List<Location>{srcLoc,tarLoc});
                          }
                          catch (Exception ex)
                          {
@@ -285,5 +298,7 @@ namespace Web.Jobs
 
              }
          }
+         
+
     }
 }

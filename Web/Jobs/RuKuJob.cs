@@ -12,6 +12,7 @@ using ApplicationCore.Entities.BasicInformation;
 using System.Net;
 using System.Transactions;
 using System.Linq;
+using System.Threading;
 using ApplicationCore.Entities.FlowRecord;
 
 namespace Web.Jobs
@@ -149,6 +150,7 @@ namespace Web.Jobs
 
                 }
             }
+            Thread.Sleep(100);
         }
     }
 }

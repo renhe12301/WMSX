@@ -76,7 +76,8 @@ namespace Web.Services
                     warehouseTrayViewModel.SubOrderId = e.SubOrderId;
                     warehouseTrayViewModel.SubOrderRowId = e.SubOrderRowId;
                     warehouseTrayViewModel.CreateTime = e.CreateTime.ToString();
-                    warehouseTrayViewModel.Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier);
+                    if(e.Carrier.HasValue)
+                        warehouseTrayViewModel.Carrier = Enum.GetName(typeof(TRAY_CARRIER), e.Carrier);
                     warehouseTrayViewModel.TrayCode = e.TrayCode;
                     warehouseTrayViewModel.LocationCode = e.Location?.SysCode;
                     warehouseTrayViewModel.MaterialCount = e.MaterialCount;
@@ -84,7 +85,8 @@ namespace Web.Services
                     warehouseTrayViewModel.WarehouseName = e.Warehouse?.WhName;
                     warehouseTrayViewModel.OUName = e.OU?.OUName;
                     warehouseTrayViewModel.TrayStep = e.TrayStep;
-                    warehouseTrayViewModel.TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.TrayStep);
+                    if(e.TrayStep.HasValue)
+                       warehouseTrayViewModel.TrayStepStr = Enum.GetName(typeof(TRAY_STEP), e.TrayStep);
                     warehouseTrayViewModel.OUId = e.OUId;
                     warehouseTrayViewModel.WarehouseId = e.WarehouseId;
                     warehouseTrayViewModel.CargoHeight = e.CargoHeight;

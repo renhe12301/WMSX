@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Interfaces;
@@ -40,6 +41,8 @@ namespace Web.Jobs
                          
                 }
             }
+            
+            Thread.Sleep(100);
         }
     }
 }

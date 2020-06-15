@@ -66,7 +66,7 @@ $(function () {
                 areaId=data.id;
             }
 
-            $('#wh-material-table').bootstrapTable('refresh');
+            $('#wh-tray-table').bootstrapTable('refresh');
         },
         showRoot:true
     });
@@ -123,6 +123,7 @@ $(function () {
         showRefresh: true,
         detailView: true,
         onExpandRow: function (index, row, $detail) {
+            if(row.MaterialCount<=0)return;
             var subTable2 = $detail.html('<table></table>').find('table');
             subTable2.bootstrapTable({
                 ajax:function(request)
@@ -244,7 +245,7 @@ $(function () {
                         {
                             return '<span class="badge bg-blue">'+value+'</span>';
                         }
-                        else if(value=="入库中已执行"||value=="出库中已执行")
+                        else if(value=="入库中已执行"||value=="出库中已执行"||value=="已下架")
                         {
                             return '<span class="badge bg-green">'+value+'</span>';
                         }
@@ -265,7 +266,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '库组织',
+                    title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'

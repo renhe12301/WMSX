@@ -375,7 +375,7 @@ $(function () {
                                 {
                                     return '<span class="badge bg-blue">'+value+'</span>';
                                 }
-                                else if(value=="入库中已执行"||value=="出库中已执行")
+                                else if(value=="入库中已执行"||value=="出库中已执行"||value=="已下架")
                                 {
                                     return '<span class="badge bg-green">'+value+'</span>';
                                 }

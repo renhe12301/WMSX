@@ -65,14 +65,20 @@ namespace ApplicationCore.Services
 
                         List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
                         if (warehouseTrays.Count < outCount)
-                            throw new Exception(string.Format("仓库[{0}]空托盘数量小于需求数量!", pyId));
+                            throw new Exception(string.Format("仓库[{0}]空托盘数量小于需求数量,当前空托盘数量为[{1}]!", 
+                                pyId,warehouseTrays.Count));
+                        List<WarehouseTray> trays = new List<WarehouseTray>();
 
+                        int index = 1;
                         foreach (var tray in warehouseTrays)
                         {
+                            if (index > outCount) break;
                             tray.TrayStep = Convert.ToInt32(TRAY_STEP.待出库);
+                            trays.Add(tray);
+                            index++;
                         }
 
-                        this._warehouseTrayRepository.Update(warehouseTrays);
+                        this._warehouseTrayRepository.Update(trays);
 
                         this._logRecordRepository.Add(new LogRecord
                         {
@@ -127,6 +133,7 @@ namespace ApplicationCore.Services
                                     trayCode, Enum.GetName(typeof(TRAY_STEP), warehouseTray.TrayStep)));
                             }
 
+                            warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                             warehouseTray.OUId = null;
                             warehouseTray.WarehouseId = null;
                             warehouseTray.ReservoirAreaId = null;
@@ -137,6 +144,7 @@ namespace ApplicationCore.Services
                         {
                             WarehouseTray warehouseTray = new WarehouseTray
                             {
+                                Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
                                 TrayCode = trayCode,
                                 CreateTime = DateTime.Now,
                                 MaterialCount = 0,
@@ -405,12 +413,40 @@ namespace ApplicationCore.Services
                             {
                                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
                                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                                //outCount = Math.Abs(outCount);
                             }
                             else
                             {
                                 warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.入库完成);
                                 warehouseTray.OutCount = 0;
                                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货架);
+                                outCount += warehouseTray.MaterialCount;
+                                
+                                // 入库完成自动更新订单数量
+                                if (warehouseTray.SubOrderRowId.HasValue)
+                                {
+                                    SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
+
+                                    OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                        subOrderRow.OrderRowId,
+                                        null, null, null, null, null, null, null,
+                                        null, null, null, null, null, null, null,
+                                        null);
+                                    List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+
+                                    OrderRow orderRow = orderRows.First();
+                                    double preCount = orderRow.RealityCount.GetValueOrDefault();
+                                    preCount += (outCount);
+                                    orderRow.RealityCount = preCount;
+
+                                    preCount = subOrderRow.RealityCount.GetValueOrDefault();
+                                    preCount += (outCount);
+                                    subOrderRow.RealityCount = preCount;
+
+                                    this._subOrderRowRepository.Update(subOrderRow);
+                                    this._orderRowRepository.Update(orderRow);
+                                }
+                                
                             }
 
                             LocationSpecification locationSpec = new LocationSpecification(null, task.TargetId,
@@ -442,29 +478,7 @@ namespace ApplicationCore.Services
                             this._warehouseTrayRepository.Update(warehouseTray);
                             this._locationRepository.Update(location);
 
-                            if (warehouseTray.SubOrderRowId.HasValue)
-                            {
-                                SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
-
-                                OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,
-                                    null, null, null, null, null, null, null,
-                                    null, null, null, null, null, null, null,
-                                    null);
-                                List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-
-                                OrderRow orderRow = orderRows.First();
-                                double preCount = orderRow.RealityCount.GetValueOrDefault();
-                                preCount += (warehouseTray.MaterialCount + outCount);
-                                orderRow.RealityCount = preCount;
-
-                                preCount = subOrderRow.RealityCount.GetValueOrDefault();
-                                preCount += (warehouseTray.MaterialCount + outCount);
-                                subOrderRow.RealityCount = preCount;
-
-                                this._subOrderRowRepository.Update(subOrderRow);
-                                this._orderRowRepository.Update(orderRow);
-                            }
+                           
                         }
 
                         this._inOutTaskRepository.Update(task);
@@ -515,14 +529,43 @@ namespace ApplicationCore.Services
                         if (warehouseTray.TrayStep != Convert.ToInt32(TRAY_STEP.出库完成等待确认))
                             throw new Exception(string.Format("托盘[{0}]状态不是[出库完成等待确认],无法进行出库确认操作！",
                                 trayCode));
+                        double outCount = warehouseTray.OutCount.GetValueOrDefault();
                         warehouseTray.MaterialCount =
                             warehouseTray.MaterialCount + warehouseTray.OutCount.GetValueOrDefault();
                         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
+                        
+                        
+                        if (warehouseTray.SubOrderRowId.HasValue)
+                        {
+                            SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
+
+                            OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                subOrderRow.OrderRowId,
+                                null, null, null, null, null, null, null,
+                                null, null, null, null, null, null, null,
+                                null);
+                            List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
+
+                            OrderRow orderRow = orderRows.First();
+                            double preCount = orderRow.RealityCount.GetValueOrDefault();
+                            preCount += Math.Abs(outCount);
+                            orderRow.RealityCount = preCount;
+
+                            preCount = subOrderRow.RealityCount.GetValueOrDefault();
+                            preCount += Math.Abs(outCount);
+                            subOrderRow.RealityCount = preCount;
+
+                            this._subOrderRowRepository.Update(subOrderRow);
+                            this._orderRowRepository.Update(orderRow);
+                        }
+
+                        warehouseTray.LocationId = null;
                         warehouseTray.SubOrderId = null;
                         warehouseTray.SubOrderRowId = null;
                         warehouseTray.Amount = warehouseTray.Price * warehouseTray.MaterialCount;
                         warehouseTray.OutCount = 0;
                         warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
+                        
                         WarehouseMaterialSpecification warehouseMaterialSpecification =
                             new WarehouseMaterialSpecification(null, null,
                                 null, null, null, null, warehouseTray.Id, null, null, null,
@@ -537,6 +580,8 @@ namespace ApplicationCore.Services
                                 this._warehouseMaterialRepository.Delete(warehouseMaterials);
                             }
 
+                            warehouseTray.Price = null;
+                            warehouseTray.Amount = null;
                             warehouseTray.OUId = null;
                             warehouseTray.WarehouseId = null;
                             warehouseTray.ReservoirAreaId = null;
@@ -550,12 +595,13 @@ namespace ApplicationCore.Services
                                 warehouseMaterial.OutCount = 0;
                                 warehouseMaterial.SubOrderId = null;
                                 warehouseMaterial.SubOrderRowId = null;
+                                warehouseMaterial.LocationId = null;
                                 warehouseMaterial.Amount = warehouseMaterial.Price * warehouseMaterial.MaterialCount;
                                 warehouseTray.Carrier = Convert.ToInt32(TRAY_CARRIER.货位);
                                 this._warehouseMaterialRepository.Update(warehouseMaterial);
                             }
                         }
-
+                        
                         this._warehouseTrayRepository.Update(warehouseTray);
 
                         this._logRecordRepository.Add(new LogRecord
