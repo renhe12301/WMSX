@@ -227,16 +227,41 @@ $(function () {
             }
         });
     };
-    
+    var loadLocInfo = function (pyId) {
+        asynTask({
+            type: 'get',
+            url: controllers.statistical["py-warehouse-chart"],
+            jsonData: { pyId: pyId },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    $("#nor-cnt").text(response.Data.norLocCnt);
+                    $("#task-cnt").text(response.Data.taskLocCnt);
+                    $("#dis-cnt").text(response.Data.disLocCnt);
+                    $("#empty-tray-cnt").text(response.Data.emptyTrayLocCnt);
+                    $("#material-loc-cnt").text(response.Data.materialLocCnt);
+                    $("#ou-cnt").text(response.Data.ouCnt);
+                    $("#supplier-cnt").text(response.Data.supplierCnt);
+                    $("#supplier-site-cnt").text(response.Data.supplierSiteCnt);
+                    $("#org-cnt").text(response.Data.warehouseCnt);
+                    $("#area-cnt").text(response.Data.areaCnt);
+                    $("#empty-cnt-cnt").text(response.Data.emptyLocCnt);
+                }
+            }
+        });
+    }
     
     loadPlanData();
-    
+    loadLocInfo(phyId);
     $("#ljx-tab").click(function () {
         phyId = 1;
         loadPlanData()
+        loadLocInfo(phyId)
     });
     $("#gh-tab").click(function () {
         phyId = 2;
         loadPlanData()
+        loadLocInfo(phyId)
     });
+    
+  
 });

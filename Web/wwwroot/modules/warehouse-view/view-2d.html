@@ -33,7 +33,56 @@
     <script src="js/view-2d.js"></script>
 </head>
 <body>
+<div style="z-index: 99;text-align: center;position: absolute;right: 10px; top: 10px; width: 210px;height: 160px;border-style: dashed;border-color: orange;border-width: 5px;">
+    <table style="width: 100%;text-align: center;color: grey;font-weight:bold;font-size: 18px;">
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">正常货位：</td>
+            <td id="nor-cnt">0</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">有任务货位：</td>
+            <td id="task-cnt">0</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">禁用货位：</td>
+            <td id="dis-cnt">0</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">空货位：</td>
+            <td id="empty-cnt">0</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">空托盘货位：</td>
+            <td id="empty-tray-cnt">0</td>
+        </tr>
+        <tr>
+            <td style="padding-left: 10px;padding-top: 5px">有货货位：</td>
+            <td id="material-loc-cnt">0</td>
+        </tr>
+        <!--        <tr>-->
+        <!--            <td style="padding-left: 10px;">业务实体：</td>-->
+        <!--            <td id="ou-cnt">0</td>-->
+        <!--        </tr>-->
+        <!--        <tr>-->
+        <!--            <td style="padding-left: 10px;">供应商：</td>-->
+        <!--            <td id="supplier-cnt">0</td>-->
+        <!--        </tr>-->
+        <!--        <tr>-->
+        <!--            <td style="padding-left: 10px;">供应商站：</td>-->
+        <!--            <td id="supplier-site-cnt">0</td>-->
+        <!--        </tr>-->
+        <!--        <tr>-->
+        <!--            <td style="padding-left: 10px;">库存组织：</td>-->
+        <!--            <td id="org-cnt">0</td>-->
+        <!--        </tr>-->
+        <!--        <tr>-->
+        <!--            <td style="padding-left: 10px;">子库区：</td>-->
+        <!--            <td id="area-cnt">0</td>-->
+        <!--        </tr>-->
+    </table>
+</div>
 <div class="container-fluid themed-container">
+    
     <div class="col-md-12">
         <div class="container-fluid">
 
