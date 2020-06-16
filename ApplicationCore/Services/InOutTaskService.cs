@@ -106,7 +106,7 @@ namespace ApplicationCore.Services
 
         public async Task EmptyEntry(string trayCode, int pyId)
         {
-            using (await ModuleLock.GetAsyncLock7().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 try
                 {
@@ -179,7 +179,7 @@ namespace ApplicationCore.Services
 
         public async Task TrayEntry(string trayCode, int pyId)
         {
-            using (await ModuleLock.GetAsyncLock6().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 try
                 {
@@ -533,30 +533,32 @@ namespace ApplicationCore.Services
                         warehouseTray.MaterialCount =
                             warehouseTray.MaterialCount + warehouseTray.OutCount.GetValueOrDefault();
                         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.初始化);
-                        
-                        
+
+
                         if (warehouseTray.SubOrderRowId.HasValue)
                         {
                             SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
+                            double preCount = 0;
+                            if (subOrderRow.OrderRowId.HasValue)
+                            {
+                                OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
+                                    subOrderRow.OrderRowId,
+                                    null, null, null, null, null, null, null,
+                                    null, null, null, null, null, null, null,
+                                    null);
+                                List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
 
-                            OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                subOrderRow.OrderRowId,
-                                null, null, null, null, null, null, null,
-                                null, null, null, null, null, null, null,
-                                null);
-                            List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
-
-                            OrderRow orderRow = orderRows.First();
-                            double preCount = orderRow.RealityCount.GetValueOrDefault();
-                            preCount += Math.Abs(outCount);
-                            orderRow.RealityCount = preCount;
-
+                                OrderRow orderRow = orderRows.First();
+                                preCount = orderRow.RealityCount.GetValueOrDefault();
+                                preCount += Math.Abs(outCount);
+                                orderRow.RealityCount = preCount;
+                                this._orderRowRepository.Update(orderRow);
+                            }
                             preCount = subOrderRow.RealityCount.GetValueOrDefault();
                             preCount += Math.Abs(outCount);
                             subOrderRow.RealityCount = preCount;
-
                             this._subOrderRowRepository.Update(subOrderRow);
-                            this._orderRowRepository.Update(orderRow);
+
                         }
 
                         warehouseTray.LocationId = null;

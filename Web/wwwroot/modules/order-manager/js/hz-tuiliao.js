@@ -28,7 +28,7 @@ var sCreateTime=null;
 var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
-var type=[4];
+var type=[2];
 var tstatus=[0,1,2,3];
 var orderId=0;
 $(function () {

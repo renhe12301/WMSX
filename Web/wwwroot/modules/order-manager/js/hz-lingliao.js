@@ -354,6 +354,12 @@ $(function () {
                             align: 'center'
                         },
                         {
+                            title: '出库数量',
+                            field: 'OutCount',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
                             title: '所在货位',
                             field: 'LocationCode',
                             valign: 'middle',

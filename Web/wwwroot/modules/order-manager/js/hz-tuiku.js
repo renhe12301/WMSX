@@ -28,7 +28,7 @@ var sCreateTime=null;
 var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
-var type=[2];
+var type=[4];
 var tstatus=[0,1,2,3];
 var orderId=0;
 $(function () {
@@ -344,6 +344,12 @@ $(function () {
                         {
                             title: '物料数量',
                             field: 'MaterialCount',
+                            valign: 'middle',
+                            align: 'center'
+                        },
+                        {
+                            title: '出库数量',
+                            field: 'OutCount',
                             valign: 'middle',
                             align: 'center'
                         },

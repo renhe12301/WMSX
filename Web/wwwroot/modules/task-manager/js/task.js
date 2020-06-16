@@ -312,13 +312,22 @@ $(function () {
                     title: '订单Id',
                     field: 'SubOrderId',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    visible:false
+                },
+                {
+                    title: '订单类型',
+                    field: 'OrderType',
+                    valign: 'middle',
+                    align: 'center',
+                    visible:false
                 },
                 {
                     title: '行Id',
                     field: 'SubOrderRowId',
                     valign: 'middle',
-                    align: 'center'
+                    align: 'center',
+                    visible:false
                 },
                 {
                     title: '取货',
@@ -339,7 +348,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '物料编码',
+                    title: '物料',
                     field: 'MaterialCode',
                     valign: 'middle',
                     align: 'center'
@@ -397,7 +406,7 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '库组织',
+                    title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'

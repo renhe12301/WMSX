@@ -233,14 +233,20 @@ namespace Web.Jobs
                                      }
 
                                      totalCnt.Add(sortMaterial.MaterialCount);
-                                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
                                      warehouseTray.SubOrderId = subOrder.Id;
                                      warehouseTray.SubOrderRowId = subOrderRow.Id;
-                                     warehouseTrays.Add(warehouseTray);
                                      sortMaterial.SubOrderId = subOrder.Id;
                                      sortMaterial.SubOrderRowId = subOrderRow.Id;
                                      updMaterials.Add(sortMaterial);
-                                     if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化)) continue;
+                                     if (warehouseTray.TrayStep == Convert.ToInt32(TRAY_STEP.初始化))
+                                     {
+                                         warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库完成等待确认);
+                                         warehouseTrays.Add(warehouseTray);
+                                         continue;
+                                     }
+                                     warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.出库中未执行);
+                                     warehouseTrays.Add(warehouseTray);
+                                     
                                      InOutTask inOutTask = new InOutTask();
                                      inOutTask.SubOrderId = subOrder.Id;
                                      inOutTask.SubOrderRowId = subOrderRow.Id;

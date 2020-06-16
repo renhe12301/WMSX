@@ -113,9 +113,9 @@ namespace Web.Services
                         WarehouseTrayId = e.WarehouseTrayId,
                         PhyName = e.PhyWarehouse?.PhyName,
                         MaterialCode = e.MaterialDic?.MaterialCode,
-                        
-                        
                     };
+                    if (inOutTaskViewModel.SubOrderId.HasValue)
+                        inOutTaskViewModel.OrderType = Enum.GetName(typeof(ORDER_TYPE), e.SubOrder.OrderTypeId);
                     inOutTaskViewModels.Add(inOutTaskViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)

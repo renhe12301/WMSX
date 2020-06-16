@@ -10,6 +10,8 @@ namespace Web.ViewModels.TaskManager
         public int Id { get; set; }
         public int? SubOrderId { get; set; }
         public int? SubOrderRowId { get; set; }
+
+        public string OrderType { get; set; }
         public string TrayCode { get; set; }
 
         public string MaterialCode { get; set; }

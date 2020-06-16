@@ -74,7 +74,7 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(pyId, nameof(pyId));
             Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
 
-            using (await ModuleLock.GetAsyncLock3().LockAsync())
+            using (await ModuleLock.GetAsyncLock().LockAsync())
             {
                 try
                 {
@@ -390,7 +390,64 @@ namespace ApplicationCore.Services
                         // 退库时,校验库存现有量
                         if (order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
                         {
+                           
+                            // 校验订单行库存物料
+                            foreach (var subOrderRow in order.SubOrderRow)
+                            {
 
+                                // 同一个OU、库存组织、子库区、物料编码 的库存现有数量总和
+                                double totalMaterialCount = 0;
+
+                                List<WarehouseMaterial> warehouseMaterials = null;
+                                // 入库完成在货架上的物料
+                                WarehouseMaterialSpecification inWarehouseMaterialSpec =
+                                    new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
+                                        null,
+                                        null, null, null, null, null,
+                                        new List<int> {Convert.ToInt32(TRAY_STEP.入库完成)}, null, order.OUId,
+                                        order.WarehouseId, subOrderRow.ReservoirAreaId, null, null, null, null, null);
+
+                                warehouseMaterials =
+                                    this._warehouseMaterialRepository.List(inWarehouseMaterialSpec);
+                                totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
+
+                                // 正在执行出库中、出库完成待确认的物料
+                                WarehouseMaterialSpecification exeWarehouseMaterialSpec =
+                                    new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
+                                        null,
+                                        null, null, null, null, null, new List<int>
+                                        {
+                                            Convert.ToInt32(TRAY_STEP.待出库),
+                                            Convert.ToInt32(TRAY_STEP.出库中未执行),
+                                            Convert.ToInt32(TRAY_STEP.出库中已执行),
+                                            Convert.ToInt32(TRAY_STEP.出库完成等待确认)
+                                        }, null, order.OUId, order.WarehouseId,
+                                        subOrderRow.ReservoirAreaId, null, null, null, null, null);
+                                warehouseMaterials = this._warehouseMaterialRepository.List(exeWarehouseMaterialSpec);
+                                totalMaterialCount += (warehouseMaterials.Sum(t => t.MaterialCount) +
+                                                       warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
+
+                                // 出库完成确认完成的物料
+                                WarehouseMaterialSpecification outEndWarehouseMaterialSpec =
+                                    new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
+                                        null,
+                                        null, null, null, null, null,
+                                        new List<int> {Convert.ToInt32(TRAY_STEP.初始化)}, null, order.OUId,
+                                        order.WarehouseId,
+                                        subOrderRow.ReservoirAreaId, null, null, null, null, null);
+                                warehouseMaterials =
+                                    this._warehouseMaterialRepository.List(outEndWarehouseMaterialSpec);
+                                totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
+
+                                if (totalMaterialCount < subOrderRow.PreCount)
+                                    throw new Exception(string.Format(
+                                        "行上物料[{0}],退库数量[{1}],库存现有量[{2}],库存现有量不足,无法退库!",
+                                        subOrderRow.MaterialDicId, subOrderRow.PreCount,
+                                        totalMaterialCount));
+
+                            }
+
+                            
                             SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null, null,
                                 null, null,
                                 new List<int>
@@ -410,7 +467,7 @@ namespace ApplicationCore.Services
                             var tkSubOrderRowGroup = tkSubOrderRows.GroupBy(sr => new
                                 {sr.SubOrder.OUId, sr.SubOrder.WarehouseId, sr.ReservoirAreaId, sr.MaterialDicId});
 
-
+                            // 校验订单行已有订单占用
                             foreach (var subOrderRow in order.SubOrderRow)
                             {
                                 foreach (var tkGroup in tkSubOrderRowGroup)
@@ -446,7 +503,8 @@ namespace ApplicationCore.Services
                                                 null,
                                                 null, null, null, null, null, new List<int>
                                                 {
-                                                    Convert.ToInt32(TRAY_STEP.待出库), Convert.ToInt32(TRAY_STEP.出库中未执行),
+                                                    Convert.ToInt32(TRAY_STEP.待出库),
+                                                    Convert.ToInt32(TRAY_STEP.出库中未执行),
                                                     Convert.ToInt32(TRAY_STEP.出库中已执行),
                                                     Convert.ToInt32(TRAY_STEP.出库完成等待确认)
                                                 }, null, key.OUId, key.WarehouseId,
@@ -488,7 +546,7 @@ namespace ApplicationCore.Services
                         List<OrderRow> updOrderRows = new List<OrderRow>();
                         foreach (var subOrderRow in order.SubOrderRow)
                         {
-                            Guard.Against.Null(subOrderRow.OrderRowId, nameof(subOrderRow.OrderRowId));
+                            //Guard.Against.Null(subOrderRow.OrderRowId, nameof(subOrderRow.OrderRowId));
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
