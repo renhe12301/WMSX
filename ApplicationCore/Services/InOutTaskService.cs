@@ -491,7 +491,7 @@ namespace ApplicationCore.Services
                     this._logRecordRepository.Add(new LogRecord
                     {
                         LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                        LogDesc = string.Format("任务[{0}],上报时间[{1}],上报状态[{2}]", taskId, reportTime, taskStatus),
+                        LogDesc = string.Format("任务[{0}],上报时间[{1}],上报状态[{2}]", taskId, DateTime.Now, taskStatus),
                         CreateTime = DateTime.Now
                     });
                     scope.Complete();

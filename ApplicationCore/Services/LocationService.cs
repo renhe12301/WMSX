@@ -5,6 +5,7 @@ using System.Transactions;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.FlowRecord;
 using ApplicationCore.Entities.StockManager;
+using ApplicationCore.Entities.TaskManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
 using ApplicationCore.Specifications;
@@ -18,16 +19,19 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<WarehouseTray> _warehouseTrayRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<InOutTask> _inoutTaskRepository;
         public LocationService(IAsyncRepository<Location> locationRepository,
                                IAsyncRepository<WarehouseTray> warehouseTrayRepository,
                                IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                               IAsyncRepository<LogRecord> logRecordRepository
+                               IAsyncRepository<LogRecord> logRecordRepository,
+                               IAsyncRepository<InOutTask> inoutTaskRepository
                                )
         {
             this._locationRepository = locationRepository;
             this._warehouseTrayRepository = warehouseTrayRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._logRecordRepository = logRecordRepository;
+            this._inoutTaskRepository = inoutTaskRepository;
         }
 
         public async Task AddLocation(Location location)
@@ -153,6 +157,21 @@ namespace ApplicationCore.Services
                         }
                     });
                     
+                    List<InOutTask> delTasks = new List<InOutTask>();
+                    foreach (var tray in delWareHouseTrays)
+                    {
+                        InOutTaskSpecification inOutTaskSpec = new InOutTaskSpecification(null,tray.TrayCode,null,null,
+                            null,null,null,null,null,null,null,null,null,
+                            null,null,null,null);
+                        List<InOutTask> tasks = this._inoutTaskRepository.List(inOutTaskSpec);
+                        foreach (var task in tasks)
+                        {
+                            task.WarehouseTrayId = null;
+                            delTasks.Add(task);
+                        }
+                    }
+
+                    this._inoutTaskRepository.Update(delTasks);
                     this._warehouseTrayRepository.Delete(delWareHouseTrays);
                     this._warehouseMaterialRepository.Delete(delWareHouseMaterials);
                     this._locationRepository.Update(updLocations);
