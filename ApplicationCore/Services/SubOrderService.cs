@@ -65,9 +65,7 @@ namespace ApplicationCore.Services
             this._phyWarehouseRepository = phyWarehouseRepository;
         }
 
-        public async Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,
-            int areaId,
-            int pyId)
+        public async Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode, int areaId, int pyId)
         {
             Guard.Against.Zero(subOrderId, nameof(subOrderId));
             Guard.Against.Zero(subOrderRowId, nameof(subOrderRowId));
@@ -390,14 +388,14 @@ namespace ApplicationCore.Services
                     using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
                         // 退库时,校验库存现有量
-                        if (order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库))
+                        if (order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
                         {
 
                             SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null, null,
                                 null, null,
                                 new List<int>
                                 {
-                                    Convert.ToInt32(ORDER_TYPE.入库退库),
+                                    Convert.ToInt32(ORDER_TYPE.出库退库),
                                     Convert.ToInt32(ORDER_TYPE.出库领料)
                                 },
                                 order.OUId, order.WarehouseId, null,

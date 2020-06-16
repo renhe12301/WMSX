@@ -122,7 +122,7 @@ namespace Web.Jobs
                             subOrder.IsSync = 1;
                             await this._subOrderRepository.UpdateAsync(subOrder);
                         }
-                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库))
+                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
                         {
                             WithdrawalPort withdrawalPort = new WithdrawalPortClient();
                             TKOrderRequest1 tkOrderRequest = new TKOrderRequest1();

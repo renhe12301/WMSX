@@ -252,7 +252,7 @@ namespace Web.Services
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);
-                 List<OrderRow> tkOrderRows = orderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                 List<OrderRow> tkOrderRows = orderRows.Where(or => or.Order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库)).ToList();
                  ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId,null,ouId,warehouseId,null,null);
                  List<ReservoirArea> areas = await this._areaRepository.ListAsync(reservoirAreaSpec);
                  

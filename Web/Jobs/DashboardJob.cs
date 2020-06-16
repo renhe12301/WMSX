@@ -266,7 +266,7 @@ namespace Web.Jobs
                     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料) && r.CreateTime >= now &&
                     r.CreateTime <= eCreateTime).ToList();
                 List<SubOrder> orders3 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= now &&
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库) && r.CreateTime >= now &&
                     r.CreateTime <= eCreateTime).ToList();
                 data1.Add(orders2.Count);
                 data2.Add(orders3.Count);
@@ -295,7 +295,7 @@ namespace Web.Jobs
             List<SubOrder> orders2 = orders.Where(r =>
                 r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收)).ToList();
             List<SubOrder> orders3 = orders.Where(r =>
-                r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库)).ToList();
+                r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库)).ToList();
             List<SubOrder> orders4 = orders.Where(r =>
                 r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料)).ToList();
             List<SubOrder> orders5 = orders.Where(r =>
@@ -371,7 +371,7 @@ namespace Web.Jobs
                     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
                     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
                 List<SubOrder> orders3 = orders.Where(r =>
-                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
+                    r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库) && r.CreateTime >= DateTime.Parse(sCreateTime) &&
                     r.CreateTime <= DateTime.Parse(eCreateTime)).ToList();
                 List<SubOrder> orders4 = orders.Where(r =>
                     r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料) && r.CreateTime >= DateTime.Parse(sCreateTime) &&

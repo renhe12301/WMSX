@@ -497,7 +497,7 @@ namespace Web.WebServices.Services
                             //出库订单行里面的物料数量库存校验，防止有正在执行或者待处理的的退库订单冲突。
                             
                             SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null,null,null,null,
-                                new List<int>{Convert.ToInt32(ORDER_TYPE.入库退库)},ou.Id,warehouse.Id,null,null,null,null,
+                                new List<int>{Convert.ToInt32(ORDER_TYPE.出库退库)},ou.Id,warehouse.Id,null,null,null,null,
                                 null,new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null );
 
                             List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);

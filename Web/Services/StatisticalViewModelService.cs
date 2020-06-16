@@ -388,7 +388,7 @@ namespace Web.Services
                 List<int> orderTypeIds = new List<int>
                 {
                     Convert.ToInt32(ORDER_TYPE.出库领料),
-                    Convert.ToInt32(ORDER_TYPE.入库退库),
+                    Convert.ToInt32(ORDER_TYPE.出库退库),
                 };
 
                 orderSpec = new OrderSpecification(null,null,null,orderTypeIds,null, ouId
@@ -405,7 +405,7 @@ namespace Web.Services
                     wlables.Add(w.WhName);
                     int sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库领料)).Count();
                     wdatas.Add(sumCount);
-                    sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库退库)).Count();
                     wdatas2.Add(sumCount);
                 }
                
@@ -543,7 +543,7 @@ namespace Web.Services
                 List<int> orderTypeIds = new List<int>
                 {
                     Convert.ToInt32(ORDER_TYPE.出库领料),
-                    Convert.ToInt32(ORDER_TYPE.入库退库)
+                    Convert.ToInt32(ORDER_TYPE.出库退库)
                 };
 
                 orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
@@ -559,7 +559,7 @@ namespace Web.Services
                     wlables.Add(w.WhName);
                     int sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库领料)).Count();
                     wdatas.Add(sumCount);
-                    sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    sumCount = orders.Where(o=>o.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库退库)).Count();
                     wdatas2.Add(sumCount);
                 }
                
@@ -848,7 +848,7 @@ namespace Web.Services
                 List<int> orderTypeIds = new List<int>
                 {
                     Convert.ToInt32(ORDER_TYPE.出库领料),
-                    Convert.ToInt32(ORDER_TYPE.入库退库)
+                    Convert.ToInt32(ORDER_TYPE.出库退库)
                 };
 
                 orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
@@ -873,7 +873,7 @@ namespace Web.Services
                     dyn2.WarehouseName = warehouse.WhName;
                     dyn2.OrderType = "退库";
                     dyn2.TotalStatisticalCount = totalCnt;
-                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库退库)).Count();
                     
                     result.Add(dyn);
                     result.Add(dyn2);
@@ -1008,7 +1008,7 @@ namespace Web.Services
                 List<int> orderTypeIds = new List<int>
                 {
                     Convert.ToInt32(ORDER_TYPE.出库领料),
-                    Convert.ToInt32(ORDER_TYPE.入库退库)
+                    Convert.ToInt32(ORDER_TYPE.出库退库)
                 };
 
                 orderSpec = new OrderSpecification(null,null,null,orderTypeIds,null, ouId
@@ -1034,7 +1034,7 @@ namespace Web.Services
                     dyn2.WarehouseName = warehouse.WhName;
                     dyn2.OrderType = "退库";
                     dyn2.TotalStatisticalCount = totalCnt;
-                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.入库退库)).Count();
+                    dyn2.StatisticalCount = orders.Where(m => m.WarehouseId == warehouse.Id&&m.OrderTypeId==Convert.ToInt32(ORDER_TYPE.出库退库)).Count();
                     
                     result.Add(dyn);
                     result.Add(dyn2);

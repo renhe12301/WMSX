@@ -23,9 +23,9 @@ namespace ApplicationCore.Misc
     public enum ORDER_TYPE
     {
         入库接收 = 1,
-        入库退库 = 2,
+        入库退料 = 2,
         出库领料 = 3,
-        入库退料 = 4,
+        出库退库 = 4,
         接收退料 = 5
     }
     
