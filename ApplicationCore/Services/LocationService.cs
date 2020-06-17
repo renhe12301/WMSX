@@ -137,52 +137,48 @@ namespace ApplicationCore.Services
                 try
                 {
                     Guard.Against.NullOrEmpty(ids, nameof(ids));
-                    var locations =  this._locationRepository.ListAll();
-                    Guard.Against.NullOrEmpty(locations, nameof(locations));
-                    var wareHouseTrays =  this._warehouseTrayRepository.ListAll();
-                    var wareHouseMaterials =  this._warehouseMaterialRepository.ListAll();
-                    List<WarehouseTray> delWareHouseTrays = new List<WarehouseTray>();
-                    List<WarehouseMaterial> delWareHouseMaterials = new List<WarehouseMaterial>();
-                    List<Location> updLocations = new List<Location>();
-                    locations.ForEach(l =>
+
+                    foreach (var lid in ids)
                     {
-                        if (ids.Contains(l.Id))
+                        LocationSpecification locationSpec = new LocationSpecification(lid,null,null,null,null,null,
+                            null,null,null,null,null,null,null,null);
+                        List<Location> locs = this._locationRepository.List(locationSpec);
+                        if (locs.Count > 0)
                         {
-                            if (l.IsTask == Convert.ToInt32(LOCATION_TASK.有任务))
-                                throw new Exception(string.Format("货位[{0}]当前有任务,无法清空！", l.SysCode));
-                            delWareHouseTrays.AddRange(wareHouseTrays.FindAll(wht => wht.LocationId == l.Id));
-                            delWareHouseMaterials.AddRange(wareHouseMaterials.FindAll(whm => whm.LocationId == l.Id));
-                            l.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
-                            updLocations.Add(l);
-                        }
-                    });
-                    
-                    List<InOutTask> delTasks = new List<InOutTask>();
-                    foreach (var tray in delWareHouseTrays)
-                    {
-                        InOutTaskSpecification inOutTaskSpec = new InOutTaskSpecification(null,tray.TrayCode,null,null,
-                            null,null,null,null,null,null,null,null,null,
-                            null,null,null,null);
-                        List<InOutTask> tasks = this._inoutTaskRepository.List(inOutTaskSpec);
-                        foreach (var task in tasks)
-                        {
-                            task.WarehouseTrayId = null;
-                            delTasks.Add(task);
+                            Location loc = locs[0];
+                            loc.InStock = Convert.ToInt32(LOCATION_INSTOCK.无货);
+                            WarehouseTraySpecification warehouseTraySpec = new WarehouseTraySpecification(null,null,null,null,null,
+                                null,null,lid,null,null,null,null);
+                            List<WarehouseTray> warehouseTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+                            if (warehouseTrays.Count > 0)
+                            {
+                                WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null,null,
+                                    null,null,null,null,warehouseTrays[0].Id,null,null,
+                                    null,null,null,null,null,null,null,null,null,null,null);
+                                List<WarehouseMaterial> warehouseMaterials = this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+                                if (warehouseMaterials.Count > 0)
+                                {
+                                    this._warehouseMaterialRepository.Delete(warehouseMaterials[0]);
+                                }
+                                
+                                InOutTaskSpecification inOutTaskSpec = new InOutTaskSpecification(null,warehouseTrays[0].TrayCode,null,null,
+                                    null,null,null,null,null,null,null,null,null,
+                                    null,null,null,null);
+                                List<InOutTask> tasks = this._inoutTaskRepository.List(inOutTaskSpec);
+                                foreach (var task in tasks)
+                                {
+                                    task.WarehouseTrayId = null;
+                                    
+                                    this._inoutTaskRepository.Update(task);
+                                }
+                                
+                                this._warehouseTrayRepository.Delete(warehouseTrays[0]);
+                            }
+                            this._locationRepository.Update(loc);
+                            
                         }
                     }
 
-                    this._inoutTaskRepository.Update(delTasks);
-                    this._warehouseTrayRepository.Delete(delWareHouseTrays);
-                    this._warehouseMaterialRepository.Delete(delWareHouseMaterials);
-                    this._locationRepository.Update(updLocations);
-                    
-                    this._logRecordRepository.Add(new LogRecord
-                    {
-                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
-                        LogDesc = string.Format("清理货位!"),
-                        CreateTime = DateTime.Now
-                    });
-                    
                     scope.Complete();
                 }
                 catch (Exception ex)
