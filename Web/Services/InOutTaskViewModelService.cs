@@ -12,6 +12,7 @@ using System.Linq;
 using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Misc;
 using Web.ViewModels.StockManager;
+using Web.ViewModels.WCSManager;
 
 
 namespace Web.Services
@@ -191,7 +192,8 @@ namespace Web.Services
                 inOutTask.Status = Convert.ToInt32(TASK_STATUS.待处理);
                 inOutTask.IsRead = Convert.ToInt32(TASK_READ.未读);
                 inOutTask.PhyWarehouseId = inOutTaskViewModel.PhyWarehouseId;
-                inOutTask.Type = Convert.ToInt32(TASK_TYPE.手动下发);
+                inOutTask.Type = inOutTaskViewModel.Type;
+                inOutTask.Memo = "手动下发任务测试";
                 await this._inOutTaskRepository.AddAsync(inOutTask);
             }
             catch (Exception ex)
@@ -219,21 +221,25 @@ namespace Web.Services
             return responseResultViewModel;
         }
 
-        public async Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<EntryApplyResultViewModel> EntryApply(EntryApplyViewModel entryApplyViewModel)
         {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
+            EntryApplyResultViewModel entryApplyResultViewModel = new EntryApplyResultViewModel( );
             try
             {
-                await this._inOutTaskService.EntryApply(warehouseTrayViewModel.LocationCode,
-                    warehouseTrayViewModel.TrayCode, warehouseTrayViewModel.CargoHeight.GetValueOrDefault(),warehouseTrayViewModel.CargoWeight);
+                await this._inOutTaskService.EntryApply(entryApplyViewModel.FromPort,
+                    entryApplyViewModel.BarCode, entryApplyViewModel.CargoHeight,entryApplyViewModel.CargoWeight);
+                entryApplyResultViewModel.returnStatus = 0;
+                entryApplyResultViewModel.returnInfo = "Success!";
+                entryApplyResultViewModel.msgTime = DateTime.Now.Ticks;
             }
             catch (Exception ex)
             {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
+                entryApplyResultViewModel.returnStatus = 1;
+                entryApplyResultViewModel.returnInfo = ex.Message;
+                entryApplyResultViewModel.msgTime = DateTime.Now.Ticks;
             }
 
-            return responseResultViewModel;
+            return entryApplyResultViewModel;
         }
 
         public async Task<ResponseResultViewModel> EmptyOut(WarehouseTrayViewModel warehouseTrayViewModel)
@@ -269,18 +275,23 @@ namespace Web.Services
             return responseResultViewModel;
         }
 
-        public async Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel)
+        public async Task<TaskReportResultViewModel> TaskReport(TaskReportViewModel taskReportViewModel)
         {
-            ResponseResultViewModel responseResultViewModel = new ResponseResultViewModel { Code = 200 };
+            TaskReportResultViewModel responseResultViewModel = new TaskReportResultViewModel();
             try
             {
-                await this._inOutTaskService.TaskReport(inOutTaskViewModel.Id,0,
-                    inOutTaskViewModel.Step,inOutTaskViewModel.Memo);
+                await this._inOutTaskService.TaskReport(Convert.ToInt32(taskReportViewModel.TaskId),0,
+                    Convert.ToInt32(taskReportViewModel.TaskStatus),taskReportViewModel.ReturnInfo);
+                responseResultViewModel.returnStatus = 0;
+                responseResultViewModel.returnInfo = "Success!";
+                responseResultViewModel.taskId = taskReportViewModel.TaskId;
+                responseResultViewModel.msgTime = DateTime.Now.Ticks;
             }
             catch (Exception ex)
             {
-                responseResultViewModel.Code = 500;
-                responseResultViewModel.Data = ex.Message;
+                responseResultViewModel.returnStatus = 1;
+                responseResultViewModel.returnInfo = ex.Message;
+                responseResultViewModel.msgTime = DateTime.Now.Ticks;
             }
             return responseResultViewModel;
         }

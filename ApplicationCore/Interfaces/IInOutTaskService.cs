@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApplicationCore.Entities.StockManager;
+using ApplicationCore.Entities.TaskManager;
 
 namespace ApplicationCore.Interfaces
 {

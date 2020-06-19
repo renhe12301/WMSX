@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Web.Interfaces;
 using Web.ViewModels.StockManager;
 using Web.ViewModels.TaskManager;
+using Web.ViewModels.WCSManager;
 
 namespace Web.Controllers.Api
 {
@@ -39,12 +40,12 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 输送线入库任务申请
         /// </summary>
-        /// <param name="warehouseTrayViewModel">仓库托盘实体对象</param>
+        /// <param name="entryApplyViewModel">WCS仓库托盘实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> EntryApply([FromBody]WarehouseTrayViewModel warehouseTrayViewModel)
+        public async Task<IActionResult> EntryApply([FromBody]EntryApplyViewModel entryApplyViewModel)
         {
-            var response = await this._inOutTaskViewModelService.EntryApply(warehouseTrayViewModel);
+            var response = await this._inOutTaskViewModelService.EntryApply(entryApplyViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
         
@@ -87,12 +88,12 @@ namespace Web.Controllers.Api
         /// <summary>
         /// 出入库任务步骤上报
         /// </summary>
-        /// <param name="inOutTaskViewModel">出入库任务实体对象</param>
+        /// <param name="taskReportViewModel">WCS出入库任务实体对象</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> TaskReport([FromBody]InOutTaskViewModel inOutTaskViewModel)
+        public async Task<IActionResult> TaskReport([FromBody]TaskReportViewModel taskReportViewModel)
         {
-            var response = await this._inOutTaskViewModelService.TaskReport(inOutTaskViewModel);
+            var response = await this._inOutTaskViewModelService.TaskReport(taskReportViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
 

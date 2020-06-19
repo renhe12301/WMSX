@@ -51,16 +51,19 @@ namespace Web.Jobs
                         List<dynamic> tasks = new List<dynamic>();
                         dynamic task = new ExpandoObject();
                         task.taskId = ot.Id.ToString();
+                        
                         task.taskType = ot.Type == Convert.ToInt32(TASK_TYPE.物料入库) ||
                                         ot.Type == Convert.ToInt32(TASK_TYPE.空托盘入库)
                             ? 0
                             : 1;
-                        if (ot.ReservoirAreaId.HasValue)
-                            task.district = ot.ReservoirAreaId;
+                        
+                        task.district = ot.PhyWarehouseId;
                         task.startNode = ot.SrcId.ToString();
                         task.endNode = ot.TargetId.ToString();
                         if (ot.TrayCode != null)
                             task.barCode = ot.TrayCode;
+                        else
+                            task.barCode = Guid.NewGuid().ToString();
                         tasks.Add(task);
                         taskGroup.tasks = tasks;
                         string sendJsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(taskGroup);

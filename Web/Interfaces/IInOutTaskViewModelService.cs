@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Web.ViewModels;
 using Web.ViewModels.TaskManager;
 using Web.ViewModels.StockManager;
+using Web.ViewModels.WCSManager;
+
 namespace Web.Interfaces
 {
     public interface IInOutTaskViewModelService
@@ -15,9 +17,9 @@ namespace Web.Interfaces
         
         Task<ResponseResultViewModel> TrayEntry(WarehouseTrayViewModel warehouseTrayViewModel);
 
-        Task<ResponseResultViewModel> EntryApply(WarehouseTrayViewModel warehouseTrayViewModel);
+        Task<EntryApplyResultViewModel> EntryApply(EntryApplyViewModel entryApplyViewModel);
         
-        Task<ResponseResultViewModel> TaskReport(InOutTaskViewModel inOutTaskViewModel);
+        Task<TaskReportResultViewModel> TaskReport(TaskReportViewModel taskReportViewModel);
         Task<ResponseResultViewModel> GetInOutTasks(int? pageIndex,int? itemsPage,int? id,string trayCode,string materialCode,
                                                     int? subOrderId,int? subOrderRowId,
                                                     string status,string steps,string types,int? ouId,
