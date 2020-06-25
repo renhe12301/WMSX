@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj": {}
+    "D:\\WorkSpace\\Git\\work\\WMSX\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj": {
+    "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
+        "projectUniqueName": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj",
         "projectName": "ApplicationCore",
-        "projectPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
-        "packagesPath": "/home/renhe/.nuget/packages/",
-        "outputPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/obj/",
+        "projectPath": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj",
+        "packagesPath": "C:\\Users\\renhe\\.nuget\\packages\\",
+        "outputPath": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/home/renhe/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\renhe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -64,33 +70,39 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.300/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj": {
+    "D:\\WorkSpace\\Git\\work\\WMSX\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj",
+        "projectUniqueName": "D:\\WorkSpace\\Git\\work\\WMSX\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "/home/renhe/RiderProjects/WMSX/Infrastructure/Infrastructure.csproj",
-        "packagesPath": "/home/renhe/.nuget/packages/",
-        "outputPath": "/home/renhe/RiderProjects/WMSX/Infrastructure/obj/",
+        "projectPath": "D:\\WorkSpace\\Git\\work\\WMSX\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\renhe\\.nuget\\packages\\",
+        "outputPath": "D:\\WorkSpace\\Git\\work\\WMSX\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "/home/renhe/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\renhe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
             "projectReferences": {
-              "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj": {
-                "projectPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj"
+              "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj": {
+                "projectPath": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj"
               }
             }
           }
@@ -134,7 +146,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.300/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

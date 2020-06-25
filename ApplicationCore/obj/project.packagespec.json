@@ -1,15 +1,16 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
+    "projectUniqueName": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj",
     "projectName": "ApplicationCore",
-    "projectPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/ApplicationCore.csproj",
-    "outputPath": "/home/renhe/RiderProjects/WMSX/ApplicationCore/obj/",
+    "projectPath": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\ApplicationCore.csproj",
+    "outputPath": "D:\\WorkSpace\\Git\\work\\WMSX\\ApplicationCore\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netstandard2.1"
     ],
     "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {
@@ -54,7 +55,7 @@
           "privateAssets": "all"
         }
       },
-      "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/3.1.300/RuntimeIdentifierGraph.json"
+      "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
     }
   }
 }
