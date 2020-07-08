@@ -11,6 +11,8 @@ namespace Web.ViewModels.OrderManager
         public int? ReservoirAreaId { get; set; }
         public string ReservoirAreaName { get; set; }
 
+        public string OwnerType { get; set; }
+
         public int MaterialDicId { get; set; }
         public string MaterialDicName { get; set; }
         
@@ -62,5 +64,7 @@ namespace Web.ViewModels.OrderManager
         public string SourceOrderType { get; set; }
 
         public double? Expend { get; set; }
+
+        public string ExpenditureType { get; set; }
     }
 }

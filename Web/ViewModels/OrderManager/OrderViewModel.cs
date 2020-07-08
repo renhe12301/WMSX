@@ -13,6 +13,8 @@ namespace Web.ViewModels.OrderManager
         public string OrderType { get; set; }
         public string ApplyUserCode { get; set; }
         public string ApproveUserCode { get; set; }
+        public string ApplyUserName { get; set; }
+        public string ApproveUserName { get; set; }
         public string ApplyTime { get; set; }
         public string ApproveTime { get; set; }
         public string CallingParty { get; set; }

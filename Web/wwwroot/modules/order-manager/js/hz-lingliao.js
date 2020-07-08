@@ -166,6 +166,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '领料部门',
+                    field: 'OrganizationName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
@@ -427,6 +433,24 @@ $(function () {
                 {
                     title: '出库数量',
                     field: 'RealityCount',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '子库存',
+                    field: 'ReservoirAreaName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '业主类型',
+                    field: 'OwnerType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '支出类型',
+                    field: 'ExpenditureType',
                     valign: 'middle',
                     align: 'center'
                 },

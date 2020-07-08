@@ -137,6 +137,33 @@ namespace ApplicationCore.Entities.OrderManager
         public string SourceOrderType { get; set; }
 
         /// <summary>
+        /// 项目编号
+        /// </summary>
+        public int? EBSProjectId { get; set; }
+
+        /// <summary>
+        /// 关联EBS项目
+        /// </summary>
+        public EBSProject EBSProject { get; set; }
+
+        /// <summary>
+        /// 经办人编号
+        /// </summary>
+        public int? EmployeeId { get; set; }
+
+        /// <summary>
+        /// 关联经办人-员工
+        /// </summary>
+        public Employee Employee { get; set; }
+
+        /// <summary>
+        /// 关联的领料部门
+        /// </summary>
+        public int? OrganizationId { get; set; }
+
+        public Organization Organization { get; set; }
+
+        /// <summary>
         /// 关联拆分订单行
         /// </summary>
         [NotMapped]

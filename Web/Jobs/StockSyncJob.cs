@@ -49,7 +49,7 @@ namespace Web.Jobs
                     {
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
                             subOrder.Id,
-                            null, null, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null, null, null,null,null,
                             null, null, null, null, null, null);
                         List<SubOrderRow> subOrderRows =
                             await this._subOrderRowRepository.ListAsync(subOrderRowSpecification);
@@ -61,7 +61,7 @@ namespace Web.Jobs
                             rkOrderRequest.RKOrderRequest = new RKOrderRequest();
                             rkOrderRequest.RKOrderRequest.headId = subOrder.Id;
                             rkOrderRequest.RKOrderRequest.documentNumber = subOrder.OrderNumber;
-                            rkOrderRequest.RKOrderRequest.documentType = subOrder.SourceOrderType;
+                            rkOrderRequest.RKOrderRequest.documentType = "INVENTORY";
                             rkOrderRequest.RKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                             rkOrderRequest.RKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             rkOrderRequest.RKOrderRequest.vendorId = subOrder.SupplierId.ToString();
@@ -70,6 +70,7 @@ namespace Web.Jobs
                             rkOrderRequest.RKOrderRequest.totalAmount = subOrder.TotalAmount;
                             rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
+                            rkOrderRequest.RKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrders.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -77,19 +78,26 @@ namespace Web.Jobs
                                 RequestRKRow requestRkRow = new RequestRKRow();
                                 rkOrderRequest.RKOrderRequest.requestRKRows[i] = requestRkRow;
                                 requestRkRow.lineId = subOrderRows[i].Id;
+                                requestRkRow.lineNumber = subOrderRows[i].Id;
                                 requestRkRow.headId = subOrderRows[i].SubOrderId;
                                 requestRkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestRkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestRkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestRkRow.price = subOrderRows[i].Price.Value;
                                 requestRkRow.amount = subOrderRows[i].Amount.Value;
-                                requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
+                                requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
                             }
 
                             var response = await warehouseReceiptPort.RKOrderAsync(rkOrderRequest);
-
-                            subOrder.IsSync = 1;
-                            await this._subOrderRepository.UpdateAsync(subOrder);
+                            if (response.RKOrderResponse.code == "200")
+                            {
+                                subOrder.IsSync = 1;
+                                await this._subOrderRepository.UpdateAsync(subOrder);
+                            }
+                            else 
+                            {
+                                throw new Exception(response.RKOrderResponse.data);
+                            }
                         }
 
                         else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料))
@@ -99,10 +107,17 @@ namespace Web.Jobs
                             ckOrderRequest.CKOrderRequest = new CKOrderRequest();
                             ckOrderRequest.CKOrderRequest.headId = subOrder.Id;
                             ckOrderRequest.CKOrderRequest.documentNumber = subOrder.OrderNumber;
-                            ckOrderRequest.CKOrderRequest.documentType = subOrder.SourceOrderType;
+                            ckOrderRequest.CKOrderRequest.documentType = "DELIVERY";
+                            ckOrderRequest.CKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             ckOrderRequest.CKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                             ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
+                            ckOrderRequest.CKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
+                            if (subOrder.EBSProjectId.HasValue)
+                                ckOrderRequest.CKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
+                            if(subOrder.EmployeeId.HasValue)
+                                ckOrderRequest.CKOrderRequest.managerId = subOrder.EmployeeId.ToString();
+                            
                             ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrders.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -110,17 +125,28 @@ namespace Web.Jobs
                                 RequestCKRow requestCkRow = new RequestCKRow();
                                 ckOrderRequest.CKOrderRequest.requestCKRows[i] = requestCkRow;
                                 requestCkRow.lineId = subOrderRows[i].Id;
+                                requestCkRow.lineNumber = subOrderRows[i].Id;
                                 requestCkRow.headId = subOrderRows[i].SubOrderId;
                                 requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestCkRow.processingQuantity = subOrderRows[i].PreCount;
-                                requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
+                                requestCkRow.expenditureType = subOrderRows[i].ExpenditureType;
+                                requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                if(subOrderRows[i].EBSTaskId.HasValue)
+                                   requestCkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                             }
 
                             var response = await stockOutOrderPort.CKOrderAsync(ckOrderRequest);
+                            if (response.CKOrderResponse.code == "200")
+                            {
+                                subOrder.IsSync = 1;
+                                await this._subOrderRepository.UpdateAsync(subOrder);
+                            }
+                            else
+                            {
+                                throw new Exception(response.CKOrderResponse.data);
+                            }
 
-                            subOrder.IsSync = 1;
-                            await this._subOrderRepository.UpdateAsync(subOrder);
                         }
                         else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
                         {
@@ -129,8 +155,9 @@ namespace Web.Jobs
                             tkOrderRequest.TKOrderRequest = new TKOrderRequest();
                             tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
                             tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
-                            tkOrderRequest.TKOrderRequest.documentType = subOrder.SourceOrderType;
+                            tkOrderRequest.TKOrderRequest.documentType = "INVREFUND";
                             tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                            tkOrderRequest.TKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrders.Count];
@@ -148,9 +175,15 @@ namespace Web.Jobs
                             }
 
                             var response = await withdrawalPort.TKOrderAsync(tkOrderRequest);
-
-                            subOrder.IsSync = 1;
-                            await this._subOrderRepository.UpdateAsync(subOrder);
+                            if (response.TKOrderResponse.code == "200")
+                            {
+                                subOrder.IsSync = 1;
+                                await this._subOrderRepository.UpdateAsync(subOrder);
+                            }
+                            else
+                            {
+                                throw new Exception(response.TKOrderResponse.data);
+                            }
                         }
                         else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料))
                         {
@@ -159,11 +192,13 @@ namespace Web.Jobs
                             rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
                             rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
                             rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
-                            rtOrderRequest1.RTOrderRequest.documentType = subOrder.SourceOrderType;
+                            rtOrderRequest1.RTOrderRequest.documentType = "RETURN";
                             rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.Id.ToString();
                             rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
+                            rtOrderRequest1.RTOrderRequest.businessType = subOrder.BusinessTypeCode;
                             rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrders.Count];
+                            
 
                             for (int i = 0; i < subOrderRows.Count; i++)
                             {
@@ -178,9 +213,15 @@ namespace Web.Jobs
                             }
 
                             var response = await inboundReturnsPort.RTOrderAsync(rtOrderRequest1);
-
-                            subOrder.IsSync = 1;
-                            await this._subOrderRepository.UpdateAsync(subOrder);
+                            if (response.RTOrderResponse.code == "200")
+                            {
+                                subOrder.IsSync = 1;
+                                await this._subOrderRepository.UpdateAsync(subOrder);
+                            }
+                            else
+                            {
+                                throw new Exception(response.RTOrderResponse.data);
+                            }
                         }
                     }
                     catch (Exception ex)

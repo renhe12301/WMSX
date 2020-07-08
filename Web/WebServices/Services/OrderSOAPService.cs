@@ -103,11 +103,14 @@ namespace Web.WebServices.Services
                             List<Order> orders = this._orderRepository.List(orderSpec);
 
                             OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                RequestRKJSOrder.DocumentNumber, null, null, null, null, null,
+                                RequestRKJSOrder.DocumentNumber,null,null, null, null, null, null, null,
                                 null, null, null, null, null, null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 
                             #region 字段合法性校验
+
+                            if (string.IsNullOrEmpty(RequestRKJSOrder.OuCode))
+                                throw new Exception("业务实体Id不能为空!");
 
                             OUSpecification ouSpec = new OUSpecification(Convert.ToInt32(RequestRKJSOrder.OuCode), null, null, null);
                             List<OU> ous = this._ouRepository.List(ouSpec);
@@ -119,6 +122,9 @@ namespace Web.WebServices.Services
                             }
 
                             OU ou = ous[0];
+
+                            if (string.IsNullOrEmpty(RequestRKJSOrder.OrganizationCode))
+                                throw new Exception("库存组织Id不能为空!");
                             WarehouseSpecification warehouseSpec =
                                 new WarehouseSpecification(Convert.ToInt32(RequestRKJSOrder.OrganizationCode), null, null, null);
                             List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
@@ -131,6 +137,8 @@ namespace Web.WebServices.Services
 
                             Warehouse warehouse = warehouses[0];
 
+                            if (string.IsNullOrEmpty(RequestRKJSOrder.VendorId))
+                                throw new Exception("供应商头Id不能为空!");
                             SupplierSpecification supplierSpec =
                                 new SupplierSpecification(Convert.ToInt32(RequestRKJSOrder.VendorId), null);
                             List<Supplier> suppliers = this._supplierRepository.List(supplierSpec);
@@ -143,6 +151,8 @@ namespace Web.WebServices.Services
 
                             Supplier supplier = suppliers[0];
 
+                            if (string.IsNullOrEmpty(RequestRKJSOrder.VendorSiteId))
+                                throw new Exception("供应商地址Id不能为空!");
                             SupplierSiteSpecification supplierSiteSpec = new SupplierSiteSpecification(
                                 Convert.ToInt32(RequestRKJSOrder.VendorSiteId),
                                 null, null, null);
@@ -168,6 +178,8 @@ namespace Web.WebServices.Services
                             //     throw new Exception(err);
                             // }
 
+                            if (string.IsNullOrEmpty(RequestRKJSOrder.ManagerId))
+                                throw new Exception("经办人Id不能为空!");
                             EmployeeSpecification employeeSpec =
                                 new EmployeeSpecification(Convert.ToInt32(RequestRKJSOrder.ManagerId), null, null,
                                     null);
@@ -204,6 +216,8 @@ namespace Web.WebServices.Services
                                     var existRow = orderRows.Find(r => r.RowNumber == eor.LineNumber);
                                     if (existRow == null)
                                     {
+                                        if (string.IsNullOrEmpty(eor.MaterialId))
+                                            throw new Exception("物料Id不能为空!");
                                         MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
                                             Convert.ToInt32(eor.MaterialId),
                                             null, null, null, null);
@@ -272,7 +286,7 @@ namespace Web.WebServices.Services
                                         int reId = or.RelatedId.GetValueOrDefault();
                                         SubOrderRowSpecification subOrderRowSpecification =
                                             new SubOrderRowSpecification(null,
-                                                null, null, reId, null, null, null, null, null, null,
+                                                null, null, reId, null, null, null, null,null,null, null, null,
                                                 null, null, null, null, null, null, null);
                                         List<SubOrderRow> subOrderRows =
                                             this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -303,6 +317,8 @@ namespace Web.WebServices.Services
                                 List<OrderRow> addOrderRows = new List<OrderRow>();
                                 foreach (var eor in RequestRKJSOrder.RequestRKJSRows)
                                 {
+                                    if (string.IsNullOrEmpty(eor.MaterialId))
+                                        throw new Exception("物料Id不能为空!");
                                     MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
                                         Convert.ToInt32(eor.MaterialId),
                                         null, null, null, null);
@@ -425,12 +441,13 @@ namespace Web.WebServices.Services
                             List<Order> orders = this._orderRepository.List(orderSpec);
 
                             OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                RequestCKLLOrder.AlyNumber, null, null, null, null, null,
+                                RequestCKLLOrder.AlyNumber,null,null, null, null, null, null, null,
                                 null,null,null,null,null,null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 
                             #region 字段合法性校验
-
+                            if (string.IsNullOrEmpty(RequestCKLLOrder.BusinessEntity))
+                                throw new Exception("业务实体Id不能为空!");
                             OUSpecification ouSpec =
                                 new OUSpecification(Convert.ToInt32(RequestCKLLOrder.BusinessEntity), null, null, null);
                             List<OU> ous = this._ouRepository.List(ouSpec);
@@ -442,6 +459,9 @@ namespace Web.WebServices.Services
                             }
 
                             OU ou = ous[0];
+
+                            if (string.IsNullOrEmpty(RequestCKLLOrder.InventoryOrg))
+                                throw new Exception("库存组织Id不能为空!");
                             WarehouseSpecification warehouseSpec =
                                 new WarehouseSpecification(Convert.ToInt32(RequestCKLLOrder.InventoryOrg), null, null, null);
                             List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
@@ -453,6 +473,13 @@ namespace Web.WebServices.Services
                             }
 
                             Warehouse warehouse = warehouses[0];
+
+                            if (string.IsNullOrEmpty(RequestCKLLOrder.CreationBy))
+                                throw new Exception("制单人Id不能为空!");
+                            EmployeeSpecification employeeSpecification = new EmployeeSpecification(Convert.ToInt32(RequestCKLLOrder.CreationBy), null, null, null);
+                            List<Employee> employees = this._employeeRepository.List(employeeSpecification);
+                            if (employees.Count == 0)
+                                throw new Exception(string.Format("出库订单[{0}],关联制单人Id[{1}]不存在!",RequestCKLLOrder.AlyNumber, RequestCKLLOrder.CreationBy));
 
                             // EBSProjectSpecification ebsProjectSpec = new EBSProjectSpecification(
                             //     Convert.ToInt32(RequestCKLLOrder.ItemId), null,
@@ -476,6 +503,8 @@ namespace Web.WebServices.Services
                             //     throw new Exception(err);
                             // }
 
+                            if (string.IsNullOrEmpty(RequestCKLLOrder.AlyDepCode))
+                                throw new Exception("申请部门不能为空!");
                             OrganizationSpecification organizationSpec =
                                 new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.AlyDepCode), null, null, null);
                             List<Organization> alyOrgs = this._organizationRepository.List(organizationSpec);
@@ -486,7 +515,9 @@ namespace Web.WebServices.Services
                                 throw new Exception(err);
                             }
                             Organization alyOrg = alyOrgs[0];
-                            
+
+                            if (string.IsNullOrEmpty(RequestCKLLOrder.TransDepCode))
+                                throw new Exception("领料部门不能为空!");
                             organizationSpec =
                                 new OrganizationSpecification(Convert.ToInt32(RequestCKLLOrder.TransDepCode), null, null, null);
                             List<Organization> transOrgs = this._organizationRepository.List(organizationSpec);
@@ -500,7 +531,7 @@ namespace Web.WebServices.Services
                             //出库订单行里面的物料数量库存校验，防止有正在执行或者待处理的的退库订单冲突。
                             
                             SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null,null,null,null,
-                                new List<int>{Convert.ToInt32(ORDER_TYPE.出库退库)},ou.Id,warehouse.Id,null,null,null,null,
+                                new List<int>{Convert.ToInt32(ORDER_TYPE.出库退库)},ou.Id,warehouse.Id,null,null,null,null,null,null,
                                 null,new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null );
 
                             List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);
@@ -588,7 +619,7 @@ namespace Web.WebServices.Services
                                         int reId = or.RelatedId.GetValueOrDefault();
                                         SubOrderRowSpecification subOrderRowSpecification =
                                             new SubOrderRowSpecification(null,
-                                                null, null, reId,null, null, null, null, null, null,
+                                                null, null, reId,null, null, null, null,null,null, null, null,
                                                 null, null, null, null, null, null, null);
                                         List<SubOrderRow> subOrderRows =
                                             this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -617,6 +648,8 @@ namespace Web.WebServices.Services
                                         var existRow = orderRows.Find(r => r.RowNumber == eor.LineNum);
                                         if (existRow == null)
                                         {
+                                            if (string.IsNullOrEmpty(eor.MaterialId))
+                                                throw new Exception("物料Id不能为空!");
                                             MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
                                                 Convert.ToInt32(eor.MaterialId),
                                                 null, null, null, null);
@@ -641,7 +674,7 @@ namespace Web.WebServices.Services
                                             //         RequestCKLLOrder.AlyNumber, eor.LineNum, eor.TaskId);
                                             //     throw new Exception(err);
                                             // }
-
+                                            
                                             ReservoirAreaSpecification reservoirAreaSpec =
                                                 new ReservoirAreaSpecification(null, eor.InventoryCode, null, null,
                                                     null,
@@ -650,13 +683,14 @@ namespace Web.WebServices.Services
                                                  this._areaRepository.List(reservoirAreaSpec);
                                             if (areas.Count == 0)
                                             {
-                                                string err = string.Format("出库订单[{0}],订单行[{1}],关联任务Id[{2}]不存在！",
+                                                string err = string.Format("出库订单[{0}],订单行[{1}],关联子库区Id[{2}]不存在！",
                                                     RequestCKLLOrder.AlyNumber, eor.LineNum, eor.InventoryCode);
                                                 throw new Exception(err);
                                             }
 
                                             ReservoirArea area = areas[0];
                                             OrderRow addOrderRow = new OrderRow();
+                                            
                                             addOrderRow.SourceId = Convert.ToInt32(eor.LineId);
                                             addOrderRow.RowNumber = eor.LineNum;
                                             addOrderRow.MaterialDicId = materialDic.Id;
@@ -664,6 +698,13 @@ namespace Web.WebServices.Services
                                             addOrderRow.PreCount = Convert.ToDouble(eor.ReqQty);
                                             addOrderRow.CancelCount = Convert.ToDouble(eor.CancelQty);
                                             addOrderRow.ReservoirAreaId = area.Id;
+                                            addOrderRow.ExpenditureType = eor.ExpenditrueType;
+                                            if (!string.IsNullOrEmpty(eor.OwnerId)) 
+                                            {
+                                                addOrderRow.OwnerId = Convert.ToInt32(eor.OwnerId);
+                                                addOrderRow.OwnerType = eor.OwnerType;
+                                            }
+                                               
                                             //addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                             addOrderRow.Memo = eor.Remark;
                                             addOrderRows.Add(addOrderRow);
@@ -675,7 +716,7 @@ namespace Web.WebServices.Services
                                                 int reId = existRow.RelatedId.GetValueOrDefault();
                                                 SubOrderRowSpecification subOrderRowSpecification =
                                                     new SubOrderRowSpecification(null,
-                                                        null, null, reId,null, null, null, null, null, null,
+                                                        null, null, reId,null, null, null, null,null,null, null, null,
                                                         null, null, null, null, null, null, null);
                                                 List<SubOrderRow> subOrderRows =
                                                     this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -724,11 +765,14 @@ namespace Web.WebServices.Services
                                 addOrder.BusinessTypeCode = RequestCKLLOrder.BusinessTypeCode;
                                 addOrder.CreateTime = DateTime.Parse(RequestCKLLOrder.CreationDate);
                                 addOrder.SourceOrderType = RequestCKLLOrder.DocumentType;
+                                
                                 //addOrder.EBSProjectId = Convert.ToInt32(RequestCKLLOrder.ItemId);
                                 addOrder.Memo = RequestCKLLOrder.Remark;
                                 List<OrderRow> addOrderRows = new List<OrderRow>();
                                 foreach (var eor in RequestCKLLOrder.RequestCKLLRows)
                                 {
+                                    if (string.IsNullOrEmpty(eor.MaterialId))
+                                        throw new Exception("物料Id不能为空!");
                                     MaterialDicSpecification materialDicSpec = new MaterialDicSpecification(
                                         Convert.ToInt32(eor.MaterialId),
                                         null, null, null, null);
@@ -773,8 +817,14 @@ namespace Web.WebServices.Services
                                     addOrderRow.PreCount = Convert.ToDouble(eor.ReqQty);
                                     addOrderRow.CancelCount = Convert.ToDouble(eor.CancelQty);
                                     addOrderRow.ReservoirAreaId = area.Id;
+                                    addOrderRow.ExpenditureType = eor.ExpenditrueType;
                                     //EBSTaskId = Convert.ToInt32(eor.TaskId),
                                     addOrderRow.Memo = eor.Remark;
+                                    if (!string.IsNullOrEmpty(eor.OwnerId))
+                                    {
+                                        addOrderRow.OwnerId = Convert.ToInt32(eor.OwnerId);
+                                        addOrderRow.OwnerType = eor.OwnerType;
+                                    }
                                     addOrderRows.Add(addOrderRow);
                                 }
 
@@ -826,6 +876,7 @@ namespace Web.WebServices.Services
                 orderType = Convert.ToInt32(ORDER_TYPE.入库接收);
             else if(documentType.Equals("PICK"))
                 orderType = Convert.ToInt32(ORDER_TYPE.出库领料);
+
             return orderType;
         }
 

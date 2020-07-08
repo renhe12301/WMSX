@@ -312,6 +312,13 @@ $(function () {
                     field: 'Amount',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: '备注',
+                    field: 'Memo',
+                    valign: 'middle',
+                    align: 'center',
+                    visible: false
                 }
             ]
     });

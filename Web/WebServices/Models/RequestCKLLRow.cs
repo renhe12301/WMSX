@@ -69,5 +69,13 @@ namespace Web.WebServices.Models
         [JsonProperty(PropertyName ="errMsg")]
         [DataMember]
         public string ErrMsg { get; set; }
+
+        [JsonProperty(PropertyName = "ownerId")]
+        [DataMember]
+        public string OwnerId { get; set; }
+
+        [JsonProperty(PropertyName = "ownerType")]
+        [DataMember]
+        public string OwnerType { get; set; }
     }
 }

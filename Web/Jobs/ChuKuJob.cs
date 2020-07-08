@@ -156,7 +156,7 @@ namespace Web.Jobs
                          using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                          {
                              SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                 subOrder.Id, null,
+                                 subOrder.Id, null,null,null,
                                  null, null, null, null, null, null, null, null, null,
                                  null, null, null, null, null);
                              List<SubOrderRow> subOrderRows =

@@ -97,7 +97,9 @@ namespace Web.Services
                         IsScrap = e.IsScrap,
                         SourceId = e.SourceId,
                         SourceOrderType = e.SourceOrderType,
-                        IsSyncStr = e.IsSync==1?"已同步":"未同步"
+                        IsSyncStr = e.IsSync == 1 ? "已同步" : "未同步",
+                        OrganizationId = e.OrganizationId,
+                        OrganizationName = e.Organization?.OrgName
                     };
                     orderViewModels.Add(subOrderViewModel);
                 });
@@ -124,7 +126,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId, int? orderRowId,int? sourceId, string orderTypeIds,
-            int? ouId, int? warehouseId, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
+            int? ouId, int? warehouseId, int? reservoirAreaId, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, string status, string sCreateTime, string eCreateTime, string sFinishTime,
             string eFinishTime)
         {
@@ -149,13 +151,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SubOrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 else
                 {
                     baseSpecification = new SubOrderRowSpecification(id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 var orderRows = await this._subOrderRowRepository.ListAsync(baseSpecification);
@@ -189,14 +191,16 @@ namespace Web.Services
                         SupplierId = e.SubOrder.SupplierId,
                         SupplierSiteId = e.SubOrder.SupplierSiteId,
                         SourceId = e.SourceId,
-                        OrderTypeId = e.SubOrder?.OrderTypeId
+                        OrderTypeId = e.SubOrder?.OrderTypeId,
+                        OwnerType = e.OwnerType,
+                        ExpenditureType = e.ExpenditureType
                     };
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
                     var count = await this._subOrderRowRepository.CountAsync(new SubOrderRowSpecification(id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;

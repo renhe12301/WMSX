@@ -36,6 +36,7 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Supplier);
             AddInclude(b => b.SupplierSite);
             AddInclude(b => b.PhyWarehouse);
+            AddInclude(b => b.Organization);
         }
     }
 }

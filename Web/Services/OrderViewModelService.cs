@@ -26,13 +26,15 @@ namespace Web.Services
         private readonly ILogRecordService _logRecordService;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
+        private readonly IAsyncRepository<Organization> _organizationRepository;
 
         public OrderViewModelService(  IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
                                        IAsyncRepository<Warehouse> warehouseRepository,
                                        ILogRecordService logRecordService,
                                        IAsyncRepository<OrderRow> orderRowRepository,
-                                       IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository)
+                                       IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
+                                       IAsyncRepository<Organization> organizationRepository)
         {
             this._orderRepository = orderRepository;
             this._areaRepository = areaRepository;
@@ -40,6 +42,7 @@ namespace Web.Services
             this._logRecordService = logRecordService;
             this._orderRowRepository = orderRowRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
+            this._organizationRepository = organizationRepository;
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
@@ -81,7 +84,7 @@ namespace Web.Services
                 var orders = await this._orderRepository.ListAsync(spec);
                 List<OrderViewModel> orderViewModels = new List<OrderViewModel>();
 
-                orders.ForEach(e =>
+                orders.ForEach(async(e) =>
                 {
                     OrderViewModel orderViewModel = new OrderViewModel();
                     orderViewModel.Id = e.Id;
@@ -90,6 +93,20 @@ namespace Web.Services
                     orderViewModel.OrderTypeId = e.OrderTypeId;
                     orderViewModel.ApplyUserCode = e.ApplyUserCode;
                     orderViewModel.ApproveUserCode = e.ApproveUserCode;
+                    if (!string.IsNullOrEmpty(e.ApplyUserCode)) 
+                    {
+                        OrganizationSpecification organizationSpec = new OrganizationSpecification(Convert.ToInt32(e.ApplyUserCode), null, null, null);
+                        List<Organization> organizations = await this._organizationRepository.ListAsync(organizationSpec);
+                        if (organizations.Count > 0)
+                            orderViewModel.ApplyUserName = organizations[0].OrgName;
+                    }
+                    if (!string.IsNullOrEmpty(e.ApproveUserCode))
+                    {
+                        OrganizationSpecification organizationSpec = new OrganizationSpecification(Convert.ToInt32(e.ApproveUserCode), null, null, null);
+                        List<Organization> organizations = await this._organizationRepository.ListAsync(organizationSpec);
+                        if (organizations.Count > 0)
+                            orderViewModel.ApproveUserName = organizations[0].OrgName;
+                    }
                     orderViewModel.ApplyTime = e.ApplyTime?.ToString();
                     orderViewModel.ApproveTime = e.ApproveTime?.ToString();
                     orderViewModel.CallingParty = e.CallingParty;
@@ -118,6 +135,7 @@ namespace Web.Services
                     orderViewModel.SourceOrderType = e.SourceOrderType;
                     orderViewModels.Add(orderViewModel);
                 });
+
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._orderRepository.CountAsync(new OrderSpecification(id, orderNumber,sourceId, orderTypes,
@@ -143,7 +161,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
-            string orderNumber, int? ouId,int? warehouseId,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
+            string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId, string ownerType, int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -167,13 +185,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId,reservoirAreaId,ownerType,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
                     spec = new OrderRowSpecification(id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId, reservoirAreaId, ownerType,supplierId, supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orderRows = await this._orderRowRepository.ListAsync(spec);
@@ -212,15 +230,17 @@ namespace Web.Services
                         SourceOrderType = e.Order?.SourceOrderType,
                         BusinessTypeCode = e.Order?.BusinessTypeCode,
                         Currency = e.Order?.Currency,
-                        Expend = e.Expend
-
+                        Expend = e.Expend,
+                        Memo = e.Memo,
+                        OwnerType = e.OwnerType,
+                        ExpenditureType = e.ExpenditureType
                     };
                     orderRowViewModels.Add(orderRowViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId, reservoirAreaId, ownerType, supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
@@ -248,7 +268,7 @@ namespace Web.Services
             try
             {
                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,null,null,
-                    null,null,null,null,null,null,
+                    null,null,null,null,null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);

@@ -428,7 +428,7 @@ namespace ApplicationCore.Services
                                     SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
 
                                     OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                        subOrderRow.OrderRowId,
+                                        subOrderRow.OrderRowId,null,null,
                                         null, null, null, null, null, null, null,
                                         null, null, null, null, null, null, null,
                                         null);
@@ -542,7 +542,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,
+                                    subOrderRow.OrderRowId,null,null,
                                     null, null, null, null, null, null, null,
                                     null, null, null, null, null, null, null,
                                     null);
@@ -561,7 +561,7 @@ namespace ApplicationCore.Services
 
                         }
 
-                        warehouseTray.LocationId = null;
+                        //warehouseTray.LocationId = null;
                         warehouseTray.SubOrderId = null;
                         warehouseTray.SubOrderRowId = null;
                         warehouseTray.Amount = warehouseTray.Price * warehouseTray.MaterialCount;

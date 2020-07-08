@@ -161,13 +161,13 @@ $(function () {
                 },
                 {
                     title: '申请部门',
-                    field: 'ApplyUserCode',
+                    field: 'ApplyUserName',
                     valign: 'middle',
                     align: 'center'
                 },
                 {
                     title: '领料部门',
-                    field: 'ApproveUserCode',
+                    field: 'ApproveUserName',
                     valign: 'middle',
                     align: 'center'
                 },
@@ -285,6 +285,25 @@ $(function () {
                     field: 'ReservoirAreaName',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: '业主类型',
+                    field: 'OwnerType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '支出类型',
+                    field: 'ExpenditureType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '备注',
+                    field: 'Memo',
+                    valign: 'middle',
+                    align: 'center',
+                    visible: false
                 }
             ]
     });

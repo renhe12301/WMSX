@@ -30,6 +30,8 @@ namespace Web.ViewModels.OrderManager
 
         public string ReservoirAreaName { get; set; }
 
+        public string OwnerType { get; set; }
+
         /// <summary>
         /// 物料字典编号
         /// </summary>
@@ -153,6 +155,11 @@ namespace Web.ViewModels.OrderManager
         ///  物理仓库编号
         /// </summary>
         public int? PhyWarehouseId { get; set; }
+
+        /// <summary>
+        /// 支出类型
+        /// </summary>
+        public string ExpenditureType { get; set; }
 
     }
 }

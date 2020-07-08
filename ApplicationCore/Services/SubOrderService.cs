@@ -90,7 +90,7 @@ namespace ApplicationCore.Services
                             subOrder.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单[{0}]状态必须为待处理或执行中！", subOrderId));
                         var subOrderRowSpec = new SubOrderRowSpecification(subOrderRowId, null, null, null, null,
-                            null,
+                            null,null,null,
                             null, null, null, null, null, null, null, null, null,
                             null, null);
                         var subOrderRows = this._subOrderRowRepository.List(subOrderRowSpec);
@@ -455,7 +455,7 @@ namespace ApplicationCore.Services
                                     Convert.ToInt32(ORDER_TYPE.出库退库),
                                     Convert.ToInt32(ORDER_TYPE.出库领料)
                                 },
-                                order.OUId, order.WarehouseId, null,
+                                order.OUId, order.WarehouseId,null,null, null,
                                 null,
                                 null, null,
                                 null,
@@ -550,7 +550,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,
+                                    subOrderRow.OrderRowId,null,null,
                                     null, null, null, null, null, null,
                                     null, null, null, null, null, null
                                     , null, null, null);
@@ -625,7 +625,7 @@ namespace ApplicationCore.Services
 
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
                             subOrder.Id, null, null, null, null, null, null, null, null
-                            , null, null, null, null, null, null, null);
+                            , null, null, null, null, null, null, null,null,null);
                         List<SubOrderRow> subOrderRows =
                             this._subOrderRowRepository.List(subOrderRowSpecification);
                         List<OrderRow> updOrderRows = new List<OrderRow>();
@@ -637,7 +637,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,
+                                    subOrderRow.OrderRowId,null, null,
                                     null, null, null, null, null, null,
                                     null, null, null, null, null, null, null
                                     , null, null);
@@ -685,7 +685,7 @@ namespace ApplicationCore.Services
                         foreach (var sr in subOrderRows)
                         {
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,
-                                null
+                                null,null,null
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null);
                             List<SubOrderRow> findSubOrderRows =
@@ -697,7 +697,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId, null, null, null, null, null, null, null,
+                                    subOrderRow.OrderRowId, null, null, null, null, null, null, null,null,null,
                                     null, null, null, null, null, null, null, null);
                                 List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
@@ -752,7 +752,7 @@ namespace ApplicationCore.Services
                         throw new Exception(string.Format("只能处理状态为[待处理]的订单,当前的订单状态为[{0}]",
                             Enum.GetName(typeof(ORDER_STATUS), subOrder.Status)));
                     SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                        subOrderId,
+                        subOrderId,null,null,
                         null, null, null, null, null, null, null, null,
                         null, null, null, null, null, null, null);
                     List<SubOrderRow> subOrderRows =

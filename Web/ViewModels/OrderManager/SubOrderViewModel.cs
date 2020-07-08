@@ -145,5 +145,17 @@ namespace Web.ViewModels.OrderManager
         public int? SourceId { get; set; }
 
         public string IsSyncStr { get; set; }
+
+
+        /// <summary>
+        /// 领料部门编号
+        /// </summary>
+
+        public int? OrganizationId { get; set; }
+
+        /// <summary>
+        /// 领料部门
+        /// </summary>
+        public string OrganizationName { get; set; }
     }
 }

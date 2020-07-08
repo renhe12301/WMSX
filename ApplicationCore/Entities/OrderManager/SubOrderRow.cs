@@ -24,6 +24,16 @@ namespace ApplicationCore.Entities.OrderManager
         public int? ReservoirAreaId { get; set; }
 
         /// <summary>
+        /// 业主类型 CONSIGNMENT寄售库 ORDINARY一般库
+        /// </summary>
+        public string OwnerType { get; set; }
+
+        /// <summary>
+        /// 业主编号
+        /// </summary>
+        public int? OwnerId { get; set; }
+
+        /// <summary>
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
@@ -113,6 +123,19 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public int? SourceId { get; set; }
 
+        /// <summary>
+        /// 任务编号
+        /// </summary>
+        public int? EBSTaskId { get; set; }
+        /// <summary>
+        /// 关联任务实体
+        /// </summary>
+        public EBSTask EBSTask { get; set; }
+
+        /// <summary>
+        /// 支出类型
+        /// </summary>
+        public string ExpenditureType { get; set; }
 
 
     }

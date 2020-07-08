@@ -146,6 +146,7 @@ namespace Web.Jobs.JYHWSDL
             get { return this.requestCKRowsField; }
             set { this.requestCKRowsField = value; }
         }
+
     }
 
     /// <remarks/>
@@ -438,7 +439,7 @@ namespace Web.Jobs.JYHWSDL
         {
             if ((endpointConfiguration == EndpointConfiguration.StockOutOrderPortSoap11))
             {
-                return new System.ServiceModel.EndpointAddress("http://10.78.75.11:19240/ws/stockout-order");
+                return new System.ServiceModel.EndpointAddress("http://172.16.14.204:19240/ws/stockout-order");
             }
 
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.",
