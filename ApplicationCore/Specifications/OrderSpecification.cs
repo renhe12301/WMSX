@@ -42,7 +42,6 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Employee);
             AddInclude(b => b.Supplier);
             AddInclude(b => b.SupplierSite);
-            AddInclude(b => b.EBSProject);
             AddInclude(b => b.PhyWarehouse);
         }
     }

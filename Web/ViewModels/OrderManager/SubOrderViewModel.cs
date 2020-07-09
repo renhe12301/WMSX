@@ -146,6 +146,10 @@ namespace Web.ViewModels.OrderManager
 
         public string IsSyncStr { get; set; }
 
+        /// <summary>
+        /// 制单人编号
+        /// </summary>
+        public int EmployeeId { get; set; }
 
         /// <summary>
         /// 领料部门编号
@@ -157,5 +161,17 @@ namespace Web.ViewModels.OrderManager
         /// 领料部门
         /// </summary>
         public string OrganizationName { get; set; }
+
+        /// <summary>
+        /// EBS 项目编号
+        /// </summary>
+        public int EBSProjectId { get; set; }
+
+
+        /// <summary>
+        /// EBS 项目名称
+        /// </summary>
+        public string ProjectName { get; set; }
+
     }
 }

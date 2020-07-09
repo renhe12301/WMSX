@@ -31,7 +31,6 @@ namespace ApplicationCore.Specifications
             AddInclude(b => b.Order);
             AddInclude(b=>b.MaterialDic);
             AddInclude(b=>b.ReservoirArea);
-            AddInclude(b=>b.EBSTask);
         }
     }
 }

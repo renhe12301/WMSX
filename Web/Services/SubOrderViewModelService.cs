@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApplicationCore.Entities.BasicInformation;
 using ApplicationCore.Entities.OrderManager;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Misc;
@@ -16,18 +17,24 @@ namespace Web.Services
     public class SubOrderViewModelService:ISubOrderViewModelService
     {
 
-        private IAsyncRepository<SubOrder> _subOrderRepository;
-        private IAsyncRepository<SubOrderRow> _subOrderRowRepository;
-        private ISubOrderService _subOrderService;
-        
+        private readonly IAsyncRepository<SubOrder> _subOrderRepository;
+        private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
+        private readonly ISubOrderService _subOrderService;
+        private readonly IAsyncRepository<EBSProject> _ebsProjectRepository;
+        private readonly IAsyncRepository<EBSTask> _ebsTaskRepository;
+
         public SubOrderViewModelService(IAsyncRepository<SubOrder> subOrderRepository,
-            ISubOrderService subOrderService,
-            IAsyncRepository<SubOrderRow> subOrderRowRepository
+                                        ISubOrderService subOrderService,
+                                        IAsyncRepository<SubOrderRow> subOrderRowRepository,
+                                        IAsyncRepository<EBSProject> ebsProjectRepository,
+                                        IAsyncRepository<EBSTask> ebsTaskRepository
             )
         {
             this._subOrderRepository = subOrderRepository;
             this._subOrderService = subOrderService;
             this._subOrderRowRepository = subOrderRowRepository;
+            this._ebsProjectRepository = ebsProjectRepository;
+            this._ebsTaskRepository = ebsTaskRepository;
         }
 
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage, int? id, string orderNumber, 
@@ -101,6 +108,16 @@ namespace Web.Services
                         OrganizationId = e.OrganizationId,
                         OrganizationName = e.Organization?.OrgName
                     };
+                    if (e.EBSProjectId.HasValue)
+                    {
+                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
+                        List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
+                        if (eBSProjects.Count > 0)
+                        {
+                            subOrderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
+                            subOrderViewModel.ProjectName = eBSProjects[0].ProjectName;
+                        }
+                    }
                     orderViewModels.Add(subOrderViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
@@ -195,6 +212,16 @@ namespace Web.Services
                         OwnerType = e.OwnerType,
                         ExpenditureType = e.ExpenditureType
                     };
+                    if (e.EBSTaskId.HasValue)
+                    {
+                        EBSTaskSpecification eBSTaskSpec = new EBSTaskSpecification(e.EBSTaskId, null, null, null, null, null, null);
+                        List<EBSTask> eBSTasks = this._ebsTaskRepository.List(eBSTaskSpec);
+                        if (eBSTasks.Count > 0)
+                        {
+                            subOrderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
+                            subOrderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
+                        }
+                    }
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
@@ -256,7 +283,10 @@ namespace Web.Services
                     BusinessTypeCode = subOrderViewModel.BusinessTypeCode,
                     TotalAmount = subOrderViewModel.TotalAmount,
                     SourceId = subOrderViewModel.SourceId,
-                    SourceOrderType = subOrderViewModel.SourceOrderType
+                    SourceOrderType = subOrderViewModel.SourceOrderType,
+                    OrganizationId = subOrderViewModel.OrganizationId,
+                    EmployeeId = subOrderViewModel.EmployeeId,
+                    EBSProjectId = subOrderViewModel.EBSProjectId
                     
                 };
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();
@@ -274,7 +304,11 @@ namespace Web.Services
                         RowNumber = or.RowNumber??"OR"+now.Ticks,
                         UseFor = or.UseFor,
                         Amount = or.Amount,
-                        SourceId = or.SourceId
+                        SourceId = or.SourceId,
+                        ExpenditureType = or.ExpenditureType,
+                        OwnerId = or.OwnerId,
+                        OwnerType = or.OwnerType,
+                        EBSTaskId = or.EBSTaskId
                         
                     };
                     subOrderRows.Add(orderRow);

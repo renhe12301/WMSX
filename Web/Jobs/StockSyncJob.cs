@@ -71,7 +71,7 @@ namespace Web.Jobs
                             rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
                             rkOrderRequest.RKOrderRequest.businessType = subOrder.BusinessTypeCode;
-                            rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrders.Count];
+                            rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
                             {
@@ -118,7 +118,7 @@ namespace Web.Jobs
                             if(subOrder.EmployeeId.HasValue)
                                 ckOrderRequest.CKOrderRequest.managerId = subOrder.EmployeeId.ToString();
                             
-                            ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrders.Count];
+                            ckOrderRequest.CKOrderRequest.requestCKRows = new RequestCKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
                             {
@@ -160,7 +160,7 @@ namespace Web.Jobs
                             tkOrderRequest.TKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                            tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrders.Count];
+                            tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
                             {
@@ -197,7 +197,7 @@ namespace Web.Jobs
                             rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
                             rtOrderRequest1.RTOrderRequest.businessType = subOrder.BusinessTypeCode;
-                            rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrders.Count];
+                            rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrderRows.Count];
                             
 
                             for (int i = 0; i < subOrderRows.Count; i++)

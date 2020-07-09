@@ -70,7 +70,7 @@ namespace Web.WebServices.Models
         [DataMember]
         public string ErrMsg { get; set; }
 
-        [JsonProperty(PropertyName = "ownerId")]
+        [JsonProperty(PropertyName = "owner")]
         [DataMember]
         public string OwnerId { get; set; }
 

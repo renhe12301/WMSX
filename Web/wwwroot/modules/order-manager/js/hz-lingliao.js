@@ -184,6 +184,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: 'EBS项目',
+                    field: 'ProjectName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '状态',
                     field: 'StatusStr',
                     valign: 'middle',
@@ -451,6 +457,12 @@ $(function () {
                 {
                     title: '支出类型',
                     field: 'ExpenditureType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: 'EBS任务',
+                    field: 'EBSTaskName',
                     valign: 'middle',
                     align: 'center'
                 },

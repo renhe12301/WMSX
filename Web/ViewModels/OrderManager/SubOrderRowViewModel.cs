@@ -28,8 +28,19 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public int? ReservoirAreaId { get; set; }
 
+        /// <summary>
+        /// 子库区名称
+        /// </summary>
         public string ReservoirAreaName { get; set; }
 
+        /// <summary>
+        /// 业主编号
+        /// </summary>
+        public int OwnerId { get; set; }
+
+        /// <summary>
+        /// 业主类型
+        /// </summary>
         public string OwnerType { get; set; }
 
         /// <summary>
@@ -160,6 +171,16 @@ namespace Web.ViewModels.OrderManager
         /// 支出类型
         /// </summary>
         public string ExpenditureType { get; set; }
+
+        /// <summary>
+        /// EBS 任务编号
+        /// </summary>
+        public int EBSTaskId { get; set; }
+
+        /// <summary>
+        /// EBS 任务名称
+        /// </summary>
+        public string EBSTaskName { get; set; }
 
     }
 }

@@ -27,6 +27,8 @@ namespace Web.Services
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<WarehouseMaterial> _warehouseMaterialRepository;
         private readonly IAsyncRepository<Organization> _organizationRepository;
+        private readonly IAsyncRepository<EBSProject> _ebsProjectRepository;
+        private readonly IAsyncRepository<EBSTask> _ebsTaskRepository;
 
         public OrderViewModelService(  IAsyncRepository<Order> orderRepository,
                                        IAsyncRepository<ReservoirArea> areaRepository,
@@ -34,7 +36,9 @@ namespace Web.Services
                                        ILogRecordService logRecordService,
                                        IAsyncRepository<OrderRow> orderRowRepository,
                                        IAsyncRepository<WarehouseMaterial> warehouseMaterialRepository,
-                                       IAsyncRepository<Organization> organizationRepository)
+                                       IAsyncRepository<Organization> organizationRepository,
+                                       IAsyncRepository<EBSProject> ebsProjectRepository,
+                                       IAsyncRepository<EBSTask> ebsTaskRepository)
         {
             this._orderRepository = orderRepository;
             this._areaRepository = areaRepository;
@@ -43,6 +47,8 @@ namespace Web.Services
             this._orderRowRepository = orderRowRepository;
             this._warehouseMaterialRepository = warehouseMaterialRepository;
             this._organizationRepository = organizationRepository;
+            this._ebsProjectRepository = ebsProjectRepository;
+            this._ebsTaskRepository = ebsTaskRepository;
         }
         
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex,int? itemsPage,
@@ -84,7 +90,7 @@ namespace Web.Services
                 var orders = await this._orderRepository.ListAsync(spec);
                 List<OrderViewModel> orderViewModels = new List<OrderViewModel>();
 
-                orders.ForEach(async(e) =>
+                orders.ForEach((e) =>
                 {
                     OrderViewModel orderViewModel = new OrderViewModel();
                     orderViewModel.Id = e.Id;
@@ -96,14 +102,14 @@ namespace Web.Services
                     if (!string.IsNullOrEmpty(e.ApplyUserCode)) 
                     {
                         OrganizationSpecification organizationSpec = new OrganizationSpecification(Convert.ToInt32(e.ApplyUserCode), null, null, null);
-                        List<Organization> organizations = await this._organizationRepository.ListAsync(organizationSpec);
+                        List<Organization> organizations =  this._organizationRepository.List(organizationSpec);
                         if (organizations.Count > 0)
                             orderViewModel.ApplyUserName = organizations[0].OrgName;
                     }
                     if (!string.IsNullOrEmpty(e.ApproveUserCode))
                     {
                         OrganizationSpecification organizationSpec = new OrganizationSpecification(Convert.ToInt32(e.ApproveUserCode), null, null, null);
-                        List<Organization> organizations = await this._organizationRepository.ListAsync(organizationSpec);
+                        List<Organization> organizations =  this._organizationRepository.List(organizationSpec);
                         if (organizations.Count > 0)
                             orderViewModel.ApproveUserName = organizations[0].OrgName;
                     }
@@ -118,8 +124,16 @@ namespace Web.Services
                     orderViewModel.WarehouseName = e.Warehouse?.WhName;
                     orderViewModel.OUName = e.OU?.OUName;
                     orderViewModel.OUId = e.OUId;
-                    // EBSProjectId = e.EBSProjectId.GetValueOrDefault(),
-                    // ProjectName = e.EBSProject?.ProjectName,
+                    if (e.EBSProjectId.HasValue) 
+                    {
+                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
+                        List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
+                        if (eBSProjects.Count > 0) 
+                        {
+                            orderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
+                            orderViewModel.ProjectName = eBSProjects[0].ProjectName;
+                        }
+                    }
                     orderViewModel.SupplierId = e.SupplierId.GetValueOrDefault();
                     orderViewModel.SupplierName = e.Supplier?.SupplierName;
                     orderViewModel.SupplierSiteId = e.SupplierSiteId.GetValueOrDefault();
@@ -235,6 +249,16 @@ namespace Web.Services
                         OwnerType = e.OwnerType,
                         ExpenditureType = e.ExpenditureType
                     };
+                    if (e.EBSTaskId.HasValue) 
+                    {
+                        EBSTaskSpecification eBSTaskSpec = new EBSTaskSpecification(e.EBSTaskId, null, null, null, null, null, null);
+                        List<EBSTask> eBSTasks = this._ebsTaskRepository.List(eBSTaskSpec);
+                        if (eBSTasks.Count > 0) 
+                        {
+                            orderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
+                            orderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
+                        }
+                    }
                     orderRowViewModels.Add(orderRowViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)

@@ -252,7 +252,8 @@ namespace Web.WebServices.Services
                                         addOrderRow.PreCount = Convert.ToInt32(eor.ProcessingQuantity);
                                         addOrderRow.Price = Convert.ToInt32(eor.Price);
                                         addOrderRow.Amount = Convert.ToInt32(eor.Amount);
-                                        //addOrderRow.EBSTaskId = ebsTask.Id;
+                                        if (!string.IsNullOrEmpty(eor.TaskId))
+                                            addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                         addOrderRow.Memo = eor.Remark;
                                         addOrderRows.Add(addOrderRow);
                                     }
@@ -311,7 +312,8 @@ namespace Web.WebServices.Services
                                 addOrder.ApplyTime = DateTime.Parse(RequestRKJSOrder.ExitEntryDate);
                                 addOrder.CreateTime = DateTime.Parse(RequestRKJSOrder.CreationDate);
                                 addOrder.SourceOrderType = RequestRKJSOrder.DocumentType;
-                                //addOrder.EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId),
+                                if(!string.IsNullOrEmpty(RequestRKJSOrder.ItemId))
+                                   addOrder.EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId);
                                 addOrder.Memo = RequestRKJSOrder.Remark;
 
                                 List<OrderRow> addOrderRows = new List<OrderRow>();
@@ -353,7 +355,8 @@ namespace Web.WebServices.Services
                                     addOrderRow.PreCount = Convert.ToDouble(eor.ProcessingQuantity);
                                     addOrderRow.Price = Convert.ToDouble(eor.Price);
                                     addOrderRow.Amount = Convert.ToDouble(eor.Amount);
-                                    //EBSTaskId = ebsTask.Id,
+                                    if(!string.IsNullOrEmpty(eor.TaskId))
+                                        addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                     addOrderRow.Memo = eor.Remark;
 
 
@@ -704,8 +707,11 @@ namespace Web.WebServices.Services
                                                 addOrderRow.OwnerId = Convert.ToInt32(eor.OwnerId);
                                                 addOrderRow.OwnerType = eor.OwnerType;
                                             }
-                                               
-                                            //addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+
+                                            if (!string.IsNullOrEmpty(eor.TaskId))
+                                            {
+                                                addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+                                            }
                                             addOrderRow.Memo = eor.Remark;
                                             addOrderRows.Add(addOrderRow);
                                         }
@@ -765,8 +771,8 @@ namespace Web.WebServices.Services
                                 addOrder.BusinessTypeCode = RequestCKLLOrder.BusinessTypeCode;
                                 addOrder.CreateTime = DateTime.Parse(RequestCKLLOrder.CreationDate);
                                 addOrder.SourceOrderType = RequestCKLLOrder.DocumentType;
-                                
-                                //addOrder.EBSProjectId = Convert.ToInt32(RequestCKLLOrder.ItemId);
+                                if(!string.IsNullOrEmpty(RequestCKLLOrder.ItemId))
+                                   addOrder.EBSProjectId = Convert.ToInt32(RequestCKLLOrder.ItemId);
                                 addOrder.Memo = RequestCKLLOrder.Remark;
                                 List<OrderRow> addOrderRows = new List<OrderRow>();
                                 foreach (var eor in RequestCKLLOrder.RequestCKLLRows)
@@ -818,7 +824,10 @@ namespace Web.WebServices.Services
                                     addOrderRow.CancelCount = Convert.ToDouble(eor.CancelQty);
                                     addOrderRow.ReservoirAreaId = area.Id;
                                     addOrderRow.ExpenditureType = eor.ExpenditrueType;
-                                    //EBSTaskId = Convert.ToInt32(eor.TaskId),
+                                    if (!string.IsNullOrEmpty(eor.TaskId)) 
+                                    {
+                                        addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+                                    }
                                     addOrderRow.Memo = eor.Remark;
                                     if (!string.IsNullOrEmpty(eor.OwnerId))
                                     {

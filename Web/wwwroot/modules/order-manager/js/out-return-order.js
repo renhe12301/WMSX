@@ -171,6 +171,12 @@ $(function () {
                     field: 'OUName',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: 'EBS项目',
+                    field: 'ProjectName',
+                    valign: 'middle',
+                    align: 'center'
                 }
             ]
     });
@@ -260,6 +266,12 @@ $(function () {
                 {
                     title: '金额',
                     field: 'Amount',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: 'EBS任务',
+                    field: 'EBSTaskName',
                     valign: 'middle',
                     align: 'center'
                 },
