@@ -154,6 +154,12 @@ $(function () {
                     }
                 },
                 {
+                    title: '业务类型',
+                    field: 'BusinessTypeName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '供应商名称',
                     field: 'SupplierName',
                     valign: 'middle',

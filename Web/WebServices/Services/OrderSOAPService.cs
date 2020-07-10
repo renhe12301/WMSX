@@ -103,7 +103,7 @@ namespace Web.WebServices.Services
                             List<Order> orders = this._orderRepository.List(orderSpec);
 
                             OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                RequestRKJSOrder.DocumentNumber,null,null, null, null, null, null, null,
+                                RequestRKJSOrder.DocumentNumber,null,null, null, null, null, null, null,null,
                                 null, null, null, null, null, null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 
@@ -252,6 +252,7 @@ namespace Web.WebServices.Services
                                         addOrderRow.PreCount = Convert.ToInt32(eor.ProcessingQuantity);
                                         addOrderRow.Price = Convert.ToInt32(eor.Price);
                                         addOrderRow.Amount = Convert.ToInt32(eor.Amount);
+                                        addOrderRow.ExpenditureType = eor.ExpenditrueType;
                                         if (!string.IsNullOrEmpty(eor.TaskId))
                                             addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                         addOrderRow.Memo = eor.Remark;
@@ -355,7 +356,8 @@ namespace Web.WebServices.Services
                                     addOrderRow.PreCount = Convert.ToDouble(eor.ProcessingQuantity);
                                     addOrderRow.Price = Convert.ToDouble(eor.Price);
                                     addOrderRow.Amount = Convert.ToDouble(eor.Amount);
-                                    if(!string.IsNullOrEmpty(eor.TaskId))
+                                    addOrderRow.ExpenditureType = eor.ExpenditrueType;
+                                    if (!string.IsNullOrEmpty(eor.TaskId))
                                         addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                     addOrderRow.Memo = eor.Remark;
 
@@ -444,7 +446,7 @@ namespace Web.WebServices.Services
                             List<Order> orders = this._orderRepository.List(orderSpec);
 
                             OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null,
-                                RequestCKLLOrder.AlyNumber,null,null, null, null, null, null, null,
+                                RequestCKLLOrder.AlyNumber,null,null, null, null, null, null, null,null,
                                 null,null,null,null,null,null);
                             List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpec);
 

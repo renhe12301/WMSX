@@ -70,7 +70,17 @@ namespace Web.Jobs
                             rkOrderRequest.RKOrderRequest.totalAmount = subOrder.TotalAmount;
                             rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
+                            //if (subOrder.BusinessTypeCode == "CONSIGNMENT_RECEIPITION")
+                            //{
+                            //    rkOrderRequest.RKOrderRequest.businessType = "CONSIGNMENT_INVENTORY";
+                            //}
+                            //else 
+                            //{
+                            //    rkOrderRequest.RKOrderRequest.businessType = "STORAGE";
+                            //}
                             rkOrderRequest.RKOrderRequest.businessType = subOrder.BusinessTypeCode;
+                            rkOrderRequest.RKOrderRequest.managerId = subOrder.EmployeeId.ToString();
+                            rkOrderRequest.RKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
                             rkOrderRequest.RKOrderRequest.requestRKRows = new RequestRKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -85,7 +95,10 @@ namespace Web.Jobs
                                 requestRkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestRkRow.price = subOrderRows[i].Price.Value;
                                 requestRkRow.amount = subOrderRows[i].Amount.Value;
+                                requestRkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                                 requestRkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                                requestRkRow.expenditureType = subOrderRows[i].ExpenditureType;
+                                requestRkRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                             }
 
                             var response = await warehouseReceiptPort.RKOrderAsync(rkOrderRequest);
@@ -113,6 +126,7 @@ namespace Web.Jobs
                             ckOrderRequest.CKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             ckOrderRequest.CKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             ckOrderRequest.CKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
+                            
                             if (subOrder.EBSProjectId.HasValue)
                                 ckOrderRequest.CKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
                             if(subOrder.EmployeeId.HasValue)
@@ -132,6 +146,7 @@ namespace Web.Jobs
                                 requestCkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestCkRow.expenditureType = subOrderRows[i].ExpenditureType;
                                 requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
+                               
                                 if(subOrderRows[i].EBSTaskId.HasValue)
                                    requestCkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                             }

@@ -7,7 +7,8 @@ namespace ApplicationCore.Specifications
     {
         public OrderRowPaginatedSpecification(int skip,int take,int? id,int? orderId,
             List<int> orderTypeIds,int? sourceId,string orderNumber,
-            int? ouId,int? warehouseId, int? reservoirAreaId, string ownerType, int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,
+            int? ouId,int? warehouseId, int? reservoirAreaId, string businessType, string ownerType, 
+            int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,
             List<int> status,string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
             :base(b => (!id.HasValue || b.Id == id) &&
@@ -18,6 +19,7 @@ namespace ApplicationCore.Specifications
                   (!ouId.HasValue||b.Order.OUId==ouId)&&
                   (!warehouseId.HasValue||b.Order.WarehouseId==warehouseId)&&
                   (!reservoirAreaId.HasValue || b.ReservoirAreaId == reservoirAreaId) &&
+                  (businessType == null || b.Order.BusinessTypeCode == businessType) &&
                   (ownerType==null || b.OwnerType == ownerType) &&
                   (!supplierId.HasValue||b.Order.SupplierId==supplierId)&&
                   (supplierName == null || b.Order.Supplier.SupplierName.Contains(supplierName)) &&

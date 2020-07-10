@@ -44,6 +44,11 @@ namespace Web.ViewModels.OrderManager
         public string OwnerType { get; set; }
 
         /// <summary>
+        /// 业主类型名称
+        /// </summary>
+        public string OwnerTypeName { get; set; }
+
+        /// <summary>
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
@@ -181,6 +186,16 @@ namespace Web.ViewModels.OrderManager
         /// EBS 任务名称
         /// </summary>
         public string EBSTaskName { get; set; }
+
+        /// <summary>
+        /// EBS 项目编号
+        /// </summary>
+        public int EBSProjectId { get; set; }
+
+        /// <summary>
+        /// EBS 项目名称
+        /// </summary>
+        public string EBSProjectName { get; set; }
 
     }
 }

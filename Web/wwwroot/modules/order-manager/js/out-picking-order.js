@@ -293,8 +293,8 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: '业主类型',
-                    field: 'OwnerType',
+                    title: '所有者',
+                    field: 'OwnerTypeName',
                     valign: 'middle',
                     align: 'center'
                 },

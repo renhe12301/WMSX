@@ -89,6 +89,7 @@ namespace Web.Controllers.Api
         /// <param name="warehouseId">库存组织编号</param>
         /// <param name="reservoirAreaId">子库区编号</param>
         /// <param name="ownerType">库区类型 CONSIGNMENT寄售库 ORDINARY一般库</param>
+        /// <param name="businessType">业务类型</param>
         /// <param name="supplierId">供应商编号</param>
         /// <param name="supplierName">供应商名称</param>
         /// <param name="supplierSiteId">供应商站编号</param>
@@ -101,11 +102,11 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
-            string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId, string ownerType,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
+            string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId,string businessType, string ownerType,int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
         {
             var response = await this._orderViewModelService.GetOrderRows(pageIndex, itemsPage, id, orderId,orderTypeIds,sourceId,
-                orderNumber,ouId,warehouseId,reservoirAreaId, ownerType, supplierId,supplierName,supplierSiteId,supplierSiteName,status,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
+                orderNumber,ouId,warehouseId,reservoirAreaId, businessType, ownerType, supplierId,supplierName,supplierSiteId,supplierSiteName,status,sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
 

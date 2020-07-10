@@ -105,6 +105,8 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public string BusinessTypeCode { get; set; }
 
+        public string BusinessTypeName { get; set; }
+
         /// <summary>
         /// 订单状态
         /// </summary>

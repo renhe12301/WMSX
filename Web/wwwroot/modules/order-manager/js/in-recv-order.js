@@ -149,8 +149,8 @@ $(function () {
                     }
                 },
                 {
-                    title: '类型',
-                    field: 'OrderType',
+                    title: '业务类型',
+                    field: 'BusinessTypeName',
                     valign: 'middle',
                     align: 'center'
                 },

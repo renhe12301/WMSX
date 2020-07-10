@@ -47,6 +47,8 @@ namespace Web.ViewModels.OrderManager
 
         public string BussinessTypeCode { get; set; }
 
+        public string BusinessTypeName { get; set; }
+
         public string SourceOrderType { get; set; }
 
         public List<OrderRowViewModel> OrderRows { get; set; }

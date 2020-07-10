@@ -134,6 +134,21 @@ namespace Web.Services
                             orderViewModel.ProjectName = eBSProjects[0].ProjectName;
                         }
                     }
+                    if (!string.IsNullOrEmpty(e.BusinessTypeCode))
+                    {
+                        if (e.BusinessTypeCode == "CONSIGNMENT_RECEIPITION")
+                            orderViewModel.BusinessTypeName = "寄售入库";
+
+                        else if (e.BusinessTypeCode == "STORAGE")
+                            orderViewModel.BusinessTypeName = "采购入库";
+
+                        else
+                        {
+                            orderViewModel.BusinessTypeName = e.BusinessTypeCode;
+
+                        }
+
+                    }
                     orderViewModel.SupplierId = e.SupplierId.GetValueOrDefault();
                     orderViewModel.SupplierName = e.Supplier?.SupplierName;
                     orderViewModel.SupplierSiteId = e.SupplierSiteId.GetValueOrDefault();
@@ -175,7 +190,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
-            string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId, string ownerType, int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
+            string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId,string businessType, string ownerType, int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -199,13 +214,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     spec = new OrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId,reservoirAreaId,ownerType,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId,reservoirAreaId, businessType, ownerType,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 else
                 {
                     spec = new OrderRowSpecification(id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId, reservoirAreaId, ownerType,supplierId, supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId, reservoirAreaId, businessType, ownerType,supplierId, supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
                 var orderRows = await this._orderRowRepository.ListAsync(spec);
@@ -230,7 +245,6 @@ namespace Web.Services
                         UseFor = e.UseFor,
                         //StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress.GetValueOrDefault(),
-                        //EBSTaskName = e.EBSTask?.TaskName,
                         Price = e.Price,
                         Amount = e.Amount,
                         OrderId = e.OrderId,
@@ -259,12 +273,21 @@ namespace Web.Services
                             orderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
                         }
                     }
+                    if (!string.IsNullOrEmpty(e.OwnerType))
+                    {
+                        if (e.OwnerType == "ORDINARY")
+                            orderRowViewModel.OwnerTypeName = "一般库";
+
+                        if (e.OwnerType == "CONSIGNMENT")
+                            orderRowViewModel.OwnerTypeName = "寄售库";
+
+                    }
                     orderRowViewModels.Add(orderRowViewModel);
                 });
                 if (pageIndex > -1&&itemsPage>0)
                 {
                     var count = await this._orderRowRepository.CountAsync(new OrderRowSpecification(id,orderId,orderTypes,sourceId,
-                        orderNumber,ouId,warehouseId, reservoirAreaId, ownerType, supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
+                        orderNumber,ouId,warehouseId, reservoirAreaId, businessType, ownerType, supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
@@ -292,7 +315,7 @@ namespace Web.Services
             try
             {
                 OrderRowSpecification orderRowSpec = new OrderRowSpecification(null,null,null,null,null,
-                    null,null,null,null,null,null,null,null,
+                    null,null,null,null,null,null,null,null,null,
                      new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,
                      null,null,null);
                  List<OrderRow> orderRows = await this._orderRowRepository.ListAsync(orderRowSpec);

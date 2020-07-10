@@ -500,7 +500,7 @@ namespace Web.Jobs.JYHWSDL
         {
             if ((endpointConfiguration == EndpointConfiguration.WarehouseReceiptPortSoap11))
             {
-                return new System.ServiceModel.EndpointAddress("http://10.78.75.11:19240/ws/warehouse-receipt");
+                return new System.ServiceModel.EndpointAddress("http://172.16.14.80:19240/ws/warehouse-receipt");
             }
 
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.",

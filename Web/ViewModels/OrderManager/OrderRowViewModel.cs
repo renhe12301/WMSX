@@ -13,6 +13,8 @@ namespace Web.ViewModels.OrderManager
 
         public string OwnerType { get; set; }
 
+        public string OwnerTypeName { get; set; }
+
         public int MaterialDicId { get; set; }
         public string MaterialDicName { get; set; }
         

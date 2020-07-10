@@ -118,6 +118,21 @@ namespace Web.Services
                             subOrderViewModel.ProjectName = eBSProjects[0].ProjectName;
                         }
                     }
+                    if (!string.IsNullOrEmpty(e.BusinessTypeCode))
+                    {
+                        if (e.BusinessTypeCode == "CONSIGNMENT_INVENTORY")
+                            subOrderViewModel.BusinessTypeName = "寄售入库";
+
+                        else if (e.BusinessTypeCode == "STORAGE")
+                            subOrderViewModel.BusinessTypeName = "采购入库";
+
+                        else
+                        {
+                            subOrderViewModel.BusinessTypeName = e.BusinessTypeCode;
+
+                        }
+
+                    }
                     orderViewModels.Add(subOrderViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
@@ -211,6 +226,7 @@ namespace Web.Services
                         OrderTypeId = e.SubOrder?.OrderTypeId,
                         OwnerType = e.OwnerType,
                         ExpenditureType = e.ExpenditureType
+                        
                     };
                     if (e.EBSTaskId.HasValue)
                     {
@@ -221,6 +237,15 @@ namespace Web.Services
                             subOrderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                             subOrderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
                         }
+                    }
+                    if (!string.IsNullOrEmpty(e.OwnerType)) 
+                    {
+                        if (e.OwnerType == "ORDINARY")
+                            subOrderRowViewModel.OwnerTypeName = "一般库";
+
+                        if (e.OwnerType == "CONSIGNMENT")
+                            subOrderRowViewModel.OwnerTypeName = "寄售库";
+
                     }
                     orderRowViewModels.Add(subOrderRowViewModel);
                 });
@@ -308,7 +333,8 @@ namespace Web.Services
                         ExpenditureType = or.ExpenditureType,
                         OwnerId = or.OwnerId,
                         OwnerType = or.OwnerType,
-                        EBSTaskId = or.EBSTaskId
+                        EBSTaskId = or.EBSTaskId,
+                        EBSProjectId=or.EBSProjectId
                         
                     };
                     subOrderRows.Add(orderRow);

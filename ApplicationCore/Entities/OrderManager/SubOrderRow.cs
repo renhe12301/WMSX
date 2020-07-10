@@ -124,18 +124,21 @@ namespace ApplicationCore.Entities.OrderManager
         public int? SourceId { get; set; }
 
         /// <summary>
-        /// 任务编号
+        /// EBS任务编号
         /// </summary>
         public int? EBSTaskId { get; set; }
+
         /// <summary>
-        /// 关联任务实体
+        /// EBS项目编号
         /// </summary>
-        public EBSTask EBSTask { get; set; }
+        public int? EBSProjectId { get; set; }
 
         /// <summary>
         /// 支出类型
         /// </summary>
         public string ExpenditureType { get; set; }
+
+
 
 
     }

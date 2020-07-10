@@ -168,10 +168,4 @@ namespace ApplicationCore.Misc
         已读 = 1
     }
 
-
-    public enum RESERVOIRAREA_TYPE
-    {
-        寄售库 = 1,
-        一般库 = 2
-    }
 }
