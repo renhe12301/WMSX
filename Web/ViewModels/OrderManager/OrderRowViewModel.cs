@@ -41,6 +41,8 @@ namespace Web.ViewModels.OrderManager
         public int EBSTaskId { get; set; }
 
         public string EBSTaskName { get; set; }
+        public int EBSProjectId { get; set; }
+        public string ProjectName { get; set; }
 
         public string TrayCode { get; set; }
 
@@ -68,5 +70,7 @@ namespace Web.ViewModels.OrderManager
         public double? Expend { get; set; }
 
         public string ExpenditureType { get; set; }
+
+        public int EmployeeId { get; set; }
     }
 }

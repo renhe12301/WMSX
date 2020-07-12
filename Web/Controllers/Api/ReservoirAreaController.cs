@@ -41,7 +41,7 @@ namespace Web.Controllers.Api
             var response = await this._reservoirAreaViewModelService.AssignLocation(locationViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
-        
+
         /// <summary>
         /// 获取库区信息
         /// </summary>
@@ -50,12 +50,13 @@ namespace Web.Controllers.Api
         /// <param name="id">库区编号</param>
         /// <param name="ouId">业务实体编号</param>
         /// <param name="wareHouseId">仓库编号</param>
+        /// <param name="ownerType">所有者类型</param>
         /// <param name="areaName">库区名称</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAreas(int? pageIndex, int? itemsPage, int? id,int? ouId,int? wareHouseId,int? type,  string areaName)
+        public async Task<IActionResult> GetAreas(int? pageIndex, int? itemsPage, int? id,int? ouId,int? wareHouseId,string ownerType,  string areaName)
         {
-            var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,ouId,wareHouseId,type, areaName);
+            var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,ouId,wareHouseId, ownerType, areaName);
             return Content(JsonConvert.SerializeObject(response));
         }
         

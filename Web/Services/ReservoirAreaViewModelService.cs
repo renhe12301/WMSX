@@ -47,7 +47,7 @@ namespace Web.Services
 
 
         public async Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, 
-             int? ouId, int? wareHouseId,int? type, string areaName)
+             int? ouId, int? wareHouseId,string ownerType, string areaName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -57,11 +57,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new ReservoirAreaPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,ouId,wareHouseId,areaName);
+                        id,ouId,wareHouseId, ownerType, areaName);
                 }
                 else
                 {
-                    baseSpecification = new ReservoirAreaSpecification(id,null,ouId,wareHouseId,type, areaName);
+                    baseSpecification = new ReservoirAreaSpecification(id,null,ouId,wareHouseId, ownerType, areaName);
                 }
                 var areas = await this._reservoirAreaRepository.ListAsync(baseSpecification);
                 List<ReservoirAreaViewModel> areaViewModels = new List<ReservoirAreaViewModel>();
@@ -79,14 +79,15 @@ namespace Web.Services
                         OUName = e.OU?.OUName,
                         Status = Enum.GetName(typeof(AREA_STATUS), e.Status),
                         PhyWarehouseId = e.PhyWarehouseId,
-                        PhyName = e.PhyWarehouse?.PhyName
+                        PhyName = e.PhyWarehouse?.PhyName,
+                        OwnerType = e.OwnerType
                     };
                     areaViewModels.Add(areaViewModel);
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
                     var count = await this._reservoirAreaRepository.CountAsync(new ReservoirAreaSpecification(id,
-                        null,ouId,wareHouseId,type, areaName));
+                        null,ouId,wareHouseId, ownerType, areaName));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = areaViewModels;
                     dyn.total = count;

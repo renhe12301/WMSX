@@ -124,6 +124,7 @@ namespace Web.Services
                     orderViewModel.WarehouseName = e.Warehouse?.WhName;
                     orderViewModel.OUName = e.OU?.OUName;
                     orderViewModel.OUId = e.OUId;
+                  
                     if (e.EBSProjectId.HasValue) 
                     {
                         EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
@@ -261,8 +262,10 @@ namespace Web.Services
                         Expend = e.Expend,
                         Memo = e.Memo,
                         OwnerType = e.OwnerType,
-                        ExpenditureType = e.ExpenditureType
+                        ExpenditureType = e.ExpenditureType,
+                        EmployeeId = e.Order.EmployeeId
                     };
+
                     if (e.EBSTaskId.HasValue) 
                     {
                         EBSTaskSpecification eBSTaskSpec = new EBSTaskSpecification(e.EBSTaskId, null, null, null, null, null, null);
@@ -271,6 +274,16 @@ namespace Web.Services
                         {
                             orderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                             orderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
+                        }
+                    }
+                    if (e.Order.EBSProjectId.HasValue)
+                    {
+                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.Order.EBSProjectId, null, null, null, null, null, null);
+                        List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
+                        if (eBSProjects.Count > 0)
+                        {
+                            orderRowViewModel.EBSProjectId = e.Order.EBSProjectId.GetValueOrDefault();
+                            orderRowViewModel.ProjectName = eBSProjects[0].ProjectName;
                         }
                     }
                     if (!string.IsNullOrEmpty(e.OwnerType))

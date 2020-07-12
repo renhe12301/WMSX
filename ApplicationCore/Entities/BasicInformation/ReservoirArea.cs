@@ -22,6 +22,7 @@ namespace ApplicationCore.Entities.BasicInformation
         
         public int? PhyWarehouseId { get; set; }
         public PhyWarehouse PhyWarehouse { get; set; }
+        public string OwnerType { get; set; }
        
     }
 }

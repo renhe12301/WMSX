@@ -10,7 +10,7 @@ namespace Web.Interfaces
     public interface IReservoirAreaViewModelService
     {
         Task<ResponseResultViewModel> AssignLocation(LocationViewModel locationViewModel);
-        Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? ouId,int? wareHouseId,int? type, string areaName);
+        Task<ResponseResultViewModel> GetAreas(int? pageIndex, int? itemsPage, int? id, int? ouId,int? wareHouseId,string ownerType, string areaName);
         
 
 

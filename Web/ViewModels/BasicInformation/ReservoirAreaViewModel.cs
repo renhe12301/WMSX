@@ -24,6 +24,7 @@ namespace Web.ViewModels.BasicInformation
         
         public string StatisticalCount { get; set; }
         
+        public string OwnerType { get; set; }
         
     }
 }
