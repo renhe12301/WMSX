@@ -260,5 +260,37 @@ namespace ApplicationCore.Services
                 
             }
         }
+
+        public async Task SetOwnerType(int areaId, string ownerType)
+        {
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    Guard.Against.Null(ownerType, nameof(ownerType));
+                    Guard.Against.Zero(areaId, nameof(areaId));
+                    ReservoirAreaSpecification reservoirAreaSpec = new ReservoirAreaSpecification(areaId, null, null, null, null, null);
+                    List<ReservoirArea> reservoirAreas = this._reservoirAreaRepository.List(reservoirAreaSpec);
+                    if (reservoirAreas.Count > 0) 
+                    {
+                        ReservoirArea reservoirArea = reservoirAreas[0];
+                        reservoirArea.OwnerType = ownerType;
+                        this._reservoirAreaRepository.Update(reservoirArea);
+                    }
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                        LogDesc = ex.ToString(),
+                        CreateTime = DateTime.Now
+                    });
+                    throw;
+                }
+
+            }
+        }
     }
 }

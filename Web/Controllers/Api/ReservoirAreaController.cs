@@ -59,7 +59,20 @@ namespace Web.Controllers.Api
             var response = await this._reservoirAreaViewModelService.GetAreas(pageIndex, itemsPage,id,ouId,wareHouseId, ownerType, areaName);
             return Content(JsonConvert.SerializeObject(response));
         }
-        
+ 
+
+        /// <summary>
+        /// 设置库区类型
+        /// </summary>
+        /// <param name="reservoirAreaViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SetOwnerType(ReservoirAreaViewModel reservoirAreaViewModel)
+        {
+          
+            var response = await this._reservoirAreaViewModelService.SetOwnerType(reservoirAreaViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
 
     }
 }

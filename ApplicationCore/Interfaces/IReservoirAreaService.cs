@@ -14,5 +14,7 @@ namespace ApplicationCore.Interfaces
         
         Task AssignLocation(int areaId, List<int> locationIds);
 
+        Task SetOwnerType(int areaId, string ownerType);
+
     }
 }

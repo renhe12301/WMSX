@@ -146,7 +146,7 @@ namespace Web.Jobs
                                 requestCkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestCkRow.expenditureType = subOrderRows[i].ExpenditureType;
                                 requestCkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode;
-                               
+                                
                                 if(subOrderRows[i].EBSTaskId.HasValue)
                                    requestCkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                             }
@@ -175,6 +175,10 @@ namespace Web.Jobs
                             tkOrderRequest.TKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
+                            tkOrderRequest.TKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
+                            tkOrderRequest.TKOrderRequest.managerId = subOrder.EmployeeId.ToString();
+                            tkOrderRequest.TKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
+                            tkOrderRequest.TKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
                             tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -186,7 +190,10 @@ namespace Web.Jobs
                                 requestTkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestTkRow.processingQuantity = subOrderRows[i].PreCount;
-                                requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
+                                requestTkRow.expenditureType = subOrderRows[i].ExpenditureType;
+                                requestTkRow.lineNumber = subOrderRows[i].Id;
+                                requestTkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
+                                requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
 
                             var response = await withdrawalPort.TKOrderAsync(tkOrderRequest);

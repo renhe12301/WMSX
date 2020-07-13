@@ -7,7 +7,7 @@ function areaQueryParams(params) {
 }
 function operateFormatter(value, row, index) {
     return [
-        '<a class="assign-location" href="javascript:void(0)" title="分配货位">',
+        '<a class="assign-type" href="javascript:void(0)" title="设置类型">',
         '<i class="fa fa-arrow-right"></i>',
         '</a>'
     ].join('')
@@ -64,6 +64,11 @@ operateEvents = {
         $('#dic-sel').bootstrapDualListbox("refresh", true);
         $('#dic-sel').bootstrapDualListbox("setSelectedListLabel",selectLab,true);
     
+    },
+    'click .assign-type': function (e, value, row, index)
+    {
+        typeRow = row;
+        $('#assign-type-dlg').modal('show');
     }
 };
 var typeRow=null;
@@ -145,7 +150,9 @@ $(function () {
     $('#sidebar').css("height", parentHeight);
     $('#sidebar').overlayScrollbars({});
     $('#sidebar2').overlayScrollbars({});
-    
+    $(".select2").select2({
+        theme: 'bootstrap4'
+    });
 
    loadingShow();
     areaNameClick = function (id) {
@@ -216,7 +223,22 @@ $(function () {
                     field: 'WarehouseName',
                     valign: 'middle',
                     align: 'center'
-                }
+                },
+                {
+                    title: '类型',
+                    field: 'OwnerType',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (value == "NORMAL") {
+                            return '<span class="badge bg-green">一般</span>';
+                        }
+                        else if (value == "CONSIGNMENT") {
+                            return '<span class="badge bg-red">寄售</span>';
+                        }
+                    }
+                },
+
                 // ,
                 // {
                 //     title: '业务实体',
@@ -225,14 +247,14 @@ $(function () {
                 //     align: 'center'
                 // }
                 // ,
-                // {
-                //     field: 'operate',
-                //     title: '操作',
-                //     align: 'center',
-                //     clickToSelect: false,
-                //     formatter: operateFormatter,
-                //     events:operateEvents
-                // }
+                 {
+                     field: 'operate',
+                     title: '操作',
+                     align: 'center',
+                     clickToSelect: false,
+                     formatter: operateFormatter,
+                     events:operateEvents
+                 }
             ]
     });
 
@@ -251,11 +273,15 @@ $(function () {
     });
     
     $("#assign-loc-btn").click(function () {
-        var dicSelects=$("#dic-sel").val(); 
-        var dicIds=[]; 
-        $.each(dicSelects, function(key, val) { 
+        var dicSelects=$("#dic-sel").val();
+
+        var dicIds=[];
+
+        $.each(dicSelects, function(key, val) {
+
             dicIds.push(parseInt(val));
-                 });
+        
+        });
         if(typeRow.PhyWarehouseId&&$("#phy-sel").val()!=typeRow.PhyWarehouseId)
         {
 
@@ -299,6 +325,29 @@ $(function () {
             successCallback: function (response) {
                 if (response.Code == 200)
                     toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
+                else
+                    toastr.error(response.Data, '系统信息', { timeOut: 3000 });
+            }
+        });
+    });
+
+    $("#save-type-btn").click(function () {
+        if ($("#ownertype-sel").val() == "")
+        {
+            toastr.error("请选择库区类型!", '系统信息', { timeOut: 3000 });
+            return;
+        }
+        asynTask({
+            type: 'post',
+            url: controllers["reservoir-area"]["set-owner-type"],
+            jsonData: { Id: typeRow.Id, OwnerType: $("#ownertype-sel").val() },
+            successCallback: function (response) {
+                if (response.Code == 200)
+                {
+                    $('#assign-type-dlg').modal('hide');
+                    toastr.success("操作成功！", '系统信息', { timeOut: 3000 });
+                    $('#area-table').bootstrapTable('refresh');
+                }
                 else
                     toastr.error(response.Data, '系统信息', { timeOut: 3000 });
             }
