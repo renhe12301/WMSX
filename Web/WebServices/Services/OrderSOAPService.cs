@@ -255,6 +255,8 @@ namespace Web.WebServices.Services
                                         addOrderRow.ExpenditureType = eor.ExpenditrueType;
                                         if (!string.IsNullOrEmpty(eor.TaskId))
                                             addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+                                        if (!string.IsNullOrEmpty(eor.ItemId))
+                                            addOrderRow.EBSProjectId = Convert.ToInt32(eor.ItemId);
                                         addOrderRow.Memo = eor.Remark;
                                         addOrderRows.Add(addOrderRow);
                                     }
@@ -313,8 +315,8 @@ namespace Web.WebServices.Services
                                 addOrder.ApplyTime = DateTime.Parse(RequestRKJSOrder.ExitEntryDate);
                                 addOrder.CreateTime = DateTime.Parse(RequestRKJSOrder.CreationDate);
                                 addOrder.SourceOrderType = RequestRKJSOrder.DocumentType;
-                                if(!string.IsNullOrEmpty(RequestRKJSOrder.ItemId))
-                                   addOrder.EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId);
+                                //if(!string.IsNullOrEmpty(RequestRKJSOrder.ItemId))
+                                //   addOrder.EBSProjectId = Convert.ToInt32(RequestRKJSOrder.ItemId);
                                 addOrder.Memo = RequestRKJSOrder.Remark;
 
                                 List<OrderRow> addOrderRows = new List<OrderRow>();
@@ -357,8 +359,13 @@ namespace Web.WebServices.Services
                                     addOrderRow.Price = Convert.ToDouble(eor.Price);
                                     addOrderRow.Amount = Convert.ToDouble(eor.Amount);
                                     addOrderRow.ExpenditureType = eor.ExpenditrueType;
+                                    
                                     if (!string.IsNullOrEmpty(eor.TaskId))
                                         addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
+
+                                    if (!string.IsNullOrEmpty(eor.ItemId))
+                                        addOrderRow.EBSProjectId = Convert.ToInt32(eor.ItemId);
+
                                     addOrderRow.Memo = eor.Remark;
 
 

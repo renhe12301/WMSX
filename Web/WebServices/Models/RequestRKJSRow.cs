@@ -39,7 +39,11 @@ namespace Web.WebServices.Models
         [JsonProperty(PropertyName ="taskId")]
         [DataMember]
         public string TaskId { get; set; }
-        
+
+        [JsonProperty(PropertyName = "itemId")]
+        [DataMember]
+        public string ItemId { get; set; }
+
         [JsonProperty(PropertyName ="expenditureType")]
         [DataMember]
         public string ExpenditrueType { get; set; }

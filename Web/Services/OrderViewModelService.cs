@@ -140,7 +140,7 @@ namespace Web.Services
                         if (e.BusinessTypeCode == "CONSIGNMENT_RECEIPITION")
                             orderViewModel.BusinessTypeName = "寄售入库";
 
-                        else if (e.BusinessTypeCode == "STORAGE")
+                        else if (e.BusinessTypeCode == "RECEPTION")
                             orderViewModel.BusinessTypeName = "采购入库";
 
                         else

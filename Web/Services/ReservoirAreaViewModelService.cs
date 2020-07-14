@@ -122,7 +122,20 @@ namespace Web.Services
             }
             return response;
         }
-        
-        
+
+        public async Task<ResponseResultViewModel> SetOwnerType(ReservoirAreaViewModel reservoirAreaViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._reservoirAreaService.SetOwnerType(reservoirAreaViewModel.Id, reservoirAreaViewModel.OwnerType);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
     }
 }

@@ -175,7 +175,7 @@ namespace Web.Jobs
                             tkOrderRequest.TKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                            tkOrderRequest.TKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
+                            //tkOrderRequest.TKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
                             tkOrderRequest.TKOrderRequest.managerId = subOrder.EmployeeId.ToString();
                             tkOrderRequest.TKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
                             tkOrderRequest.TKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
@@ -192,6 +192,7 @@ namespace Web.Jobs
                                 requestTkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestTkRow.expenditureType = subOrderRows[i].ExpenditureType;
                                 requestTkRow.lineNumber = subOrderRows[i].Id;
+                                requestTkRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                                 requestTkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                                 requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
