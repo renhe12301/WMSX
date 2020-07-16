@@ -8,7 +8,9 @@ namespace ApplicationCore.Interfaces
     {
         
         Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,int areaId, int pyId);
-        
+
+        Task CreateTKOrder(SubOrder subOrder);
+
         Task CreateOrder(SubOrder subOrder);
 
         Task ScrapOrder(SubOrder subOrder);

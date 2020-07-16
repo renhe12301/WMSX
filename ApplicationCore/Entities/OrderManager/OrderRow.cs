@@ -101,7 +101,12 @@ namespace ApplicationCore.Entities.OrderManager
         /// 关联任务实体
         /// </summary>
         public EBSTask EBSTask { get; set; }
-        
+
+        /// <summary>
+        /// EBS 项目编号
+        /// </summary>
+        public int? EBSProjectId { get; set; }
+
         /// <summary>
         /// 第三方系统编号
         /// </summary>

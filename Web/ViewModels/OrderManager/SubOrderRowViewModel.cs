@@ -197,5 +197,10 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public string EBSProjectName { get; set; }
 
+        /// <summary>
+        /// 退库消耗数量
+        /// </summary>
+        public double? Expend { get; set; }
+
     }
 }

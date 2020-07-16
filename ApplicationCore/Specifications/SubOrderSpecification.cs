@@ -6,17 +6,19 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderSpecification:BaseSpecification<SubOrder>
     {
-        public SubOrderSpecification(int? id, string orderNumber,int? sourceId, List<int> orderTypeIds,
-             List<int> status,int? isRead,int? isSync, int? ouId, int? warehouseId, int? pyId,int? supplierId, string supplierName,
+        public SubOrderSpecification(int? id, string orderNumber,int? sourceId, List<int> orderTypeIds, string businessType,
+             List<int> status,int? isRead,int? isSync,int? isBack, int? ouId, int? warehouseId, int? pyId,int? supplierId, string supplierName,
              int? supplierSiteId,string supplierSiteName,string sCreateTime, string eCreateTime,
              string sFinishTime,string eFinishTime)
             : base(b => (!id.HasValue || b.Id == id) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                        (!sourceId.HasValue || b.SourceId == sourceId) &&
                        (orderTypeIds == null || orderTypeIds.Contains(b.OrderTypeId)) &&
+                       (businessType == null || b.BusinessTypeCode == businessType) &&
                        (status == null || status.Contains(b.Status.GetValueOrDefault())) &&
                        (!isRead.HasValue || b.IsRead == isRead) &&
                        (!isSync.HasValue || b.IsSync == isSync) &&
+                       (!isBack.HasValue || b.IsBack == isBack) &&
                        (!ouId.HasValue || b.OUId == ouId) &&
                        (!warehouseId.HasValue || b.WarehouseId == warehouseId) &&
                        (!pyId.HasValue || b.PhyWarehouseId == pyId) &&

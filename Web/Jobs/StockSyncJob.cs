@@ -38,8 +38,8 @@ namespace Web.Jobs
         {
             try
             {
-                SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
-                    new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0, null, null, null, null,
+                SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,null,
+                    new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0,null, null, null, null, null,
                     null, null, null, null, null, null, null);
                 List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
 
@@ -48,7 +48,7 @@ namespace Web.Jobs
                     try
                     {
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                            subOrder.Id,
+                            subOrder.Id,null,
                             null, null, null, null, null, null, null, null, null,null,null,
                             null, null, null, null, null, null);
                         List<SubOrderRow> subOrderRows =
@@ -179,6 +179,7 @@ namespace Web.Jobs
                             tkOrderRequest.TKOrderRequest.managerId = subOrder.EmployeeId.ToString();
                             tkOrderRequest.TKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
                             tkOrderRequest.TKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
+                            tkOrderRequest.TKOrderRequest.totalAmount = subOrder.TotalAmount;
                             tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -194,6 +195,7 @@ namespace Web.Jobs
                                 requestTkRow.lineNumber = subOrderRows[i].Id;
                                 requestTkRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                                 requestTkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
+                                
                                 requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
 

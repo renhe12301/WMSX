@@ -144,8 +144,9 @@ namespace Web.Jobs
              {
                  SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null,
                      new List<int> {Convert.ToInt32(ORDER_TYPE.出库领料), Convert.ToInt32(ORDER_TYPE.出库退库)},
+                     null,
                      new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, Convert.ToInt32(ORDER_READ.未读),
-                     null, null, null, null, null, null, null, null, null,
+                     null,null, null, null, null, null, null, null, null, null,
                      null, null, null);
                  List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                  foreach (var subOrder in subOrders)
@@ -156,7 +157,7 @@ namespace Web.Jobs
                          using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                          {
                              SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                                 subOrder.Id, null,null,null,
+                                 subOrder.Id, null,null,null,null,
                                  null, null, null, null, null, null, null, null, null,
                                  null, null, null, null, null);
                              List<SubOrderRow> subOrderRows =

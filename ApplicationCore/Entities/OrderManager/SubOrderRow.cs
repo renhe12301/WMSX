@@ -138,6 +138,10 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public string ExpenditureType { get; set; }
 
+        /// <summary>
+        /// 消耗数量
+        /// </summary>
+        public double? Expend { get; set; }
 
 
 

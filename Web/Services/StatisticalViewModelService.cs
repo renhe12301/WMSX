@@ -469,8 +469,8 @@ namespace Web.Services
                     Convert.ToInt32(ORDER_TYPE.入库退料)
                 };
 
-                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
-                    null,null,ouId,null,null,null,null,null,
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,null,
+                    null,null,null,ouId,null,null,null,null,null,
                     null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
@@ -546,8 +546,8 @@ namespace Web.Services
                     Convert.ToInt32(ORDER_TYPE.出库退库)
                 };
 
-                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
-                    null,null,ouId,null,null,null,null,null,
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,null,
+                    null,null,null,ouId,null,null,null,null,null,
                     null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
@@ -851,8 +851,8 @@ namespace Web.Services
                     Convert.ToInt32(ORDER_TYPE.出库退库)
                 };
 
-                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
-                    null,null,ouId,null,null,null,null,null,
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,null,
+                    null,null,null,ouId,null,null,null,null,null,
                     null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);
@@ -1092,8 +1092,8 @@ namespace Web.Services
                     Convert.ToInt32(ORDER_TYPE.入库退料)
                 };
 
-                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,
-                    null,null,ouId,null,null,null,null,null,
+                orderSpec = new SubOrderSpecification(null,null,null,orderTypeIds,null,null,
+                    null,null,null,ouId,null,null,null,null,null,
                     null,sCreateTime,eCreateTime,null,null);
                 
                 List<SubOrder> orders = await this._subOrderRepository.ListAsync(orderSpec);

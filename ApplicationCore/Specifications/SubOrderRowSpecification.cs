@@ -6,7 +6,7 @@ namespace ApplicationCore.Specifications
     public class SubOrderRowSpecification : BaseSpecification<SubOrderRow>
     {
         public SubOrderRowSpecification(int? id, int? subOrderId, int? orderRowId, int? sourceId,
-            List<int> orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
+            List<int> orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId,string businessType, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, List<int> status, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
             : base(b => (!id.HasValue || b.Id == id) &&
                         (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
@@ -17,6 +17,7 @@ namespace ApplicationCore.Specifications
                         (!warehouseId.HasValue || b.SubOrder.WarehouseId == warehouseId) &&
                         (!reservoirAreaId.HasValue || b.ReservoirAreaId == reservoirAreaId) &&
                         (ownerType == null || b.OwnerType == ownerType) &&
+                        (businessType == null || b.SubOrder.BusinessTypeCode == businessType) &&
                         (!pyId.HasValue || b.SubOrder.PhyWarehouseId == pyId) &&
                         (!supplierId.HasValue || b.SubOrder.SupplierId == supplierId) &&
                         (supplierName == null || b.SubOrder.Supplier.SupplierName.Contains(supplierName)) &&

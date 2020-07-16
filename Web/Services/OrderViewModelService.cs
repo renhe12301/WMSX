@@ -129,10 +129,14 @@ namespace Web.Services
                     {
                         EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
                         List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
-                        if (eBSProjects.Count > 0) 
+                        if (eBSProjects.Count > 0)
                         {
                             orderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                             orderViewModel.ProjectName = eBSProjects[0].ProjectName;
+                        }
+                        else 
+                        {
+                            orderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                         }
                     }
                     if (!string.IsNullOrEmpty(e.BusinessTypeCode))
@@ -270,10 +274,14 @@ namespace Web.Services
                     {
                         EBSTaskSpecification eBSTaskSpec = new EBSTaskSpecification(e.EBSTaskId, null, null, null, null, null, null);
                         List<EBSTask> eBSTasks = this._ebsTaskRepository.List(eBSTaskSpec);
-                        if (eBSTasks.Count > 0) 
+                        if (eBSTasks.Count > 0)
                         {
                             orderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                             orderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
+                        }
+                        else 
+                        {
+                            orderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                         }
                     }
                     if (e.Order.EBSProjectId.HasValue)
@@ -284,6 +292,10 @@ namespace Web.Services
                         {
                             orderRowViewModel.EBSProjectId = e.Order.EBSProjectId.GetValueOrDefault();
                             orderRowViewModel.ProjectName = eBSProjects[0].ProjectName;
+                        }
+                        else 
+                        {
+                            orderRowViewModel.EBSProjectId = e.Order.EBSProjectId.GetValueOrDefault();
                         }
                     }
                     if (!string.IsNullOrEmpty(e.OwnerType))

@@ -161,7 +161,7 @@ namespace Web.Jobs
             string ytime = DateTime.Now.Year.ToString();
 
             SubOrderSpecification subOrderSpec = new SubOrderSpecification(null,null,null,null,
-                null,null,null,null,null,null,null,null,
+                null,null,null,null,null,null,null,null,null,null,
                 null,null, ytime + "-01-01",ytime + "-12-31",null,null);
             
             List<SubOrder> orders = await this._subOrderRepository.ListAsync(subOrderSpec);
@@ -208,7 +208,7 @@ namespace Web.Jobs
             //Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
             SubOrderSpecification subOrderSpec = new SubOrderSpecification(null,null,null,null,
-                null,null,null,null,null,null,null,null,
+                null,null,null,null,null,null,null,null,null,null,
                 null,null, ytime + "-01-01",ytime + "-12-31",null,null);
             
             List<SubOrder> orders = await this._subOrderRepository.ListAsync(subOrderSpec);
@@ -252,7 +252,7 @@ namespace Web.Jobs
             //Random random = new Random();
             string ytime = DateTime.Now.Year.ToString();
             SubOrderSpecification subOrderSpec = new SubOrderSpecification(null,null,null,null,
-                null,null,null,null,null,null,null,null,
+                null,null,null,null,null,null,null,null,null,null,
                 null,null, ytime + "-01-01",ytime + "-12-31",null,null);
             
             List<SubOrder> orders = await this._subOrderRepository.ListAsync(subOrderSpec);
@@ -290,7 +290,7 @@ namespace Web.Jobs
             string ytime = DateTime.Now.Year.ToString();
             SubOrderSpecification subOrderSpec = new SubOrderSpecification(null,null,null,null,
                 null,null,null,null,null,null,null,null,
-                null,null, null,null,null,null);
+                null,null, null,null,null,null,null,null);
             List<SubOrder> orders = await this._subOrderRepository.ListAsync(subOrderSpec);
             List<SubOrder> orders2 = orders.Where(r =>
                 r.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收)).ToList();
@@ -356,7 +356,7 @@ namespace Web.Jobs
             dayWeek = dayWeek == 0 ? 7 : dayWeek;
             
             SubOrderSpecification subOrderSpec = new SubOrderSpecification(null,null,null,null,
-                null,null,null,null,null,null,null,null,
+                null,null,null,null,null,null,null,null,null,null,
                 null,null, now.AddDays(-dayWeek).AddDays(1).ToString(), 
                 now.AddDays(7 - (int)now.DayOfWeek).ToString(),null,null);
             List<SubOrder> orders = await this._subOrderRepository.ListAsync(subOrderSpec);

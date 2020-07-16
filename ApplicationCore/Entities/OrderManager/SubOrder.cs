@@ -161,7 +161,16 @@ namespace ApplicationCore.Entities.OrderManager
         /// </summary>
         public int? OrganizationId { get; set; }
 
+        /// <summary>
+        ///  关联部门实体对象
+        /// </summary>
         public Organization Organization { get; set; }
+
+        /// <summary>
+        /// 是否可以退库
+        /// </summary>
+        public int? IsBack { get; set; }
+
 
         /// <summary>
         /// 关联拆分订单行

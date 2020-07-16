@@ -56,7 +56,7 @@ namespace Web.WebServices.Models
         [DataMember]
         public string AddFlag { get; set; }
         
-        [JsonProperty(PropertyName ="sourceLineId")]
+        [JsonProperty(PropertyName = "relatedId")]
         [DataMember]
         public string RelatedId { get; set; }
         

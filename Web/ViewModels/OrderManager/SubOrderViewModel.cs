@@ -175,5 +175,10 @@ namespace Web.ViewModels.OrderManager
         /// </summary>
         public string ProjectName { get; set; }
 
+        /// <summary>
+        /// 是否可以退库
+        /// </summary>
+        public int? IsBack { get; set; }
+
     }
 }

@@ -37,7 +37,7 @@ namespace Web.Jobs
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
                     SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
-                        null, null, null, null, null, null, null, null, null,null,null,
+                        null, null, null, null, null, null,null, null, null, null,null,null,
                         null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
                     List<SubOrderRow> subRows = this._subOrderRowRepository.List(subOrderRowSpec);
                     List<SubOrderRow> updSubRows = new List<SubOrderRow>();
@@ -53,20 +53,20 @@ namespace Web.Jobs
                     if (updSubRows.Count > 0)
                         this._subOrderRowRepository.Update(updSubRows);
 
-                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,
-                        new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null, null, null,
+                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,null,
+                        new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null,null, null, null, null, null,
                         null, null, null, null, null, null, null);
                     List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                     List<SubOrder> updSubOrders = new List<SubOrder>();
                     foreach (var subOrder in subOrders)
                     {
                         SubOrderRowSpecification allSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
-                            null, null, null, null, null, null, null, null, null,null,null,
+                            null, null, null, null, null, null, null, null, null,null,null,null,
                             null, null, null, null, null, null);
                         List<SubOrderRow> allRows = this._subOrderRowRepository.List(allSubRowSpec);
 
                         SubOrderRowSpecification endSubRowSpec = new SubOrderRowSpecification(null, subOrder.Id,
-                            null, null, null, null, null, null, null, null, null,null,null,
+                            null, null, null, null, null, null, null, null, null,null,null,null,
                             null, new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, null, null, null);
                         List<SubOrderRow> endRows = this._subOrderRowRepository.List(endSubRowSpec);
                         if (allRows.Count == endRows.Count)

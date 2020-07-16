@@ -38,7 +38,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage, int? id, string orderNumber, 
-            int? sourceId,string orderTypeIds, string status, int? ouId,int? warehouseId,int? pyId, int? supplierId, string supplierName,
+            int? sourceId,string orderTypeIds,string businessType, string status, int? isBack, int? ouId,int? warehouseId,int? pyId, int? supplierId, string supplierName,
             int? supplierSiteId,string supplierSiteName,string sCreateTime, string eCreateTime, string sFinishTime,string eFinishTime)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -62,14 +62,14 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SubOrderPaginatedSpecification(pageIndex.Value, itemsPage.Value,id,orderNumber,sourceId,
-                        orderTypes,orderStatuss,null,null,ouId,warehouseId,pyId,
+                        orderTypes,businessType,orderStatuss,null,null, isBack, ouId,warehouseId,pyId,
                         supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 else
                 {
-                    baseSpecification = new SubOrderSpecification(id, orderNumber,sourceId, orderTypes, null, null,
-                        null, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
+                    baseSpecification = new SubOrderSpecification(id, orderNumber,sourceId, orderTypes,businessType, orderStatuss, null,
+                        null,isBack, ouId, warehouseId, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
                         sCreateTime, eCreateTime, sFinishTime, eFinishTime);
                 }
 
@@ -106,7 +106,8 @@ namespace Web.Services
                         SourceOrderType = e.SourceOrderType,
                         IsSyncStr = e.IsSync == 1 ? "已同步" : "未同步",
                         OrganizationId = e.OrganizationId,
-                        OrganizationName = e.Organization?.OrgName
+                        OrganizationName = e.Organization?.OrgName,
+                        IsBack = e.IsBack
                     };
                     if (e.EBSProjectId.HasValue)
                     {
@@ -116,6 +117,10 @@ namespace Web.Services
                         {
                             subOrderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                             subOrderViewModel.ProjectName = eBSProjects[0].ProjectName;
+                        }
+                        else 
+                        {
+                            subOrderViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                         }
                     }
                     if (!string.IsNullOrEmpty(e.BusinessTypeCode))
@@ -137,7 +142,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._subOrderRepository.CountAsync(new SubOrderSpecification(id,orderNumber,sourceId,orderTypes,orderStatuss,null,null,
+                    var count = await this._subOrderRepository.CountAsync(new SubOrderSpecification(id,orderNumber,sourceId,orderTypes,businessType,orderStatuss,null,null, isBack,
                         ouId,warehouseId,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,sCreateTime,eCreateTime,sFinishTime,eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderViewModels;
@@ -158,7 +163,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId, int? orderRowId,int? sourceId, string orderTypeIds,
-            int? ouId, int? warehouseId, int? reservoirAreaId, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
+            int? ouId, int? warehouseId, int? reservoirAreaId,string businessType, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, string status, string sCreateTime, string eCreateTime, string sFinishTime,
             string eFinishTime)
         {
@@ -183,13 +188,13 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SubOrderRowPaginatedSpecification(pageIndex.Value,itemsPage.Value,id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId, businessType, ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 else
                 {
                     baseSpecification = new SubOrderRowSpecification(id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId, businessType, ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime);
                 }
                 var orderRows = await this._subOrderRowRepository.ListAsync(baseSpecification);
@@ -225,7 +230,8 @@ namespace Web.Services
                         SourceId = e.SourceId,
                         OrderTypeId = e.SubOrder?.OrderTypeId,
                         OwnerType = e.OwnerType,
-                        ExpenditureType = e.ExpenditureType
+                        ExpenditureType = e.ExpenditureType,
+                        Expend = e.Expend.GetValueOrDefault()
                         
                     };
                     if (e.EBSTaskId.HasValue)
@@ -236,6 +242,24 @@ namespace Web.Services
                         {
                             subOrderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                             subOrderRowViewModel.EBSTaskName = eBSTasks[0].TaskName;
+                        }
+                        else 
+                        {
+                            subOrderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
+                        }
+                    }
+                    if (e.EBSProjectId.HasValue)
+                    {
+                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
+                        List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
+                        if (eBSProjects.Count > 0)
+                        {
+                            subOrderRowViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
+                            subOrderRowViewModel.EBSProjectName = eBSProjects[0].ProjectName;
+                        }
+                        else
+                        {
+                            subOrderRowViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                         }
                     }
                     if (!string.IsNullOrEmpty(e.OwnerType)) 
@@ -252,7 +276,7 @@ namespace Web.Services
                 if (pageIndex > -1 && itemsPage > 0)
                 {
                     var count = await this._subOrderRowRepository.CountAsync(new SubOrderRowSpecification(id,subOrderId,orderRowId,sourceId,
-                        orderTypes,ouId,warehouseId,reservoirAreaId,ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
+                        orderTypes,ouId,warehouseId,reservoirAreaId, businessType, ownerType,pyId,supplierId,supplierName,supplierSiteId,supplierSiteName,orderStatuss,sCreateTime,
                         eCreateTime,sFinishTime,eFinishTime));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = orderRowViewModels;
@@ -400,6 +424,70 @@ namespace Web.Services
             try
             {
                 await  this._subOrderService.OutConfirm(subOrderId,pyId);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ResponseResultViewModel> CreateTKOrder(SubOrderViewModel subOrderViewModel)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                DateTime now = DateTime.Now;
+                SubOrder order = new SubOrder
+                {
+                    Id = subOrderViewModel.Id,
+                    OUId = subOrderViewModel.OUId,
+                    WarehouseId = subOrderViewModel.WarehouseId,
+                    OrderNumber = subOrderViewModel.OrderNumber ?? "O" + now.Ticks,
+                    CreateTime = now,
+                    OrderTypeId = subOrderViewModel.OrderTypeId,
+                    Status = 0,
+                    SupplierId = subOrderViewModel.SupplierId,
+                    SupplierSiteId = subOrderViewModel.SupplierSiteId,
+                    Currency = subOrderViewModel.Currency,
+                    BusinessTypeCode = subOrderViewModel.BusinessTypeCode,
+                    TotalAmount = subOrderViewModel.SubOrderRows.Sum(r => r.Price).GetValueOrDefault() * subOrderViewModel.SubOrderRows.Sum(r => r.PreCount),
+                    SourceId = subOrderViewModel.SourceId,
+                    SourceOrderType = subOrderViewModel.SourceOrderType,
+                    OrganizationId = subOrderViewModel.OrganizationId,
+                    EmployeeId = subOrderViewModel.EmployeeId,
+                    EBSProjectId = subOrderViewModel.EBSProjectId
+
+                };
+                List<SubOrderRow> subOrderRows = new List<SubOrderRow>();
+                subOrderViewModel.SubOrderRows.ForEach(async (or) =>
+                {
+                    SubOrderRow orderRow = new SubOrderRow
+                    {
+                        Id = or.Id,
+                        CreateTime = now,
+                        PreCount = or.PreCount,
+                        ReservoirAreaId = or.ReservoirAreaId,
+                        MaterialDicId = or.MaterialDicId,
+                        Price = or.Price,
+                        Status = 0,
+                        OrderRowId = or.OrderRowId,
+                        RowNumber = or.RowNumber ?? "OR" + now.Ticks,
+                        UseFor = or.UseFor,
+                        Amount = or.PreCount * or.Price,
+                        SourceId = or.SourceId,
+                        ExpenditureType = or.ExpenditureType,
+                        OwnerId = or.OwnerId,
+                        OwnerType = or.OwnerType,
+                        EBSTaskId = or.EBSTaskId,
+                        EBSProjectId = or.EBSProjectId
+
+                    };
+                    subOrderRows.Add(orderRow);
+                });
+                order.SubOrderRow = subOrderRows;
+                await this._subOrderService.CreateTKOrder(order);
             }
             catch (Exception ex)
             {

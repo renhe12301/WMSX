@@ -50,6 +50,8 @@ namespace Web.Jobs.JYHWSDL
 
         private string departmentIdField;
 
+        private double totalAmountField;
+
         private RequestTKRow[] requestTKRowsField;
 
         /// <remarks/>
@@ -146,6 +148,13 @@ namespace Web.Jobs.JYHWSDL
         {
             get { return this.requestTKRowsField; }
             set { this.requestTKRowsField = value; }
+        }
+
+        [System.Xml.Serialization.XmlElementAttribute(Order = 12)]
+        public double totalAmount
+        {
+            get { return this.totalAmountField; }
+            set { this.totalAmountField = value; }
         }
     }
 
@@ -448,7 +457,7 @@ namespace Web.Jobs.JYHWSDL
         {
             if ((endpointConfiguration == EndpointConfiguration.WithdrawalPortSoap11))
             {
-                return new System.ServiceModel.EndpointAddress("http://10.78.75.11:19240/ws/withdrawal");
+                return new System.ServiceModel.EndpointAddress("http://172.16.14.173:19240/ws/withdrawal");
             }
 
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.",

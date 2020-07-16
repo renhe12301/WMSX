@@ -20,7 +20,7 @@ namespace Web.Controllers.Api
         {
             this._subOrderViewModelService = subOrderViewModelService;
         }
-        
+
         /// <summary>
         ///  获得拆分订单数据
         /// </summary>
@@ -42,18 +42,20 @@ namespace Web.Controllers.Api
         /// <param name="eCreateTime">创建结束时间</param>
         /// <param name="sFinishTime">完成开始时间</param>
         /// <param name="eFinishTime">完成结束时间</param>
+        /// <param name="isBack">是否可以拆分退库单</param>
+        /// <param name="businessType">业务类型</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
-            int?id,string orderNumber,int? sourceId, string orderTypeIds,
-            string status,int? ouId,int? warehouseId,int? pyId,
+            int?id,string orderNumber,int? sourceId, string orderTypeIds,string businessType,
+            string status,int? isBack,int? ouId,int? warehouseId,int? pyId,
             int? supplierId, string supplierName,
             int? supplierSiteId,string supplierSiteName,
             string sCreateTime, string eCreateTime,
             string sFinishTime, string eFinishTime)
         {
             var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,sourceId,
-                orderTypeIds, status,ouId,warehouseId,pyId, supplierId,supplierName,
+                orderTypeIds, businessType, status, isBack, ouId,warehouseId,pyId, supplierId,supplierName,
                 supplierSiteId, supplierSiteName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -85,13 +87,13 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId,
-            int? orderRowId,int? sourceId,string orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string ownerType,
+            int? orderRowId,int? sourceId,string orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string businessType, string ownerType,
             int? pyId, int? supplierId, string supplierName,
             int? supplierSiteId, string supplierSiteName, string status, string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
         {
             var response = await this._subOrderViewModelService.GetOrderRows(pageIndex, itemsPage, id, subOrderId,
-                orderRowId,sourceId,orderTypeIds, ouId, warehouseId,reservoirAreaId, ownerType, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
+                orderRowId,sourceId,orderTypeIds, ouId, warehouseId,reservoirAreaId, businessType, ownerType, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
                 status,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
         }
@@ -108,7 +110,19 @@ namespace Web.Controllers.Api
             var response = await this._subOrderViewModelService.CreateOrder(orderViewModel);
             return Content(JsonConvert.SerializeObject(response));
         }
-        
+
+        /// <summary>
+        /// 入库完成订单拆分退库订单
+        /// </summary>
+        /// <param name="orderViewModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateTKOrder([FromBody]SubOrderViewModel orderViewModel)
+        {
+            var response = await this._subOrderViewModelService.CreateTKOrder(orderViewModel);
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
         /// <summary>
         /// 分拣订单行
         /// </summary>

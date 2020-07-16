@@ -6,7 +6,7 @@ namespace ApplicationCore.Specifications
     public class SubOrderRowPaginatedSpecification : BaseSpecification<SubOrderRow>
     {
         public SubOrderRowPaginatedSpecification(int skip, int take, int? id, int? subOrderId, int? orderRowId, int? sourceId,
-            List<int> orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
+            List<int> orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string businessType, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, List<int> status, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
             : base(b => (!id.HasValue || b.Id == id) &&
                    (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
@@ -16,6 +16,7 @@ namespace ApplicationCore.Specifications
                    (!ouId.HasValue || b.SubOrder.OUId == ouId) &&
                    (!warehouseId.HasValue || b.SubOrder.WarehouseId == warehouseId) &&
                    (!reservoirAreaId.HasValue || b.ReservoirAreaId == reservoirAreaId) &&
+                   (businessType == null || b.SubOrder.BusinessTypeCode == businessType) &&
                    (ownerType==null || b.OwnerType == ownerType) &&
                    (!pyId.HasValue || b.SubOrder.PhyWarehouseId == pyId) &&
                    (!supplierId.HasValue || b.SubOrder.SupplierId == supplierId) &&
