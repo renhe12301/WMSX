@@ -212,6 +212,7 @@ namespace Web.Jobs
                         {
                             InboundReturnsPort inboundReturnsPort = new InboundReturnsPortClient();
                             RTOrderRequest1 rtOrderRequest1 = new RTOrderRequest1();
+                            rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
                             rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
                             rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
                             rtOrderRequest1.RTOrderRequest.documentType = "INVREFUND";

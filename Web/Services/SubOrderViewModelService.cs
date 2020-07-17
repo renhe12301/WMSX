@@ -107,7 +107,8 @@ namespace Web.Services
                         IsSyncStr = e.IsSync == 1 ? "已同步" : "未同步",
                         OrganizationId = e.OrganizationId,
                         OrganizationName = e.Organization?.OrgName,
-                        IsBack = e.IsBack
+                        IsBack = e.IsBack,
+                        EmployeeName = e.Employee?.UserName
                     };
                     if (e.EBSProjectId.HasValue)
                     {
@@ -322,7 +323,7 @@ namespace Web.Services
                 {
                     OUId = subOrderViewModel.OUId,
                     WarehouseId = subOrderViewModel.WarehouseId,
-                    OrderNumber = subOrderViewModel.OrderNumber??"O"+now.Ticks,
+                    OrderNumber = subOrderViewModel.OrderNumber ?? "O" + now.Ticks,
                     CreateTime = now,
                     OrderTypeId = subOrderViewModel.OrderTypeId,
                     Status = 0,
@@ -335,7 +336,8 @@ namespace Web.Services
                     SourceOrderType = subOrderViewModel.SourceOrderType,
                     OrganizationId = subOrderViewModel.OrganizationId,
                     EmployeeId = subOrderViewModel.EmployeeId,
-                    EBSProjectId = subOrderViewModel.EBSProjectId
+                    EBSProjectId = subOrderViewModel.EBSProjectId,
+                    IsBack = 1,
                     
                 };
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();

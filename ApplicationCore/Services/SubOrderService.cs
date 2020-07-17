@@ -577,7 +577,7 @@ namespace ApplicationCore.Services
                                 (orderRow.PreCount -
                                  (orderRow.Expend.GetValueOrDefault())))
                                 throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
-                                    subOrderRow.OrderRowId,
+                                    subOrderRow.Id,
                                     orderRow.PreCount - orderRow.Expend.GetValueOrDefault()));
                             double expend = orderRow.Expend.GetValueOrDefault();
                             expend += subOrderRow.PreCount;

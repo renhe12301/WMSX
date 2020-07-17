@@ -29,8 +29,8 @@ var sCreateTime=null;
 var eCreateTime=null;
 var sFinishTime=null;
 var eFinishTime=null;
-var type=[4];
-var tstatus=[0,1];
+var type=[2];
+var tstatus=[0,1,2];
 var orderId=0;
 $(function () {
     parentHeight = parent.document.getElementById("contentFrame").height - 30;
@@ -150,6 +150,18 @@ $(function () {
                 {
                     title: '集约化单据类型',
                     field: 'SourceOrderType',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '退料部门',
+                    field: 'ApproveUserName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: '经办人',
+                    field: 'EmployeeName',
                     valign: 'middle',
                     align: 'center'
                 },

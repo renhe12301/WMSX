@@ -500,7 +500,7 @@ namespace Web.Jobs.JYHWSDL
         {
             if ((endpointConfiguration == EndpointConfiguration.InboundReturnsPortSoap11))
             {
-                return new System.ServiceModel.EndpointAddress("http://10.78.75.11:19240/ws/inbound-returns");
+                return new System.ServiceModel.EndpointAddress("http://172.16.14.184:19240/ws/inbound-returns");
             }
 
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.",

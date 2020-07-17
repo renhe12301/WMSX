@@ -154,6 +154,11 @@ namespace Web.ViewModels.OrderManager
         public int EmployeeId { get; set; }
 
         /// <summary>
+        /// 制单人名称
+        /// </summary>
+        public string EmployeeName { get; set; }
+
+        /// <summary>
         /// 领料部门编号
         /// </summary>
 

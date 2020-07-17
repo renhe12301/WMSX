@@ -154,26 +154,14 @@ $(function () {
                     }
                 },
                 {
-                    title: '供应商名称',
-                    field: 'SupplierName',
+                    title: '退料部门',
+                    field: 'OrganizationName',
                     valign: 'middle',
                     align: 'center'
                 },
                 {
-                    title: '供应商地点',
-                    field: 'SupplierSiteName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '币种',
-                    field: 'Currency',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
-                    title: '合计金额',
-                    field: 'TotalAmount',
+                    title: '经办人',
+                    field: 'EmployeeName',
                     valign: 'middle',
                     align: 'center'
                 },

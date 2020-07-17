@@ -124,7 +124,7 @@ namespace Web.Services
                     orderViewModel.WarehouseName = e.Warehouse?.WhName;
                     orderViewModel.OUName = e.OU?.OUName;
                     orderViewModel.OUId = e.OUId;
-                  
+                   
                     if (e.EBSProjectId.HasValue) 
                     {
                         EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);

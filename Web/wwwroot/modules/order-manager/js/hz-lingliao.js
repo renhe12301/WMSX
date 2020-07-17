@@ -172,6 +172,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: '经办人',
+                    field: 'EmployeeName',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '库存组织',
                     field: 'WarehouseName',
                     valign: 'middle',
