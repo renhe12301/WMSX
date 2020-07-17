@@ -13,7 +13,7 @@ namespace ApplicationCore.Specifications
             List<int> traySteps, int? locationId,int? ouId,int? wareHouseId,int? areaId,int? supplierId,int? supplierSiteId,int? pyId,
             string sCreateTime,string eCreateTime)
             :base(b =>(!id.HasValue || b.Id == id) &&
-                      (materialCode==null||b.MaterialDic.MaterialCode==materialCode)&&
+                      (materialCode==null||b.MaterialDic.MaterialCode.Contains(materialCode))&&
                       (!materialDicId.HasValue || b.MaterialDicId == materialDicId) &&
                       (materialName == null || b.MaterialDic.MaterialName.Contains(materialName)) &&
                       (materialSpec == null || b.MaterialDic.Spec.Contains(materialSpec)) &&

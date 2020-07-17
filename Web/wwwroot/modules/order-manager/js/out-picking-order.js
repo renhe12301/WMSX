@@ -206,6 +206,24 @@ $(function () {
                     field: 'ProjectName',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: '状态',
+                    field: 'StatusStr',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (value == "执行中") {
+                            return '<span class="badge bg-green">执行中</span>';
+                        }
+                        else if (value == "待处理") {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if (value == "完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if (value == "关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
+                    }
                 }
             ]
     });
@@ -309,6 +327,24 @@ $(function () {
                     field: 'EBSTaskName',
                     valign: 'middle',
                     align: 'center'
+                },
+                {
+                    title: '状态',
+                    field: 'StatusStr',
+                    valign: 'middle',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if (value == "执行中") {
+                            return '<span class="badge bg-green">执行中</span>';
+                        }
+                        else if (value == "待处理") {
+                            return '<span class="badge bg-yellow">待处理</span>';
+                        }
+                        else if (value == "完成")
+                            return '<span class="badge bg-gray">完成</span>';
+                        else if (value == "关闭")
+                            return '<span class="badge bg-gray-dark">关闭</span>';
+                    }
                 },
                 {
                     title: '备注',

@@ -187,8 +187,6 @@ namespace Web.Jobs.JYHWSDL
 
         private string remarkField;
 
-        private string itemIdField;
-
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
         public long lineId
@@ -275,13 +273,6 @@ namespace Web.Jobs.JYHWSDL
         {
             get { return this.remarkField; }
             set { this.remarkField = value; }
-        }
-
-        [System.Xml.Serialization.XmlElementAttribute(Order = 11)]
-        public string itemId
-        {
-            get { return this.itemIdField; }
-            set { this.itemIdField = value; }
         }
     }
 

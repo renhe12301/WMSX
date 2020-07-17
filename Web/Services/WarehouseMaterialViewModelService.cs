@@ -24,7 +24,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetMaterials(int? pageIndex,
-            int? itemsPage, int? id, string materialCode, int? materialDicId, string trayCode,string materialName,string materialSpec,
+            int? itemsPage, int? id, string materialCode, int? materialDicId, string materialName,string materialSpec, string trayCode,
             int? warehouseTrayId,int? subOrderId,int? subOrderRowId , int? carrier, string traySteps, int? locationId,
             int? ouId,int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId,int? pyId)
         {

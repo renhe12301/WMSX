@@ -128,8 +128,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);  
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -214,8 +217,12 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
+
                 }
                 //本年
                 else if(queryType == 4)
@@ -297,8 +304,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -375,8 +385,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -453,8 +466,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -530,8 +546,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -662,8 +681,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -749,8 +771,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -835,8 +860,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -915,8 +943,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -995,8 +1026,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)
@@ -1076,8 +1110,11 @@ namespace Web.Services
                 //本季度
                 else if(queryType == 3)
                 {
-                    sCreateTime = DateTime.Now.AddMonths(0 - ((DateTime.Now.Month - 1) % 3)).ToShortDateString() + " 00:00:00";
-                    eCreateTime = DateTime.Now.ToString();
+                    DateTime dt = DateTime.Now;
+                    DateTime startQuarter = dt.AddMonths(0 - (dt.Month - 1) % 3).AddDays(1 - dt.Day);
+                    DateTime endQuarter = startQuarter.AddMonths(3).AddDays(-1);
+                    sCreateTime = startQuarter.ToString();
+                    eCreateTime = endQuarter.ToString();
                 }
                 //本年
                 else if(queryType == 4)

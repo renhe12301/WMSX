@@ -161,7 +161,8 @@ namespace Web.Services
                     orderViewModel.Currency = e.Currency;
                     orderViewModel.TotalAmount = e.TotalAmount;
                     orderViewModel.Status = e.Status;
-                    //orderViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
+                    if(e.Status.HasValue)
+                       orderViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
                     orderViewModel.EmployeeId = e.EmployeeId;
                     orderViewModel.EmployeeName = e.Employee?.UserName;
                     orderViewModel.SourceId = e.SourceId;
@@ -248,7 +249,6 @@ namespace Web.Services
                         Sorting = e.Sorting.GetValueOrDefault(),
                         Status = e.Status,
                         UseFor = e.UseFor,
-                        //StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status),
                         Progress = e.Progress.GetValueOrDefault(),
                         Price = e.Price,
                         Amount = e.Amount,
@@ -269,7 +269,8 @@ namespace Web.Services
                         ExpenditureType = e.ExpenditureType,
                         EmployeeId = e.Order.EmployeeId
                     };
-
+                    if (e.Status.HasValue)
+                        orderRowViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
                     if (e.EBSTaskId.HasValue) 
                     {
                         EBSTaskSpecification eBSTaskSpec = new EBSTaskSpecification(e.EBSTaskId, null, null, null, null, null, null);

@@ -163,23 +163,23 @@ namespace Web.Jobs
                             }
 
                         }
-                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
+                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料))
                         {
                             WithdrawalPort withdrawalPort = new WithdrawalPortClient();
                             TKOrderRequest1 tkOrderRequest = new TKOrderRequest1();
                             tkOrderRequest.TKOrderRequest = new TKOrderRequest();
                             tkOrderRequest.TKOrderRequest.headId = subOrder.Id;
                             tkOrderRequest.TKOrderRequest.documentNumber = subOrder.OrderNumber;
-                            tkOrderRequest.TKOrderRequest.documentType = "INVREFUND";
+                            tkOrderRequest.TKOrderRequest.documentType = "RETURN";
                             tkOrderRequest.TKOrderRequest.ouCode = subOrder.OU.Id.ToString();
                             tkOrderRequest.TKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             tkOrderRequest.TKOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             tkOrderRequest.TKOrderRequest.creationDate = subOrder.CreateTime.Value;
-                            //tkOrderRequest.TKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
                             tkOrderRequest.TKOrderRequest.managerId = subOrder.EmployeeId.ToString();
                             tkOrderRequest.TKOrderRequest.departmentId = subOrder.OrganizationId.ToString();
                             tkOrderRequest.TKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
                             tkOrderRequest.TKOrderRequest.totalAmount = subOrder.TotalAmount;
+                            tkOrderRequest.TKOrderRequest.itemId = subOrder.EBSProjectId.ToString();
                             tkOrderRequest.TKOrderRequest.requestTKRows = new RequestTKRow[subOrderRows.Count];
 
                             for (int i = 0; i < subOrderRows.Count; i++)
@@ -193,9 +193,7 @@ namespace Web.Jobs
                                 requestTkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestTkRow.expenditureType = subOrderRows[i].ExpenditureType;
                                 requestTkRow.lineNumber = subOrderRows[i].Id;
-                                requestTkRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                                 requestTkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
-                                
                                 requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
 
@@ -210,20 +208,24 @@ namespace Web.Jobs
                                 throw new Exception(response.TKOrderResponse.data);
                             }
                         }
-                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料))
+                        else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
                         {
                             InboundReturnsPort inboundReturnsPort = new InboundReturnsPortClient();
                             RTOrderRequest1 rtOrderRequest1 = new RTOrderRequest1();
-                            rtOrderRequest1.RTOrderRequest = new RTOrderRequest();
                             rtOrderRequest1.RTOrderRequest.headId = subOrder.Id;
                             rtOrderRequest1.RTOrderRequest.documentNumber = subOrder.OrderNumber;
-                            rtOrderRequest1.RTOrderRequest.documentType = "RETURN";
+                            rtOrderRequest1.RTOrderRequest.documentType = "INVREFUND";
                             rtOrderRequest1.RTOrderRequest.ouCode = subOrder.OU.Id.ToString();
+                            rtOrderRequest1.RTOrderRequest.businessType = subOrder.BusinessTypeCode;
                             rtOrderRequest1.RTOrderRequest.organizationCode = subOrder.Warehouse.Id.ToString();
                             rtOrderRequest1.RTOrderRequest.creationDate = subOrder.CreateTime.Value;
-                            rtOrderRequest1.RTOrderRequest.businessType = subOrder.BusinessTypeCode;
+                            rtOrderRequest1.RTOrderRequest.managerId = subOrder.EmployeeId.ToString();
+                            rtOrderRequest1.RTOrderRequest.vendorId = subOrder.SupplierId.ToString();
+                            rtOrderRequest1.RTOrderRequest.vendorSiteId = subOrder.SupplierSiteId.ToString();
+                            rtOrderRequest1.RTOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
+                            rtOrderRequest1.RTOrderRequest.totalAmount = subOrder.TotalAmount;
                             rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrderRows.Count];
-                            
+
 
                             for (int i = 0; i < subOrderRows.Count; i++)
                             {
@@ -234,7 +236,11 @@ namespace Web.Jobs
                                 requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestRtRow.processingQuantity = subOrderRows[i].PreCount;
-                                requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.Id.ToString();
+                                requestRtRow.expenditureType = subOrderRows[i].ExpenditureType;
+                                requestRtRow.lineNumber = subOrderRows[i].Id;
+                                requestRtRow.itemId = subOrderRows[i].EBSProjectId.ToString();
+                                requestRtRow.taskId = subOrderRows[i].EBSTaskId.ToString();
+                                requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
 
                             var response = await inboundReturnsPort.RTOrderAsync(rtOrderRequest1);

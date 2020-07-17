@@ -14,6 +14,7 @@ using ApplicationCore.Misc;
 using Ardalis.GuardClauses;
 using ApplicationCore.Specifications;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace ApplicationCore.Services
 {
@@ -23,6 +24,7 @@ namespace ApplicationCore.Services
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<Order> _orderRepository;
         private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<ReservoirArea> _reservoirAreaRepository;
         private readonly IAsyncRepository<MaterialDic> _materialDicRepository;
@@ -37,6 +39,7 @@ namespace ApplicationCore.Services
         public SubOrderService(IAsyncRepository<SubOrder> subOrderRepository,
                                IAsyncRepository<SubOrderRow> subOrderRowRepository,
                                IAsyncRepository<LogRecord> logRecordRepository,
+                               IAsyncRepository<Order> orderRepository,
                                IAsyncRepository<OrderRow> orderRowRepository,
                                IAsyncRepository<ReservoirArea> reservoirAreaRepository,
                                IAsyncRepository<MaterialDic> materialDicRepository,
@@ -54,6 +57,7 @@ namespace ApplicationCore.Services
             this._subOrderRepository = subOrderRepository;
             this._subOrderRowRepository = subOrderRowRepository;
             this._logRecordRepository = logRecordRepository;
+            this._orderRepository = orderRepository;
             this._orderRowRepository = orderRowRepository;
             this._reservoirAreaRepository = reservoirAreaRepository;
             this._materialDicRepository = materialDicRepository;
@@ -643,6 +647,7 @@ namespace ApplicationCore.Services
                     {
                       
                         List<OrderRow> updOrderRows = new List<OrderRow>();
+                        List<Order> updOrders = new List<Order>();
                         foreach (var subOrderRow in order.SubOrderRow)
                         {
                             //Guard.Against.Null(subOrderRow.OrderRowId, nameof(subOrderRow.OrderRowId));
@@ -657,6 +662,18 @@ namespace ApplicationCore.Services
                                     this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
                                 OrderRow orderRow = orderRows.First();
+
+                                if (orderRow.Status == Convert.ToInt32(ORDER_STATUS.待处理)) 
+                                {
+                                    orderRow.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                                }
+                                Order curOrder = orderRow.Order;
+                                if (curOrder.Status == Convert.ToInt32(ORDER_STATUS.待处理)) 
+                                {
+                                    curOrder.Status = Convert.ToInt32(ORDER_STATUS.执行中);
+                                    updOrders.Add(curOrder);
+                                }
+
                                 if (subOrderRow.PreCount <= 0)
                                     throw new Exception(string.Format("订单行[{0}]数量[{1}],不是有效的数字!",
                                         subOrderRow.OrderRowId, subOrderRow.PreCount));
@@ -669,7 +686,7 @@ namespace ApplicationCore.Services
                                 jstkCount = jstlOrderRows.Sum(t => t.PreCount);
                                 double orderRowExpendCount = (orderRow.PreCount - (orderRow.Expend.GetValueOrDefault() + jstkCount + orderRow.CancelCount.GetValueOrDefault()));
                                 if (subOrderRow.PreCount > orderRowExpendCount)
-                                    throw new Exception(string.Format("行数量大于前置订单行[{0}]剩余数量[{1}]",
+                                    throw new Exception(string.Format("行数量大于前置订单行[{0}]数量,剩余行数量[{1}]",
                                         subOrderRow.OrderRowId,orderRowExpendCount));
                                 double expend = orderRow.Expend.GetValueOrDefault();
                                 expend += subOrderRow.PreCount;
@@ -680,6 +697,8 @@ namespace ApplicationCore.Services
 
                         if (updOrderRows.Count > 0)
                             this._orderRowRepository.Update(updOrderRows);
+                        if (updOrders.Count > 0)
+                            this._orderRepository.Update(updOrders);
                         SubOrder newSubOrder = this._subOrderRepository.Add(order);
                         order.SubOrderRow.ForEach(or => or.SubOrderId = newSubOrder.Id);
                         this._subOrderRowRepository.Add(order.SubOrderRow);

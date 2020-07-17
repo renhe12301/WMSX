@@ -9,6 +9,7 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using Quartz;
 using ApplicationCore.Misc;
+using System.Linq;
 
 namespace Web.Jobs
 {
@@ -19,15 +20,21 @@ namespace Web.Jobs
     public class OrderStatusSyncJob:IJob
     {
         private readonly IAsyncRepository<LogRecord> _logRecordRepository;
+        private readonly IAsyncRepository<Order> _orderRepository;
+        private readonly IAsyncRepository<OrderRow> _orderRowRepository;
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
         private readonly IAsyncRepository<SubOrderRow> _subOrderRowRepository;
         public OrderStatusSyncJob(IAsyncRepository<LogRecord> logRecordRepository,
+                                  IAsyncRepository<Order> orderRepository,
+                                  IAsyncRepository<OrderRow> orderRowRepository,
                                   IAsyncRepository<SubOrder> subOrderRepository,
                                   IAsyncRepository<SubOrderRow> subOrderRowRepository)
         {
             this._logRecordRepository = logRecordRepository;
             this._subOrderRowRepository = subOrderRowRepository;
             this._subOrderRepository = subOrderRepository;
+            this._orderRepository = orderRepository;
+            this._orderRowRepository = orderRowRepository;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -36,6 +43,7 @@ namespace Web.Jobs
             {
                 using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
+                    // 更新后置订单状态
                     SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, null,
                         null, null, null, null, null, null,null, null, null, null,null,null,
                         null, new List<int> {Convert.ToInt32(ORDER_STATUS.执行中)}, null, null, null, null);
@@ -78,6 +86,62 @@ namespace Web.Jobs
 
                     if (updSubOrders.Count > 0)
                         this._subOrderRepository.Update(updSubOrders);
+
+
+
+                    // 更新前置订单状态
+                    OrderRowSpecification orderRowSpec = new OrderRowSpecification(null, null, null, null, null, null, null, null, null, null, null,
+                        null, null, null, new List<int> { Convert.ToInt32(ORDER_STATUS.执行中) }, null, null, null, null);
+                    List<OrderRow> exeOrderRows = this._orderRowRepository.List(orderRowSpec);
+                    List<OrderRow> updOrderRows = new List<OrderRow>();
+                    foreach (var orderRow in exeOrderRows)
+                    {
+                        SubOrderRowSpecification curSubOrderRowSpec = new SubOrderRowSpecification(null, null, orderRow.Id, null, null, 
+                                                                                                null, null, null, null, null, null, null, null, null,
+                        null, new List<int> { Convert.ToInt32(ORDER_STATUS.完成) }, null, null, null, null);
+                        List<SubOrderRow> curSubRows = this._subOrderRowRepository.List(curSubOrderRowSpec);
+                        double subRowCountTotal = curSubRows.Sum(s => s.PreCount);
+                        // 接收退库的数量
+                        OrderRowRelatedSpecification jstlOrderRowSpecification = new OrderRowRelatedSpecification(
+                           new List<int> { Convert.ToInt32(ORDER_TYPE.接收退料) }, orderRow.SourceId);
+                        List<OrderRow> jstlOrderRows = this._orderRowRepository.List(jstlOrderRowSpecification);
+                        double jstkCount = jstlOrderRows.Sum(t => t.PreCount);
+                        double orderRowExpendCount = (orderRow.PreCount - jstkCount);
+
+                        if (subRowCountTotal >= orderRowExpendCount)
+                        {
+                            orderRow.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                            updOrderRows.Add(orderRow);
+                        }
+                    }
+                    if (updOrderRows.Count > 0)
+                        this._orderRowRepository.Update(updOrderRows);
+
+                    OrderSpecification orderSpec = new OrderSpecification(null, null, null, null, new List<int> { Convert.ToInt32(ORDER_STATUS.执行中) }, null,
+                        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                    List<Order> exeOrders = this._orderRepository.List(orderSpec);
+                    List<Order> updOrders = new List<Order>();
+                    foreach (var order in exeOrders) 
+                    {
+                        OrderRowSpecification curOrderRowSpec = new OrderRowSpecification(null, order.Id, null, null, null, null, null, null, null, null, null,
+                        null, null, null, new List<int> { Convert.ToInt32(ORDER_STATUS.完成) }, null, null, null, null);
+
+                        List<OrderRow> curOrderRows = this._orderRowRepository.List(curOrderRowSpec);
+
+                        OrderRowSpecification allOrderRowSpec = new OrderRowSpecification(null, order.Id, null, null, null, null, null, null, null, null, null,
+                       null, null, null, null, null, null, null, null);
+
+                        List<OrderRow> allOrderRows = this._orderRowRepository.List(allOrderRowSpec);
+
+                        if (curOrderRows.Count == allOrderRows.Count)
+                        {
+                            order.Status = Convert.ToInt32(ORDER_STATUS.完成);
+                            updOrders.Add(order);
+                        }
+
+                    }
+                    if (updOrders.Count > 0)
+                        this._orderRepository.Update(updOrders);
 
                     scope.Complete();
 

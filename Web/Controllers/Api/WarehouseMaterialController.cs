@@ -51,7 +51,7 @@ namespace Web.Controllers.Api
             , int? wareHouseId, int? areaId,int? supplierId,int? supplierSiteId,int? pyId)
         {
             var response = await this._warehouseMaterialViewModelService.GetMaterials(pageIndex,
-                itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode, warehouseTrayId, subOrderId,subOrderRowId,
+                itemsPage, id, materialCode, materialDicId, materialName,materialSpec,trayCode,warehouseTrayId, subOrderId,subOrderRowId,
                 carrier, traySteps, locationId,ouId,wareHouseId, areaId,supplierId,supplierSiteId,pyId);
             return Content(JsonConvert.SerializeObject(response));
         }

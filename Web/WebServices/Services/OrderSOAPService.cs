@@ -253,6 +253,8 @@ namespace Web.WebServices.Services
                                         addOrderRow.Price = Convert.ToInt32(eor.Price);
                                         addOrderRow.Amount = Convert.ToInt32(eor.Amount);
                                         addOrderRow.ExpenditureType = eor.ExpenditrueType;
+                                        if (!string.IsNullOrEmpty(eor.RelatedId))
+                                            addOrderRow.RelatedId = Convert.ToInt32(eor.RelatedId);
                                         if (!string.IsNullOrEmpty(eor.TaskId))
                                             addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
                                         if (!string.IsNullOrEmpty(eor.ItemId))
@@ -283,19 +285,30 @@ namespace Web.WebServices.Services
                             else
                             {
                                 // 入库接收单，接收退料
-                                if (RequestRKJSOrder.DocumentType == "RKTL")
+                                if (RequestRKJSOrder.DocumentType == "RECREFUND")
                                 {
-                                    orderRows.ForEach(or =>
+                                    RequestRKJSOrder.RequestRKJSRows.ForEach(or =>
                                     {
-                                        int reId = or.RelatedId.GetValueOrDefault();
-                                        SubOrderRowSpecification subOrderRowSpecification =
-                                            new SubOrderRowSpecification(null,
-                                                null, null, reId, null, null, null, null,null,null, null, null,
-                                                null, null, null, null, null, null, null);
-                                        List<SubOrderRow> subOrderRows =
-                                            this._subOrderRowRepository.List(subOrderRowSpecification);
-                                        if (subOrderRows.Count > 0)
-                                            throw new Exception("前置订单行[{0}]在WMS系统中已经拆分无法进行撤销操作!");
+                                        if (!string.IsNullOrEmpty(or.RelatedId))
+                                        {
+                                            int reId = Convert.ToInt32(or.RelatedId);
+                                            OrderRowSpecification realOrderRowSpecification = new OrderRowSpecification(
+                                               null, null, null, reId,
+                                               null, null, null, null, null, null,
+                                               null, null, null, null, null, null
+                                               , null, null, null);
+                                            List<OrderRow> realOrderRows = this._orderRowRepository.List(realOrderRowSpecification);
+                                            if (realOrderRows.Count == 0)
+                                                throw new Exception(string.Format("接收退库单行关联的入库接收单行Id[{0}],不存在!", reId));
+                                            SubOrderRowSpecification subOrderRowSpecification =
+                                                new SubOrderRowSpecification(null,
+                                                    null, null, reId, null, null, null, null, null, null, null, null, null,
+                                                    null, null, null, null, null, null, null);
+                                            List<SubOrderRow> subOrderRows =
+                                                this._subOrderRowRepository.List(subOrderRowSpecification);
+                                            if (subOrderRows.Count > 0)
+                                                throw new Exception("前置订单行[{0}]在WMS系统中已经拆分无法进行撤销操作!");
+                                        }
                                     });
                                 }
 
@@ -359,7 +372,8 @@ namespace Web.WebServices.Services
                                     addOrderRow.Price = Convert.ToDouble(eor.Price);
                                     addOrderRow.Amount = Convert.ToDouble(eor.Amount);
                                     addOrderRow.ExpenditureType = eor.ExpenditrueType;
-                                    
+                                    if(!string.IsNullOrEmpty(eor.RelatedId))
+                                        addOrderRow.RelatedId = Convert.ToInt32(eor.RelatedId);
                                     if (!string.IsNullOrEmpty(eor.TaskId))
                                         addOrderRow.EBSTaskId = Convert.ToInt32(eor.TaskId);
 
@@ -367,7 +381,6 @@ namespace Web.WebServices.Services
                                         addOrderRow.EBSProjectId = Convert.ToInt32(eor.ItemId);
 
                                     addOrderRow.Memo = eor.Remark;
-
 
                                     if (!string.IsNullOrEmpty(eor.RelatedId))
                                     {
@@ -543,7 +556,7 @@ namespace Web.WebServices.Services
                             //出库订单行里面的物料数量库存校验，防止有正在执行或者待处理的的退库订单冲突。
                             
                             SubOrderRowSpecification tkSubOrderRowSpec = new SubOrderRowSpecification(null,null,null,null,
-                                new List<int>{Convert.ToInt32(ORDER_TYPE.出库退库)},ou.Id,warehouse.Id,null,null,null,null,null,null,
+                                new List<int>{Convert.ToInt32(ORDER_TYPE.出库退库)},ou.Id,warehouse.Id,null,null,null,null,null,null,null,
                                 null,new List<int>{Convert.ToInt32(ORDER_STATUS.待处理),Convert.ToInt32(ORDER_STATUS.执行中)},null,null,null,null );
 
                             List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);
@@ -631,7 +644,7 @@ namespace Web.WebServices.Services
                                         int reId = or.RelatedId.GetValueOrDefault();
                                         SubOrderRowSpecification subOrderRowSpecification =
                                             new SubOrderRowSpecification(null,
-                                                null, null, reId,null, null, null, null,null,null, null, null,
+                                                null, null, reId,null, null, null, null,null,null,null, null, null,
                                                 null, null, null, null, null, null, null);
                                         List<SubOrderRow> subOrderRows =
                                             this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -731,7 +744,7 @@ namespace Web.WebServices.Services
                                                 int reId = existRow.RelatedId.GetValueOrDefault();
                                                 SubOrderRowSpecification subOrderRowSpecification =
                                                     new SubOrderRowSpecification(null,
-                                                        null, null, reId,null, null, null, null,null,null, null, null,
+                                                        null, null, reId,null, null, null, null,null,null,null, null, null,
                                                         null, null, null, null, null, null, null);
                                                 List<SubOrderRow> subOrderRows =
                                                     this._subOrderRowRepository.List(subOrderRowSpecification);
@@ -894,6 +907,8 @@ namespace Web.WebServices.Services
                 orderType = Convert.ToInt32(ORDER_TYPE.入库接收);
             else if(documentType.Equals("PICK"))
                 orderType = Convert.ToInt32(ORDER_TYPE.出库领料);
+            else if (documentType.Equals("RECREFUND"))
+                orderType = Convert.ToInt32(ORDER_TYPE.接收退料);
 
             return orderType;
         }
