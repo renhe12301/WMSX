@@ -101,7 +101,7 @@ $(function () {
             if(orderCode!="")rd.orderNumber=orderCode;
             if(supplierName!="")rd.supplierName=supplierName;
            
-            if(corderId!="")rd.id=corderId;
+            if(corderId!="")rd.ids=corderId;
 
             var statusSels=$("#status-select").val();
             if(statusSels.length>0)tstatus=statusSels;

@@ -6,11 +6,11 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderSpecification:BaseSpecification<SubOrder>
     {
-        public SubOrderSpecification(int? id, string orderNumber,int? sourceId, List<int> orderTypeIds, string businessType,
+        public SubOrderSpecification(List<int> ids, string orderNumber,int? sourceId, List<int> orderTypeIds, string businessType,
              List<int> status,int? isRead,int? isSync,int? isBack, int? ouId, int? warehouseId, int? pyId,int? supplierId, string supplierName,
              int? supplierSiteId,string supplierSiteName,string sCreateTime, string eCreateTime,
              string sFinishTime,string eFinishTime)
-            : base(b => (!id.HasValue || b.Id == id) &&
+            : base(b => (ids == null || ids.Contains(b.Id)) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                        (!sourceId.HasValue || b.SourceId == sourceId) &&
                        (orderTypeIds == null || orderTypeIds.Contains(b.OrderTypeId)) &&

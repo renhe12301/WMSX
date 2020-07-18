@@ -6,14 +6,14 @@ namespace ApplicationCore.Specifications
 {
     public class OrderSpecification:BaseSpecification<Order>
     {
-        public OrderSpecification(int? id, string orderNumber,int? sourceId, List<int> orderTypeIds,
+        public OrderSpecification(List<int> ids, string orderNumber,int? sourceId, List<int> orderTypeIds,
              List<int> status, int? ouId, int? warehouseId, int? pyId, string applyUserCode, string approveUserCode,
              int? employeeId, string employeeName, int? supplierId, string supplierName,
              string sApplyTime, string eApplyTime,
              string sApproveTime, string eApproveTime,
              string sCreateTime, string eCreateTime,
              string sFinishTime, string eFinishTime)
-            : base(b => (!id.HasValue || b.Id == id) &&
+            : base(b => (ids == null || ids.Contains(b.Id)) &&
                        (orderNumber == null || b.OrderNumber.Contains(orderNumber)) &&
                        (!sourceId.HasValue || b.SourceId == sourceId) &&
                        (orderTypeIds == null || orderTypeIds.Contains(b.OrderTypeId)) &&

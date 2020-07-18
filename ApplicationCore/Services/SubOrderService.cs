@@ -85,7 +85,7 @@ namespace ApplicationCore.Services
                 {
                     using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
-                        var subOrderSpec = new SubOrderSpecification(subOrderId, null, null, null, null,
+                        var subOrderSpec = new SubOrderSpecification(new List<int> { subOrderId }, null, null, null, null,
                             null, null, null, null, null, null, null, null, null, null,
                             null, null, null,null,null);
                         var subOrders = this._subOrderRepository.List(subOrderSpec);
@@ -94,7 +94,7 @@ namespace ApplicationCore.Services
                         if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.待处理) &&
                             subOrder.Status != Convert.ToInt32(ORDER_STATUS.执行中))
                             throw new Exception(string.Format("订单[{0}]状态必须为待处理或执行中！", subOrderId));
-                        var subOrderRowSpec = new SubOrderRowSpecification(subOrderRowId, null, null, null, null,
+                        var subOrderRowSpec = new SubOrderRowSpecification(new List<int> { subOrderRowId }, null, null, null, null,
                             null,null,null,null,
                             null, null, null, null, null, null, null, null, null,
                             null, null);
@@ -548,7 +548,7 @@ namespace ApplicationCore.Services
                         #endregion
 
 
-                        SubOrderSpecification subOrderSpec = new SubOrderSpecification(order.Id, null, null, null, null, null, null, null,
+                        SubOrderSpecification subOrderSpec = new SubOrderSpecification(new List<int> { order.Id }, null, null, null, null, null, null, null,
                             null, null, null, null, null, null, null, null, null, null,null,null);
                         List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpec);
                         SubOrder subOrder = subOrders[0];
@@ -562,7 +562,7 @@ namespace ApplicationCore.Services
                         {
                             Guard.Against.Zero(subOrderRow.Id, nameof(subOrderRow.Id));
                             SubOrderRowSpecification orderRowSpecification = new SubOrderRowSpecification(
-                                     subOrderRow.Id, null, null, null,null,
+                                     new List<int> { subOrderRow.Id }, null, null, null,null,
                                      null, null, null, null, null, null,
                                      null, null, null, null, null, null
                                      , null, null, null);
@@ -654,7 +654,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId, null, null, null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() }, null, null, null,
                                     null, null, null, null, null, null,
                                     null, null, null, null, null, null
                                     , null, null, null);
@@ -735,7 +735,7 @@ namespace ApplicationCore.Services
                     using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
 
-                        SubOrderSpecification subOrderSpecification = new SubOrderSpecification(order.Id, null,
+                        SubOrderSpecification subOrderSpecification = new SubOrderSpecification(new List<int> { order.Id }, null,
                             null, null, null, null, null, null, null, null, null, null, null,null,null,
                             null, null, null, null, null);
                         List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
@@ -760,7 +760,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,null, null,null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() },null, null,null,
                                     null, null, null, null, null, null,
                                     null, null, null, null, null, null, null
                                     , null, null);
@@ -807,7 +807,7 @@ namespace ApplicationCore.Services
                         List<OrderRow> updOrderRows = new List<OrderRow>();
                         foreach (var sr in subOrderRows)
                         {
-                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(sr.Id,
+                            SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(new List<int> { sr.Id },
                                 null,null,null,null
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null);
@@ -820,7 +820,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId, null,null, null, null, null, null, null, null,null,null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() }, null,null, null, null, null, null, null, null,null,null,
                                     null, null, null, null, null, null, null, null);
                                 List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
@@ -862,7 +862,7 @@ namespace ApplicationCore.Services
                     List<PhyWarehouse> phyWarehouses = this._phyWarehouseRepository.List(phyWarehouseSpec);
                     if (phyWarehouses.Count == 0)
                         throw new Exception(string.Format("仓库[{0}],不存在!", phyWarehouses[0].Id));
-                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(subOrderId, null,
+                    SubOrderSpecification subOrderSpecification = new SubOrderSpecification(new List<int> { subOrderId }, null,
                         null, null,null,null,
                         null, null, null, null, null, null, null, null, null, null, null,
                         null, null, null);

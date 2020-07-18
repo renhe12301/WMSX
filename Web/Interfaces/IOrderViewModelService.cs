@@ -10,11 +10,11 @@ namespace Web.Interfaces
     {
 
         Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage,
-             int?id,string orderNumber,int? sourceId, string orderTypeIds, string status,int? ouId,int? warehouseId,int? pyId, string applyUserCode, string approveUserCode,
+             string ids,string orderNumber,int? sourceId, string orderTypeIds, string status,int? ouId,int? warehouseId,int? pyId, string applyUserCode, string approveUserCode,
              int? employeeId,string employeeName, int? supplierId, string supplierName, string sApplyTime, string eApplyTime, string sApproveTime,
              string eApproveTime, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         
-        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? orderId,string orderTypeIds,int? sourceId, 
+        Task<ResponseResultViewModel> GetOrderRows(int? pageIndex, int? itemsPage, string ids, int? orderId,string orderTypeIds,int? sourceId, 
             string orderNumber, int? ouId,int? warehouseId, int? reservoirAreaId,string businessType, string ownerType, int? supplierId, string supplierName,int? supplierSiteId, string supplierSiteName,string status,
             string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime);
         

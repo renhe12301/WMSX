@@ -101,7 +101,7 @@ $(function () {
             if(orderCode!="")rd.orderNumber=orderCode;
             if(supplierName!="")rd.supplierName=supplierName;
             if(sourceId!="")rd.sourceId=sourceId;
-            if(corderId!="")rd.id=corderId;
+            if(corderId!="")rd.ids=corderId;
             if(tstatus)rd.status=tstatus;
             if(type)rd.orderTypeIds=type;
             if(sCreateTime)rd.sCreateTime=sCreateTime;

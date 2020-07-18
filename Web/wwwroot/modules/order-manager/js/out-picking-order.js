@@ -106,7 +106,7 @@ $(function () {
             if(sFinishTime)rd.sFinishTime=sFinishTime;
             if(eFinishTime)rd.eFinishTime=eFinishTime;
             if(sourceId!="")rd.sourceId=sourceId;
-            if(corderId!="")rd.id=corderId;
+            if(corderId!="")rd.ids=corderId;
             asynTask({
                 type:'get',
                 url:controllers.order["get-orders"],

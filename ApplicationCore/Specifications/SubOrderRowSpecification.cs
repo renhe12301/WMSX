@@ -5,10 +5,10 @@ namespace ApplicationCore.Specifications
 {
     public class SubOrderRowSpecification : BaseSpecification<SubOrderRow>
     {
-        public SubOrderRowSpecification(int? id, int? subOrderId, int? orderRowId, int? sourceId,
+        public SubOrderRowSpecification(List<int> ids, int? subOrderId, int? orderRowId, int? sourceId,
             List<int> orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId,string businessType, string ownerType, int? pyId, int? supplierId, string supplierName, int? supplierSiteId,
             string supplierSiteName, List<int> status, string sCreateTime, string eCreateTime, string sFinishTime, string eFinishTime)
-            : base(b => (!id.HasValue || b.Id == id) &&
+            : base(b => (ids == null || ids.Contains(b.Id)) &&
                         (!subOrderId.HasValue || b.SubOrderId == subOrderId) &&
                         (!orderRowId.HasValue || b.OrderRowId == orderRowId) &&
                         (!sourceId.HasValue || b.SourceId == sourceId) &&

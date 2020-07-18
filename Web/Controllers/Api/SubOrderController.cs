@@ -26,7 +26,7 @@ namespace Web.Controllers.Api
         /// </summary>
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">当前页</param>
-        /// <param name="id">编号</param>
+        /// <param name="ids">编号</param>
         /// <param name="orderNumber">订单号</param>
         /// <param name="sourceId">集约化物资系统订单号</param>
         /// <param name="orderTypeIds">订单类型</param>
@@ -47,14 +47,14 @@ namespace Web.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetOrders(int? pageIndex,int? itemsPage,
-            int?id,string orderNumber,int? sourceId, string orderTypeIds,string businessType,
+            string ids,string orderNumber,int? sourceId, string orderTypeIds,string businessType,
             string status,int? isBack,int? ouId,int? warehouseId,int? pyId,
             int? supplierId, string supplierName,
             int? supplierSiteId,string supplierSiteName,
             string sCreateTime, string eCreateTime,
             string sFinishTime, string eFinishTime)
         {
-            var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,id,orderNumber,sourceId,
+            var response = await this._subOrderViewModelService.GetOrders(pageIndex,itemsPage,ids,orderNumber,sourceId,
                 orderTypeIds, businessType, status, isBack, ouId,warehouseId,pyId, supplierId,supplierName,
                 supplierSiteId, supplierSiteName, sCreateTime,eCreateTime,sFinishTime,eFinishTime);
             return Content(JsonConvert.SerializeObject(response));
@@ -65,7 +65,7 @@ namespace Web.Controllers.Api
         /// </summary>
         /// <param name="pageIndex">分页索引</param>
         /// <param name="itemsPage">当前页</param>
-        /// <param name="id">订单行编号</param>
+        /// <param name="ids">订单行编号</param>
         /// <param name="sourceId">集约化物资系统订单编号</param>
         /// <param name="subOrderId">订单头编号</param>
         /// <param name="orderRowId">关联订单行编号</param>
@@ -73,6 +73,7 @@ namespace Web.Controllers.Api
         /// <param name="ouId">业务实体编号</param>
         /// <param name="warehouseId">库存组织编号</param>
         /// <param name="reservoirAreaId">子库区编号</param>
+        /// <param name="businessType">业务类型</param>
         /// <param name="ownerType">库区类型 CONSIGNMENT寄售库 ORDINARY一般库</param>
         /// <param name="pyId">物理仓库编号</param>
         /// <param name="supplierId">供应商编号</param>
@@ -86,13 +87,13 @@ namespace Web.Controllers.Api
         /// <param name="eFinishTime">完成结束时间</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, int? id, int? subOrderId,
+        public async Task<IActionResult> GetOrderRows(int? pageIndex, int? itemsPage, string ids, int? subOrderId,
             int? orderRowId,int? sourceId,string orderTypeIds, int? ouId, int? warehouseId, int? reservoirAreaId, string businessType, string ownerType,
             int? pyId, int? supplierId, string supplierName,
             int? supplierSiteId, string supplierSiteName, string status, string sCreateTime, string eCreateTime,
             string sFinishTime,string eFinishTime)
         {
-            var response = await this._subOrderViewModelService.GetOrderRows(pageIndex, itemsPage, id, subOrderId,
+            var response = await this._subOrderViewModelService.GetOrderRows(pageIndex, itemsPage, ids, subOrderId,
                 orderRowId,sourceId,orderTypeIds, ouId, warehouseId,reservoirAreaId, businessType, ownerType, pyId, supplierId, supplierName, supplierSiteId, supplierSiteName,
                 status,sCreateTime, eCreateTime, sFinishTime, eFinishTime);
             return Content(JsonConvert.SerializeObject(response));

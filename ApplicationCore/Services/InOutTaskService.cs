@@ -428,7 +428,7 @@ namespace ApplicationCore.Services
                                     SubOrderRow subOrderRow = warehouseTray.SubOrderRow;
 
                                     OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                        subOrderRow.OrderRowId,null,null,null,
+                                        new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() },null,null,null,
                                         null, null, null, null, null, null, null,
                                         null, null, null, null, null, null, null,
                                         null);
@@ -542,7 +542,7 @@ namespace ApplicationCore.Services
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    subOrderRow.OrderRowId,null,null,null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() },null,null,null,
                                     null, null, null, null, null, null, null,
                                     null, null, null, null, null, null, null,
                                     null);
