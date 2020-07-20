@@ -38,11 +38,12 @@ namespace Web.Jobs
         {
             try
             {
+                
                 SubOrderSpecification subOrderSpecification = new SubOrderSpecification(null, null, null, null,null,
                     new List<int> {Convert.ToInt32(ORDER_STATUS.完成)}, null, 0,null, null, null, null, null,
                     null, null, null, null, null, null, null);
                 List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
-
+                
                 foreach (var subOrder in subOrders)
                 {
                     try
@@ -70,14 +71,6 @@ namespace Web.Jobs
                             rkOrderRequest.RKOrderRequest.totalAmount = subOrder.TotalAmount;
                             rkOrderRequest.RKOrderRequest.creationDate = subOrder.CreateTime.Value;
                             rkOrderRequest.RKOrderRequest.remark = subOrder.Memo;
-                            //if (subOrder.BusinessTypeCode == "CONSIGNMENT_RECEIPITION")
-                            //{
-                            //    rkOrderRequest.RKOrderRequest.businessType = "CONSIGNMENT_INVENTORY";
-                            //}
-                            //else 
-                            //{
-                            //    rkOrderRequest.RKOrderRequest.businessType = "STORAGE";
-                            //}
                             rkOrderRequest.RKOrderRequest.businessType = subOrder.BusinessTypeCode;
                             rkOrderRequest.RKOrderRequest.managerId = subOrder.EmployeeId.ToString();
                             rkOrderRequest.RKOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
@@ -112,7 +105,6 @@ namespace Web.Jobs
                                 throw new Exception(response.RKOrderResponse.data);
                             }
                         }
-
                         else if (subOrder.OrderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料))
                         {
                             StockOutOrderPort stockOutOrderPort = new StockOutOrderPortClient();
@@ -225,6 +217,7 @@ namespace Web.Jobs
                             rtOrderRequest1.RTOrderRequest.vendorSiteId = subOrder.SupplierSiteId.ToString();
                             rtOrderRequest1.RTOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
                             rtOrderRequest1.RTOrderRequest.totalAmount = subOrder.TotalAmount;
+                            
                             rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrderRows.Count];
 
 
@@ -234,13 +227,15 @@ namespace Web.Jobs
                                 rtOrderRequest1.RTOrderRequest.requestRTRows[i] = requestRtRow;
                                 requestRtRow.lineId = subOrderRows[i].Id;
                                 requestRtRow.headId = subOrderRows[i].SubOrderId;
-                                requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
+                                requestRtRow.sourceLineId = subOrderRows[i].Id;
                                 requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestRtRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestRtRow.expenditureType = subOrderRows[i].ExpenditureType;
                                 requestRtRow.lineNumber = subOrderRows[i].Id;
                                 requestRtRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                                 requestRtRow.taskId = subOrderRows[i].EBSTaskId.ToString();
+                                requestRtRow.amount = subOrderRows[i].Amount.GetValueOrDefault();
+                                requestRtRow.price = subOrderRows[i].Price.GetValueOrDefault();
                                 requestRtRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
 

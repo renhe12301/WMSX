@@ -22,12 +22,14 @@ namespace Web.Services
         private readonly ISubOrderService _subOrderService;
         private readonly IAsyncRepository<EBSProject> _ebsProjectRepository;
         private readonly IAsyncRepository<EBSTask> _ebsTaskRepository;
+        private readonly IAsyncRepository<OU> _ouRepository;
 
         public SubOrderViewModelService(IAsyncRepository<SubOrder> subOrderRepository,
                                         ISubOrderService subOrderService,
                                         IAsyncRepository<SubOrderRow> subOrderRowRepository,
                                         IAsyncRepository<EBSProject> ebsProjectRepository,
-                                        IAsyncRepository<EBSTask> ebsTaskRepository
+                                        IAsyncRepository<EBSTask> ebsTaskRepository,
+                                        IAsyncRepository<OU> ouRepository
             )
         {
             this._subOrderRepository = subOrderRepository;
@@ -35,6 +37,7 @@ namespace Web.Services
             this._subOrderRowRepository = subOrderRowRepository;
             this._ebsProjectRepository = ebsProjectRepository;
             this._ebsTaskRepository = ebsTaskRepository;
+            this._ouRepository = ouRepository;
         }
 
         public async Task<ResponseResultViewModel> GetOrders(int? pageIndex, int? itemsPage, string ids, string orderNumber, 
@@ -337,7 +340,6 @@ namespace Web.Services
                 {
                     OUId = subOrderViewModel.OUId,
                     WarehouseId = subOrderViewModel.WarehouseId,
-                    OrderNumber = subOrderViewModel.OrderNumber ?? "O" + now.Ticks,
                     CreateTime = now,
                     OrderTypeId = subOrderViewModel.OrderTypeId,
                     Status = 0,
@@ -351,10 +353,14 @@ namespace Web.Services
                     OrganizationId = subOrderViewModel.OrganizationId,
                     EmployeeId = subOrderViewModel.EmployeeId,
                     EBSProjectId = subOrderViewModel.EBSProjectId,
-                    IsBack = 1,
-                    
+                    IsBack = 1
                 };
+
+                string code = await this._BuildCode(subOrderViewModel.OUId, subOrderViewModel.OrderTypeId);
+                order.OrderNumber = code;
+
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();
+                int index = 1;
                 subOrderViewModel.SubOrderRows.ForEach(async(or) =>
                 {
                     SubOrderRow orderRow = new SubOrderRow
@@ -366,7 +372,7 @@ namespace Web.Services
                         Price = or.Price,
                         Status = 0,
                         OrderRowId = or.OrderRowId,
-                        RowNumber = or.RowNumber??"OR"+now.Ticks,
+                        RowNumber = index.ToString(),
                         UseFor = or.UseFor,
                         Amount = or.Amount,
                         SourceId = or.SourceId,
@@ -377,6 +383,7 @@ namespace Web.Services
                         EBSProjectId=or.EBSProjectId
                         
                     };
+                    index++;
                     subOrderRows.Add(orderRow);
                 });
                 order.SubOrderRow = subOrderRows;
@@ -388,6 +395,35 @@ namespace Web.Services
                 response.Data = ex.Message;
             }
             return response;
+        }
+
+        private async Task<string> _BuildCode(int ouId,int orderTypeId) 
+        {
+            string code = "";
+            OUSpecification oUSpecification = new OUSpecification(ouId, null, null, null);
+            List<OU> oUs = await this._ouRepository.ListAsync(oUSpecification);
+            if (oUs.Count() == 0) throw new Exception(string.Format("业务实体Id[{0}]不存在!", ouId));
+            code = oUs[0].OUCode;
+            code += "W";
+            if (orderTypeId == Convert.ToInt32(ORDER_TYPE.入库接收))
+                code += "RK";
+            if (orderTypeId == Convert.ToInt32(ORDER_TYPE.出库领料))
+                code += "CK";
+            if (orderTypeId == Convert.ToInt32(ORDER_TYPE.入库退料))
+                code += "TK";
+            if (orderTypeId == Convert.ToInt32(ORDER_TYPE.出库退库))
+                code += "RT";
+            code += DateTime.Now.Year;
+            string sCreateTime = DateTime.Now.AddDays(-DateTime.Now.DayOfYear + 1).ToShortDateString() + " 00:00:00";
+            string eCreateTime = DateTime.Now.ToString();
+            SubOrderSpecification subOrderSpec = new SubOrderSpecification(null, null, null, new List<int> { orderTypeId }, null, null, null,
+                null, null, ouId, null, null, null, null, null, null, sCreateTime, eCreateTime, null, null);
+            List<SubOrder> subOrders = await this._subOrderRepository.ListAsync(subOrderSpec);
+            if (subOrders.Count > 0)
+                code += subOrders.ToString().PadLeft(6, '0');
+            else
+                code += "1".PadLeft(6, '0');
+            return code;
         }
 
         public async Task<ResponseResultViewModel> ScrapOrder(SubOrderViewModel subOrderViewModel)
@@ -460,7 +496,6 @@ namespace Web.Services
                     Id = subOrderViewModel.Id,
                     OUId = subOrderViewModel.OUId,
                     WarehouseId = subOrderViewModel.WarehouseId,
-                    OrderNumber = subOrderViewModel.OrderNumber ?? "O" + now.Ticks,
                     CreateTime = now,
                     OrderTypeId = subOrderViewModel.OrderTypeId,
                     Status = 0,
@@ -476,6 +511,8 @@ namespace Web.Services
                     EBSProjectId = subOrderViewModel.EBSProjectId
 
                 };
+                string code = await this._BuildCode(subOrderViewModel.OUId, subOrderViewModel.OrderTypeId);
+                order.OrderNumber = code;
                 List<SubOrderRow> subOrderRows = new List<SubOrderRow>();
                 subOrderViewModel.SubOrderRows.ForEach(async (or) =>
                 {

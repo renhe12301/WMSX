@@ -148,12 +148,6 @@ $(function () {
                     }
                 },
                 {
-                    title: '类型',
-                    field: 'OrderType',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
                     title: '经办人',
                     field: 'EmployeeName',
                     valign: 'middle',
