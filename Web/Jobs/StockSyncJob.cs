@@ -81,7 +81,7 @@ namespace Web.Jobs
                                 RequestRKRow requestRkRow = new RequestRKRow();
                                 rkOrderRequest.RKOrderRequest.requestRKRows[i] = requestRkRow;
                                 requestRkRow.lineId = subOrderRows[i].Id;
-                                requestRkRow.lineNumber = subOrderRows[i].Id;
+                                requestRkRow.lineNumber = Convert.ToInt32(subOrderRows[i].RowNumber);
                                 requestRkRow.headId = subOrderRows[i].SubOrderId;
                                 requestRkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestRkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
@@ -131,7 +131,7 @@ namespace Web.Jobs
                                 RequestCKRow requestCkRow = new RequestCKRow();
                                 ckOrderRequest.CKOrderRequest.requestCKRows[i] = requestCkRow;
                                 requestCkRow.lineId = subOrderRows[i].Id;
-                                requestCkRow.lineNumber = subOrderRows[i].Id;
+                                requestCkRow.lineNumber = Convert.ToInt32(subOrderRows[i].RowNumber);
                                 requestCkRow.headId = subOrderRows[i].SubOrderId;
                                 requestCkRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestCkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
@@ -184,7 +184,7 @@ namespace Web.Jobs
                                 requestTkRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestTkRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestTkRow.expenditureType = subOrderRows[i].ExpenditureType;
-                                requestTkRow.lineNumber = subOrderRows[i].Id;
+                                requestTkRow.lineNumber = Convert.ToInt32(subOrderRows[i].RowNumber);
                                 requestTkRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                                 requestTkRow.inventoryCode = subOrderRows[i].ReservoirArea.AreaCode.ToString();
                             }
@@ -218,6 +218,7 @@ namespace Web.Jobs
                             rtOrderRequest1.RTOrderRequest.exitEntryDate = subOrder.CreateTime.Value;
                             rtOrderRequest1.RTOrderRequest.totalAmount = subOrder.TotalAmount;
                             
+                            
                             rtOrderRequest1.RTOrderRequest.requestRTRows = new RequestRTRow[subOrderRows.Count];
 
 
@@ -227,11 +228,11 @@ namespace Web.Jobs
                                 rtOrderRequest1.RTOrderRequest.requestRTRows[i] = requestRtRow;
                                 requestRtRow.lineId = subOrderRows[i].Id;
                                 requestRtRow.headId = subOrderRows[i].SubOrderId;
-                                requestRtRow.sourceLineId = subOrderRows[i].Id;
+                                requestRtRow.sourceLineId = subOrderRows[i].SourceId.GetValueOrDefault();
                                 requestRtRow.materialId = subOrderRows[i].MaterialDicId.ToString();
                                 requestRtRow.processingQuantity = subOrderRows[i].PreCount;
                                 requestRtRow.expenditureType = subOrderRows[i].ExpenditureType;
-                                requestRtRow.lineNumber = subOrderRows[i].Id;
+                                requestRtRow.lineNumber = Convert.ToInt32(subOrderRows[i].RowNumber);
                                 requestRtRow.itemId = subOrderRows[i].EBSProjectId.ToString();
                                 requestRtRow.taskId = subOrderRows[i].EBSTaskId.ToString();
                                 requestRtRow.amount = subOrderRows[i].Amount.GetValueOrDefault();

@@ -19,7 +19,7 @@ namespace Web.Jobs
     {
         private readonly IAsyncRepository<InOutTask> _inOutTaskRepository;
         private readonly ILogRecordService _logRecordService;
-        private readonly string WCS_TASK_RECEIVE_URL = "/fromWms/taskReceive";
+        // private readonly string WCS_TASK_RECEIVE_URL = "/fromWms/taskReceive";
         private static readonly HttpClient client = new HttpClient();
 
         public SendWcsTaskJob(IAsyncRepository<InOutTask> inOutTaskRepository,
@@ -42,7 +42,7 @@ namespace Web.Jobs
                 List<InOutTask> orderTasks = inOutTasks.OrderBy(t => t.CreateTime).ToList();
                 foreach (var ot in orderTasks)
                 {
-                    string wcsUrl = ot.PhyWarehouse.Memo + WCS_TASK_RECEIVE_URL;
+                    string wcsUrl = ot.PhyWarehouse.Memo;
                     try
                     {
                         dynamic taskGroup = new ExpandoObject();

@@ -420,7 +420,7 @@ namespace Web.Services
                 null, null, ouId, null, null, null, null, null, null, sCreateTime, eCreateTime, null, null);
             List<SubOrder> subOrders = await this._subOrderRepository.ListAsync(subOrderSpec);
             if (subOrders.Count > 0)
-                code += subOrders.ToString().PadLeft(6, '0');
+                code += subOrders.Count.ToString().PadLeft(6, '0');
             else
                 code += "1".PadLeft(6, '0');
             return code;
