@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Web.Interfaces;
 using Web.ViewModels;
@@ -11,7 +11,7 @@ using System.Dynamic;
 
 namespace Web.Services
 {
-    public class SupplierViewModelService:ISupplierViewModelService
+    public class SupplierViewModelService : ISupplierViewModelService
     {
         private readonly ISupplierService _supplierService;
         private readonly IAsyncRepository<Supplier> _supplierRepository;
@@ -25,8 +25,8 @@ namespace Web.Services
             this._supplierRepository = supplierRepository;
             this._supplierSiteRepository = supplierSiteRepository;
         }
-        
-        public async Task<ResponseResultViewModel> GetSuppliers(int ?pageIndex, int ?itemsPage,int? id, string supplierName)
+
+        public async Task<ResponseResultViewModel> GetSuppliers(int? pageIndex, int? itemsPage, int? id, string supplierName)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -36,11 +36,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SupplierPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,supplierName);
+                        id, supplierName);
                 }
                 else
                 {
-                    baseSpecification = new SupplierSpecification(null,supplierName);
+                    baseSpecification = new SupplierSpecification(null, supplierName);
                 }
                 var suppliers = await this._supplierRepository.ListAsync(baseSpecification);
                 List<SupplierViewModel> supplierViewModels = new List<SupplierViewModel>();
@@ -58,8 +58,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._supplierRepository.CountAsync(new SupplierPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,supplierName));
+                    var count = await this._supplierRepository.CountAsync(new SupplierSpecification(id, supplierName));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = supplierViewModels;
                     dyn.total = count;
@@ -79,7 +78,7 @@ namespace Web.Services
         }
 
         public async Task<ResponseResultViewModel> GetSupplierSites(int? pageIndex, int? itemsPage, int? id, string supplierName,
-                                                                    int? supplierId,int? ouId)
+                                                                    int? supplierId, int? ouId)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
             try
@@ -89,11 +88,11 @@ namespace Web.Services
                 if (pageIndex.HasValue && pageIndex > -1 && itemsPage.HasValue && itemsPage > 0)
                 {
                     baseSpecification = new SupplierSitePaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,supplierName,supplierId,ouId);
+                        id, supplierName, supplierId, ouId);
                 }
                 else
                 {
-                    baseSpecification = new SupplierSiteSpecification(id,supplierName,supplierId,ouId);
+                    baseSpecification = new SupplierSiteSpecification(id, supplierName, supplierId, ouId);
                 }
                 var suppliers = await this._supplierSiteRepository.ListAsync(baseSpecification);
                 List<SupplierSiteViewModel> supplierSiteViewModels = new List<SupplierSiteViewModel>();
@@ -116,8 +115,7 @@ namespace Web.Services
                 });
                 if (pageIndex > -1 && itemsPage > 0)
                 {
-                    var count = await this._supplierRepository.CountAsync(new SupplierPaginatedSpecification(pageIndex.Value, itemsPage.Value,
-                        id,supplierName));
+                    var count = await this._supplierSiteRepository.CountAsync(new SupplierSiteSpecification(id, supplierName, supplierId, ouId));
                     dynamic dyn = new ExpandoObject();
                     dyn.rows = supplierSiteViewModels;
                     dyn.total = count;

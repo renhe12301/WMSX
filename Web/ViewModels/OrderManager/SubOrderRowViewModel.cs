@@ -52,7 +52,7 @@ namespace Web.ViewModels.OrderManager
         /// 物料字典编号
         /// </summary>
         public int MaterialDicId { get; set; }
-        
+
         /// <summary>
         /// 物料字典名称
         /// </summary>
@@ -83,7 +83,7 @@ namespace Web.ViewModels.OrderManager
         /// 不合格数量
         /// </summary>
         public int? BadCount { get; set; }
-        
+
         /// <summary>
         /// 完成进度
         /// </summary>
@@ -104,12 +104,12 @@ namespace Web.ViewModels.OrderManager
         /// 关联前置订单行编号
         /// </summary>
         public int? OrderRowId { get; set; }
-        
+
         /// <summary>
         /// 不含税单价
         /// </summary>
         public double? Price { get; set; }
-        
+
         /// <summary>
         /// 不含税金额
         /// </summary>
@@ -119,32 +119,32 @@ namespace Web.ViewModels.OrderManager
         /// 用途
         /// </summary>
         public string UseFor { get; set; }
-        
+
         /// <summary>
         /// 订单是否作废
         /// </summary>
         public int IsScrap { get; set; }
-        
+
         /// <summary>
         /// 业务实体编号
         /// </summary>
         public int? OUId { get; set; }
-        
+
         /// <summary>
         /// 库存组织编号
         /// </summary>
         public int? WarehouseId { get; set; }
-        
+
         /// <summary>
         /// 供应商编号
         /// </summary>
         public int? SupplierId { get; set; }
-        
+
         /// <summary>
         /// 供应商站点编号
         /// </summary>
         public int? SupplierSiteId { get; set; }
-        
+
         /// <summary>
         /// 是否作废显示名称
         /// </summary>
@@ -166,7 +166,7 @@ namespace Web.ViewModels.OrderManager
         /// 订单头类型编号
         /// </summary>
         public int? OrderTypeId { get; set; }
-        
+
         /// <summary>
         ///  物理仓库编号
         /// </summary>
@@ -201,6 +201,11 @@ namespace Web.ViewModels.OrderManager
         /// 退库消耗数量
         /// </summary>
         public double? Expend { get; set; }
+
+        /// <summary>
+        /// 业务实体编号
+        /// </summary>
+        public string BusinessTypeCode { get; set; }
 
     }
 }

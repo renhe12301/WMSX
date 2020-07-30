@@ -407,8 +407,8 @@ namespace Web.WebServices.Services
                             }
 
                         }
-
-                        scope.Complete();
+                        responseResult.Data = "Success!";
+                        
                     }
                     catch (Exception ex)
                     {
@@ -420,11 +420,10 @@ namespace Web.WebServices.Services
                             LogDesc = ex.Message,
                             CreateTime = DateTime.Now
                         });
-                        return responseResult;
                     }
-                }
 
-                responseResult.Data = "Success!";
+                    scope.Complete();
+                }               
                 return responseResult;
             }
 
@@ -885,7 +884,8 @@ namespace Web.WebServices.Services
                             }
 
                         }
-                        scope.Complete();
+
+                        responseResult.Data = "Success!";
                     }
                     catch (Exception ex)
                     {
@@ -897,11 +897,11 @@ namespace Web.WebServices.Services
                             LogDesc = ex.Message,
                             CreateTime = DateTime.Now
                         });
-                        return responseResult;
                     }
+                    scope.Complete();
                 }
 
-                responseResult.Data = "Success!";
+               
                 return responseResult;
             }
 

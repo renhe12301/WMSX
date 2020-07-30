@@ -13,7 +13,6 @@
     <Folder Include="Entities\TaskManager\" />
     <Folder Include="Entities\SysManager\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
     <Folder Include="Misc\" />
     <Folder Include="Entities\FlowRecord\" />
   </ItemGroup>
