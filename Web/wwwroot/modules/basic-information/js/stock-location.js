@@ -8,7 +8,10 @@ var types=null;
 var lstatus=null;
 var inStocks=null;
 var isTasks=null;
-var treeNode=null;
+var treeNode = null;
+var floor = null;
+var rank = null;
+var col = null;
 var showLocationCargo=function (id,sysCode,cargoType) {
     $('#location-detail-dlg').modal('show');
     $("#location-code").text(sysCode);
@@ -89,7 +92,10 @@ $(function () {
             if(lstatus) rd.status=lstatus;
             if(inStocks)rd.inStocks=inStocks;
             if(isTasks)rd.isTasks=isTasks;
-            if(pyId)rd.phyId = pyId;
+            if (pyId) rd.phyId = pyId;
+            if (floor) rd.floors = floor;
+            if (rank) rd.items = rank;
+            if (col) rd.cols = col;
             asynTask({
                 type:'get',
                 url:controllers.location["get-locations"],
@@ -201,11 +207,54 @@ $(function () {
         {
             pyId = 2;
         }
+        $("#sys-code").val("");
+        sysCode = null;
         $('#location-table').bootstrapTable("refresh");
     });
 
     $("#more-query-btn").click(function () {
         $('#more-query-dlg').modal('show');
+        asynTask({
+            type: 'get', url: controllers["location"]["get-max-floor-item-col"],
+            jsonData:
+            {
+                phyId: pyId
+            },
+            successCallback: function (response) {
+                if (response.Code == 200) {
+                    var data = response.Data;
+                    if (data.length > 0) {
+                        $("#floor-select").empty();
+                        $("#floor-select").append($("<option value=" + -1 + ">全部</option>"));
+                        $("#rank-select").empty();
+                        $("#rank-select").append($("<option value=" + -1 + ">全部</option>"));
+                        $("#col-select").empty();
+                        $("#col-select").append($("<option value=" + -1 + ">全部</option>"));
+                        var f = data[0];
+                        var r = data[1];
+                        var c = data[2];
+                        for (var i = 1; i <= f; i++) {
+                            var opt = $("<option value=" + i + ">" + i + "</option>")
+                            $("#floor-select").append(opt);
+                        }
+                        for (var j = 1; j <= r; j++) {
+                            var opt = $("<option value=" + j + ">" + j + "</option>")
+                            $("#rank-select").append(opt);
+                        }
+                        for (var k = 1; k <= c; k++) {
+                            var opt = $("<option value=" + k + ">" + k + "</option>")
+                            $("#col-select").append(opt);
+                        }
+                    }
+                }
+                else {
+                    toastr.error(response.Data, '错误信息', { timeOut: 3000 });
+                }
+            }
+        });
+
+       
+       
     });
 
     $("#query-btn").click(function () {
@@ -487,4 +536,40 @@ $(function () {
         }
     });
 
+    $("#saveBtn").click(function () {
+        if ($("#instock-select").val() == -1) {
+            inStocks = null;
+        }
+        if ($("#istask-select").val() == -1) {
+            isTasks = null;
+        }
+        if ($("#floor-select").val() == -1) {
+            floor = null;
+            floors = null;
+        }
+        if ($("#rank-select").val() == -1) {
+            rank = null;
+            items = null;
+        }
+        if ($("#col-select").val() == -1) {
+            col = null;
+            cols = null;
+        }
+        if ($("#instock-select").val() != "" && $("#instock-select").val() != -1)
+        {
+            inStocks = $("#instock-select").val();
+        }
+        if ($("#istask-select").val() != "" && $("#istask-select").val() !=-1) {
+            isTasks = $("#istask-select").val();
+        }
+        if ($("#floor-select").val() != "" && $("#floor-select").val() !=-1) {
+            floor = $("#floor-select").val();
+        }
+        if ($("#rank-select").val() != "" && $("#rank-select").val() !=-1) {
+            rank = $("#rank-select").val();
+        }
+        if ($("#col-select").val() != "" && $("#col-select").val() !=-1) {
+            col = $("#col-select").val();
+        }
+    });
 });

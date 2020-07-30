@@ -121,28 +121,26 @@
                             </div>
                             <div class="form-group">
                                 <label>层</label>
-                                <select class="select2" multiple="multiple" id="floor-select" data-placeholder="请选择层" style="width: 100%;">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
+                                <select class="select2" id="floor-select" data-placeholder="请选择层" style="width: 100%;">
+                                    <option value="-1">全部</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>排</label>
-                                <select class="select2" multiple="multiple" id="rank-select" data-placeholder="请选择层" style="width: 100%;">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
+                                <select class="select2"  id="rank-select" data-placeholder="请选择排" style="width: 100%;">
+                                    <option value="-1">全部</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>排</label>
-                                <select class="select2" multiple="multiple" id="col-select" data-placeholder="请选择列" style="width: 100%;">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
+                                <label>列</label>
+                                <select class="select2"  id="col-select" data-placeholder="请选择列" style="width: 100%;">
+                                    <option value="-1">全部</option>
                                 </select>
                             </div>
                         </div>
                         <div class="card-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal">保存</button>
                         </div>
                     </form>
                 </div>
