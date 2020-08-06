@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace ApplicationCore.Services
 {
-    public class SubOrderService : ISubOrderService
+    public class SubOrderService:ISubOrderService
     {
 
         private readonly IAsyncRepository<SubOrder> _subOrderRepository;
@@ -50,8 +50,8 @@ namespace ApplicationCore.Services
                                IAsyncRepository<InOutTask> inOutTaskRepository,
                                IAsyncRepository<Warehouse> warehouseRepository,
                                IAsyncRepository<PhyWarehouse> phyWarehouseRepository
-
-
+                               
+                               
         )
         {
             this._subOrderRepository = subOrderRepository;
@@ -81,46 +81,47 @@ namespace ApplicationCore.Services
 
             using (await ModuleLock.GetAsyncLock().LockAsync())
             {
-                try
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                    try
                     {
+
                         var subOrderSpec = new SubOrderSpecification(new List<int> { subOrderId }, null, null, null, null,
                             null, null, null, null, null, null, null, null, null, null,
                             null, null, null, null, null);
                         var subOrders = this._subOrderRepository.List(subOrderSpec);
-                        if (subOrders.Count == 0) throw new Exception(string.Format("¶©µ¥[{0}],²»´æÔÚ£¡", subOrderId));
+                        if (subOrders.Count == 0) throw new Exception(string.Format("è®¢å•[{0}],ä¸å­˜åœ¨ï¼", subOrderId));
                         SubOrder subOrder = subOrders.First();
-                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí) &&
-                            subOrder.Status != Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ))
-                            throw new Exception(string.Format("¶©µ¥[{0}]×´Ì¬±ØĞëÎª´ı´¦Àí»òÖ´ĞĞÖĞ£¡", subOrderId));
+                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†) &&
+                            subOrder.Status != Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­))
+                            throw new Exception(string.Format("è®¢å•[{0}]çŠ¶æ€å¿…é¡»ä¸ºå¾…å¤„ç†æˆ–æ‰§è¡Œä¸­ï¼", subOrderId));
                         var subOrderRowSpec = new SubOrderRowSpecification(new List<int> { subOrderRowId }, null, null, null, null,
                             null, null, null, null,
                             null, null, null, null, null, null, null, null, null,
                             null, null);
                         var subOrderRows = this._subOrderRowRepository.List(subOrderRowSpec);
                         if (subOrderRows.Count == 0)
-                            throw new Exception(string.Format("¶©µ¥ĞĞ±àºÅ[{0}],²»´æÔÚ£¡", subOrderRowId));
+                            throw new Exception(string.Format("è®¢å•è¡Œç¼–å·[{0}],ä¸å­˜åœ¨ï¼", subOrderRowId));
                         SubOrderRow subOrderRow = subOrderRows[0];
-                        if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí) &&
-                            subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ))
-                            throw new Exception(string.Format("¶©µ¥ĞĞ[{0}]×´Ì¬±ØĞëÎª´ı´¦Àí»òÖ´ĞĞÖĞ£¡", subOrderRowId));
+                        if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†) &&
+                            subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­))
+                            throw new Exception(string.Format("è®¢å•è¡Œ[{0}]çŠ¶æ€å¿…é¡»ä¸ºå¾…å¤„ç†æˆ–æ‰§è¡Œä¸­ï¼", subOrderRowId));
 
                         var areaSpec = new ReservoirAreaSpecification(areaId, null, null, null, null, null);
                         var areas = this._reservoirAreaRepository.List(areaSpec);
-                        if (areas.Count == 0) throw new Exception(string.Format("×Ó¿â´æ±àºÅ[{0}],²»´æÔÚ£¡", areaId));
+                        if (areas.Count == 0) throw new Exception(string.Format("å­åº“å­˜ç¼–å·[{0}],ä¸å­˜åœ¨ï¼", areaId));
                         var area = areas[0];
 
                         WarehouseSpecification warehouseSpec =
                             new WarehouseSpecification(area.WarehouseId, null, null, null);
                         List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
                         if (warehouses.Count == 0)
-                            throw new Exception(string.Format("×Ó¿âÇø[{0}]¶ÔÓ¦µÄ¿â´æ×éÖ¯[{1}]²»´æÔÚ!", area.WarehouseId));
+                            throw new Exception(string.Format("å­åº“åŒº[{0}]å¯¹åº”çš„åº“å­˜ç»„ç»‡[{1}]ä¸å­˜åœ¨!", area.WarehouseId));
                         var materialDicSpec =
                             new MaterialDicSpecification(subOrderRow.MaterialDicId, null, null, null, null);
                         var materialDics = this._materialDicRepository.List(materialDicSpec);
                         if (materialDics.Count == 0)
-                            throw new Exception(string.Format("ÎïÁÏ×Öµä[{0}]),²»´æÔÚ£¡", subOrderRow.MaterialDicId));
+                            throw new Exception(string.Format("ç‰©æ–™å­—å…¸[{0}]),ä¸å­˜åœ¨ï¼", subOrderRow.MaterialDicId));
 
                         MaterialDic materialDic = materialDics[0];
 
@@ -135,19 +136,19 @@ namespace ApplicationCore.Services
                             if (whTrays[0].SubOrderRowId.HasValue)
                             {
                                 if (whTrays[0].SubOrderRow.Id != subOrderRowId)
-                                    throw new Exception(string.Format("ÍĞÅÌ[{0}]°ó¶¨µÄ¶©µ¥ĞĞ[{1}]Óëµ±Ç°¶©µ¥ĞĞ[{2}]²»Ò»ÖÂ",
+                                    throw new Exception(string.Format("æ‰˜ç›˜[{0}]ç»‘å®šçš„è®¢å•è¡Œ[{1}]ä¸å½“å‰è®¢å•è¡Œ[{2}]ä¸ä¸€è‡´",
                                         whTrays[0].TrayCode,
                                         whTrays[0].SubOrderRow.Id, subOrderRowId));
                             }
 
                             if (whTrays[0].ReservoirAreaId != areaId)
                             {
-                                throw new Exception(string.Format("ÍĞÅÌ[{0}]°ó¶¨µÄ×Ó¿âÇø[{1}]Óëµ±Ç°Ñ¡ÔñµÄĞĞ×Ó¿âÇø[{2}]²»Ò»ÖÂ,ÎŞ·¨·Ö¼ğ!",
+                                throw new Exception(string.Format("æ‰˜ç›˜[{0}]ç»‘å®šçš„å­åº“åŒº[{1}]ä¸å½“å‰é€‰æ‹©çš„è¡Œå­åº“åŒº[{2}]ä¸ä¸€è‡´,æ— æ³•åˆ†æ‹£!",
                                     trayCode, subOrderRow.ReservoirAreaId, areaId));
                             }
                         }
 
-                        if (whTrays.Count > 0 && whTrays[0].TrayStep == Convert.ToInt32(TRAY_STEP.´ıÈë¿â))
+                        if (whTrays.Count > 0 && whTrays[0].TrayStep == Convert.ToInt32(TRAY_STEP.å¾…å…¥åº“))
                         {
                             var sortingTray = whTrays[0];
 
@@ -157,7 +158,7 @@ namespace ApplicationCore.Services
                             pOrderRow.Sorting = Double.Parse(string.Format("{0:F15}", pOrderRow.Sorting - srcTrayCount));
                             if (Double.Parse(string.Format("{0:F15}", (subOrderRow.Sorting + sortingCount))) > subOrderRow.PreCount)
                             {
-                                throw new Exception(string.Format("µ±Ç°ÍĞÅÌ·Ö¼ğµÄÊıÁ¿[{0}]´óÓÚ¶©µ¥ĞĞ[{1}]ÊıÁ¿[{2}]",
+                                throw new Exception(string.Format("å½“å‰æ‰˜ç›˜åˆ†æ‹£çš„æ•°é‡[{0}]å¤§äºè®¢å•è¡Œ[{1}]æ•°é‡[{2}]",
                                     sortingCount, sortingTray.SubOrderRow.Id,
                                     subOrderRow.PreCount));
                             }
@@ -170,15 +171,15 @@ namespace ApplicationCore.Services
 
                             pOrderRow.Sorting = pOrderRowSorting;
                             subOrderRow.Sorting = subOrderRowSorting;
-                            //¶©µ¥£¬¶©µ¥ĞĞÊıÁ¿¸üĞÂ
-                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                            //è®¢å•ï¼Œè®¢å•è¡Œæ•°é‡æ›´æ–°
+                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                             {
-                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                             }
 
-                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                             {
-                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                             }
 
                             if (!subOrderRow.ReservoirAreaId.HasValue)
@@ -214,12 +215,12 @@ namespace ApplicationCore.Services
                         }
                         else
                         {
-                            if (whTrays.Count > 0 && whTrays[0].TrayStep != Convert.ToInt32(TRAY_STEP.³õÊ¼»¯))
-                                throw new Exception(string.Format("ÍĞÅÌ×´Ì¬[{0}]Î´³õÊ¼»¯,ÎŞ·¨·Ö¼ğ£¡", trayCode));
+                            if (whTrays.Count > 0 && whTrays[0].TrayStep != Convert.ToInt32(TRAY_STEP.åˆå§‹åŒ–))
+                                throw new Exception(string.Format("æ‰˜ç›˜çŠ¶æ€[{0}]æœªåˆå§‹åŒ–,æ— æ³•åˆ†æ‹£ï¼", trayCode));
 
                             DateTime now = DateTime.Now;
                             if ((sortingCount + subOrderRow.Sorting.GetValueOrDefault()) > subOrderRow.PreCount)
-                                throw new Exception(string.Format("ÒÑ·Ö¼ğÊıÁ¿[{0}]×ÜºÍ´óÓÚ¶©µ¥ĞĞ[{1}]ÊıÁ¿[{2}]",
+                                throw new Exception(string.Format("å·²åˆ†æ‹£æ•°é‡[{0}]æ€»å’Œå¤§äºè®¢å•è¡Œ[{1}]æ•°é‡[{2}]",
                                     Double.Parse(string.Format("{0:F15}", sortingCount + subOrderRow.Sorting.GetValueOrDefault())), subOrderRowId,
                                     subOrderRow.PreCount));
 
@@ -235,9 +236,9 @@ namespace ApplicationCore.Services
                                     MaterialCount = sortingCount,
                                     Price = subOrderRow.Price,
                                     Amount = subOrderRow.Price * sortingCount,
-                                    TrayStep = Convert.ToInt32(TRAY_STEP.´ıÈë¿â),
+                                    TrayStep = Convert.ToInt32(TRAY_STEP.å¾…å…¥åº“),
                                     ReservoirAreaId = areaId,
-                                    Carrier = Convert.ToInt32(TRAY_CARRIER.»õÎ»),
+                                    Carrier = Convert.ToInt32(TRAY_CARRIER.è´§ä½),
                                     OutCount = 0,
                                     OUId = warehouses[0].OUId,
                                     WarehouseId = area.WarehouseId,
@@ -258,7 +259,7 @@ namespace ApplicationCore.Services
                                     WarehouseId = area.WarehouseId,
                                     ReservoirAreaId = areaId,
                                     OUId = warehouses[0].OUId,
-                                    Carrier = Convert.ToInt32(TRAY_CARRIER.»õÎ»),
+                                    Carrier = Convert.ToInt32(TRAY_CARRIER.è´§ä½),
                                     SupplierId = subOrder.SupplierId,
                                     SupplierSiteId = subOrder.SupplierSiteId,
                                     PhyWarehouseId = pyId
@@ -284,12 +285,12 @@ namespace ApplicationCore.Services
                                 if (warehouseTray.MaterialCount > 0)
                                 {
                                     if (oldMaterials[0].MaterialDicId != subOrderRow.MaterialDicId)
-                                        throw new Exception("·Ö¼ğÎïÁÏÓëÔ­ÓĞÍĞÅÌÉÏµÄÎïÁÏ²»Ò»ÖÂ£¡");
+                                        throw new Exception("åˆ†æ‹£ç‰©æ–™ä¸åŸæœ‰æ‰˜ç›˜ä¸Šçš„ç‰©æ–™ä¸ä¸€è‡´ï¼");
                                     oldCount = warehouseTray.MaterialCount;
                                 }
 
                                 warehouseTray.MaterialCount = oldCount + sortingCount;
-                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.´ıÈë¿â);
+                                warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.å¾…å…¥åº“);
                                 warehouseTray.CreateTime = DateTime.Now;
 
                                 warehouseTray.SubOrderId = subOrderId;
@@ -332,15 +333,15 @@ namespace ApplicationCore.Services
 
                             pOrderRow.Sorting = pOrderRowSorting;
                             subOrderRow.Sorting = subOrderRowSorting;
-                            //¶©µ¥£¬¶©µ¥ĞĞÊıÁ¿¸üĞÂ
-                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                            //è®¢å•ï¼Œè®¢å•è¡Œæ•°é‡æ›´æ–°
+                            if (subOrder.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                             {
-                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                subOrder.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                             }
 
-                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                            if (subOrderRow.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                             {
-                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                             }
 
                             if (!subOrderRow.ReservoirAreaId.HasValue)
@@ -356,26 +357,23 @@ namespace ApplicationCore.Services
 
                         this._logRecordRepository.Add(new LogRecord
                         {
-                            LogType = Convert.ToInt32(LOG_TYPE.²Ù×÷ÈÕÖ¾),
-                            LogDesc = string.Format("¶©µ¥[{0}]³ö¿â,¶©µ¥ĞĞ[{1}],·Ö¼ğÊıÁ¿[{2}],·Ö¼ğÍĞÅÌ[{3}]",
+                            LogType = Convert.ToInt32(LOG_TYPE.æ“ä½œæ—¥å¿—),
+                            LogDesc = string.Format("è®¢å•[{0}]å‡ºåº“,è®¢å•è¡Œ[{1}],åˆ†æ‹£æ•°é‡[{2}],åˆ†æ‹£æ‰˜ç›˜[{3}]",
                                 subOrder.Id,
                                 subOrderRow.Id,
                                 subOrderRow.Sorting,
                                 trayCode),
                             CreateTime = DateTime.Now
                         });
-                        scope.Complete();
+                       
+
                     }
-                }
-                catch (Exception ex)
-                {
-                    this._logRecordRepository.Add(new LogRecord
+                    catch (Exception ex)
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
-                        LogDesc = ex.ToString(),
-                        CreateTime = DateTime.Now
-                    });
-                    throw ex;
+                        throw ex;
+                    }
+
+                    scope.Complete();
                 }
 
             }
@@ -390,54 +388,55 @@ namespace ApplicationCore.Services
 
             using (await ModuleLock.GetAsyncLock4().LockAsync())
             {
-                try
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                    try
                     {
 
-                        #region ÍË¿âÕ¼ÓÃĞ£Ñé
-                        // Ğ£Ñé¶©µ¥ĞĞ¿â´æÎïÁÏ
+
+                        #region é€€åº“å ç”¨æ ¡éªŒ
+                        // æ ¡éªŒè®¢å•è¡Œåº“å­˜ç‰©æ–™
                         foreach (var subOrderRow in order.SubOrderRow)
                         {
 
-                            // Í¬Ò»¸öOU¡¢¿â´æ×éÖ¯¡¢×Ó¿âÇø¡¢ÎïÁÏ±àÂë µÄ¿â´æÏÖÓĞÊıÁ¿×ÜºÍ
+                            // åŒä¸€ä¸ªOUã€åº“å­˜ç»„ç»‡ã€å­åº“åŒºã€ç‰©æ–™ç¼–ç  çš„åº“å­˜ç°æœ‰æ•°é‡æ€»å’Œ
                             double totalMaterialCount = 0;
 
                             List<WarehouseMaterial> warehouseMaterials = null;
-                            // Èë¿âÍê³ÉÔÚ»õ¼ÜÉÏµÄÎïÁÏ
+                            // å…¥åº“å®Œæˆåœ¨è´§æ¶ä¸Šçš„ç‰©æ–™
                             WarehouseMaterialSpecification inWarehouseMaterialSpec =
                                 new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
                                     null,
                                     null, null, null, null, null,
-                                    new List<int> { Convert.ToInt32(TRAY_STEP.Èë¿âÍê³É) }, null, order.OUId,
+                                    new List<int> { Convert.ToInt32(TRAY_STEP.å…¥åº“å®Œæˆ) }, null, order.OUId,
                                     order.WarehouseId, subOrderRow.ReservoirAreaId, null, null, null, null, null);
 
                             warehouseMaterials =
                                 this._warehouseMaterialRepository.List(inWarehouseMaterialSpec);
                             totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
 
-                            // ÕıÔÚÖ´ĞĞ³ö¿âÖĞ¡¢³ö¿âÍê³É´ıÈ·ÈÏµÄÎïÁÏ
+                            // æ­£åœ¨æ‰§è¡Œå‡ºåº“ä¸­ã€å‡ºåº“å®Œæˆå¾…ç¡®è®¤çš„ç‰©æ–™
                             WarehouseMaterialSpecification exeWarehouseMaterialSpec =
                                 new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
                                     null,
                                     null, null, null, null, null, new List<int>
                                     {
-                                            Convert.ToInt32(TRAY_STEP.´ı³ö¿â),
-                                            Convert.ToInt32(TRAY_STEP.³ö¿âÖĞÎ´Ö´ĞĞ),
-                                            Convert.ToInt32(TRAY_STEP.³ö¿âÖĞÒÑÖ´ĞĞ),
-                                            Convert.ToInt32(TRAY_STEP.³ö¿âÍê³ÉµÈ´ıÈ·ÈÏ)
+                                            Convert.ToInt32(TRAY_STEP.å¾…å‡ºåº“),
+                                            Convert.ToInt32(TRAY_STEP.å‡ºåº“ä¸­æœªæ‰§è¡Œ),
+                                            Convert.ToInt32(TRAY_STEP.å‡ºåº“ä¸­å·²æ‰§è¡Œ),
+                                            Convert.ToInt32(TRAY_STEP.å‡ºåº“å®Œæˆç­‰å¾…ç¡®è®¤)
                                     }, null, order.OUId, order.WarehouseId,
                                     subOrderRow.ReservoirAreaId, null, null, null, null, null);
                             warehouseMaterials = this._warehouseMaterialRepository.List(exeWarehouseMaterialSpec);
                             totalMaterialCount += (warehouseMaterials.Sum(t => t.MaterialCount) +
                                                    warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
 
-                            // ³ö¿âÍê³ÉÈ·ÈÏÍê³ÉµÄÎïÁÏ
+                            // å‡ºåº“å®Œæˆç¡®è®¤å®Œæˆçš„ç‰©æ–™
                             WarehouseMaterialSpecification outEndWarehouseMaterialSpec =
                                 new WarehouseMaterialSpecification(null, null, subOrderRow.MaterialDicId, null,
                                     null,
                                     null, null, null, null, null,
-                                    new List<int> { Convert.ToInt32(TRAY_STEP.³õÊ¼»¯) }, null, order.OUId,
+                                    new List<int> { Convert.ToInt32(TRAY_STEP.åˆå§‹åŒ–) }, null, order.OUId,
                                     order.WarehouseId,
                                     subOrderRow.ReservoirAreaId, null, null, null, null, null);
                             warehouseMaterials =
@@ -446,7 +445,7 @@ namespace ApplicationCore.Services
 
                             if (totalMaterialCount < subOrderRow.PreCount)
                                 throw new Exception(string.Format(
-                                    "ĞĞÉÏÎïÁÏ[{0}],ÍË¿âÊıÁ¿[{1}],¿â´æÏÖÓĞÁ¿[{2}],¿â´æÏÖÓĞÁ¿²»×ã,ÎŞ·¨ÍË¿â!",
+                                    "è¡Œä¸Šç‰©æ–™[{0}],é€€åº“æ•°é‡[{1}],åº“å­˜ç°æœ‰é‡[{2}],åº“å­˜ç°æœ‰é‡ä¸è¶³,æ— æ³•é€€åº“!",
                                     subOrderRow.MaterialDicId, subOrderRow.PreCount,
                                     totalMaterialCount));
 
@@ -456,44 +455,44 @@ namespace ApplicationCore.Services
                             null, null,
                             new List<int>
                             {
-                                    Convert.ToInt32(ORDER_TYPE.³ö¿âÍË¿â),
-                                    Convert.ToInt32(ORDER_TYPE.³ö¿âÁìÁÏ)
+                                    Convert.ToInt32(ORDER_TYPE.å‡ºåº“é€€åº“),
+                                    Convert.ToInt32(ORDER_TYPE.å‡ºåº“é¢†æ–™)
                             },
                             order.OUId, order.WarehouseId, null, null, null, null,
                             null,
                             null, null,
                             null,
                             new List<int>
-                                {Convert.ToInt32(ORDER_STATUS.´ı´¦Àí), Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ)}, null,
+                                {Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†), Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­)}, null,
                             null, null, null);
 
                         List<SubOrderRow> tkSubOrderRows = this._subOrderRowRepository.List(tkSubOrderRowSpec);
                         var tkSubOrderRowGroup = tkSubOrderRows.GroupBy(sr => new
                         { sr.SubOrder.OUId, sr.SubOrder.WarehouseId, sr.ReservoirAreaId, sr.MaterialDicId });
 
-                        // Ğ£Ñé¶©µ¥ĞĞÒÑÓĞ¶©µ¥Õ¼ÓÃ
+                        // æ ¡éªŒè®¢å•è¡Œå·²æœ‰è®¢å•å ç”¨
                         foreach (var subOrderRow in order.SubOrderRow)
                         {
                             foreach (var tkGroup in tkSubOrderRowGroup)
                             {
                                 var key = tkGroup.Key;
-                                //Ğ£ÑéÍ¬Ò»¸öOU¡¢¿â´æ×éÖ¯¡¢×Ó¿âÇø¡¢ÎïÁÏ±àÂëµÄ³ö¿âÁìÁÏµ¥ĞĞµÄÎïÁÏÊıÁ¿ÊÇ·ñĞ¡ÓÚÊ£ÓàÎïÁÏÊıÁ¿
+                                //æ ¡éªŒåŒä¸€ä¸ªOUã€åº“å­˜ç»„ç»‡ã€å­åº“åŒºã€ç‰©æ–™ç¼–ç çš„å‡ºåº“é¢†æ–™å•è¡Œçš„ç‰©æ–™æ•°é‡æ˜¯å¦å°äºå‰©ä½™ç‰©æ–™æ•°é‡
                                 if (subOrderRow.ReservoirAreaId ==
                                     key.ReservoirAreaId && subOrderRow.MaterialDicId == key.MaterialDicId)
                                 {
-                                    // ÁìÁÏµ¥ÓëÍË¿âµ¥³åÍ»
+                                    // é¢†æ–™å•ä¸é€€åº“å•å†²çª
                                     var totalTKOrderRowCount = tkGroup.Sum(m => m.PreCount);
 
-                                    // Í¬Ò»¸öOU¡¢¿â´æ×éÖ¯¡¢×Ó¿âÇø¡¢ÎïÁÏ±àÂë µÄ¿â´æÏÖÓĞÊıÁ¿×ÜºÍ
+                                    // åŒä¸€ä¸ªOUã€åº“å­˜ç»„ç»‡ã€å­åº“åŒºã€ç‰©æ–™ç¼–ç  çš„åº“å­˜ç°æœ‰æ•°é‡æ€»å’Œ
                                     double totalMaterialCount = 0;
 
                                     List<WarehouseMaterial> warehouseMaterials = null;
-                                    // Èë¿âÍê³ÉÔÚ»õ¼ÜÉÏµÄÎïÁÏ
+                                    // å…¥åº“å®Œæˆåœ¨è´§æ¶ä¸Šçš„ç‰©æ–™
                                     WarehouseMaterialSpecification inWarehouseMaterialSpec =
                                         new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
                                             null,
                                             null, null, null, null, null,
-                                            new List<int> { Convert.ToInt32(TRAY_STEP.Èë¿âÍê³É) }, null, key.OUId,
+                                            new List<int> { Convert.ToInt32(TRAY_STEP.å…¥åº“å®Œæˆ) }, null, key.OUId,
                                             key.WarehouseId,
                                             key.ReservoirAreaId, null, null, null, null, null);
 
@@ -501,16 +500,16 @@ namespace ApplicationCore.Services
                                         this._warehouseMaterialRepository.List(inWarehouseMaterialSpec);
                                     totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
 
-                                    // ÕıÔÚÖ´ĞĞ³ö¿âÖĞ¡¢³ö¿âÍê³É´ıÈ·ÈÏµÄÎïÁÏ
+                                    // æ­£åœ¨æ‰§è¡Œå‡ºåº“ä¸­ã€å‡ºåº“å®Œæˆå¾…ç¡®è®¤çš„ç‰©æ–™
                                     WarehouseMaterialSpecification exeWarehouseMaterialSpec =
                                         new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
                                             null,
                                             null, null, null, null, null, new List<int>
                                             {
-                                                    Convert.ToInt32(TRAY_STEP.´ı³ö¿â),
-                                                    Convert.ToInt32(TRAY_STEP.³ö¿âÖĞÎ´Ö´ĞĞ),
-                                                    Convert.ToInt32(TRAY_STEP.³ö¿âÖĞÒÑÖ´ĞĞ),
-                                                    Convert.ToInt32(TRAY_STEP.³ö¿âÍê³ÉµÈ´ıÈ·ÈÏ)
+                                                    Convert.ToInt32(TRAY_STEP.å¾…å‡ºåº“),
+                                                    Convert.ToInt32(TRAY_STEP.å‡ºåº“ä¸­æœªæ‰§è¡Œ),
+                                                    Convert.ToInt32(TRAY_STEP.å‡ºåº“ä¸­å·²æ‰§è¡Œ),
+                                                    Convert.ToInt32(TRAY_STEP.å‡ºåº“å®Œæˆç­‰å¾…ç¡®è®¤)
                                             }, null, key.OUId, key.WarehouseId,
                                             key.ReservoirAreaId, null, null, null, null, null);
                                     warehouseMaterials =
@@ -519,25 +518,25 @@ namespace ApplicationCore.Services
                                         (warehouseMaterials.Sum(t => t.MaterialCount) +
                                          warehouseMaterials.Sum(t => t.OutCount.GetValueOrDefault()));
 
-                                    // ³ö¿âÍê³ÉÈ·ÈÏÍê³ÉµÄÎïÁÏ
+                                    // å‡ºåº“å®Œæˆç¡®è®¤å®Œæˆçš„ç‰©æ–™
                                     WarehouseMaterialSpecification outEndWarehouseMaterialSpec =
                                         new WarehouseMaterialSpecification(null, null, key.MaterialDicId, null,
                                             null,
                                             null, null, null, null, null,
-                                            new List<int> { Convert.ToInt32(TRAY_STEP.³õÊ¼»¯) }, null, key.OUId,
+                                            new List<int> { Convert.ToInt32(TRAY_STEP.åˆå§‹åŒ–) }, null, key.OUId,
                                             key.WarehouseId,
                                             key.ReservoirAreaId, null, null, null, null, null);
                                     warehouseMaterials =
                                         this._warehouseMaterialRepository.List(outEndWarehouseMaterialSpec);
                                     totalMaterialCount += warehouseMaterials.Sum(t => t.MaterialCount);
 
-                                    //Í¬Ò»¸öOU¡¢¿â´æ×éÖ¯¡¢×Ó¿âÇø¡¢ÎïÁÏ±àÂë Ê£ÓàµÄÊıÁ¿×ÜºÍ (¿â´æÎïÁÏÊıÁ¿-ÍË¿â¶©µ¥ĞĞÎïÁÏÊıÁ¿)
+                                    //åŒä¸€ä¸ªOUã€åº“å­˜ç»„ç»‡ã€å­åº“åŒºã€ç‰©æ–™ç¼–ç  å‰©ä½™çš„æ•°é‡æ€»å’Œ (åº“å­˜ç‰©æ–™æ•°é‡-é€€åº“è®¢å•è¡Œç‰©æ–™æ•°é‡)
                                     double surplusTotalMaterialCount = totalMaterialCount - totalTKOrderRowCount;
 
                                     if (surplusTotalMaterialCount < subOrderRow.PreCount)
                                     {
                                         throw new Exception(string.Format(
-                                            "ĞĞÉÏÎïÁÏ[{0}],ÍË¿âºÍÁìÁÏÊıÁ¿[{1}],¿â´æÏÖÓĞÁ¿[{2}],¿â´æÏÖÓĞÁ¿²»×ã,ÎŞ·¨ÍË¿â!",
+                                            "è¡Œä¸Šç‰©æ–™[{0}],é€€åº“å’Œé¢†æ–™æ•°é‡[{1}],åº“å­˜ç°æœ‰é‡[{2}],åº“å­˜ç°æœ‰é‡ä¸è¶³,æ— æ³•é€€åº“!",
                                             subOrderRow.MaterialDicId, totalTKOrderRowCount,
                                             surplusTotalMaterialCount));
                                     }
@@ -554,7 +553,7 @@ namespace ApplicationCore.Services
                         SubOrder subOrder = subOrders[0];
                         if (subOrder.IsBack == 0)
                         {
-                            throw new Exception(string.Format("µ±Ç°Èë¿â¶©µ¥ÎŞ·¨ÔÚ½øĞĞ²ğ·ÖÍË¿âµ¥²Ù×÷!"));
+                            throw new Exception(string.Format("å½“å‰å…¥åº“è®¢å•æ— æ³•åœ¨è¿›è¡Œæ‹†åˆ†é€€åº“å•æ“ä½œ!"));
                         }
 
                         List<SubOrderRow> updOrderRows = new List<SubOrderRow>();
@@ -571,12 +570,12 @@ namespace ApplicationCore.Services
                             Guard.Against.Zero(orderRows.Count, nameof(orderRows));
                             SubOrderRow orderRow = orderRows.First();
                             if (subOrderRow.PreCount <= 0)
-                                throw new Exception(string.Format("¶©µ¥ĞĞ[{0}]ÊıÁ¿[{1}],²»ÊÇÓĞĞ§µÄÊı×Ö!",
+                                throw new Exception(string.Format("è®¢å•è¡Œ[{0}]æ•°é‡[{1}],ä¸æ˜¯æœ‰æ•ˆçš„æ•°å­—!",
                                     subOrderRow.OrderRowId, subOrderRow.PreCount));
                             string str8 = string.Format("{0:F15}", (orderRow.PreCount - orderRow.Expend.GetValueOrDefault()));
                             double ss = Double.Parse(str8);
                             if (subOrderRow.PreCount > ss)
-                                throw new Exception(string.Format("ĞĞÊıÁ¿´óÓÚÇ°ÖÃ¶©µ¥ĞĞ[{0}]Ê£ÓàÊıÁ¿[{1}]",
+                                throw new Exception(string.Format("è¡Œæ•°é‡å¤§äºå‰ç½®è®¢å•è¡Œ[{0}]å‰©ä½™æ•°é‡[{1}]",
                                     subOrderRow.Id, ss));
                             double expend = orderRow.Expend.GetValueOrDefault();
                             expend += subOrderRow.PreCount;
@@ -587,7 +586,7 @@ namespace ApplicationCore.Services
                         if (updOrderRows.Count > 0)
                             this._subOrderRowRepository.Update(updOrderRows);
 
-                        #region Ğ£ÑéÈë¿âµ¥ÍË¿â½áÊø²Ù×÷
+                        #region æ ¡éªŒå…¥åº“å•é€€åº“ç»“æŸæ“ä½œ
                         SubOrderRowSpecification subOrderRowSpec = new SubOrderRowSpecification(null, order.Id, null, null, null, null, null,
                             null, null, null, null, null, null, null, null, null, null, null, null, null);
                         List<SubOrderRow> subOrderRows = this._subOrderRowRepository.List(subOrderRowSpec);
@@ -615,24 +614,20 @@ namespace ApplicationCore.Services
                         this._subOrderRowRepository.Add(order.SubOrderRow);
                         this._logRecordRepository.Add(new LogRecord
                         {
-                            LogType = Convert.ToInt32(LOG_TYPE.²Ù×÷ÈÕÖ¾),
-                            LogDesc = string.Format("ĞÂ½¨ºóÖÃÍË¿â¶©µ¥[{0}]!", newSubOrder.Id),
+                            LogType = Convert.ToInt32(LOG_TYPE.æ“ä½œæ—¥å¿—),
+                            LogDesc = string.Format("æ–°å»ºåç½®é€€åº“è®¢å•[{0}]!", newSubOrder.Id),
                             CreateTime = DateTime.Now
                         });
-                        scope.Complete();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this._logRecordRepository.Add(new LogRecord
-                    {
-                        LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
-                        LogDesc = ex.Message,
-                        CreateTime = DateTime.Now
-                    });
-                    throw ex;
-                }
+                       
 
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                    scope.Complete();
+                }
             }
         }
 
@@ -644,16 +639,18 @@ namespace ApplicationCore.Services
             Guard.Against.Zero(order.SubOrderRow.Count, nameof(order.SubOrderRow));
             using (await ModuleLock.GetAsyncLock4().LockAsync())
             {
-                try
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                 {
-                    using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                    try
                     {
+
 
                         List<OrderRow> updOrderRows = new List<OrderRow>();
                         List<Order> updOrders = new List<Order>();
+
                         foreach (var subOrderRow in order.SubOrderRow)
                         {
-                            //Guard.Against.Null(subOrderRow.OrderRowId, nameof(subOrderRow.OrderRowId));
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
@@ -666,32 +663,32 @@ namespace ApplicationCore.Services
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
                                 OrderRow orderRow = orderRows.First();
 
-                                if (orderRow.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                                if (orderRow.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                                 {
-                                    orderRow.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                    orderRow.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                                 }
                                 Order curOrder = orderRow.Order;
-                                if (curOrder.Status == Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
+                                if (curOrder.Status == Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
                                 {
-                                    curOrder.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
+                                    curOrder.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
                                     updOrders.Add(curOrder);
                                 }
 
                                 if (subOrderRow.PreCount <= 0)
-                                    throw new Exception(string.Format("¶©µ¥ĞĞ[{0}]ÊıÁ¿[{1}],²»ÊÇÓĞĞ§µÄÊı×Ö!",
+                                    throw new Exception(string.Format("è®¢å•è¡Œ[{0}]æ•°é‡[{1}],ä¸æ˜¯æœ‰æ•ˆçš„æ•°å­—!",
                                         subOrderRow.OrderRowId, subOrderRow.PreCount));
                                 double jstkCount = 0;
 
-                                // ½ÓÊÕÍË¿âµÄÊıÁ¿
+                                // æ¥æ”¶é€€åº“çš„æ•°é‡
                                 OrderRowRelatedSpecification jstlOrderRowSpecification = new OrderRowRelatedSpecification(
-                                   new List<int> { Convert.ToInt32(ORDER_TYPE.½ÓÊÕÍËÁÏ) }, orderRow.SourceId);
+                                   new List<int> { Convert.ToInt32(ORDER_TYPE.æ¥æ”¶é€€æ–™) }, orderRow.SourceId);
                                 List<OrderRow> jstlOrderRows = this._orderRowRepository.List(jstlOrderRowSpecification);
                                 jstkCount = jstlOrderRows.Sum(t => t.PreCount);
                                 double orderRowExpendCount = (orderRow.PreCount - (orderRow.Expend.GetValueOrDefault() + jstkCount + orderRow.CancelCount.GetValueOrDefault()));
                                 string str8 = string.Format("{0:F15}", orderRowExpendCount);
                                 double ss = Double.Parse(str8);
                                 if (subOrderRow.PreCount > ss)
-                                    throw new Exception(string.Format("ĞĞÊıÁ¿´óÓÚÇ°ÖÃ¶©µ¥ĞĞ[{0}]ÊıÁ¿,Ê£ÓàĞĞÊıÁ¿[{1}]",
+                                    throw new Exception(string.Format("è¡Œæ•°é‡å¤§äºå‰ç½®è®¢å•è¡Œ[{0}]æ•°é‡,å‰©ä½™è¡Œæ•°é‡[{1}]",
                                         subOrderRow.OrderRowId, ss));
                                 double expend = orderRow.Expend.GetValueOrDefault();
                                 expend += subOrderRow.PreCount;
@@ -706,26 +703,64 @@ namespace ApplicationCore.Services
                             this._orderRepository.Update(updOrders);
                         SubOrder newSubOrder = this._subOrderRepository.Add(order);
                         order.SubOrderRow.ForEach(or => or.SubOrderId = newSubOrder.Id);
-                        this._subOrderRowRepository.Add(order.SubOrderRow);
+                        List<SubOrderRow> resultRow = new List<SubOrderRow>();
+
+                        // è¿‡æ»¤æ²¡æœ‰çš„ç‰©æ–™
+                        if (order.OrderTypeId == Convert.ToInt32(ORDER_TYPE.å‡ºåº“é¢†æ–™))
+                        {
+                            foreach (var sor in order.SubOrderRow)
+                            {
+                                WarehouseMaterialSpecification warehouseMaterialSpecification =
+                                   new WarehouseMaterialSpecification(null, null,
+                                       sor.MaterialDicId, null, null, null,
+                                       null, null, null, null,
+                                       new List<int>
+                                       {
+                                             Convert.ToInt32(TRAY_STEP.å…¥åº“å®Œæˆ),
+                                             Convert.ToInt32(TRAY_STEP.åˆå§‹åŒ–)
+                                       }, null, null, null, sor.ReservoirAreaId, null,
+                                       null, null, null, null);
+                                List<WarehouseMaterial> allWarehouseMaterials =
+                                    this._warehouseMaterialRepository.List(warehouseMaterialSpecification);
+
+                                if (allWarehouseMaterials.Count == 0)
+                                {
+                                    this._logRecordRepository.Add(new LogRecord
+                                    {
+                                        LogType = Convert.ToInt32(LOG_TYPE.å¼‚å¸¸æ—¥å¿—),
+                                        LogDesc = string.Format("è¡Œ[{0}],åº“å­˜ä¸è¶³,å·²å¿½ç•¥!", sor.Id),
+                                        CreateTime = DateTime.Now
+                                    });
+                                    sb.Append(string.Format("è¡Œ[{0}],åº“å­˜ä¸è¶³,å·²å¿½ç•¥!\n", sor.Id));
+                                }
+                                else
+                                {
+                                    resultRow.Add(sor);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            resultRow.AddRange(order.SubOrderRow);
+                        }
+                        this._subOrderRowRepository.Add(resultRow);
+
                         this._logRecordRepository.Add(new LogRecord
                         {
-                            LogType = Convert.ToInt32(LOG_TYPE.²Ù×÷ÈÕÖ¾),
-                            LogDesc = string.Format("ĞÂ½¨ºóÖÃ¶©µ¥[{0}]!", newSubOrder.Id),
+                            LogType = Convert.ToInt32(LOG_TYPE.æ“ä½œæ—¥å¿—),
+                            LogDesc = string.Format("æ–°å»ºåç½®è®¢å•[{0}]!", newSubOrder.Id),
                             CreateTime = DateTime.Now
                         });
-                        scope.Complete();
                     }
-                }
-                catch (Exception ex)
-                {
-                    this._logRecordRepository.Add(new LogRecord
+                    catch (Exception ex)
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
-                        LogDesc = ex.Message,
-                        CreateTime = DateTime.Now
-                    });
-                    throw ex;
+                        throw ex;
+                    }
+                    scope.Complete();
                 }
+
+                if (!String.IsNullOrEmpty(sb.ToString()))
+                     throw new Exception("è­¦å‘Š:\n"+sb.ToString());
             }
         }
 
@@ -741,31 +776,31 @@ namespace ApplicationCore.Services
                     {
 
                         SubOrderSpecification subOrderSpecification = new SubOrderSpecification(new List<int> { order.Id }, null,
-                            null, null, null, null, null, null, null, null, null, null, null, null, null,
+                            null, null, null, null, null, null, null, null, null, null, null,null,null,
                             null, null, null, null, null);
                         List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                         Guard.Against.Zero(subOrders.Count, nameof(subOrders));
                         SubOrder subOrder = subOrders.First();
 
-                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
-                            throw new Exception(string.Format("¶©µ¥[{0}]×´Ì¬±ØĞëÎª´ı´¦Àí²ÅÄÜ×÷·Ï!", subOrder.Id));
-                        subOrder.Status = Convert.ToInt32(ORDER_STATUS.¹Ø±Õ);
+                        if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
+                            throw new Exception(string.Format("è®¢å•[{0}]çŠ¶æ€å¿…é¡»ä¸ºå¾…å¤„ç†æ‰èƒ½ä½œåºŸ!", subOrder.Id));
+                        subOrder.Status = Convert.ToInt32(ORDER_STATUS.å…³é—­);
 
                         SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
-                            subOrder.Id, null, null, null, null, null, null, null, null, null
-                            , null, null, null, null, null, null, null, null, null);
+                            subOrder.Id, null, null, null, null, null, null, null, null,null
+                            , null, null, null, null, null, null, null,null,null);
                         List<SubOrderRow> subOrderRows =
                             this._subOrderRowRepository.List(subOrderRowSpecification);
                         List<OrderRow> updOrderRows = new List<OrderRow>();
                         foreach (var subOrderRow in subOrderRows)
                         {
-                            if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
-                                throw new Exception(string.Format("¶©µ¥ĞĞ[{0}]×´Ì¬±ØĞëÎª´ı´¦Àí²ÅÄÜ×÷·Ï!", subOrderRow.Id));
-                            subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.¹Ø±Õ);
+                            if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
+                                throw new Exception(string.Format("è®¢å•è¡Œ[{0}]çŠ¶æ€å¿…é¡»ä¸ºå¾…å¤„ç†æ‰èƒ½ä½œåºŸ!", subOrderRow.Id));
+                            subOrderRow.Status = Convert.ToInt32(ORDER_STATUS.å…³é—­);
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() }, null, null, null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() },null, null,null,
                                     null, null, null, null, null, null,
                                     null, null, null, null, null, null, null
                                     , null, null);
@@ -789,7 +824,7 @@ namespace ApplicationCore.Services
                 {
                     this._logRecordRepository.Add(new LogRecord
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
+                        LogType = Convert.ToInt32(LOG_TYPE.å¼‚å¸¸æ—¥å¿—),
                         LogDesc = ex.Message,
                         CreateTime = DateTime.Now
                     });
@@ -813,19 +848,19 @@ namespace ApplicationCore.Services
                         foreach (var sr in subOrderRows)
                         {
                             SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(new List<int> { sr.Id },
-                                null, null, null, null
+                                null,null,null,null
                                 , null, null, null, null, null, null, null, null
                                 , null, null, null, null, null, null, null);
                             List<SubOrderRow> findSubOrderRows =
                                 this._subOrderRowRepository.List(subOrderRowSpecification);
                             SubOrderRow subOrderRow = findSubOrderRows.First();
-                            if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
-                                throw new Exception(string.Format("¶©µ¥ĞĞ[{0}]×´Ì¬±ØĞëÎª´ı´¦Àí²ÅÄÜ×÷·Ï!", subOrderRow.Id));
-                            sr.Status = Convert.ToInt32(ORDER_STATUS.¹Ø±Õ);
+                            if (subOrderRow.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
+                                throw new Exception(string.Format("è®¢å•è¡Œ[{0}]çŠ¶æ€å¿…é¡»ä¸ºå¾…å¤„ç†æ‰èƒ½ä½œåºŸ!", subOrderRow.Id));
+                            sr.Status = Convert.ToInt32(ORDER_STATUS.å…³é—­);
                             if (subOrderRow.OrderRowId.HasValue)
                             {
                                 OrderRowSpecification orderRowSpecification = new OrderRowSpecification(
-                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() }, null, null, null, null, null, null, null, null, null, null,
+                                    new List<int> { subOrderRow.OrderRowId.GetValueOrDefault() }, null,null, null, null, null, null, null, null,null,null,
                                     null, null, null, null, null, null, null, null);
                                 List<OrderRow> orderRows = this._orderRowRepository.List(orderRowSpecification);
                                 Guard.Against.Zero(orderRows.Count, nameof(orderRows));
@@ -845,7 +880,7 @@ namespace ApplicationCore.Services
                 {
                     this._logRecordRepository.Add(new LogRecord
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
+                        LogType = Convert.ToInt32(LOG_TYPE.å¼‚å¸¸æ—¥å¿—),
                         LogDesc = ex.Message,
                         CreateTime = DateTime.Now
                     });
@@ -858,26 +893,26 @@ namespace ApplicationCore.Services
         {
             Guard.Against.Zero(subOrderId, nameof(subOrderId));
             Guard.Against.Zero(pyId, nameof(pyId));
-
-            try
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
-                using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                try
                 {
+
                     PhyWarehouseSpecification phyWarehouseSpec = new PhyWarehouseSpecification(pyId, null);
                     List<PhyWarehouse> phyWarehouses = this._phyWarehouseRepository.List(phyWarehouseSpec);
                     if (phyWarehouses.Count == 0)
-                        throw new Exception(string.Format("²Ö¿â[{0}],²»´æÔÚ!", phyWarehouses[0].Id));
+                        throw new Exception(string.Format("ä»“åº“[{0}],ä¸å­˜åœ¨!", phyWarehouses[0].Id));
                     SubOrderSpecification subOrderSpecification = new SubOrderSpecification(new List<int> { subOrderId }, null,
                         null, null, null, null,
                         null, null, null, null, null, null, null, null, null, null, null,
                         null, null, null);
                     List<SubOrder> subOrders = this._subOrderRepository.List(subOrderSpecification);
                     if (subOrders.Count == 0)
-                        throw new Exception(string.Format("¶©µ¥[{0}],²»´æÔÚ!", subOrders[0].Id));
+                        throw new Exception(string.Format("è®¢å•[{0}],ä¸å­˜åœ¨!", subOrders[0].Id));
                     Guard.Against.Zero(subOrders.Count, nameof(subOrders));
                     SubOrder subOrder = subOrders.First();
-                    if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.´ı´¦Àí))
-                        throw new Exception(string.Format("Ö»ÄÜ´¦Àí×´Ì¬Îª[´ı´¦Àí]µÄ¶©µ¥,µ±Ç°µÄ¶©µ¥×´Ì¬Îª[{0}]",
+                    if (subOrder.Status != Convert.ToInt32(ORDER_STATUS.å¾…å¤„ç†))
+                        throw new Exception(string.Format("åªèƒ½å¤„ç†çŠ¶æ€ä¸º[å¾…å¤„ç†]çš„è®¢å•,å½“å‰çš„è®¢å•çŠ¶æ€ä¸º[{0}]",
                             Enum.GetName(typeof(ORDER_STATUS), subOrder.Status)));
                     SubOrderRowSpecification subOrderRowSpecification = new SubOrderRowSpecification(null,
                         subOrderId, null, null, null,
@@ -887,56 +922,52 @@ namespace ApplicationCore.Services
                         this._subOrderRowRepository.List(subOrderRowSpecification);
                     Guard.Against.Zero(subOrderRows.Count, nameof(subOrderRows));
                     List<SysConfig> sysConfigs = this._sysConfigRepository.ListAll();
-                    SysConfig config = sysConfigs.Find(s => s.KName == "³öÈë¿âÎ¨Ò»Ğ£Ñé");
+                    SysConfig config = sysConfigs.Find(s => s.KName == "å‡ºå…¥åº“å”¯ä¸€æ ¡éªŒ");
                     if (config.KVal == "1")
                     {
                         InOutTaskSpecification inOutTaskSpecification = new InOutTaskSpecification(null, null,
                             null, null, null,
                             new List<int>
                             {
-                                Convert.ToInt32(TASK_STATUS.´ı´¦Àí),
-                                Convert.ToInt32(TASK_STATUS.Ö´ĞĞÖĞ)
+                                Convert.ToInt32(TASK_STATUS.å¾…å¤„ç†),
+                                Convert.ToInt32(TASK_STATUS.æ‰§è¡Œä¸­)
                             }, null,
-                            new List<int> { Convert.ToInt32(TASK_TYPE.ÎïÁÏÈë¿â), Convert.ToInt32(TASK_TYPE.¿ÕÍĞÅÌÈë¿â) },
+                            new List<int> { Convert.ToInt32(TASK_TYPE.ç‰©æ–™å…¥åº“), Convert.ToInt32(TASK_TYPE.ç©ºæ‰˜ç›˜å…¥åº“) },
                             null,
                             null, null, null, phyWarehouses[0].Id, null, null, null, null);
                         List<InOutTask> inOutTasks =
                             this._inOutTaskRepository.List(inOutTaskSpecification);
                         if (inOutTasks.Count > 0)
-                            throw new Exception("µ±Ç°ÏµÍ³ÅäÖÃÁË[³öÈë¿âÎ¨Ò»ĞÔĞ£Ñé],µ±Ç°ÓĞÕıÔÚÖ´ĞĞµÄÈë¿âÈÎÎñ,ÎŞ·¨Ö´ĞĞ³ö¿â²Ù×÷!");
+                            throw new Exception("å½“å‰ç³»ç»Ÿé…ç½®äº†[å‡ºå…¥åº“å”¯ä¸€æ€§æ ¡éªŒ],å½“å‰æœ‰æ­£åœ¨æ‰§è¡Œçš„å…¥åº“ä»»åŠ¡,æ— æ³•æ‰§è¡Œå‡ºåº“æ“ä½œ!");
                     }
 
-                    subOrder.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ);
-                    subOrder.IsRead = Convert.ToInt32(ORDER_READ.Î´¶Á);
+                    subOrder.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­);
+                    subOrder.IsRead = Convert.ToInt32(ORDER_READ.æœªè¯»);
                     this._subOrderRepository.Update(subOrder);
-                    subOrderRows.ForEach(r => r.Status = Convert.ToInt32(ORDER_STATUS.Ö´ĞĞÖĞ));
+                    subOrderRows.ForEach(r => r.Status = Convert.ToInt32(ORDER_STATUS.æ‰§è¡Œä¸­));
                     this._subOrderRowRepository.Update(subOrderRows);
 
                     this._logRecordRepository.Add(new LogRecord
                     {
-                        LogType = Convert.ToInt32(LOG_TYPE.²Ù×÷ÈÕÖ¾),
-                        LogDesc = "³ö¿â¶©µ¥È·ÈÏ!",
+                        LogType = Convert.ToInt32(LOG_TYPE.æ“ä½œæ—¥å¿—),
+                        LogDesc = "å‡ºåº“è®¢å•ç¡®è®¤!",
                         CreateTime = DateTime.Now
                     });
 
-                    scope.Complete();
-
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
 
-            }
-            catch (Exception ex)
-            {
-                this._logRecordRepository.Add(new LogRecord
-                {
-                    LogType = Convert.ToInt32(LOG_TYPE.Òì³£ÈÕÖ¾),
-                    LogDesc = ex.Message,
-                    CreateTime = DateTime.Now
-                });
-                throw ex;
+
+                scope.Complete();
+
+
             }
 
         }
 
-
+       
     }
 }
