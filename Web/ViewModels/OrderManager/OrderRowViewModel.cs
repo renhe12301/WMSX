@@ -72,5 +72,9 @@ namespace Web.ViewModels.OrderManager
         public string ExpenditureType { get; set; }
 
         public int EmployeeId { get; set; }
+
+        public string ApplyUserCode { get; set; }
+
+        public string ApproveUserCode { get; set; }
     }
 }

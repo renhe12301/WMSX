@@ -58,21 +58,21 @@ namespace Web.Jobs
 
                     warehouseTrays.ForEach(tray =>
                     {
-
-                        try
+                        using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
                         {
-                            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+                            try
                             {
+
                                 string srcId = tray.Location.SysCode;
 
                                 int pyId = tray.PhyWarehouseId.Value;
 
                                 LocationSpecification locationSpec = new LocationSpecification(null, null, null,
-                                    new List<int> {Convert.ToInt32(LOCATION_TYPE.仓库区货位)}, pyId, null,
+                                    new List<int> { Convert.ToInt32(LOCATION_TYPE.仓库区货位) }, pyId, null,
                                     null, null,
-                                    new List<int> {Convert.ToInt32(LOCATION_STATUS.正常)},
-                                    new List<int> {Convert.ToInt32(LOCATION_INSTOCK.无货)},
-                                    new List<int> {Convert.ToInt32(LOCATION_TASK.没有任务)},
+                                    new List<int> { Convert.ToInt32(LOCATION_STATUS.正常) },
+                                    new List<int> { Convert.ToInt32(LOCATION_INSTOCK.无货) },
+                                    new List<int> { Convert.ToInt32(LOCATION_TASK.没有任务) },
                                     null, null, null);
 
                                 List<Location> locations = this._locationRepository.List(locationSpec);
@@ -128,21 +128,20 @@ namespace Web.Jobs
                                 this._locationRepository.Update(tray.Location);
                                 this._warehouseTrayRepository.Update(tray);
                                 this._inOutTaskRepository.Add(inOutTask);
-                                
-                                scope.Complete();
+
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            this._logRecordRepository.Add(new LogRecord
+                            catch (Exception ex)
                             {
-                                LogType = Convert.ToInt32(LOG_TYPE.异常日志),
-                                LogDesc = ex.Message,
-                                CreateTime = DateTime.Now
-                            });
+                                this._logRecordRepository.Add(new LogRecord
+                                {
+                                    LogType = Convert.ToInt32(LOG_TYPE.异常日志),
+                                    LogDesc = ex.Message,
+                                    CreateTime = DateTime.Now
+                                });
 
+                            }
+                            scope.Complete();
                         }
-
                     });
                 }
                 catch (Exception ex)

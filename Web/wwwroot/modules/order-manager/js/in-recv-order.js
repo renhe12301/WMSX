@@ -223,12 +223,6 @@ $(function () {
                     align: 'center'
                 },
                 {
-                    title: 'EBS项目',
-                    field: 'ProjectName',
-                    valign: 'middle',
-                    align: 'center'
-                },
-                {
                     title: '状态',
                     field: 'StatusStr',
                     valign: 'middle',
@@ -338,8 +332,14 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: 'EBS项目',
+                    field: 'EBSProjectId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: 'EBS任务',
-                    field: 'EBSTaskName',
+                    field: 'EBSTaskId',
                     valign: 'middle',
                     align: 'center'
                 },

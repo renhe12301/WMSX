@@ -197,7 +197,7 @@ $(function () {
                 },
                 {
                     title: 'EBS项目',
-                    field: 'ProjectName',
+                    field: 'EBSProjectId',
                     valign: 'middle',
                     align: 'center'
                 },
@@ -318,7 +318,7 @@ $(function () {
                 },
                 {
                     title: 'EBS任务',
-                    field: 'EBSTaskName',
+                    field: 'EBSTaskId',
                     valign: 'middle',
                     align: 'center'
                 },

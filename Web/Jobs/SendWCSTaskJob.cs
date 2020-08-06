@@ -45,6 +45,7 @@ namespace Web.Jobs
                     string wcsUrl = ot.PhyWarehouse.Memo;
                     try
                     {
+                        if (string.IsNullOrEmpty(wcsUrl)) continue;
                         dynamic taskGroup = new ExpandoObject();
                         taskGroup.groupId = Guid.NewGuid().ToString();
                         taskGroup.msgTime = DateTime.Now.Ticks.ToString();

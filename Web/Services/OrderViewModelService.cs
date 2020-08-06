@@ -281,8 +281,10 @@ namespace Web.Services
                         Memo = e.Memo,
                         OwnerType = e.OwnerType,
                         ExpenditureType = e.ExpenditureType,
-                        EmployeeId = e.Order.EmployeeId
-                    };
+                        EmployeeId = e.Order.EmployeeId,
+                        ApplyUserCode = e.Order?.ApplyUserCode,
+                        ApproveUserCode = e.Order?.ApproveUserCode
+                };
                     if (e.Status.HasValue)
                         orderRowViewModel.StatusStr = Enum.GetName(typeof(ORDER_STATUS), e.Status);
                     if (e.EBSTaskId.HasValue) 
@@ -299,18 +301,18 @@ namespace Web.Services
                             orderRowViewModel.EBSTaskId = e.EBSTaskId.GetValueOrDefault();
                         }
                     }
-                    if (e.Order.EBSProjectId.HasValue)
+                    if (e.EBSProjectId.HasValue)
                     {
-                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.Order.EBSProjectId, null, null, null, null, null, null);
+                        EBSProjectSpecification eBSProjectSpec = new EBSProjectSpecification(e.EBSProjectId, null, null, null, null, null, null);
                         List<EBSProject> eBSProjects = this._ebsProjectRepository.List(eBSProjectSpec);
                         if (eBSProjects.Count > 0)
                         {
-                            orderRowViewModel.EBSProjectId = e.Order.EBSProjectId.GetValueOrDefault();
+                            orderRowViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                             orderRowViewModel.ProjectName = eBSProjects[0].ProjectName;
                         }
                         else 
                         {
-                            orderRowViewModel.EBSProjectId = e.Order.EBSProjectId.GetValueOrDefault();
+                            orderRowViewModel.EBSProjectId = e.EBSProjectId.GetValueOrDefault();
                         }
                     }
                     if (!string.IsNullOrEmpty(e.OwnerType))

@@ -172,6 +172,12 @@ $(function () {
                     align: 'center'
                 },
                 {
+                    title: 'EBS项目',
+                    field: 'EBSProjectId',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
                     title: '状态',
                     field: 'StatusStr',
                     valign: 'middle',
@@ -421,6 +427,12 @@ $(function () {
                 {
                     title: '出库数量',
                     field: 'RealityCount',
+                    valign: 'middle',
+                    align: 'center'
+                },
+                {
+                    title: 'EBS任务',
+                    field: 'EBSTaskId',
                     valign: 'middle',
                     align: 'center'
                 },
