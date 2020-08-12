@@ -331,6 +331,23 @@ namespace Web.Services
             return response;
         }
 
+        public async Task<ResponseResultViewModel> SortingNoneOrder(string materialCode, double sortingCount, string trayCode, int areaId, int pyId)
+        {
+            ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
+            try
+            {
+                await this._subOrderService.SortingNoneOrder(materialCode, sortingCount, trayCode, areaId, pyId);
+            }
+            catch (Exception ex)
+            {
+                response.Code = 500;
+                response.Data = ex.Message;
+            }
+
+            return response;
+        }
+    
+
         public async Task<ResponseResultViewModel> CreateOrder(SubOrderViewModel subOrderViewModel)
         {
             ResponseResultViewModel response = new ResponseResultViewModel { Code = 200 };
@@ -562,5 +579,7 @@ namespace Web.Services
             }
             return response;
         }
+
+     
     }
 }

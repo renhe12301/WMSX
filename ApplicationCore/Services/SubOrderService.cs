@@ -85,7 +85,7 @@ namespace ApplicationCore.Services
                 {
                     try
                     {
-
+                      
                         var subOrderSpec = new SubOrderSpecification(new List<int> { subOrderId }, null, null, null, null,
                             null, null, null, null, null, null, null, null, null, null,
                             null, null, null, null, null);
@@ -968,6 +968,208 @@ namespace ApplicationCore.Services
 
         }
 
-       
+        public async Task SortingNoneOrder(string materialCode, double sortingCount, string trayCode, int areaId, int pyId)
+        {
+
+            Guard.Against.Zero(sortingCount, nameof(sortingCount));
+            Guard.Against.Zero(areaId, nameof(areaId));
+            Guard.Against.Zero(pyId, nameof(pyId));
+            Guard.Against.NullOrEmpty(trayCode, nameof(trayCode));
+            Guard.Against.NullOrEmpty(materialCode, nameof(materialCode));
+
+
+            using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    var areaSpec = new ReservoirAreaSpecification(areaId, null, null, null, null, null);
+                    var areas = this._reservoirAreaRepository.List(areaSpec);
+                    if (areas.Count == 0) throw new Exception(string.Format("子库存编号[{0}],不存在！", areaId));
+                    var area = areas[0];
+                    var materialDicSpec = new MaterialDicSpecification(null, materialCode, null, null, null);
+                    var materialDics = this._materialDicRepository.List(materialDicSpec);
+                    if (materialDics.Count == 0)
+                        throw new Exception(string.Format("物料字典[{0}]),不存在！", materialCode));
+
+                    WarehouseSpecification warehouseSpec =
+                       new WarehouseSpecification(area.WarehouseId, null, null, null);
+                    List<Warehouse> warehouses = this._warehouseRepository.List(warehouseSpec);
+                    if (warehouses.Count == 0)
+                        throw new Exception(string.Format("子库区[{0}]对应的库存组织[{1}]不存在!", area.WarehouseId));
+
+                    MaterialDic materialDic = materialDics[0];
+
+                    var warehouseTraySpec = new WarehouseTraySpecification(null, trayCode, null, null, null,
+                        null,
+                        null, null, null, null, null, null);
+
+                    var whTrays = this._warehouseTrayRepository.List(warehouseTraySpec);
+
+                    if (whTrays.Count > 0 && whTrays[0].MaterialCount > 0)
+                    {
+                        WarehouseMaterialSpecification warehouseMaterialSpec = new WarehouseMaterialSpecification(null, null, null, null, null,
+                            null, whTrays[0].Id, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                        List<WarehouseMaterial> warehouseMaterials = this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+                        if (warehouseMaterials.Count > 0)
+                        {
+                            if (warehouseMaterials[0].MaterialDic.MaterialCode != materialCode)
+                                throw new Exception(string.Format("托盘上物料[{0}]与分拣物料[{1}]不一致!",
+                                                    warehouseMaterials[0].MaterialDic.MaterialCode, materialCode));
+                        }
+                        if (whTrays[0].ReservoirAreaId != areaId)
+                        {
+                            throw new Exception(string.Format("托盘[{0}]绑定的子库区[{1}]与当前子库区[{2}]不一致!",
+                                trayCode, whTrays[0].ReservoirAreaId, areaId));
+                        }
+
+                    }
+
+                    if (whTrays.Count > 0 && whTrays[0].TrayStep == Convert.ToInt32(TRAY_STEP.待入库))
+                    {
+                        var sortingTray = whTrays[0];
+                        var srcTrayCount = sortingTray.MaterialCount + sortingTray.OutCount.GetValueOrDefault();
+                        sortingTray.MaterialCount = sortingCount + (sortingTray.OutCount.GetValueOrDefault() < 0
+                            ? sortingTray.OutCount.GetValueOrDefault() * -1
+                            : sortingTray.OutCount.GetValueOrDefault());
+
+                        WarehouseMaterialSpecification warehouseMaterialSpec =
+                            new WarehouseMaterialSpecification(
+                                null,
+                                null, null, null, null, null, sortingTray.Id, null,
+                                null, null, null, null, null, null, null,
+                                null, null, null, null, null);
+
+                        List<WarehouseMaterial> oldMaterials =
+                            this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+
+                        if (oldMaterials.Count > 0)
+                        {
+                            oldMaterials[0].MaterialCount = sortingTray.MaterialCount;
+                            this._warehouseMaterialRepository.Update(oldMaterials[0]);
+                        }
+
+                        this._warehouseTrayRepository.Update(sortingTray);
+
+
+                    }
+                    else
+                    {
+                        if (whTrays.Count > 0 && whTrays[0].TrayStep != Convert.ToInt32(TRAY_STEP.初始化))
+                            throw new Exception(string.Format("托盘状态[{0}]未初始化,无法分拣！", trayCode));
+
+                        DateTime now = DateTime.Now;
+                        WarehouseTray warehouseTray = null;
+                        if (whTrays.Count == 0)
+                        {
+                            warehouseTray = new WarehouseTray
+                            {
+                                TrayCode = trayCode,
+                                CreateTime = now,
+                                MaterialCount = sortingCount,
+                                Price = 0,
+                                Amount = 0,
+                                TrayStep = Convert.ToInt32(TRAY_STEP.待入库),
+                                ReservoirAreaId = areaId,
+                                Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
+                                OutCount = 0,
+                                OUId = warehouses[0].OUId,
+                                WarehouseId = area.WarehouseId,
+                                PhyWarehouseId = pyId
+                            };
+                            var addTray = this._warehouseTrayRepository.Add(warehouseTray);
+                            WarehouseMaterial warehouseMaterial = new WarehouseMaterial
+                            {
+                                CreateTime = now,
+                                WarehouseTrayId = addTray.Id,
+                                MaterialCount = sortingCount,
+                                OutCount = 0,
+                                MaterialDicId = materialDic.Id,
+                                Price = 0,
+                                Amount = 0,
+                                WarehouseId = area.WarehouseId,
+                                ReservoirAreaId = areaId,
+                                OUId = warehouses[0].OUId,
+                                Carrier = Convert.ToInt32(TRAY_CARRIER.货位),
+                                PhyWarehouseId = pyId
+                            };
+                            this._warehouseMaterialRepository.Add(warehouseMaterial);
+                        }
+                        else
+                        {
+
+                            warehouseTray = whTrays[0];
+
+                            WarehouseMaterialSpecification warehouseMaterialSpec =
+                                new WarehouseMaterialSpecification(
+                                    null,
+                                    null, null, null, null, null, warehouseTray.Id, null,
+                                    null, null, null, null, null, null, null,
+                                    null, null, null, null, null);
+
+                            List<WarehouseMaterial> oldMaterials =
+                                this._warehouseMaterialRepository.List(warehouseMaterialSpec);
+
+                            double oldCount = 0;
+                            if (warehouseTray.MaterialCount > 0)
+                            {
+                                if (oldMaterials[0].MaterialDic.MaterialCode != materialCode)
+                                    throw new Exception("分拣物料与原有托盘上的物料不一致！");
+                                oldCount = warehouseTray.MaterialCount;
+                            }
+
+                            warehouseTray.MaterialCount = oldCount + sortingCount;
+                            warehouseTray.TrayStep = Convert.ToInt32(TRAY_STEP.待入库);
+                            warehouseTray.CreateTime = DateTime.Now;
+
+
+                            warehouseTray.OutCount = oldCount > 0 ? -1 * oldCount : 0;
+                            this._warehouseTrayRepository.Update(warehouseTray);
+                            WarehouseMaterial warehouseMaterial = null;
+
+                            if (oldMaterials.Count > 0)
+                                warehouseMaterial = oldMaterials[0];
+                            else warehouseMaterial = new WarehouseMaterial();
+
+
+                            warehouseMaterial.CreateTime = now;
+                            warehouseMaterial.WarehouseTrayId = warehouseTray.Id;
+                            warehouseMaterial.MaterialCount = oldCount + sortingCount;
+                            warehouseMaterial.OutCount = warehouseTray.OutCount;
+                            warehouseMaterial.MaterialDicId = materialDic.Id;
+                            warehouseMaterial.Price = 0;
+                            warehouseMaterial.Amount = 0;
+                            warehouseMaterial.WarehouseId = area.WarehouseId;
+                            warehouseMaterial.ReservoirAreaId = areaId;
+                            warehouseMaterial.OUId = warehouses[0].OUId;
+
+
+                            if (oldMaterials.Count > 0)
+                                this._warehouseMaterialRepository.Update(warehouseMaterial);
+                            else
+                                this._warehouseMaterialRepository.Add(warehouseMaterial);
+                        }
+
+                    }
+
+
+                    this._logRecordRepository.Add(new LogRecord
+                    {
+                        LogType = Convert.ToInt32(LOG_TYPE.操作日志),
+                        LogDesc = string.Format("无订单分拣入库,入库托盘[{0}],入库物料[{1}]",
+                            trayCode,
+                            materialCode),
+                        CreateTime = DateTime.Now
+                    });
+
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                scope.Complete();
+            }
+        }
     }
 }

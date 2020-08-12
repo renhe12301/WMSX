@@ -6,7 +6,8 @@ namespace ApplicationCore.Interfaces
 {
     public interface ISubOrderService
     {
-        
+        Task SortingNoneOrder(string materialCode, double sortingCount, string trayCode, int areaId, int pyId);
+
         Task SortingOrder(int subOrderId, int subOrderRowId, double sortingCount, string trayCode,int areaId, int pyId);
 
         Task CreateTKOrder(SubOrder subOrder);

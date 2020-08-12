@@ -104,8 +104,10 @@ namespace ApplicationCore.Services
                             }
                         }
                     }
-                    addLocations.ForEach(l => { this._locationRepository.Add(l); });
-                    
+                    //addLocations.ForEach(l => { this._locationRepository.Add(l); });
+
+                    this._locationRepository.Add(addLocations);
+
                     this._logRecordRepository.Add(new LogRecord
                     {
                         LogType = Convert.ToInt32(LOG_TYPE.操作日志),

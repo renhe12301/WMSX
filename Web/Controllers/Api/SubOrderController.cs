@@ -137,7 +137,21 @@ namespace Web.Controllers.Api
                 subOrderRowView.PhyWarehouseId.GetValueOrDefault());
             return Content(JsonConvert.SerializeObject(response));
         }
-        
+
+        /// <summary>
+        /// 无订单分拣
+        /// </summary>
+        /// <param name="subOrderRowView">拆分订单实体</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> SortingNoneOrder([FromBody]SubOrderRowViewModel subOrderRowView)
+        {
+            var response = await this._subOrderViewModelService.SortingNoneOrder(subOrderRowView.MaterialDicCode,
+                subOrderRowView.Sorting.Value, subOrderRowView.TrayCode, subOrderRowView.ReservoirAreaId.Value,
+                subOrderRowView.PhyWarehouseId.GetValueOrDefault());
+            return Content(JsonConvert.SerializeObject(response));
+        }
+
         /// <summary>
         /// 拆分订单作废
         /// </summary>
